@@ -39,6 +39,24 @@ quick pan turns into a smear of unrelated frames.
 cannot tell what it is at that size, neither can the panel — and looking at a
 1000% zoom of a render will lie to you about both.
 
+## The shortcut: import a GIF
+
+If you already have an animation, skip the renderer entirely:
+
+```sh
+python3 tools/movies/import_gif.py cat.gif --legacy     # onto the PC deck
+python3 tools/movies/import_gif.py cat.gif 256 64       # for an SSD1322
+```
+
+It folds colour to luminance, dithers to the four levels, composites
+transparency onto black, and resamples the GIF's per-frame delays onto one
+fixed rate. `--cover` crops to fill the panel instead of letterboxing.
+
+The thing to watch for is colour: a GIF that reads by hue — a red shape on
+green, say — becomes one flat blob here. The importer measures how saturated
+the source is and says so, but it cannot tell you which shapes were *meant* to
+be distinct, so check the ASCII dump it prints.
+
 ## The renderer
 
 `tools/movies/render3d.py` — pure Python, no numpy, no GPU, no Blender, so it
