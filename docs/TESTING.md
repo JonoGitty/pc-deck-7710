@@ -43,9 +43,10 @@ What it checks, in order:
 | the ocean | `ocean.tsv` | Dolphin timing or waterfall thresholds moved |
 | every `.dmv` in `movies/` | all frames | The movie decoders disagree |
 | the flash container | `build/movies.bin` | Packing and unpacking are not inverses |
+| the GIF importer | synthesised GIFs | An import lost the animation |
 | the deck's behaviour | 20 assertions | See §2 |
 
-Two of those deserve a note.
+Three of those deserve a note.
 
 **The movie check decodes each file twice** — once from a buffer, once through
 the streaming source that never holds the whole file — and fails if they
@@ -56,6 +57,14 @@ otherwise exercise.
 **The ocean check needs Chromium** because its JavaScript reference draws
 dolphin silhouettes on a canvas. It skips itself when Playwright is absent and
 says so, so the rest of the suite still runs on a bare machine.
+
+**The importer check asks a different question from everything else here.**
+Every other test asks whether a movie is *faithful*; this one asks whether it
+*moves*. It exists because an import once silently produced a valid `.dmv` of
+sixty-eight identical stills — the container round-tripped, the decoders
+agreed, the ASCII dump and the preview GIF both looked exactly like the
+picture, and every check in this project passed on a movie that had lost its
+animation.
 
 If you change a screen's output *deliberately*, this will fail. **Update the
 expectation; never delete the case.** It has caught things invisible by eye: a

@@ -27,6 +27,12 @@ jobs:
         with:
           python-version: "3.11"
 
+      # Installed before the suite rather than with the animation tools below,
+      # because run.sh skips its GIF-importer check without Pillow — and a
+      # check that quietly skips in CI is a check that does not exist.
+      - name: Pillow, which the importer check needs
+        run: python3 -m pip install --quiet Pillow
+
       - name: core/ vs the legacy JS
         run: sh tools/verify/run.sh
 
@@ -47,6 +53,5 @@ jobs:
 
       - name: the animation tools still run
         run: |
-          python3 -m pip install --quiet Pillow
           python3 tools/movies/scene_spin.py 192 48
           python3 tools/movies/pack.py build/movies.bin movies/*_256x64.dmv

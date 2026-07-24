@@ -121,6 +121,22 @@ if [ "$mv_total" -gt 0 ]; then
   fi
 fi
 
+# The GIF importer, which is the one tool here whose output nothing else
+# checks: every other test in this file asks "is the movie faithful?", and an
+# import that silently lost its animation answered yes to all of them. This
+# asks whether anything moves. Skipped without Pillow, like the tools it tests.
+if python3 -c "import PIL" 2>/dev/null; then
+  if python3 tools/verify/test_import.py > build/import_test.txt 2>&1; then
+    grep -E 'importer checks' build/import_test.txt
+  else
+    printf 'MISMATCH — the GIF importer is not producing a moving picture:\n\n'
+    cat build/import_test.txt
+    exit 1
+  fi
+else
+  printf 'importer check SKIPPED (needs Pillow)\n'
+fi
+
 # The firmware's UI layer, run on this machine. core/ is verified against the
 # JavaScript; this covers the layer above it — which screen is on, when the
 # dolphins take over, how a track change interrupts — which no amount of

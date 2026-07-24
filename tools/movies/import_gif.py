@@ -132,7 +132,12 @@ def convert(path, w, h, fps, cover=False, black=20, stretch=True,
 
     step = 1000.0 / fps
     n_out = max(1, int(round(total_ms / step)))
-    seq = list(ImageSequence.Iterator(Image.open(path)))
+    # .copy() is not decoration. ImageSequence.Iterator yields the SAME Image
+    # object seeked to each position, so list()-ing it gives N references to
+    # one object — all of them showing the last frame. The import then produced
+    # a movie of N identical stills, which looks exactly like a still GIF and
+    # is why tools/verify/test_import.py exists.
+    seq = [f.copy() for f in ImageSequence.Iterator(Image.open(path))]
 
     fitted = []
     for k in range(n_out):

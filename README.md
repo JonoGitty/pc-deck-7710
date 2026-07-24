@@ -85,9 +85,11 @@ Already have a GIF? `tools/movies/import_gif.py` converts it:
 
 ![REEF — an imported reef clip](docs/media/reef.gif)
 
-*Footage needs `--keep`. A camera uses the whole tonal range and the deck has
-four levels, so a mid-grey background becomes a checkerboard louder than the
-subject; lighting only the brightest fifth is what fixes it.*
+*`import_gif.py reef.gif --cover --keep=25`. Footage needs `--keep`: a camera
+uses the whole tonal range and the deck has four levels, so a mid-grey
+background does not read as background — it becomes a checkerboard louder than
+the subject. Lighting only the brightest quarter drops the water out and hands
+all four levels to the fish.*
 
 **Making one is a conversation, not a tutorial.** [CLAUDE.md](CLAUDE.md) tells
 Claude the constraints — the grid for your panel, the level budget, why thin
