@@ -62,7 +62,15 @@ coloured: the deck has no hue, so shapes that differ only in colour merge.
 
 **Otherwise pick a starting point:** `scene_spin.py` is the minimal template;
 `scene_solar.py` shows a camera path, per-body detail and labels drawn from the
-deck's own ROM.
+deck's own ROM; `scene_dolphins.py` is a bright subject against a dim field;
+`scene_touge.py` is the inverse — a night scene lit only by its subject, and
+the one that documents the level-centre rule below.
+
+**Pin large areas to a level centre.** The quantiser puts level *n* at shade
+(n + 0.5) / 4, so 0.375 / 0.625 / 0.875 are solid fields and 0.25 or 0.5 are
+50/50 checkerboards. A checkerboard covering a third of the panel will beat
+everything else in the frame for attention. This is the single most common
+reason a render that looked fine in greyscale is a mess on the deck.
 
 **Design decisions to make on their behalf**, because they are unobvious:
 

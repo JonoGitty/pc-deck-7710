@@ -12,6 +12,7 @@
 >
 > **Make your own animations.** A pure-Python 3D renderer builds them for
 > whichever display you have, hardware or not — or import any animated GIF.
+> Four come bundled: `SPIN`, `SOLAR`, `DOLPHINS` and `TOUGE`.
 > See [docs/MOVIE-RENDERING.md](docs/MOVIE-RENDERING.md), or ask Claude:
 > [CLAUDE.md](CLAUDE.md) tells it how to pick the format for your display.
 

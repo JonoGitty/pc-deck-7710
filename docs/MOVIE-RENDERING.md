@@ -83,6 +83,26 @@ and the panel flashes.
 `--gamma=` shapes the curve between the two points if the midtones need pushing
 either way.
 
+## The bundled animations
+
+Four, and they are worth reading before writing your own — each one solves a
+different version of the same problem, which is that four levels is not many.
+
+| | What it is | The thing it works out |
+|---|---|---|
+| `scene_spin.py` | A rotating solid, 8 s | The minimal template. Start here. |
+| `scene_solar.py` | Sun to Pluto, 56 s | A camera path, and labels that survive a bright background — see `deckfont.plate`. |
+| `scene_dolphins.py` | A pod breaching, 24 s | A bright subject needs something dim to sit against; the sea is shaded on a steep curve so only crests glint. |
+| `scene_touge.py` | A car sideways at night, 30 s | The inverse: an almost-black frame, lit only by the car's own headlights, where the subject is the *hole* in the light. |
+
+Each takes a grid — `scene_touge.py 256 64` — or `--legacy` for the PC deck.
+
+`scene_touge.py` is also where the level-centre trick is written down. The
+quantiser puts level *n* at shade (n + 0.5) / 4, so 0.375, 0.625 and 0.875 are
+solid fields and 0.25 or 0.5 — which look like the reasonable round numbers —
+are exactly the 50/50 checkerboards. Anything covering a large area wants to be
+pinned to a centre, or it becomes the loudest thing on the panel.
+
 ## The renderer
 
 `tools/movies/render3d.py` — pure Python, no numpy, no GPU, no Blender, so it
