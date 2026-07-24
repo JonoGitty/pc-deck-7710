@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Deck movie exporter — RGB frames in, a .dmv out.
+"""Deck movie container — RGB frames in, a .dmv out.
 
-Adapted from the COOKD ledcine pipeline (tools/ledcine in jonogitty/cooked),
-which rendered to a 192x92 grid quantised against an 18-colour palette. The
-deck has no colours: it has five intensity levels, and the panel's output stage
-decides what those become. So the quantiser here maps luminance to 0..4 with the
-same 4x4 ordered dither the album art and the output stage use, which is what
-keeps a rendered movie looking like it belongs on the same glass.
+The deck has no colours: it has five intensity levels, and the panel's output
+stage decides what those become. So the quantiser maps luminance to 0..4 using
+the same 4x4 ordered dither as the album art and the output stage, which is
+what makes a rendered movie look like it belongs on the same glass rather than
+like something pasted onto it.
 
-The delta-compressed run encoding is carried over unchanged — it is a good fit
-for dot-matrix animation, where most of the frame does not move.
+Frames are delta-compressed as runs, which suits dot-matrix animation: most of
+a frame does not move, and the parts that do tend to move in horizontal
+stretches.
 """
 import json
 import struct

@@ -48,8 +48,9 @@ function makeSprite(color, halo, haloAlpha, coreScale, shape) {
     g.arc(5, 5, 1.7, 0, 6.2832);
     g.fill();
   } else if (shape === "bulb") {
-    // round LED bulb with spherical shading — the Blender LED-sign look,
-    // adapted from the COOKD board renderer, at OEM dot pitch
+    // round LED bulb with spherical shading — the LED-sign look, at OEM dot
+    // pitch: a radial gradient from a white highlight through the base colour
+    // to a shaded rim
     const r = 2.1 * (coreScale || 1);
     const rg = g.createRadialGradient(4.2, 4.2, r * 0.15, 5, 5, r);
     rg.addColorStop(0, "#ffffff");
@@ -81,7 +82,7 @@ function rgbaHex(hex, a) {
 }
 
 // Colour schemes — authentic head-unit illumination colours (Pioneer let you
-// set the display colour), plus round-LED-bulb variants incl. the COOKD board.
+// set the display colour), plus round-LED-bulb variants.
 const STYLES = [
   { id: "AMBER",     shape: "square", pal: PAL },
   { id: "PIONEER RED", shape: "square", pal: {
@@ -100,7 +101,7 @@ const STYLES = [
       bg: "#02050b", unlit: "#101720", dim: "#5c7d8e", main: "#dff4ff",
       hot: "#ffffff", bloom: "#7ad0ff", clip: "#ff5a45" } },
   { id: "LED AMBER", shape: "bulb", pal: PAL },
-  { id: "LED COOKD", shape: "bulb", pal: {
+  { id: "LED LIME",  shape: "bulb", pal: {
       bg: "#04050a", unlit: "#0e1018", dim: "#3f5c0b", main: "#c6ff1a",
       hot: "#eaffff", bloom: "#12e0ff", clip: "#ff1a8c" } },
 ];

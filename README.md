@@ -63,10 +63,9 @@ tab to the TV, press `T` for TV mode.
 
 Authentic head-unit illumination colours, cycled with the COLOR button:
 **Amber** (default), **Pioneer Red**, **Emerald**, **Ice Blue**, **Purple**,
-**White**, plus two round-LED-bulb variants — **LED Amber** and **LED COOKD**
-(lime/cyan), whose bulb look adapts the COOKD LED-board renderer
-(`C:\AI\Cooked\src\core\led.js`, itself from the Blender LED signs) to the
-deck's OEM dot pitch.
+**White**, plus two round-LED-bulb variants — **LED Amber** and **LED Lime**
+(lime/cyan), which swap the square VFD dot for a spherically shaded round bulb
+at the same OEM dot pitch.
 
 ## TV mode (TV / `T`)
 

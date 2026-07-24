@@ -8,7 +8,7 @@
  *               to what is playing.
  *
  *   BAKED       pre-rendered frames played back. Anything can be baked —
- *               3D scenes from tools/ledcine, hand-drawn loops, converted
+ *               3D scenes from tools/movies, hand-drawn loops, converted
  *               GIFs — because by the time it gets here it is just levels on
  *               a grid. Cheap in code, costs flash, cannot react.
  *

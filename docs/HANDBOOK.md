@@ -54,7 +54,7 @@ rather than on the panel: [CONTROL.md](CONTROL.md).
 ## 7. Make a movie — ✅ ready
 
 ```sh
-python3 tools/ledcine/movie_spin.py 256 64     # renders for your panel
+python3 tools/movies/scene_spin.py 256 64      # renders for your panel
 ```
 
 Two kinds: procedural (code, reacts to audio — the dolphins) and baked

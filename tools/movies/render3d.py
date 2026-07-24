@@ -1,24 +1,27 @@
 #!/usr/bin/env python3
-"""deck3d — a software 3D renderer for PC·DECK movies.
+"""render3d — a software 3D renderer for PC·DECK movies.
 
-Lifted from the COOKD ledcine renderer (jonogitty/cooked, tools/ledcine): the
-same z-buffered barycentric triangle rasteriser, the same eye/target camera, the
-same generated meshes. Pure Python, no numpy, no GPU — which matters because
-this has to run anywhere someone might want to make a movie.
+Pure Python. No numpy, no GPU, no Blender — because this has to run anywhere
+someone might want to make an animation, including inside a container with
+nothing but the standard library.
 
-What changed for the deck:
+A z-buffered barycentric triangle rasteriser, an eye/target camera, and meshes
+that are generated rather than modelled. That is the whole renderer; everything
+else is a scene using it.
 
-  * The target grid is the deck's, not 192x92, and it is a parameter — the
-    same scene renders for a 192x48 legacy panel or a 256x64 SSD1322.
-  * Output is luminance, not colour. The deck has five intensity levels, so
-    shading, fog and specular all collapse into one channel. Design in
-    brightness, not hue: two objects the same luminance are the same object.
-  * Supersampling is on by default. At this dot pitch a jagged silhouette is
-    the difference between a dolphin and a submarine.
+Three things about it are specific to this display, and they are the ones worth
+understanding before you design anything:
 
-See COOKD_BUILDLOG.md for the hard-won lessons behind the original — the
-handedness bug that only text revealed, the ghost trail that ate the subject,
-"looks right is not a measurement".
+  * **The grid is a parameter.** The same scene renders for a 192x48 legacy
+    panel or a 256x64 SSD1322. Write scenes against proportions, not pixels.
+  * **Output is luminance, not colour.** The deck has five intensity levels and
+    no hue, so shading, fog and specular all collapse into one channel. Design
+    in brightness: two objects at the same luminance are the same object, no
+    matter what colour you imagined them.
+  * **Supersampling is on by default.** At this dot pitch an aliased edge reads
+    as a different shape — the difference between a dolphin and a submarine.
+
+See docs/MOVIE-RENDERING.md for the techniques and the traps.
 """
 import math
 
@@ -71,8 +74,11 @@ def clamp(v, a, b): return a if v < a else (b if v > b else v)
 
 # ---------------------------------------------------------------- camera
 class Cam:
-    """Right-handed. The COOKD build got this wrong once and only backwards
-    text gave it away — if your scene looks mirrored, suspect the basis."""
+    """Right-handed: `right = cross(up, fwd)`.
+
+    Get this wrong and the whole world is silently x-mirrored — and nothing
+    looks wrong until you render text, which is why text is the canary for
+    handedness bugs. If a scene feels subtly off, put a letter in it."""
 
     def __init__(self, eye, target, w, h, f=None):
         self.eye = eye
@@ -243,8 +249,9 @@ def box(w, h, d):
 def render_frame(w, h, draw, ss=3, fog=(14.0, 42.0)):
     """Render at ss× and box-downsample. `draw(fb, cam_w, cam_h)` does the work.
 
-    Supersampling is where the jaggies died in the COOKD ladder, and it matters
-    more here: at this dot pitch an aliased edge reads as a different shape.
+    Supersampling is what kills the jaggies, and it matters more here than on a
+    normal screen: at this dot pitch an aliased edge reads as a different shape
+    rather than a rougher one.
     """
     big = FB(w * ss, h * ss, fog=fog)
     draw(big, w * ss, h * ss)

@@ -5,16 +5,16 @@ Deliberately simple — it exists to prove the pipeline end to end (3D render ->
 luminance -> dither to five levels -> delta-compressed .dmv -> the C decoder)
 and to be the thing someone copies when writing their own.
 
-    python3 tools/ledcine/movie_spin.py            # 192x48, the legacy grid
-    python3 tools/ledcine/movie_spin.py 256 64     # an SSD1322 panel
+    python3 tools/movies/scene_spin.py            # 192x48, the legacy grid
+    python3 tools/movies/scene_spin.py 256 64     # an SSD1322 panel
 """
 import math
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import deck3d as D
-import deckmovie as M
+import render3d as D
+import dmv as M
 
 W = int(sys.argv[1]) if len(sys.argv) > 1 else 192
 H = int(sys.argv[2]) if len(sys.argv) > 2 else 48
