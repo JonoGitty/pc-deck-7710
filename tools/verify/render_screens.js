@@ -23,7 +23,9 @@ vm.createContext(ctx);
 const load = (p) => vm.runInContext(fs.readFileSync(path.join(ROOT, p), "utf8"), ctx);
 load("legacy/web/font.js");
 load("legacy/web/viz.js");
-vm.runInContext("globalThis.__spectrum = vizSpectrum;", ctx);
+vm.runInContext(
+  "globalThis.__s = { spectrum: vizSpectrum, mirror: vizMirror, scope: vizScope," +
+  " city: vizCity, waterfall: vizWaterfall };", ctx);
 
 let s = 0;
 const seed = (n) => { s = n >>> 0; };
@@ -46,6 +48,19 @@ function makeState(sd) {
   for (let i = 0; i < 96; i++) v.wave.push(next() * 2 - 1);
   v.bassAvg = next(); v.hfAvg = next();
   v.rms01 = next(); v.scopeGain = 1 + next() * 8;
+
+  v.wfHist = [];
+  for (let r = 0; r < 12; r++) {
+    const row = new Float32Array(32);          // matches app.js stepBuffers
+    for (let c = 0; c < 32; c++) row[c] = next();
+    v.wfHist.push(row);
+  }
+  v.waveHist = [];
+  for (let t = 0; t < 2; t++) {
+    const tr = [];
+    for (let i = 0; i < 96; i++) tr.push(next() * 2 - 1);
+    v.waveHist.push(tr);
+  }
   return v;
 }
 
@@ -63,8 +78,9 @@ for (const raw of fs.readFileSync(casesPath, "utf8").split("\n")) {
 
   const v = makeState(Number(sd));
   px.fill(0);
-  if (screen === "spectrum") ctx.__spectrum(px, v);
-  else { console.error("unknown screen " + screen); process.exit(1); }
+  const fn = ctx.__s[screen];
+  if (!fn) { console.error("unknown screen " + screen); process.exit(1); }
+  fn(px, v);
 
   let nz = 0, sum = 0;
   for (const b of px) { if (b) nz++; sum += b; }

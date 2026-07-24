@@ -29,6 +29,16 @@ static void fill_state(deck_state_t *v, uint32_t seed) {
   for (int i = 0; i < DECK_WAVE; i++) v->wave[i] = lcg_next() * 2.0 - 1.0;
   v->bassAvg = lcg_next(); v->hfAvg = lcg_next();
   v->rms01 = lcg_next(); v->scopeGain = 1.0 + lcg_next() * 8.0;
+
+  /* float, not double: the JS keeps waterfall rows in a Float32Array and the
+   * screens round differently at double precision. */
+  v->wfCount = DECK_WF_ROWS;
+  for (int r = 0; r < DECK_WF_ROWS; r++)
+    for (int c = 0; c < DECK_WF_COLS; c++) v->wfHist[r][c] = (float)lcg_next();
+
+  v->waveHistCount = DECK_TRACES;
+  for (int t = 0; t < DECK_TRACES; t++)
+    for (int i = 0; i < DECK_WAVE; i++) v->waveHist[t][i] = lcg_next() * 2.0 - 1.0;
 }
 
 static uint32_t fnv1a(const uint8_t *p, size_t n) {
@@ -56,7 +66,11 @@ int main(int argc, char **argv) {
 
     fill_state(&v, seed);
     deck_clear(&fb);
-    if (strcmp(screen, "spectrum") == 0) deck_screen_spectrum(&fb, &v);
+    if      (strcmp(screen, "spectrum")  == 0) deck_screen_spectrum(&fb, &v);
+    else if (strcmp(screen, "mirror")    == 0) deck_screen_mirror(&fb, &v);
+    else if (strcmp(screen, "scope")     == 0) deck_screen_scope(&fb, &v);
+    else if (strcmp(screen, "city")      == 0) deck_screen_city(&fb, &v);
+    else if (strcmp(screen, "waterfall") == 0) deck_screen_waterfall(&fb, &v);
     else { fprintf(stderr, "unknown screen %s\n", screen); return 1; }
 
     int nz = 0;

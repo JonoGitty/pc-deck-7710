@@ -7,8 +7,11 @@
 
 #include <stdint.h>
 
-#define DECK_BANDS 13
-#define DECK_WAVE  96
+#define DECK_BANDS   13
+#define DECK_WAVE    96
+#define DECK_WF_ROWS 12
+#define DECK_WF_COLS 32
+#define DECK_TRACES   2     /* scope persistence traces behind the live one */
 
 typedef struct {
   double bands[DECK_BANDS];
@@ -20,6 +23,14 @@ typedef struct {
   double bassAvg, hfAvg, rms01, scopeGain;
   int    clip;
   uint32_t oceanTick;
+
+  /* Waterfall rows are Float32Array in the JS, so they are float here too —
+   * at double precision the ported screens would round differently. */
+  float  wfHist[DECK_WF_ROWS][DECK_WF_COLS];
+  int    wfCount;                      /* rows actually filled */
+
+  double waveHist[DECK_TRACES][DECK_WAVE];
+  int    waveHistCount;
 } deck_state_t;
 
 /* JS Math.round is floor(x + 0.5) — not C's round(), which breaks ties away

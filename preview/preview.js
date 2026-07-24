@@ -31,6 +31,7 @@ const $ = (id) => document.getElementById(id);
 const canvas = $("screen"), ctx = canvas.getContext("2d");
 
 let wasm = null, mem = null, dev = null, W = 0, H = 0;
+let bands, peaks, bandsL, bandsR, wave, wfHist, waveHist;
 
 function rgb(hex) {
   const n = parseInt(hex.slice(1), 16);
@@ -63,6 +64,16 @@ function reconfigure() {
   wasm.deck_config(t.w, t.h, levels, colourCapable ? 1 : 0);
   W = wasm.deck_w(); H = wasm.deck_h();
   dev = new Uint8Array(mem.buffer, wasm.deck_dev_ptr(), W * H);
+  const b = mem.buffer;
+  bands    = new Float64Array(b, wasm.deck_bands_ptr(), 13);
+  peaks    = new Float64Array(b, wasm.deck_peaks_ptr(), 13);
+  bandsL   = new Float64Array(b, wasm.deck_bandsl_ptr(), 13);
+  bandsR   = new Float64Array(b, wasm.deck_bandsr_ptr(), 13);
+  wave     = new Float64Array(b, wasm.deck_wave_ptr(), 96);
+  wfHist   = new Float32Array(b, wasm.deck_wf_ptr(), 12 * 32);
+  waveHist = new Float64Array(b, wasm.deck_wavehist_ptr(), 2 * 96);
+  wasm.deck_set_counts(12, 2);
+  wasm.deck_set_scope_gain(3.0);
 
   const zoom = Number($("zoom").value);
   canvas.width = W * zoom;
@@ -76,14 +87,41 @@ function reconfigure() {
 }
 
 // --- content -------------------------------------------------------------
-function drawSpectrum(t) {
+// Plausible-looking analysis data so every screen has something to chew on.
+function feed(t) {
   for (let b = 0; b < 13; b++) {
     const v = 0.5 + 0.45 * Math.sin(t / 520 + b * 0.7) * Math.sin(t / 1730 + b);
-    wasm.deck_set_band(b, Math.max(0, Math.min(1, v)));
-    wasm.deck_set_peak(b, Math.max(0, Math.min(1, v + 0.12)));
+    bands[b] = Math.max(0, Math.min(1, v));
+    peaks[b] = Math.max(0, Math.min(1, v + 0.12));
+    bandsL[b] = Math.max(0, Math.min(1, v * (0.7 + 0.3 * Math.sin(t / 900))));
+    bandsR[b] = Math.max(0, Math.min(1, v * (0.7 + 0.3 * Math.cos(t / 900))));
   }
-  wasm.deck_render_spectrum();
-  writeStr("SPECTRUM ANALYZER");
+  for (let i = 0; i < 96; i++) {
+    const p = i / 96;
+    wave[i] = Math.sin(p * 18 + t / 190) * 0.55 * Math.sin(t / 1400 + p * 3);
+    waveHist[i] = wave[i] * 0.8;
+    waveHist[96 + i] = wave[i] * 0.6;
+  }
+  for (let r = 0; r < 12; r++)
+    for (let c = 0; c < 32; c++)
+      wfHist[r * 32 + c] =
+        Math.max(0, 0.55 + 0.45 * Math.sin(c / 3.1 + t / 700 - r * 0.45) *
+                              Math.cos(r * 0.6 + t / 2100));
+}
+
+const SCREENS = {
+  spectrum:  ["SPECTRUM ANALYZER", () => wasm.deck_render_spectrum()],
+  mirror:    ["MIRROR SPECTRUM",   () => wasm.deck_render_mirror()],
+  scope:     ["OSCILLOSCOPE",      () => wasm.deck_render_scope()],
+  city:      ["CITYSCAPE EQ",      () => wasm.deck_render_city()],
+  waterfall: ["WATERFALL",         () => wasm.deck_render_waterfall()],
+};
+
+function drawScreen(key, t) {
+  feed(t);
+  const [label, run] = SCREENS[key];
+  run();
+  writeStr(label);
   wasm.deck_draw_text3(2, 0, 1);
 }
 
@@ -118,7 +156,7 @@ function drawRamp() {
 function frame(t) {
   wasm.deck_begin();
   const mode = $("content").value;
-  if (mode === "spectrum") drawSpectrum(t);
+  if (SCREENS[mode]) drawScreen(mode, t);
   else if (mode === "text") drawText();
   else drawRamp();
   wasm.deck_emit();
