@@ -8,12 +8,18 @@ for metadata and transport, WiFi to a phone hotspot for lyrics and album art,
 > phone — see [HARDWARE.md §2](../../docs/HARDWARE.md). The WROVER-E variant is
 > for the PSRAM, which album-art decoding needs.
 
-> **Status: skeleton, not yet run on hardware.** Nothing here has been flashed.
-> The structure, the pin map and the driver command sequences come from the
-> datasheets and the ESP-IDF docs, and should be treated as a first draft to be
-> corrected on the bench — not as tested code. `core/` is the part that is
-> verified, and it is verified against the JS it was ported from, not against a
-> panel.
+> **Status: written, compiling, never run on hardware.** It builds clean for
+> both panel targets under ESP-IDF v5.3 — 1.74 MB, 11% clear of the app slot —
+> and CI keeps it that way. That is a real bar and it is not the bar that
+> matters: no line of this has driven a pin. The pin map and the driver command
+> sequences come from datasheets and should be treated as a first draft to be
+> corrected on the bench.
+>
+> `core/` is the part that is verified, and it is verified against the JS it was
+> ported from, not against a panel.
+>
+> Build and flash it with `python3 tools/deckctl.py`; see
+> [docs/BUILD.md](../../docs/BUILD.md).
 
 ## Layout
 

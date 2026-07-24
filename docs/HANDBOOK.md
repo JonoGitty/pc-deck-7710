@@ -4,8 +4,9 @@ Build your own 1-DIN head unit. Pick a display, see it before you buy it, flash
 your setup, make your own animations.
 
 > **Status.** The renderer and the preview are done and verified. The firmware
-> is a skeleton that has not been run on hardware. Sections below are marked
-> accordingly — nothing here claims to be tested that isn't.
+> is written and compiles for both panels, and has never run on hardware.
+> Sections below are marked accordingly — nothing here claims to be tested
+> that isn't. Read [SAFETY.md](../SAFETY.md) before any of it meets a car.
 
 ## 1. Decide what you're building — ✅ ready
 
@@ -35,16 +36,23 @@ the page runs the same C the firmware compiles. See [preview/](../preview/).
 
 The original visualiser, unchanged. `legacy/` — see the [main README](../README.md).
 
-## 4. Build the hardware — ⚠️ skeleton
+## 4. Build the hardware — ⚠️ untested
 
-Wiring, cage, connector and power: [HARDWARE.md](HARDWARE.md). The ISO 10487
-pinout and the ISO 7736 cage are there, including which pins do the ignition
-sense and the dimmer.
+**[BUILD.md](BUILD.md) is the end-to-end guide**: shopping list with part
+numbers, pin-by-pin wiring, flashing, pairing, then the car install. Component
+survey and alternatives in [HARDWARE.md](HARDWARE.md); the ISO 10487 pinout and
+the ISO 7736 cage are there, including which pins do the ignition sense and the
+dimmer.
 
-## 5. Flash it — ⚠️ not yet
+## 5. Flash it — ⚠️ compiles, never run
 
-[firmware/esp32/](../firmware/esp32/) has the structure and the bring-up order.
-Update mechanism is undecided — [VERSIONING.md](VERSIONING.md).
+```sh
+python3 tools/deckctl.py          # guided: check, build, flash, load movies
+```
+
+The firmware builds for both panels and CI keeps it building. Nothing has
+driven a pin. Bring-up order is in [firmware/esp32/](../firmware/esp32/), and
+when it does not work, [DIAGNOSTICS.md](DIAGNOSTICS.md).
 
 ## 6. Control it — ⚠️ partly
 
