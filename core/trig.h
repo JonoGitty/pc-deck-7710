@@ -17,5 +17,7 @@
 
 double deck_sin(double x);
 double deck_cos(double x);
+double deck_atan(double x);
+double deck_atan2(double y, double x);
 
 #endif /* DECK_TRIG_H */

@@ -82,6 +82,7 @@ function reconfigure() {
 
   rebuildAppearance();
   trackLoaded = false;
+  oceanReady = false;
 
   const tier = ["STRIP", "CLASSIC", "LARGE"][wasm.deck_tier_of()];
   $("readout").textContent =
@@ -168,7 +169,12 @@ const SCREENS = {
 };
 
 // The metadata screens own the whole panel, so they draw no label of their own.
+let oceanReady = false;
 const META_SCREENS = {
+  ocean: (t) => {
+    if (!oceanReady) { wasm.deck_ocean_init(); oceanReady = true; }
+    wasm.deck_render_ocean(Math.floor(t / 100));   // 10 movie fps
+  },
   cover:  (t) => { wasm.deck_set_transport((t / 1000) % TRACK.duration, TRACK.duration, 1);
                    wasm.deck_render_cover(16.7); },
   lyrics: (t) => { wasm.deck_set_transport((t / 1000) % 60, TRACK.duration, 1);

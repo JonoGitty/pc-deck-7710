@@ -32,6 +32,7 @@ static deck_fb_t    fb   = { &geom, px };
 static deck_state_t st;
 static deck_meta_t  meta;
 static deck_scroll_t cover_scroll;
+static deck_ocean_t  ocean;
 static uint8_t lum[128 * 128];
 static uint8_t artbuf[128 * 128];
 
@@ -135,6 +136,10 @@ EXPORT(deck_render_cover)     void deck_render_cover(double dt) {
 }
 EXPORT(deck_render_lyrics)    void deck_render_lyrics(double now) {
   deck_screen_lyrics(&fb, &st, &meta, now);
+}
+EXPORT(deck_ocean_init)   void deck_ocean_init(void) { deck_ocean_reset(&ocean); }
+EXPORT(deck_render_ocean) void deck_render_ocean(int tick) {
+  deck_screen_ocean(&fb, &st, &ocean, (uint32_t)tick);
 }
 
 EXPORT(deck_dot) void deck_dot(int x, int y, int inten) { deck_set(&fb, x, y, (uint8_t)inten); }

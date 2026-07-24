@@ -1,0 +1,5 @@
+/* name frames rms01 hf01 bass01 bassStep  — bassStep kicks in after frame 8 */
+ocean-calm	40	0.10	0.10	0.10	0.0
+ocean-loud	40	0.80	0.90	0.20	0.0
+ocean-breach	60	0.60	0.50	0.10	0.6
+ocean-long	160	0.40	0.70	0.15	0.5

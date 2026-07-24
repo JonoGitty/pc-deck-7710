@@ -38,6 +38,17 @@ int main(void) {
    * is chosen unless the true value sits that close to a .5 boundary. */
   printf("  worst-case dot shift at radius 32: %.1e dots\n", 32 * 2e-15);
 
+  /* atan2 drives the breach angle, which is then quantised to 10 degrees. */
+  double worst = 0, at = 0;
+  for (long i = -400000; i <= 400000; i++) {
+    const double yy = i * 1e-4;
+    const double d = fabs(deck_atan2(yy, 2.6) - atan2(yy, 2.6));
+    if (d > worst) { worst = d; at = yy; }
+  }
+  printf("  %-22s atan2 %.2e (y=%+.4f)  %s\n", "breach range", worst, at,
+         worst < 1e-15 ? "ok" : "FAIL");
+  ok &= worst < 1e-15;
+
   printf("  landmarks: sin(0)=%g cos(0)=%g sin(pi/2)=%.17g cos(pi)=%g\n",
          deck_sin(0.0), deck_cos(0.0), deck_sin(DECK_PI / 2), deck_cos(DECK_PI));
   return ok ? 0 : 1;

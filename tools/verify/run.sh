@@ -66,3 +66,25 @@ else
   cat build/meta_diff.txt
   exit 1
 fi
+
+# The ocean reference needs Canvas for the dolphin silhouettes, so its JS side
+# runs in Chromium rather than bare node. Skipped when that isn't available,
+# so the rest of the suite still works without Playwright installed.
+CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"
+if [ -x "$CHROMIUM" ] && node -e "require('playwright-core')" 2>/dev/null; then
+  gcc -std=c99 -Wall -Wextra -Werror -O2 \
+      -o build/verify_ocean_c core/fb.c core/trig.c core/screens/ocean.c \
+      tools/verify/render_ocean.c
+
+  build/verify_ocean_c tools/verify/ocean.tsv > build/oc_c.txt
+  CHROMIUM="$CHROMIUM" node tools/verify/render_ocean.js tools/verify/ocean.tsv > build/oc_js.txt
+
+  if diff -u build/oc_js.txt build/oc_c.txt > build/oc_diff.txt; then
+    printf 'ocean matches legacy JS on %s scenarios\n' "$(wc -l < build/oc_c.txt | tr -d ' ')"
+  else
+    printf 'MISMATCH — ocean differs from legacy JS\n'
+    exit 1
+  fi
+else
+  printf 'ocean check SKIPPED (needs playwright-core + Chromium)\n'
+fi

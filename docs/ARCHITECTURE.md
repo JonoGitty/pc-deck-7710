@@ -54,7 +54,7 @@ core/              portable C99, no deps, no allocation          [started]
   font.c           5x7 and 3x5 ROMs (+ larger fonts for big panels) ✅
   layout.c         picks a layout tier from the geometry
   screens/         spectrum, mirror, vu, scope, city, waterfall, 3d,
-                   ocean, cover, lyrics
+                   ocean, cover, lyrics                        ✅ all ten
   out/             output stages: 1-bit dither, 4-level, 16-grey, RGB
 
 preview/           the browser harness — core compiled to WASM
