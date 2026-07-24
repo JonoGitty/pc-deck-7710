@@ -1,5 +1,13 @@
 # PC·DECK 7710
 
+> **Where this is going.** This started as a PC music visualiser and is becoming
+> an open-source kit for building your own 1-DIN head unit — pick a display,
+> preview it in the browser before buying anything, flash the firmware for your
+> setup. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md),
+> [docs/HARDWARE.md](docs/HARDWARE.md) and [docs/UI-SPEC.md](docs/UI-SPEC.md).
+>
+> The PC version documented below keeps working, and will stay working.
+
 A Pioneer-style OEM head-unit display for your PC. Whatever the machine plays —
 Spotify, YouTube, games — shows up live on an amber VFD faceplate: 13-band
 spectrum analyzer, VU needles, oscilloscope, waterfall, album art, synced
