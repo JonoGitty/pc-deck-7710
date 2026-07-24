@@ -17,10 +17,9 @@
 
 ![SOLAR — a solar system tour rendered for a 256×64 head-unit panel](docs/media/solar.gif)
 
-*`SOLAR`, one of the bundled animations: 19 seconds, nine stops, rendered by
-`tools/movies/scene_solar.py` for a 256×64 SSD1322 panel. Built with*
-`python3 tools/movies/scene_solar.py --legacy` *it installs into the PC deck
-below — press `V`.*
+*`SOLAR`, one of the bundled animations: 56 seconds, thirteen stops from the Sun
+to Pluto, rendered by `tools/movies/scene_solar.py` for a 256×64 SSD1322 panel.
+Run it with* `--legacy` *and it installs into the PC deck below — press `V`.*
 
 A Pioneer-style OEM head-unit display for your PC. Whatever the machine plays —
 Spotify, YouTube, games — shows up live on an amber VFD faceplate: 13-band

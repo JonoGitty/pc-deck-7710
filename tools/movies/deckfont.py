@@ -61,3 +61,20 @@ def draw(buf, w, h, x, y, text, level=3, scale=1):
 
 def centred(buf, w, h, y, text, level=3, scale=1):
     draw(buf, w, h, max(0, (w - width(text, scale)) // 2), y, text, level, scale)
+
+
+def plate(buf, w, h, x, y, text, level=3, scale=1, pad=1):
+    """Text on a knocked-out panel.
+
+    Max-blend means a label drawn over something bright simply disappears into
+    it — which is exactly what happened to TITAN against Saturn. Clearing the
+    label's box to off first is what a real head unit does, and it costs
+    nothing but the dots it blanks.
+    """
+    tw = width(text, scale)
+    x0, y0 = x - pad, y - pad
+    x1, y1 = x + tw - scale + pad, y + 7 * scale + pad - 1
+    for py in range(max(0, y0), min(h, y1 + 1)):
+        for px in range(max(0, x0), min(w, x1 + 1)):
+            buf[py * w + px] = 0
+    draw(buf, w, h, x, y, text, level, scale)

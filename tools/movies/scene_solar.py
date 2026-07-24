@@ -36,8 +36,12 @@ if LEGACY:
     W, H = 192, 48
 
 FPS = 10
-HOLD = 14          # frames parked at a body
-TRAVEL = 8         # frames between bodies
+# Everything at half the original pace: twice as long at each body and between
+# them, AND the spin/orbit rates halved to match. Doubling only the frame counts
+# would have kept the rotation rate and just shown more of it.
+HOLD = 28          # frames parked at a body
+TRAVEL = 16        # frames between bodies
+RATE = 1.1         # was 2.2
 SS = 2             # supersample; 3 is prettier and much slower
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -45,15 +49,19 @@ OUT = os.path.join(HERE, "..", "..", "movies", f"solar_{W}x{H}.dmv")
 
 # name, radius, orbit x, spin rate, surface shade, tilt
 BODIES = [
-    ("SUN",      4.6,    0.0, 0.10, 1.00, 0.0),
-    ("MERCURY",  0.62,  17.0, 0.30, 0.52, 0.0),
-    ("VENUS",    0.95,  26.0, 0.16, 0.86, 0.1),
+    ("SUN",      4.60,   0.0, 0.10, 1.00, 0.00),
+    ("MERCURY",  0.62,  17.0, 0.30, 0.52, 0.00),
+    ("VENUS",    0.95,  26.0, 0.16, 0.86, 0.10),
     ("EARTH",    1.00,  36.0, 0.42, 0.74, 0.41),
-    ("MARS",     0.72,  47.0, 0.40, 0.60, 0.44),
-    ("JUPITER",  2.70,  64.0, 0.60, 0.80, 0.05),
-    ("SATURN",   2.30,  82.0, 0.55, 0.72, 0.47),
-    ("URANUS",   1.55,  98.0, 0.34, 0.66, 1.71),
-    ("NEPTUNE",  1.50, 112.0, 0.36, 0.62, 0.49),
+    ("MARS",     0.72,  48.0, 0.40, 0.60, 0.44),
+    ("CERES",    0.34,  58.0, 0.50, 0.50, 0.06),   # in the belt
+    ("JUPITER",  2.70,  72.0, 0.60, 0.80, 0.05),
+    ("IO",       0.36,  78.5, 0.45, 0.66, 0.00),   # Jupiter's moon
+    ("SATURN",   2.30,  92.0, 0.55, 0.72, 0.47),
+    ("TITAN",    0.40,  98.5, 0.38, 0.58, 0.00),   # Saturn's moon
+    ("URANUS",   1.55, 112.0, 0.34, 0.66, 1.71),
+    ("NEPTUNE",  1.50, 126.0, 0.36, 0.62, 0.49),
+    ("PLUTO",    0.32, 138.0, 0.28, 0.48, 0.99),
 ]
 
 SPHERE = D.icosphere(2)
@@ -69,6 +77,37 @@ for _ in range(90):
     sy = (_s % 10000) / 10000.0
     _s = (_s * 1103515245 + 12345) & 0x7fffffff
     STARS.append((sx, sy, 1 if (_s % 3) else 2))
+
+
+# The belt is drawn as projected points, not meshes — sixty tiny spheres would
+# cost more than the rest of the frame and read as the same dots anyway.
+BELT = []
+_b = 987654321
+for _ in range(150):
+    _b = (_b * 1103515245 + 12345) & 0x7fffffff
+    ang = (_b % 10000) / 10000.0 * 6.28318
+    _b = (_b * 1103515245 + 12345) & 0x7fffffff
+    rr = 9.0 + (_b % 10000) / 10000.0 * 7.0
+    _b = (_b * 1103515245 + 12345) & 0x7fffffff
+    yy = ((_b % 10000) / 10000.0 - 0.5) * 1.6
+    BELT.append((math.cos(ang) * rr, yy, math.sin(ang) * rr))
+BELT_CX = 58.0
+
+
+def draw_belt(fb, cam, t):
+    spin = D.roty(t * 0.03)
+    for p in BELT:
+        w = D.vadd(D.mv(spin, p), (BELT_CX, 0.0, 0.0))
+        pr = cam.proj(w)
+        if pr is None:
+            continue
+        x, y, z = pr
+        if not (0 <= x < fb.w and 0 <= y < fb.h):
+            continue
+        i = int(y) * fb.w + int(x)
+        if z < fb.zb[i]:
+            fb.zb[i] = z
+            fb.buf[i] = 200 if z < 26 else 120
 
 
 def ring_mesh(inner, outer, segs=28):
@@ -156,12 +195,14 @@ def scene(fi):
         draw_stars(fb, cw, ch)
         eye, target = camera_for(bi, phase, kind)
         cam = D.Cam(eye, target, cw, ch, f=cw * 0.5)
+        if abs(target[0] - BELT_CX) < 34:
+            draw_belt(fb, cam, t)
 
         # Draw every body; the z-buffer and the frustum sort out what is seen.
         for (name, rad, ox, spin, shade, tilt) in BODIES:
             if abs(ox - target[0]) > 46:
                 continue                      # far off-screen, skip the work
-            rot = D.mmul(D.roty(t * spin * 2.2), D.rotx(tilt * 0.6))
+            rot = D.mmul(D.roty(t * spin * RATE), D.rotx(tilt * 0.6))
             model = tuple(tuple(c * rad for c in row) for row in rot)
             verts, tris = SPHERE if rad > 1.2 else SPHERE_LO
 
@@ -186,12 +227,12 @@ def scene(fi):
                 D.draw_mesh(fb, cam, verts, tris, model, (ox, 0, 0), shade)
 
             if name == "SATURN":
-                rr = D.mmul(D.roty(t * 0.12), D.rotx(0.42))
+                rr = D.mmul(D.roty(t * 0.06), D.rotx(0.42))
                 rm = tuple(tuple(c * rad for c in row) for row in rr)
                 D.draw_mesh(fb, cam, RINGS[0], RINGS[1], rm, (ox, 0, 0), 0.62)
 
             if name == "EARTH":
-                ma = t * 1.5
+                ma = t * 0.75
                 moon = (ox + 2.1 * math.cos(ma), 0.5 * math.sin(ma * 0.7),
                         2.1 * math.sin(ma))
                 mm = tuple(tuple(c * 0.28 for c in row) for row in D.IDENT)
@@ -215,9 +256,9 @@ def main():
         # text has to be solid, so it cannot fade by brightness.
         if kind == "hold" and 0.15 < phase < 0.92:
             name = BODIES[bi][0]
-            F.draw(levels, W, H, 3, H - 9, name, 3, 1)
-            F.draw(levels, W, H, W - 3 - F.width(f"{bi + 1}/{len(BODIES)}"),
-                   H - 9, f"{bi + 1}/{len(BODIES)}", 1, 1)
+            F.plate(levels, W, H, 3, H - 9, name, 3, 1)
+            tag = f"{bi + 1}/{len(BODIES)}"
+            F.plate(levels, W, H, W - 3 - F.width(tag), H - 9, tag, 2, 1)
 
         frames.append(levels)
         print(f"  {fi + 1}/{NF} {BODIES[bi][0]:<8} {kind}   ", end="\r", flush=True)
