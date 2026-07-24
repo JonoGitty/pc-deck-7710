@@ -1,0 +1,8 @@
+# scratch / os
+Thumbs.db
+desktop.ini
+*.log
+web/media/
+__pycache__/
+*.pyc
+.venv/
