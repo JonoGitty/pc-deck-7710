@@ -16,7 +16,11 @@ const ctx = {
     const idx = y * W + x;
     if (i > f[idx]) f[idx] = i;
   },
-  oceanFrame() {},                        // dolphins live in dolphin.js
+  // MODES references every screen's draw function at load, so the ones
+  // defined in other files must exist here even though these cases never
+  // call them.
+  oceanFrame() {},                        // dolphin.js
+  vizMovie() {},                          // movie.js
 };
 ctx.globalThis = ctx;
 vm.createContext(ctx);

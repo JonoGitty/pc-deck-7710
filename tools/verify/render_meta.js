@@ -31,6 +31,7 @@ const ctx = {
     if (i > f[idx]) f[idx] = i;
   },
   oceanFrame() {},
+  vizMovie() {},
   META: {}, POS: {}, LYR: {}, UI: { coverScroll: { offset: 0, phase: 0, t: 0 } },
   // Position is supplied already interpolated, matching what the core is given.
   trackPos() { return ctx.POS.base; },
