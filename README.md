@@ -35,7 +35,7 @@ lights up on its own.
 These two lookups are the only things that leave the machine, and both send just
 the title, artist and album (plus duration, for lyrics). Nothing is recorded and
 no audio ever leaves; `LYRICS_ENABLED = False` and `ART_LOOKUP_ENABLED = False`
-at the top of `server.py` turn them off. Everything else stays on 127.0.0.1.
+at the top of `legacy/server.py` turn them off. Everything else stays on 127.0.0.1.
 
 Always-on: put a shortcut to `start.cmd` in `shell:startup`, drag the browser
 tab to the TV, press `T` for TV mode.
@@ -119,15 +119,15 @@ can't draw shows as a rest rather than a row of `?`.
 
 ## Files
 
-- `server.py` — WASAPI loopback capture, 13-band FFT, SMTC metadata + playback
+- `legacy/server.py` — WASAPI loopback capture, 13-band FFT, SMTC metadata + playback
   position, LRCLIB lyrics and iTunes art lookups, WebSocket
-- `web/` — the faceplate: `app.js` (renderer/state), `viz.js` (modes),
+- `legacy/web/` — the faceplate: `app.js` (renderer/state), `viz.js` (modes),
   `dolphin.js` (ocean movie), `font.js` (5×7 + 3×5 dot fonts)
 - `launch.ps1` — opens the deck, starting the server if needed (used by the
   `music visualiser` command in the PowerShell profile)
 - `start.cmd` — double-click launcher
 
-Tunables at the top of `server.py`: `DB_FLOOR` (sensitivity), `DB_TILT`
+Tunables at the top of `legacy/server.py`: `DB_FLOOR` (sensitivity), `DB_TILT`
 (treble lift), `BROADCAST_FPS`, `LYRICS_ENABLED`, `ART_LOOKUP_ENABLED`.
 
 ## `music visualiser` command

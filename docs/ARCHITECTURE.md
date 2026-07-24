@@ -1,5 +1,15 @@
 # Architecture
 
+## Decisions taken
+
+| | Decision |
+|---|---|
+| **Renderer** | Portable C99, compiled to both WASM (preview) and native (firmware) |
+| **First brain** | ESP32-S3. Pi kept as a documented alternative |
+| **First display** | SSD1322 256×64. The others stay scheduled, not dropped |
+| **Legacy split** | Done — the PC deck lives in `legacy/`, still launched by the same commands |
+
+
 The goal: **one repo where anyone can build their own 1-DIN head unit**, pick
 their display, preview it in a browser before spending money, and download a
 firmware package for their exact setup. Plus the original PC visualiser, kept

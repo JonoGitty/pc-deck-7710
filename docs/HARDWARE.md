@@ -24,7 +24,11 @@ non-standard fascia.
 | **Noritake GU256×64D-3900B** | 256×64 | 1-bit | RS232 / parallel, USB opt. | 115 × 28.6 mm | RFQ only ⚠️ | Current production, industrial. Every distributor quotes rather than lists |
 | **8.8" bar LCD** | 1920×480 | full colour | HDMI + USB | ~217 × 54 mm ⚠️ | ~£50–70 ⚠️ | **Too wide for a 1-DIN slot.** Desk/bench use, or a custom fascia |
 
-### Recommendation
+### Decision — SSD1322 first, the rest scheduled
+
+Display targets are a queue, not a choice: the point of the display abstraction
+is that adding one is config, not a rewrite. The order is SSD1322 → GP1294AI
+VFD → Noritake → bar LCD, and nothing is dropped.
 
 **SSD1322 for the first hardware target.** It is the only option that keeps the
 deck's four intensity levels intact — 16 greys means the peak-hold dots, the art
@@ -63,7 +67,7 @@ part the original decks used, unbeatable in daylight. Costs you the greyscale.
 | Cost | ~£6–12 ⚠️ | ~£18 ⚠️ |
 | Firmware language | C / C++ | Anything |
 
-### Recommendation
+### Decision — ESP32-S3 primary, Pi supported
 
 **ESP32-S3 as the primary target.** In a car, instant-on and surviving a
 yanked ignition matter more than convenience — a head unit that takes half a
