@@ -22,12 +22,20 @@ dithering into mush on 1-bit panels — none of which was visible by eye.
 
 ## Before opening a pull request
 
-1. `sh tools/verify/run.sh` passes.
-2. If you touched anything a screen draws, `sh tools/media/make.sh` and commit
+1. `sh tools/verify/run.sh` passes. It runs the behaviour suite too, so this is
+   the single command that matters.
+2. If you touched the firmware's UI layer, run it: `sh tools/sim/run.sh --gif
+   /tmp/deck.gif` and look at it. The simulator compiles the real `deck_ui.c`
+   in about a second, which is faster than reasoning about it.
+3. If you touched anything a screen draws, `sh tools/media/make.sh` and commit
    the regenerated pictures. A README showing the old behaviour is worse than
    one with no pictures, because it is convincing.
-3. If you touched the firmware, it builds: `python3 tools/deckctl.py build`.
-4. CI runs 1 and 3 on every push.
+4. If you touched the firmware, it builds: `python3 tools/deckctl.py build`.
+5. CI runs 1 and 4 on every push.
+
+New behaviour deserves a new assertion in `tools/sim/test_behaviour.py`, named
+after what a person would notice rather than after the code that does it. The
+conventions are in [docs/TESTING.md](docs/TESTING.md).
 
 ## What the project wants
 

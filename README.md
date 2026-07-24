@@ -139,6 +139,28 @@ Compiles `core/` to WASM and emulates any panel: grid size, level count, dot
 shape, illumination colour. Because it is the same C the firmware runs, what
 you see is what the glass does — not an artist's impression of it.
 
+## Run the deck itself, without a deck
+
+```sh
+sh tools/sim/run.sh                      # 20 seconds of deck, as ASCII
+sh tools/sim/run.sh --gif /tmp/deck.gif  # ...as an animation
+sh tools/sim/run.sh --grid 192 48 --levels 2    # on a 1-bit VFD you do not own
+```
+
+The preview above runs `core/`. This runs the layer above it — the firmware's
+own `deck_ui.c`, unmodified, against stub drivers. Which screen is on, when the
+deck gives up and shows the clock, how a track change interrupts, what a movie
+does at its last frame: all of it, on a laptop, in about a second.
+
+```sh
+python3 tools/sim/test_behaviour.py      # 20 assertions about what it does
+```
+
+It is not a simulation of the hardware, and
+[docs/TESTING.md](docs/TESTING.md) is explicit about which questions it cannot
+answer — SPI timing, the Bluetooth stack, a supply that sags on crank. Those
+fail on hardware and only on hardware.
+
 ## Build the hardware
 
 **[docs/BUILD.md](docs/BUILD.md) is the end-to-end guide** — shopping list with
@@ -228,10 +250,11 @@ dithering into mush on 1-bit panels.
 | `legacy/` | The PC deck. Python server + JS faceplate. Moves slowly and deliberately |
 | `core/` | The portable renderer. C99, no deps, no allocation |
 | `preview/` | `core/` as WASM, emulating any panel in a browser |
-| `firmware/esp32/` | The car deck. **Skeleton — never run on hardware** |
+| `firmware/esp32/` | The car deck. Written and compiling — **never run on hardware** |
 | `tools/deckctl.py` | Build, flash, load movies and pictures, read logs and crashes |
 | `tools/movies/` | The animation maker: 3D renderer, GIF and photo importers, `.dmv` packer |
 | `tools/verify/` | The differential test suite |
+| `tools/sim/` | The deck's own firmware, running on your computer |
 | `tools/media/` | Regenerates every picture in this README |
 | `docs/` | Handbook, hardware, architecture, UI spec, control, versioning |
 
@@ -253,7 +276,8 @@ dithering into mush on 1-bit panels.
 [Safety](SAFETY.md) · [Handbook](docs/HANDBOOK.md) · [Hardware](docs/HARDWARE.md) ·
 [Architecture](docs/ARCHITECTURE.md) · [UI spec](docs/UI-SPEC.md) ·
 [Making animations](docs/MOVIE-RENDERING.md) · [Control](docs/CONTROL.md) ·
-[Versioning](docs/VERSIONING.md) · [For Claude](CLAUDE.md)
+[Testing](docs/TESTING.md) · [Versioning](docs/VERSIONING.md) ·
+[For Claude](CLAUDE.md)
 
 ---
 

@@ -59,18 +59,19 @@ That is a complete, working deck on a desk. Everything below adds a car.
 |---|---|---|---|
 | 7 | **Rotary encoder with push**, EC11 type ⚠️ | Dim, and push to change screen | £2 |
 | 8 | 6 × momentary tactile buttons | SRC, DISP, BAND, ART, LYRICS, DEMO | £2 |
-| 9 | 3.5 mm TRS socket + 10 kΩ resistor | Steering wheel controls. See below — this is what makes your car's wheel buttons work | £2 |
+| 9 | 3.5 mm TRS socket + 10 kΩ resistor | Steering wheel control input. See below | £2 |
+| 10 | **Steering wheel interface box** ⚠️ | Only if you want the wheel buttons. Universal (PAC SWI-RC-1, Metra ASWC-1) or S2000-specific (InCarTec 29-629) | £30–45 |
 
 ### To put it in a car (~£30)
 
 | # | Part | Why | ~Cost |
 |---|---|---|---|
-| 10 | **Buck converter**, 9–18 V → 5 V, ≥3 A, automotive-rated ⚠️ | A car's 12 V rail is neither 12 V nor clean | £6 |
-| 11 | **PC817** opto-isolator + 4.7 kΩ ⚠️ | Ignition sense. **Never** feed car 12 V to a GPIO through a divider | £1 |
-| 12 | **ISO 10487 harness adapter** for your car ✅ | Turns the whole install into plug-in work | £6 |
-| 13 | **DIN cage** (ISO 7736) + removal keys ✅ | Commodity parts. Buy, do not design | £6 |
-| 14 | Inline fuse holder + fuses | See SAFETY.md. Not optional | £3 |
-| 15 | Donor 1-DIN head unit, dead ⚠️ | Gutted for its chassis, fascia and cage. Keeps the OEM look and the fiddly mounting hardware | £10–25 |
+| 11 | **Buck converter**, 9–18 V → 5 V, ≥3 A, automotive-rated ⚠️ | A car's 12 V rail is neither 12 V nor clean | £6 |
+| 12 | **PC817** opto-isolator + 4.7 kΩ ⚠️ | Ignition sense. **Never** feed car 12 V to a GPIO through a divider | £1 |
+| 13 | **ISO 10487 harness adapter** for your car ✅ | Turns the whole install into plug-in work | £6 |
+| 14 | **DIN cage** (ISO 7736) + removal keys ✅ | Commodity parts. Buy, do not design | £6 |
+| 15 | Inline fuse holder + fuses | See SAFETY.md. Not optional | £3 |
+| 16 | Donor 1-DIN head unit, dead ⚠️ | Gutted for its chassis, fascia and cage. Keeps the OEM look and the fiddly mounting hardware | £10–25 |
 
 ### Instead of the OLED, if you want real VFD glass
 
@@ -156,6 +157,46 @@ All buttons are wired **to ground** — one leg to the pin, one to GND.
 > all driven by something external, so none of them floats. If you move a
 > button onto one of those pins, fit a 10 kΩ resistor to 3V3, or it will read
 > as random presses and look exactly like a firmware bug.
+
+### Steering wheel controls
+
+Your car's wheel buttons work, and they work through the same route every
+aftermarket head unit uses.
+
+**The deck does not talk to your car.** Every manufacturer wired their wheel
+buttons differently, and an S2000's are on a 20-pin connector behind the radio
+that no aftermarket unit understands. What the industry standardised is the
+*radio* side: a **resistance to ground on a 3.5 mm jack**. A universal
+interface box sits between the two and does the car-specific translation it
+was built for.
+
+So you need one box, and then it works:
+
+| Interface | Fits | ~Cost |
+|---|---|---|
+| **PAC SWI-RC-1** | Universal, analogue or CAN, DIP-switch programmed | £45 ⚠️ |
+| **Metra ASWC-1** | Universal, self-programming | £40 ⚠️ |
+| **InCarTec 29-629** | **S2000-specific**, 20-pin, plug-in | £30 ⚠️ |
+| **Connects2 CTSHO00xx** | Honda-specific | £30 ⚠️ |
+
+Wire the interface's **3.5 mm output** (the "Pioneer/Alpine/Sony" one, not the
+Kenwood blue-yellow wire) to:
+
+| Jack | ESP32 |
+|---|---|
+| Tip | **GPIO 34**, and a **10 kΩ resistor from GPIO 34 to 3V3** |
+| Sleeve | GND |
+
+**Then teach it.** Hold **SRC for five seconds**. The panel asks for each
+function in turn — volume up, volume down, next, previous, play/pause, display,
+source — and you press the matching wheel button. Wait a few seconds to skip
+one your wheel does not have. It saves to flash and remembers.
+
+It learns rather than shipping a lookup table because there is nothing to look
+up: Pioneer's own published values disagree between their own models, and an
+interface box is configured for whichever radio you told it you had. Learning
+is the only approach that works with any box, any car and a cheap resistor's
+tolerance.
 
 ### The car side, when you get there
 

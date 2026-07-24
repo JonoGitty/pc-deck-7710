@@ -439,13 +439,29 @@ python3 tools/deckctl.py logs</code></pre>
     <p class="muted small">This is not ceremony. It has caught a dolphin breaching one
       frame early, waterfall thresholds landing differently at double precision, and
       text dithering into mush on 1-bit panels — none of which was visible by eye.</p>
+
+    <h3 style="margin-top:2rem">And the deck runs on your computer</h3>
+    <pre><code>sh tools/sim/run.sh --gif deck.gif
+python3 tools/sim/test_behaviour.py</code></pre>
+    <p>The rule above covers the renderer. The layer above it — which screen is on,
+      when the deck gives up and shows the clock, how a track change interrupts — is
+      firmware, and it is the part most likely to be quietly wrong. So it compiles
+      against stub drivers and runs here: the real <code>deck_ui.c</code>, in about a
+      second, with twenty assertions about what it does. Checking “dolphins after
+      twelve seconds of silence” on a bench costs fifteen seconds of standing in
+      silence, per attempt.</p>
+    <p class="muted small">It is not a simulation of the hardware, and
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/TESTING.md">TESTING.md</a>
+      says so explicitly: SPI timing, the Bluetooth stack and a supply that sags on
+      crank fail on hardware and only on hardware. The bring-up checklist for those
+      is on the same page.</p>
   </div>
 </section>
 
 <section id="repo">
   <div class="wrap">
     <h2>What is in the repository</h2>
-    <p class="lede">Seven directories, and it is worth knowing which one you are in.</p>
+    <p class="lede">Eight directories, and it is worth knowing which one you are in.</p>
     <div class="tbl-scroll">
     <table>
       <thead><tr><th>Path</th><th>What it is</th></tr></thead>
@@ -453,9 +469,10 @@ python3 tools/deckctl.py logs</code></pre>
         <tr><td><code>legacy/</code></td><td>The PC deck — a Python server that captures audio and metadata, and a JS faceplate that draws it. Moves slowly and deliberately, because it is what most people actually run</td></tr>
         <tr><td><code>core/</code></td><td>The portable renderer. C99, no libc, no libm, no allocation, its own trigonometry. Every screen lives here</td></tr>
         <tr><td><code>preview/</code></td><td><code>core/</code> compiled to WASM, with a harness that emulates any panel — grid, levels, dot shape, illumination</td></tr>
-        <tr><td><code>firmware/esp32/</code></td><td>The car deck. Structure, pin map, driver command sequences and partition table. <span class="warn">Never flashed</span></td></tr>
+        <tr><td><code>firmware/esp32/</code></td><td>The car deck. A2DP audio, the analyser, both panel drivers, movies from flash, the self-test and the wheel-control learner. Compiles for both panels. <span class="warn">Never flashed</span></td></tr>
         <tr><td><code>tools/movies/</code></td><td>The animation maker: a pure-Python 3D renderer, a GIF importer, the <code>.dmv</code> exporter and the flash packer</td></tr>
         <tr><td><code>tools/verify/</code></td><td>The differential suite. The reason anything here can be trusted</td></tr>
+        <tr><td><code>tools/sim/</code></td><td>The firmware's own UI layer, compiled against stub drivers so the deck runs on a laptop — with twenty assertions about how it behaves over time</td></tr>
         <tr><td><code>tools/media/</code></td><td>Regenerates every picture on this page and in the README</td></tr>
       </tbody>
     </table>
@@ -502,6 +519,7 @@ python3 tools/deckctl.py logs</code></pre>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/UI-SPEC.md">UI spec</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/MOVIE-RENDERING.md">Making animations</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/CONTROL.md">Control</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/TESTING.md">Testing</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/VERSIONING.md">Versioning</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/CLAUDE.md">For Claude</a>
     </div>

@@ -17,7 +17,8 @@ several now, and its own badge is correct.
 - `legacy/` — the PC deck. Python server + JS faceplate. **Still supported.**
 - `core/` — the portable renderer. C99, no libc, no libm, no allocation.
 - `preview/` — `core/` as WASM, emulating any panel.
-- `firmware/` — ESP32. **Skeleton, never run on hardware.**
+- `firmware/` — ESP32. Complete and compiling. **Never run on hardware.**
+- `tools/sim/` — the firmware's own UI layer, running on a host.
 - `tools/movies/` — the animation maker.
 - `tools/media/` — regenerates every picture in the README and on the site.
 - `docs/` — hardware, architecture, UI spec, handbook, and `index.html`, the
@@ -40,6 +41,12 @@ expectation, never delete the case.**
 This is not ceremony. It has caught bugs invisible by eye: a dolphin breach
 starting one frame early, waterfall thresholds landing differently at double
 precision, text dithering into mush on 1-bit panels.
+
+The same script then runs the firmware's UI layer on the host — `tools/sim/`
+compiles the real `deck_ui.c` against stub drivers — and asserts on what the
+deck *does* over time, which no amount of framebuffer diffing reaches. When
+someone asks whether a change works, run `sh tools/sim/run.sh --gif out.gif`
+rather than reasoning about it. Scope and limits: [docs/TESTING.md](docs/TESTING.md).
 
 ## Helping someone make an animation
 

@@ -245,13 +245,29 @@ commonly swapped. Meter the harness before connecting anything.
 An **ISO adapter loom** for the specific car turns all of this into plug-in
 work, and costs a few pounds.
 
-## 7. Enclosure
+## 7. Enclosure — and the answer is a donor deck
 
-- **Donor deck.** A dead 1-DIN head unit off eBay (~£10–25 ⚠️) gutted for its
-  chassis, fascia and DIN cage. Keeps the OEM look and the mounting hardware,
-  which is genuinely fiddly to reproduce.
-- **Custom fascia.** 3D-printed bezel over the chosen panel, in the standard
-  DIN chassis. Needed if the donor's window doesn't match your display.
+Three routes were looked at. Only one of them is actually available.
+
+| Route | Verdict |
+|---|---|
+| **Gut a dead 1-DIN head unit** | ✅ **Do this.** ~£10–25 for a non-working unit on eBay. You get the steel chassis, the fascia, the DIN cage, the release-key slots, the trim ring and the fixing points — all of it correct, all of it fiddly to make, and none of it available separately |
+| **Buy an empty 1-DIN chassis** | ⚠️ **They are not sold.** Searching for one returns hi-fi amplifier enclosures and 2-DIN Android housings. Nobody makes a blank 1-DIN case as a commodity part, because outside this project nobody wants one |
+| **3D-print the whole thing** | ⚠️ Possible, unwise as a first attempt. A printed chassis has to survive a hot dashboard, take the cage's spring tabs without splitting, and hold the panel square. Print the *fascia* by all means — that is a flat plate with a window in it — but let steel be steel |
+
+**What to look for in a donor.** Dead is fine; smashed is not. You want the
+chassis and fascia intact, and ideally a unit whose display window is close to
+the panel you have chosen — a 256×64 SSD1322 is 100.5 × 33.5 mm, and a period
+head unit's window is often close enough that the bezel needs trimming rather
+than replacing. Buy one with the cage and the removal keys still with it; they
+are cheap separately but only if you know you need them.
+
+**The fascia is the one part worth printing.** A 3D-printed bezel over the
+chosen panel, screwed into the donor chassis, is a flat part with a rectangular
+aperture and a couple of holes. It is the easy print, it is the part that has
+to match your specific display, and it is the part a donor will never fit
+exactly. Print it in something that survives a car interior — PETG or ASA, not
+PLA, which sags in a dashboard in summer.
 
 ## 8. Detachable head — parked, but shapes the enclosure
 

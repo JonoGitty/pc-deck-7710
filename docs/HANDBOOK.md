@@ -54,6 +54,10 @@ The firmware builds for both panels and CI keeps it building. Nothing has
 driven a pin. Bring-up order is in [firmware/esp32/](../firmware/esp32/), and
 when it does not work, [DIAGNOSTICS.md](DIAGNOSTICS.md).
 
+Before it goes in a dashboard, walk the bring-up checklist in
+[TESTING.md](TESTING.md) — and you can run the deck's own logic on your
+computer first, with `sh tools/sim/run.sh`, no board required.
+
 ## 6. Control it — ⚠️ partly
 
 Actions, physical surface, and why the settings menu should live on your phone

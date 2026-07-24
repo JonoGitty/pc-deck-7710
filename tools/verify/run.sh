@@ -131,7 +131,7 @@ fi
 if command -v gcc > /dev/null; then
   sh tools/sim/run.sh --secs 1 > /dev/null 2>&1
   if python3 tools/sim/test_behaviour.py > build/sim_test.txt 2>&1; then
-    tail -1 build/sim_test.txt
+    grep -E 'behaviour checks' build/sim_test.txt
   else
     printf 'MISMATCH — the deck behaves differently than expected:\n\n'
     cat build/sim_test.txt
