@@ -15,6 +15,8 @@ preview (WASM), ESP32-S3 firmware, and a Pi. See
 | `trig.c/.h` | deterministic sin/cos — the core never calls libm |
 | `out.c/.h` | output stage: 0..4 mapped onto what a panel can show |
 | `compat.c` | memset/memcpy/memmove/memcmp for freestanding builds |
+| `text.c/.h` | folding, word wrap, marquee scroller |
+| `fold_table.h` | **generated** — character folding, see below |
 | `screens/` | one file per screen |
 
 ## Two things that bite freestanding builds
@@ -37,8 +39,15 @@ freestanding builds, since a hosted build wants libc's.
 introduce a silent one-bit error, so we don't. Regenerate with:
 
 ```sh
-node tools/gen_font_rom.js > core/font_rom.h
+node tools/gen_font_rom.js  > core/font_rom.h
+node tools/gen_fold_table.js > core/fold_table.h
 ```
+
+`fold_table.h` is generated for the same reason. Which characters NFKD
+actually decomposes is not obvious — `é` becomes `e` plus a combining mark,
+while `æ`, `ø`, `ð`, `þ` and `ß` do not decompose at all and would fall
+through to a space. Rather than encode that folklore by hand, the generator
+runs the real pipeline per codepoint and tabulates the answer.
 
 The generated ASCII tables bake in the JS lookup rules — `toUpperCase`, and the
 fallbacks for characters the ROM lacks (`?` at 5×7, blank at 3×5) — so the C

@@ -37,3 +37,17 @@ else
   cat build/scr_diff.txt
   exit 1
 fi
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/verify_text_c core/text.c tools/verify/render_text.c
+
+build/verify_text_c tools/verify/text.tsv > build/txt_c.txt
+node tools/verify/render_text.js tools/verify/text.tsv > build/txt_js.txt
+
+if diff -u build/txt_js.txt build/txt_c.txt > build/txt_diff.txt; then
+  printf 'text helpers match legacy JS on %s cases\n' "$(wc -l < build/txt_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — text helpers differ from legacy JS:\n\n'
+  cat build/txt_diff.txt
+  exit 1
+fi

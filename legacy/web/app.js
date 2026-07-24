@@ -264,6 +264,20 @@ function ditherArt(dataUrl) {
 function deckText(s) {
   return (s || "")
     .normalize("NFKD").replace(/[̀-ͯ]/g, "")
+    // Letters with no Unicode decomposition — NFKD leaves them alone, so
+    // without this they fall through to a space and "Ágætis" reads "Ag tis".
+    .replace(/Æ/g, "AE").replace(/æ/g, "ae")
+    .replace(/Œ/g, "OE").replace(/œ/g, "oe")
+    .replace(/Ø/g, "O").replace(/ø/g, "o")
+    .replace(/Ð/g, "D").replace(/ð/g, "d")
+    .replace(/Đ/g, "D").replace(/đ/g, "d")
+    .replace(/Þ/g, "TH").replace(/þ/g, "th")
+    .replace(/ß/g, "ss")
+    .replace(/Ł/g, "L").replace(/ł/g, "l")
+    .replace(/Ħ/g, "H").replace(/ħ/g, "h")
+    .replace(/Ŋ/g, "NG").replace(/ŋ/g, "ng")
+    .replace(/Ŧ/g, "T").replace(/ŧ/g, "t")
+    .replace(/ı/g, "i").replace(/ĸ/g, "k")
     .replace(/[‘’ʼ′]/g, "'")
     .replace(/[“”″]/g, '"')
     .replace(/[–—−]/g, "-")
