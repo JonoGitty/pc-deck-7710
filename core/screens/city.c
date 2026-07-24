@@ -29,7 +29,7 @@ void deck_screen_city(deck_fb_t *fb, const deck_state_t *v) {
 
     int pk = bot - deck_round(v->peaks[b] * span);
     if (pk < bot)
-      for (int x = 2; x < tw - 4; x++) deck_set(fb, x0 + x, pk, DECK_HOT);
+      for (int x = 2; x < tw - 4; x++) deck_set(fb, x0 + x, pk, deck_thin_inten(g, DECK_HOT));
 
     x0 += tw;
   }
@@ -38,5 +38,5 @@ void deck_screen_city(deck_fb_t *fb, const deck_state_t *v) {
   if (sweep_y < big - 14) sweep_y = 62.0;
   int sy = deck_round(sweep_y);
   if (sy >= big && sy <= bot)
-    for (int x = 0; x < (int)g->w; x += 2) deck_set(fb, x, sy, DECK_DIM);
+    for (int x = 0; x < (int)g->w; x += 2) deck_set(fb, x, sy, deck_thin_inten(g, DECK_DIM));
 }

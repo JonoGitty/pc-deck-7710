@@ -50,7 +50,7 @@ void deck_screen_3d(deck_fb_t *fb, const deck_state_t *v) {
       const int lo = (prevY < 0) ? y : (prevY < y ? prevY : y);
       const int hi = (prevY < 0) ? y : (prevY > y ? prevY : y);
       for (int yy = lo; yy <= hi; yy++)
-        if (yy < skyline[x]) deck_set(fb, x, yy, inten);
+        if (yy < skyline[x]) deck_set(fb, x, yy, deck_thin_inten(g, inten));
       if (y < skyline[x]) skyline[x] = (int8_t)y;
       prevY = y;
     }

@@ -27,7 +27,7 @@ void deck_screen_spectrum(deck_fb_t *fb, const deck_state_t *v) {
     if (pk > 0) {
       int y = bot - (pk - 1) * segH - segH;
       for (int x = 2; x < barW - 2; x++)
-        deck_set(fb, x0 + b * pitch + x, y, DECK_HOT);
+        deck_set(fb, x0 + b * pitch + x, y, deck_thin_inten(g, DECK_HOT));
     }
   }
 }

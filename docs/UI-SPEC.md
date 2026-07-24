@@ -52,12 +52,30 @@ Unchanged and canonical across every target — `0` off, `1` dim, `2` main,
 levels, and must stay legible when the output stage collapses them to 1-bit —
 which means **never encode meaning in intensity alone** where it matters.
 
-Two current screens break that rule and need attention on 1-bit targets:
+### Thin features cannot be dithered
+
+Dithering trades resolution for levels. That works on filled areas and fails on
+anything one or two dots wide: a 3x5 glyph, a scale mark, a needle, a peak-hold
+dot, a graticule line. Below five device levels they come out as noise, or
+vanish entirely when a lone dot lands on the wrong Bayer cell.
+
+`deck_thin_inten(geom, want)` is the rule: on panels that resolve the full
+scale it returns `want` unchanged; below that it returns solid. **Every thin
+draw call must go through it.** Areas must not — they have the dots to carry a
+pattern, and that is where the intensity information survives.
+
+This was found by looking at the preview on a 1-bit target, not by reasoning:
+the VU scale arc had almost entirely disappeared and the labels were mush.
+
+The consequence is that brightness stops distinguishing thin features on 1-bit
+panels. Screens must therefore not encode meaning in intensity alone:
 
 - **Lyrics** distinguishes the current line from its neighbours by intensity
   only. On 1-bit, add a leading marker (`▶`) or invert the current row.
 - **Spectrum peak-hold** dots are intensity 3 against intensity 2 bars. On
   1-bit, leave a one-dot gap under the peak marker instead.
+- **3D spectrum** shades ranks by depth. On 1-bit every rank is solid, so
+  depth has to come from the existing inset and hidden-line removal alone.
 
 ## Screens
 

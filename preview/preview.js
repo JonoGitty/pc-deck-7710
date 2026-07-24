@@ -80,6 +80,8 @@ function reconfigure() {
   canvas.height = H * zoom;
   $("scheme").disabled = !colourCapable;
 
+  rebuildAppearance();
+
   const tier = ["STRIP", "CLASSIC", "LARGE"][wasm.deck_tier_of()];
   $("readout").textContent =
     `${W}×${H} dots · ${levels} level${levels > 1 ? "s" : ""} · tier ${tier} · ` +
@@ -126,7 +128,7 @@ function drawScreen(key, t) {
   const [label, run] = SCREENS[key];
   run();
   writeStr(label);
-  wasm.deck_draw_text3(2, 0, 1);
+  wasm.deck_draw_text3(2, 0, wasm.deck_text_i(1));
 }
 
 function drawText() {
@@ -135,11 +137,11 @@ function drawText() {
   writeStr("0123456789 .,:;-'\"!?()/&+=");
   wasm.deck_draw_text5(2, 10, 2, 1);
   writeStr("DIM · MAIN · HOT · ♪");
-  wasm.deck_draw_text5(2, 19, 1, 1);
+  wasm.deck_draw_text5(2, 19, wasm.deck_text_i(1), 1);
   writeStr("HALLELUJAH");
   wasm.deck_draw_text5(2, 29, 3, H >= 60 ? 2 : 1);
   writeStr("JEFF BUCKLEY · GRACE");
-  wasm.deck_draw_text3(2, H - 7, 1);
+  wasm.deck_draw_text3(2, H - 7, wasm.deck_text_i(1));
 }
 
 // Each intensity as a solid block, so you can see exactly how a target's
@@ -152,9 +154,83 @@ function drawRamp() {
       for (let x = 0; x < bw - 4; x++) wasm.deck_dot(i * bw + x + 2, y, i);
   for (let i = 0; i < 5; i++) {
     writeStr(labels[i]);
-    wasm.deck_draw_text3(i * bw + 2, H - 8, i === 0 ? 1 : i);
+    wasm.deck_draw_text3(i * bw + 2, H - 8, wasm.deck_text_i(i === 0 ? 1 : i));
   }
 }
+
+// --- panel appearance ----------------------------------------------------
+// A lit dot on real glass is not a flat square: it blooms into its neighbours,
+// which is most of why dim text stays readable. The legacy deck models that
+// with a haloed sprite per intensity, so the preview does the same — otherwise
+// low intensities look far weaker here than on the panel.
+const BUCKETS = 16;
+let sprites = null, unlitLayer = null;
+
+function buildSprites() {
+  const scheme = SCHEMES[Number($("scheme").value) || 0];
+  const zoom = Number($("zoom").value);
+  const round = $("shape").value === "round";
+  const S = Math.max(6, Math.round(zoom * 2.6));      // room for the halo
+  const c = S / 2;
+
+  sprites = [];
+  for (let b = 0; b < BUCKETS; b++) {
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = S;
+    const g = cv.getContext("2d");
+    const v = Math.round((b + 0.5) * 255 / BUCKETS);
+    const [r, gg, bb] = dotColour(v, scheme);
+    const [hr, hg, hb] = rgb(scheme.bloom);
+
+    // halo first, strength rising with intensity as the legacy sprites do
+    const alpha = 0.10 + 0.12 * (b / (BUCKETS - 1));
+    const rad = g.createRadialGradient(c, c, zoom * 0.15, c, c, c);
+    rad.addColorStop(0, `rgba(${hr},${hg},${hb},${alpha})`);
+    rad.addColorStop(1, `rgba(${hr},${hg},${hb},0)`);
+    g.fillStyle = rad;
+    g.fillRect(0, 0, S, S);
+
+    g.fillStyle = `rgb(${r},${gg},${bb})`;
+    if (round) {
+      const rr = zoom * 0.46;
+      const sh = g.createRadialGradient(c - rr * 0.35, c - rr * 0.35, rr * 0.15, c, c, rr);
+      sh.addColorStop(0, "#ffffff");
+      sh.addColorStop(0.28, `rgb(${r},${gg},${bb})`);
+      sh.addColorStop(1, `rgb(${Math.round(r * 0.45)},${Math.round(gg * 0.45)},${Math.round(bb * 0.45)})`);
+      g.fillStyle = sh;
+      g.beginPath();
+      g.arc(c, c, rr, 0, 6.2832);
+      g.fill();
+    } else {
+      const s = Math.max(1, zoom * 0.82);
+      g.beginPath();
+      g.roundRect(c - s / 2, c - s / 2, s, s, Math.max(0.5, zoom * 0.14));
+      g.fill();
+    }
+    sprites.push(cv);
+  }
+}
+
+function buildUnlit() {
+  const scheme = SCHEMES[Number($("scheme").value) || 0];
+  const zoom = Number($("zoom").value);
+  unlitLayer = document.createElement("canvas");
+  unlitLayer.width = canvas.width;
+  unlitLayer.height = canvas.height;
+  const g = unlitLayer.getContext("2d");
+  g.fillStyle = scheme.bg;
+  g.fillRect(0, 0, unlitLayer.width, unlitLayer.height);
+  g.fillStyle = "rgba(255,255,255,0.045)";
+  const r = Math.max(0.5, zoom * 0.26);
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      g.beginPath();
+      g.arc(x * zoom + zoom / 2, y * zoom + zoom / 2, r, 0, 6.2832);
+      g.fill();
+    }
+}
+
+function rebuildAppearance() { buildSprites(); buildUnlit(); }
 
 // --- loop ----------------------------------------------------------------
 function frame(t) {
@@ -165,38 +241,19 @@ function frame(t) {
   else drawRamp();
   wasm.deck_emit();
 
-  const scheme = SCHEMES[Number($("scheme").value) || 0];
   const zoom = Number($("zoom").value);
-  const round = $("shape").value === "round";
+  const off = Math.round((sprites[0].width - zoom) / 2);
 
-  ctx.fillStyle = scheme.bg;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // unlit dot grid, so dark areas still read as a panel rather than a void
-  ctx.fillStyle = "rgba(255,255,255,0.035)";
-  for (let y = 0; y < H; y++)
+  ctx.drawImage(unlitLayer, 0, 0);
+  for (let y = 0; y < H; y++) {
+    const row = y * W;
     for (let x = 0; x < W; x++) {
-      const r = zoom * 0.28;
-      ctx.beginPath();
-      ctx.arc(x * zoom + zoom / 2, y * zoom + zoom / 2, r, 0, 6.2832);
-      ctx.fill();
-    }
-
-  for (let y = 0; y < H; y++)
-    for (let x = 0; x < W; x++) {
-      const v = dev[y * W + x];
+      const v = dev[row + x];
       if (!v) continue;
-      const [r, g, b] = dotColour(v, scheme);
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      const cx = x * zoom + zoom / 2, cy = y * zoom + zoom / 2;
-      if (round) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, zoom * 0.42, 0, 6.2832);
-        ctx.fill();
-      } else {
-        ctx.fillRect(x * zoom, y * zoom, Math.max(1, zoom - 1), Math.max(1, zoom - 1));
-      }
+      const b = Math.min(BUCKETS - 1, v >> 4);
+      ctx.drawImage(sprites[b], x * zoom - off, y * zoom - off);
     }
+  }
 
   requestAnimationFrame(frame);
 }
@@ -212,6 +269,8 @@ function frame(t) {
 
   for (const id of ["target", "levels", "zoom"])
     $(id).addEventListener("change", reconfigure);
+  for (const id of ["scheme", "shape"])
+    $(id).addEventListener("change", rebuildAppearance);
 
   // sensible defaults per target: a real panel's level count
   $("target").addEventListener("change", () => {

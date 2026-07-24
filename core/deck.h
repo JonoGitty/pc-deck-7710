@@ -50,6 +50,26 @@ typedef enum {
 
 deck_tier_t deck_tier(const deck_geom_t *g);
 
+/* Intensity to draw a THIN feature at on this panel.
+ *
+ * Dithering trades resolution for levels, so it works on areas and fails on
+ * anything one or two dots wide. A 3x5 glyph, a scale mark, a needle, a
+ * peak-hold dot, a graticule line — none has enough dots to carry a pattern,
+ * so on a panel that cannot resolve the full scale they come out as noise, or
+ * vanish entirely when a single dot lands on the wrong Bayer cell.
+ *
+ * Such features go out solid instead. Filled areas keep their dithered
+ * intensity, since they have the dots to spare.
+ *
+ * The cost is that brightness stops distinguishing thin features on those
+ * panels — which is exactly why screens must not encode meaning in intensity
+ * alone. Use a marker, an offset or an inverted row; see docs/UI-SPEC.md.
+ */
+static inline uint8_t deck_thin_inten(const deck_geom_t *g, uint8_t want) {
+  if (g->levels >= DECK_LEVELS || want == DECK_OFF) return want;
+  return DECK_CLIP;
+}
+
 void    deck_clear(deck_fb_t *fb);
 
 /* Max-blend, matching the JS setDot: a dot never dims what is already there.

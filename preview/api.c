@@ -67,6 +67,7 @@ EXPORT(deck_set_counts) void deck_set_counts(int wf, int wh) {
 }
 EXPORT(deck_set_scope_gain) void deck_set_scope_gain(double g) { st.scopeGain = g; }
 EXPORT(deck_set_clip) void deck_set_clip(int c) { st.clip = c; }
+EXPORT(deck_text_i) int deck_text_i(int want) { return deck_thin_inten(&geom, (uint8_t)want); }
 
 /* --- drawing ------------------------------------------------------------ */
 EXPORT(deck_begin) void deck_begin(void) { deck_clear(&fb); }

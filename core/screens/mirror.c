@@ -29,7 +29,8 @@ void deck_screen_mirror(deck_fb_t *fb, const deck_state_t *v) {
     }
   }
 
-  for (int y = top; y <= bot; y += 2) deck_set(fb, cx - 1, y, DECK_DIM);
-  deck_text3(fb, 2, bot - 4, "L", DECK_DIM);
-  deck_text3(fb, (int)g->w - 5, bot - 4, "R", DECK_DIM);
+  for (int y = top; y <= bot; y += 2) deck_set(fb, cx - 1, y, deck_thin_inten(g, DECK_DIM));
+  const uint8_t ti = deck_thin_inten(g, DECK_DIM);
+  deck_text3(fb, 2, bot - 4, "L", ti);
+  deck_text3(fb, (int)g->w - 5, bot - 4, "R", ti);
 }
