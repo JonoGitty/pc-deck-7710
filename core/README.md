@@ -12,6 +12,23 @@ preview (WASM), ESP32-S3 firmware, and a Pi. See
 | `fb.c` | framebuffer ops — `deck_set` is max-blend, matching the JS `setDot` |
 | `font.h/.c` | 5×7 and 3×5 text, UTF-8 in |
 | `font_rom.h` | **generated** — do not edit, see below |
+| `trig.c/.h` | deterministic sin/cos — the core never calls libm |
+| `out.c/.h` | output stage: 0..4 mapped onto what a panel can show |
+| `compat.c` | memset/memcpy/memmove/memcmp for freestanding builds |
+| `screens/` | one file per screen |
+
+## Two things that bite freestanding builds
+
+**libm is off limits.** Not just because `-nostdlib` has none — V8's `Math.sin`,
+glibc's and the ESP32's are three implementations that can disagree in the last
+bit, so a screen positioning dots from trig would render differently per
+target. `core/trig.c` carries its own, accurate to one ulp over the range the
+screens use, and `tools/verify/trigtest.c` checks it against libm.
+
+**The compiler emits memset even when you don't.** clang turns the skyline init
+in `screens/spectrum3d.c` into a `memset` call. Freestanding C still requires
+the implementation to provide it, so `core/compat.c` does — compiled only into
+freestanding builds, since a hosted build wants libc's.
 
 ## The ROM is generated, not transcribed
 

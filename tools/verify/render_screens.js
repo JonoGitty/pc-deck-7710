@@ -25,7 +25,7 @@ load("legacy/web/font.js");
 load("legacy/web/viz.js");
 vm.runInContext(
   "globalThis.__s = { spectrum: vizSpectrum, mirror: vizMirror, scope: vizScope," +
-  " city: vizCity, waterfall: vizWaterfall };", ctx);
+  " city: vizCity, waterfall: vizWaterfall, vu: vizVU, '3d': viz3D };", ctx);
 
 let s = 0;
 const seed = (n) => { s = n >>> 0; };
@@ -61,6 +61,7 @@ function makeState(sd) {
     for (let i = 0; i < 96; i++) tr.push(next() * 2 - 1);
     v.waveHist.push(tr);
   }
+  v.clip = next() > 0.5;
   return v;
 }
 

@@ -5,6 +5,11 @@ set -e
 cd "$(dirname "$0")/../.."
 
 mkdir -p build
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/trigtest tools/verify/trigtest.c core/trig.c -lm
+build/trigtest
+
 gcc -std=c99 -Wall -Wextra -Werror -O2 \
     -o build/verify_c core/fb.c core/font.c tools/verify/render.c
 
@@ -20,7 +25,7 @@ else
 fi
 
 gcc -std=c99 -Wall -Wextra -Werror -O2 \
-    -o build/verify_screens_c core/fb.c core/font.c core/screens/*.c tools/verify/render_screens.c
+    -o build/verify_screens_c core/fb.c core/font.c core/trig.c core/screens/*.c tools/verify/render_screens.c
 
 build/verify_screens_c tools/verify/screens.tsv > build/scr_c.txt
 node tools/verify/render_screens.js tools/verify/screens.tsv > build/scr_js.txt

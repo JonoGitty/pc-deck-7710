@@ -102,6 +102,8 @@ function feed(t) {
     waveHist[i] = wave[i] * 0.8;
     waveHist[96 + i] = wave[i] * 0.6;
   }
+  wasm.deck_set_vu(0.5 + 0.42 * Math.sin(t / 640), 0.5 + 0.42 * Math.sin(t / 710 + 1));
+  wasm.deck_set_clip(Math.sin(t / 2600) > 0.85 ? 1 : 0);
   for (let r = 0; r < 12; r++)
     for (let c = 0; c < 32; c++)
       wfHist[r * 32 + c] =
@@ -115,6 +117,8 @@ const SCREENS = {
   scope:     ["OSCILLOSCOPE",      () => wasm.deck_render_scope()],
   city:      ["CITYSCAPE EQ",      () => wasm.deck_render_city()],
   waterfall: ["WATERFALL",         () => wasm.deck_render_waterfall()],
+  vu:        ["VU METER",          () => wasm.deck_render_vu()],
+  "3d":      ["3D SPECTRUM",       () => wasm.deck_render_3d()],
 };
 
 function drawScreen(key, t) {

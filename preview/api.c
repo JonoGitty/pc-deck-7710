@@ -66,6 +66,7 @@ EXPORT(deck_set_counts) void deck_set_counts(int wf, int wh) {
   st.wfCount = wf; st.waveHistCount = wh;
 }
 EXPORT(deck_set_scope_gain) void deck_set_scope_gain(double g) { st.scopeGain = g; }
+EXPORT(deck_set_clip) void deck_set_clip(int c) { st.clip = c; }
 
 /* --- drawing ------------------------------------------------------------ */
 EXPORT(deck_begin) void deck_begin(void) { deck_clear(&fb); }
@@ -84,6 +85,8 @@ EXPORT(deck_render_mirror)    void deck_render_mirror(void)    { deck_screen_mir
 EXPORT(deck_render_scope)     void deck_render_scope(void)     { deck_screen_scope(&fb, &st); }
 EXPORT(deck_render_city)      void deck_render_city(void)      { deck_screen_city(&fb, &st); }
 EXPORT(deck_render_waterfall) void deck_render_waterfall(void) { deck_screen_waterfall(&fb, &st); }
+EXPORT(deck_render_vu)        void deck_render_vu(void)        { deck_screen_vu(&fb, &st); }
+EXPORT(deck_render_3d)        void deck_render_3d(void)        { deck_screen_3d(&fb, &st); }
 
 EXPORT(deck_dot) void deck_dot(int x, int y, int inten) { deck_set(&fb, x, y, (uint8_t)inten); }
 EXPORT(deck_wipe) void deck_wipe(int edge) { deck_wipe_from(&fb, edge); }

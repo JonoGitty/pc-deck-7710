@@ -39,6 +39,8 @@ static void fill_state(deck_state_t *v, uint32_t seed) {
   v->waveHistCount = DECK_TRACES;
   for (int t = 0; t < DECK_TRACES; t++)
     for (int i = 0; i < DECK_WAVE; i++) v->waveHist[t][i] = lcg_next() * 2.0 - 1.0;
+
+  v->clip = lcg_next() > 0.5 ? 1 : 0;   /* appended last: earlier draws unchanged */
 }
 
 static uint32_t fnv1a(const uint8_t *p, size_t n) {
@@ -71,6 +73,8 @@ int main(int argc, char **argv) {
     else if (strcmp(screen, "scope")     == 0) deck_screen_scope(&fb, &v);
     else if (strcmp(screen, "city")      == 0) deck_screen_city(&fb, &v);
     else if (strcmp(screen, "waterfall") == 0) deck_screen_waterfall(&fb, &v);
+    else if (strcmp(screen, "vu")        == 0) deck_screen_vu(&fb, &v);
+    else if (strcmp(screen, "3d")        == 0) deck_screen_3d(&fb, &v);
     else { fprintf(stderr, "unknown screen %s\n", screen); return 1; }
 
     int nz = 0;
