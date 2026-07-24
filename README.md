@@ -18,11 +18,16 @@ lights up on its own.
 - Audio: WASAPI loopback of the default output device (survives device switches).
 - Track/artist/album art/playback position: Windows SMTC — works with Spotify,
   browsers, most players.
-- Lyrics: looked up on [lrclib.net](https://lrclib.net) (open, no account). This
-  is the one thing that leaves the machine: on a track change the deck sends the
-  title, artist, album and duration to fetch the LRC. Nothing is recorded, and
-  no audio ever leaves; set `LYRICS_ENABLED = False` at the top of `server.py`
-  to keep the deck fully offline. Everything else stays on 127.0.0.1.
+- Lyrics: looked up on [lrclib.net](https://lrclib.net) (open, no account).
+- Album art fallback: SMTC hands over no thumbnail for a lot of players — most
+  browsers, plenty of desktop apps — which leaves the art screen empty. When
+  that happens the deck asks the free [iTunes Search API](https://performance-partners.apple.com/search-api)
+  for the sleeve. Never used when the player supplied art of its own.
+
+These two lookups are the only things that leave the machine, and both send just
+the title, artist and album (plus duration, for lyrics). Nothing is recorded and
+no audio ever leaves; `LYRICS_ENABLED = False` and `ART_LOOKUP_ENABLED = False`
+at the top of `server.py` turn them off. Everything else stays on 127.0.0.1.
 
 Always-on: put a shortcut to `start.cmd` in `shell:startup`, drag the browser
 tab to the TV, press `T` for TV mode.
@@ -107,7 +112,7 @@ can't draw shows as a rest rather than a row of `?`.
 ## Files
 
 - `server.py` — WASAPI loopback capture, 13-band FFT, SMTC metadata + playback
-  position, LRCLIB lyrics lookup, WebSocket
+  position, LRCLIB lyrics and iTunes art lookups, WebSocket
 - `web/` — the faceplate: `app.js` (renderer/state), `viz.js` (modes),
   `dolphin.js` (ocean movie), `font.js` (5×7 + 3×5 dot fonts)
 - `launch.ps1` — opens the deck, starting the server if needed (used by the
@@ -115,7 +120,7 @@ can't draw shows as a rest rather than a row of `?`.
 - `start.cmd` — double-click launcher
 
 Tunables at the top of `server.py`: `DB_FLOOR` (sensitivity), `DB_TILT`
-(treble lift), `BROADCAST_FPS`, `LYRICS_ENABLED`.
+(treble lift), `BROADCAST_FPS`, `LYRICS_ENABLED`, `ART_LOOKUP_ENABLED`.
 
 ## `music visualiser` command
 

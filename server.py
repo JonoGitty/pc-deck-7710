@@ -24,12 +24,21 @@ from aiohttp import web, WSMsgType
 PORT = 7710
 WEB = Path(__file__).parent / "web"
 
-# Lyrics: the only thing on the deck that leaves the machine. When enabled, a
-# track change sends title/artist/album/duration to lrclib.net (an open, no-key
-# lyrics database) to fetch the LRC. Set False to keep the deck fully offline.
+# The two lookups are the only things on the deck that leave the machine, and
+# both send just title/artist/album (plus duration for lyrics). Set either to
+# False to keep the deck that much more offline.
+#
+# LYRICS: lrclib.net, an open no-key lyrics database, for the LRC.
+# ART: SMTC hands us no thumbnail for a lot of players — most browsers, plenty
+# of desktop apps — which leaves the album art screen empty. When that happens,
+# fall back to the free iTunes Search API for the sleeve. Never used when the
+# player gave us art of its own.
 LYRICS_ENABLED = True
 LYRICS_API = "https://lrclib.net/api"
-LYRICS_UA = "pc-deck-7710 (local head-unit display)"
+ART_LOOKUP_ENABLED = True
+ART_API = "https://itunes.apple.com/search"
+ART_MAX_BYTES = 2_000_000
+DECK_UA = "pc-deck-7710 (local head-unit display)"
 
 # 13-band analyzer, 63 Hz .. 16 kHz (classic head-unit spacing)
 BAND_CENTERS = [63, 100, 160, 250, 400, 630, 1000, 1600, 2500, 4000, 6300, 10000, 16000]
@@ -66,6 +75,7 @@ _pos = {                    # playback head, pushed once a second
     "duration": 0.0,        # 0 when unknown
     "status": "stopped",
 }
+_art_tried = ""             # track key the sleeve lookup has already run for
 _lyrics = {                 # last lyrics lookup result
     "type": "lyrics",
     "key": "",              # title\x1fartist the lines belong to
@@ -205,7 +215,7 @@ async def fetch_lyrics(title, artist, album, duration):
         params["duration"] = str(int(round(duration)))
     timeout = aiohttp.ClientTimeout(total=8)
     async with aiohttp.ClientSession(timeout=timeout,
-                                     headers={"User-Agent": LYRICS_UA}) as s:
+                                     headers={"User-Agent": DECK_UA}) as s:
         rec = await _lrclib(s, "get", params)
         if not rec:
             hits = await _lrclib(s, "search", {"track_name": title,
@@ -239,6 +249,83 @@ async def lyrics_task(key, title, artist, album, duration):
     kind = "synced" if synced else ("plain" if lines else "none")
     print(f"[lyrics] {title} — {kind} ({len(lines)} lines)")
     await broadcast(json.dumps(_lyrics))
+
+
+# ---------------------------------------------------------------- art lookup
+def _norm(s: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", (s or "").lower())
+
+
+def _pick_release(hits, title, artist, album=""):
+    """Best-scoring hit. iTunes ranks well, but a bare title pulls up covers
+    compilations, so score title/artist/album agreement and take the winner."""
+    nt, na, nb = _norm(title), _norm(artist), _norm(album)
+
+    def score(h):
+        ht, ha, hb = (_norm(h.get("trackName")), _norm(h.get("artistName")),
+                      _norm(h.get("collectionName")))
+        s = 0
+        if nt and ht and (nt in ht or ht in nt):
+            s += 4
+        if na and ha and (na in ha or ha in na):
+            s += 3
+        if nb and hb and (nb in hb or hb in nb):
+            s += 2                      # right album beats a greatest-hits sleeve
+        return s
+
+    ranked = [h for h in hits if h.get("artworkUrl100")]
+    return max(ranked, key=score) if ranked else None
+
+
+async def fetch_art(title, artist, album):
+    """Sleeve from the iTunes Search API as a data URL, or None."""
+    term = " ".join(x for x in (artist, title) if x)
+    if not term:
+        return None
+    timeout = aiohttp.ClientTimeout(total=8)
+    async with aiohttp.ClientSession(timeout=timeout,
+                                     headers={"User-Agent": DECK_UA}) as s:
+        params = {"term": term, "entity": "song", "limit": "5"}
+        async with s.get(ART_API, params=params) as r:
+            if r.status != 200:
+                return None
+            # iTunes replies as text/javascript; don't let aiohttp refuse it
+            data = await r.json(content_type=None)
+        hit = _pick_release(data.get("results", []), title, artist, album)
+        if not hit:
+            return None
+        # the 100x100 thumbnail URL rewrites to any size the store holds
+        url = hit["artworkUrl100"].replace("100x100", "600x600")
+        async with s.get(url) as r:
+            if r.status != 200:
+                return None
+            ctype = r.headers.get("Content-Type", "")
+            if not ctype.startswith("image/"):
+                return None
+            # read to completion, capped: content.read(n) returns only what is
+            # buffered so far and would hand back a truncated JPEG
+            blob = bytearray()
+            async for chunk in r.content.iter_chunked(65536):
+                blob.extend(chunk)
+                if len(blob) > ART_MAX_BYTES:
+                    return None
+        if not blob:
+            return None
+        return f"data:{ctype.split(';')[0]};base64,{base64.b64encode(bytes(blob)).decode()}"
+
+
+async def art_task(key, title, artist, album):
+    """Background sleeve lookup; discarded if the track moved on meanwhile."""
+    try:
+        art = await fetch_art(title, artist, album)
+    except Exception as e:
+        print(f"[art] lookup failed ({e})")
+        return
+    if not art or _track_key(_meta) != key or _meta["art"]:
+        return
+    _meta["art"] = art
+    print(f"[art] {title} — sleeve found ({len(art) // 1024} KB)")
+    await broadcast(json.dumps(_meta))
 
 
 # ---------------------------------------------------------------- SMTC metadata
@@ -314,6 +401,7 @@ async def smtc_task():
                 _meta.update(update)
                 await broadcast(json.dumps(_meta))
                 await _sync_lyrics(update, dur)
+                await _sync_art(_meta)
             _pos.update({"position": pos, "duration": dur,
                          "status": update["status"]})
             await broadcast(json.dumps(_pos))
@@ -322,11 +410,26 @@ async def smtc_task():
         await asyncio.sleep(1.0)
 
 
+def _track_key(meta: dict) -> str:
+    return f"{meta['title']}\x1f{meta['artist']}"
+
+
+async def _sync_art(meta: dict):
+    """When the player gave us no thumbnail, go looking for the sleeve. Once per
+    track: the play/pause key also changes, and a miss shouldn't re-query."""
+    global _art_tried
+    key = _track_key(meta)
+    if not (ART_LOOKUP_ENABLED and meta["title"]) or meta["art"] or key == _art_tried:
+        return
+    _art_tried = key
+    asyncio.create_task(art_task(key, meta["title"], meta["artist"], meta["album"]))
+
+
 async def _sync_lyrics(meta: dict, duration: float):
     """Kick off a lookup when the track (not just the play state) changed."""
     global _lyrics
     title, artist = meta["title"], meta["artist"]
-    key = f"{title}\x1f{artist}"
+    key = _track_key(meta)
     if key == _lyrics.get("key"):
         return
     searching = bool(LYRICS_ENABLED and title)
