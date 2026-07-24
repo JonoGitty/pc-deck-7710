@@ -26,7 +26,11 @@ printf '\n== movie previews ==\n'
 # full 56-second SOLAR is 1.5 MB on its own — the point of the picture is to
 # show what the thing looks like, and the deck is where you watch it.
 #   name  frames-from  frames-max
-set -- "spin 0 0" "solar 0 190" "dolphins 24 170" "touge 60 190" "reef 0 0"
+# VTEC starts from 40 so the excerpt opens with the bar already climbing
+# through the crossover, which is the whole point of the animation. From zero
+# it opens on a car idling.
+set -- "spin 0 0" "solar 0 190" "dolphins 24 170" "touge 60 190" "reef 0 0" \
+       "vtec 40 190"
 for spec in "$@"; do
   set -- $spec
   m=$1; from=$2; max=$3

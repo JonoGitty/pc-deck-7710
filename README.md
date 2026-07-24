@@ -63,6 +63,14 @@ deck's own character ROM. `tools/movies/scene_solar.py`.*
 *`TOUGE` — a night run lit only by the car's own headlights, where the subject
 is the hole in the light. `tools/movies/scene_touge.py`.*
 
+![VTEC — a roadster's bar tachometer wound out through the crossover](docs/media/vtec.gif)
+
+*`VTEC` — a bar tacho, a speed readout and a gear number, because the car this
+is drawn from uses a bar rather than a dial and a bar *is* a 4:1 strip. The
+revs are a crude engine with load and a limiter, not a sine wave: the
+hesitation at the top of a gear is what makes it look like driving.
+`tools/movies/scene_vtec.py`.*
+
 ![DOLPHINS — the classic head-unit screensaver in 3D](docs/media/dolphins.gif)
 
 *`DOLPHINS` — the classic screensaver, rebuilt with a real mesh and a real sea.

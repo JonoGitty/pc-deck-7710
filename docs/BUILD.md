@@ -35,6 +35,19 @@ Prices are ⚠️ approximate and move; part numbers are ✅ checked against a
 datasheet or a live listing. Full survey and alternatives in
 [HARDWARE.md](HARDWARE.md).
 
+### First decide the panel, because everything else follows from it
+
+| Want | Buy | ~Cost | What you get | What it costs you |
+|---|---|---|---|---|
+| **Just make it work** | **SSD1322 OLED 256×64** ✅ | £16–23 | 16 greys, so all four intensity levels survive. Exactly 4:1, fits 1-DIN with room. Driver written and building | Nothing. **This is the recommended build** |
+| **The period look** | Futaba GP1294AI VFD 256×48 ✅ | £15–40 | Real vacuum fluorescent — unbeatable in daylight, and genuinely the technology the original decks used | 1-bit. Everything dithers; thin bright detail turns to noise. ⚠️ Confirm the filament/anode supply before ordering |
+| **Colour** | 4.58" bar IPS TFT 960×320 ✅ **+ a second chip** | £14 + £8 | Full colour, fits 1-DIN with 60 mm spare, and level 4 finally renders red like the core always said it would | **Two microcontrollers.** The panel needs a parallel RGB bus; the original ESP32 has no RGB peripheral, and the chips that do cannot do A2DP. ⚠️ No firmware for this yet — [HARDWARE.md §1b](HARDWARE.md#1b-colour--yes-and-here-is-the-exact-catch) |
+| **A big desk display** | 8.8" bar LCD 1920×480 | £50–70 | Enormous, and the legacy PC deck drives it today with no firmware at all | ⚠️ **~217 mm wide — it does not fit a 1-DIN slot.** Desk use or a custom fascia |
+
+If you do not have a strong reason, take the first row. It is the cheapest, the
+easiest to drive, and the only one where the deck looks the way it was designed
+to look.
+
 ### The bench build — everything you need to see it work (~£35)
 
 | # | Part | Why this one | ~Cost |
