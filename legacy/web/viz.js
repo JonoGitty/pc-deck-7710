@@ -291,4 +291,5 @@ const MODES = [
   { id: "OCEAN",     name: "OCEAN CRUISE",      draw: vizOcean,     big: "full" },
   { id: "COVER",     name: "ALBUM ART",         draw: vizCover,     big: "full", holdIdle: true },
   { id: "LYRICS",    name: "LYRICS",            draw: vizLyrics,    big: "full", holdIdle: true },
+  { id: "MOVIE",     name: "MOVIE",             draw: vizMovie,     big: "full", holdIdle: true },
 ];

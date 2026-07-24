@@ -6,7 +6,16 @@
 > setup. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md),
 > [docs/HARDWARE.md](docs/HARDWARE.md) and [docs/UI-SPEC.md](docs/UI-SPEC.md).
 >
-> The PC version documented below keeps working, and will stay working.
+> The PC version documented below keeps working, and will stay working — and it
+> gained a **MOVIE** screen (`V`), so animations made for a head unit can be
+> watched on the PC first.
+>
+> **Make your own animations.** A pure-Python 3D renderer builds them for
+> whichever display you have, hardware or not:
+> `python3 tools/movies/scene_spin.py --legacy` renders one and installs it into
+> the deck below. See [docs/MOVIE-RENDERING.md](docs/MOVIE-RENDERING.md), or ask
+> Claude — [CLAUDE.md](CLAUDE.md) tells it how to pick the format for your
+> display.
 
 A Pioneer-style OEM head-unit display for your PC. Whatever the machine plays —
 Spotify, YouTube, games — shows up live on an amber VFD faceplate: 13-band
@@ -88,6 +97,8 @@ fullscreen keeps the whole faceplate instead.
    elapsed/total time and a slim analyzer along the bottom
 10. **Lyrics** — synced LRC, current line hot and neighbours dim, long lines
     wrapped, instrumental gaps shown as a rest that pulses with the bass
+11. **Movie** (`V`, `N` for next) — plays `.dmv` animations from
+    `legacy/web/movies/`, the same ones the head-unit firmware plays
 
 The dolphins are rasterized from a smooth bezier silhouette per frame (rotation
 quantized to 10°, stepped 10 fps playback), so they arc through breaches like the
@@ -121,7 +132,8 @@ can't draw shows as a rest rather than a row of `?`.
 - `legacy/server.py` — WASAPI loopback capture, 13-band FFT, SMTC metadata + playback
   position, LRCLIB lyrics and iTunes art lookups, WebSocket
 - `legacy/web/` — the faceplate: `app.js` (renderer/state), `viz.js` (modes),
-  `dolphin.js` (ocean movie), `font.js` (5×7 + 3×5 dot fonts)
+  `dolphin.js` (ocean movie), `movie.js` (`.dmv` playback), `font.js` (fonts)
+- `tools/movies/` — the animation maker: 3D renderer and `.dmv` exporter
 - `launch.ps1` — opens the deck, starting the server if needed (used by the
   `music visualiser` command in the PowerShell profile)
 - `start.cmd` — double-click launcher

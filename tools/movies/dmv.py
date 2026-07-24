@@ -17,7 +17,11 @@ import struct
 # Same matrix as core/out.c and core/art.c.
 BAYER4 = ((0, 8, 2, 10), (12, 4, 14, 6), (3, 11, 1, 9), (15, 7, 13, 5))
 
-LEVELS = 5          # DECK_OFF..DECK_CLIP
+# Off, dim, main, hot. Level 4 is DECK_CLIP — the over/clipping indicator,
+# which renders red on colour targets and means "the audio is clipping". A
+# movie must never produce it, for the same reason the album art dither
+# doesn't: it is a status colour, not a brightness.
+LEVELS = 4
 
 
 def luma(r, g, b):
@@ -97,3 +101,33 @@ def to_ascii(levels, w, h):
     ramp = " .:*#"
     return "\n".join(
         "".join(ramp[levels[y * w + x]] for x in range(w)) for y in range(h))
+
+
+def install_legacy(dmv_path, name, repo_root=None):
+    """Copy a .dmv into the legacy faceplate and register it in its index.
+
+    The PC deck plays the same container the firmware does, so an animation
+    made for a head unit can be watched on the PC first — which is the only
+    display most people have while they wait for parts.
+    """
+    import os
+    import shutil
+    root = repo_root or os.path.abspath(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+    dest_dir = os.path.join(root, "legacy", "web", "movies")
+    os.makedirs(dest_dir, exist_ok=True)
+    base = os.path.basename(dmv_path)
+    shutil.copy2(dmv_path, os.path.join(dest_dir, base))
+
+    index_path = os.path.join(dest_dir, "index.json")
+    try:
+        with open(index_path) as fh:
+            entries = json.load(fh)
+    except Exception:
+        entries = []
+    url = "/web/movies/" + base
+    entries = [e for e in entries if e.get("url") != url]
+    entries.append({"name": name, "url": url})
+    with open(index_path, "w") as fh:
+        json.dump(entries, fh, indent=1)
+    return url

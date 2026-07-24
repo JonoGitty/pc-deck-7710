@@ -678,6 +678,10 @@ addEventListener("keydown", (ev) => {
   if (ev.key === "f" || ev.key === "F") { beep(); toggleUnitFull(); }
   if (ev.key === "a" || ev.key === "A") { beep(1568); setMode(modeIndex("COVER")); }
   if (ev.key === "l" || ev.key === "L") { beep(1568); setMode(modeIndex("LYRICS")); }
+  if (ev.key === "v" || ev.key === "V") { beep(1568); setMode(modeIndex("MOVIE")); }
+  if (ev.key === "n" || ev.key === "N") {            // next movie
+    if (MODES[UI.mode].id === "MOVIE") { beep(); loadMovie(MOVIES.index + 1); }
+  }
   if (ev.key === "[") { nudgeLyrics(-250); }        // lyrics running early: hold back
   if (ev.key === "]") { nudgeLyrics(250); }         // lyrics running late: pull forward
   if (ev.key >= "1" && ev.key <= "9") { beep(1568); setMode(Number(ev.key) - 1); }

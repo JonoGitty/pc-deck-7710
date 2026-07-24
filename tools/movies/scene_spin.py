@@ -5,8 +5,11 @@ Deliberately simple — it exists to prove the pipeline end to end (3D render ->
 luminance -> dither to five levels -> delta-compressed .dmv -> the C decoder)
 and to be the thing someone copies when writing their own.
 
-    python3 tools/movies/scene_spin.py            # 192x48, the legacy grid
-    python3 tools/movies/scene_spin.py 256 64     # an SSD1322 panel
+    python3 tools/movies/scene_spin.py             # 192x48, the legacy grid
+    python3 tools/movies/scene_spin.py 256 64      # an SSD1322 panel
+    python3 tools/movies/scene_spin.py --legacy    # ...and install it into the
+                                                   #    PC deck so you can watch
+                                                   #    it without hardware
 """
 import math
 import os
@@ -16,8 +19,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import render3d as D
 import dmv as M
 
-W = int(sys.argv[1]) if len(sys.argv) > 1 else 192
-H = int(sys.argv[2]) if len(sys.argv) > 2 else 48
+LEGACY = "--legacy" in sys.argv
+ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
+W = int(ARGS[0]) if len(ARGS) > 0 else 192
+H = int(ARGS[1]) if len(ARGS) > 1 else 48
+if LEGACY:
+    W, H = 192, 48                     # the legacy faceplate's grid, fixed
 FPS, FRAMES = 10, 24
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..",
                    "movies", f"spin_{W}x{H}.dmv")
@@ -60,6 +67,9 @@ def main():
     raw = W * H * FRAMES
     print(f"\nwrote {os.path.relpath(OUT)}  {len(blob)} bytes "
           f"({100 * len(blob) / raw:.1f}% of raw {raw})")
+    if LEGACY:
+        M.install_legacy(OUT, "SPIN")
+        print("installed into the PC deck — press V on the faceplate")
     print(M.to_ascii(frames[FRAMES // 4], W, H))
 
 
