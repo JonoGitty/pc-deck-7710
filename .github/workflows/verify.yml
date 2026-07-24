@@ -33,7 +33,11 @@ jobs:
       - name: the preview builds from the same source
         run: |
           sudo apt-get update -qq
+          # wasm-ld ships in `lld`, not in `clang`. Printed explicitly so that a
+          # packaging change fails here, with an obvious reason, rather than
+          # inside a link step with a confusing one.
           sudo apt-get install -y -qq clang lld
+          wasm-ld --version
           sh tools/build_wasm.sh
 
       - name: the animation tools still run
