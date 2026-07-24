@@ -59,7 +59,7 @@ That is a complete, working deck on a desk. Everything below adds a car.
 |---|---|---|---|
 | 7 | **Rotary encoder with push**, EC11 type ⚠️ | Dim, and push to change screen | £2 |
 | 8 | 6 × momentary tactile buttons | SRC, DISP, BAND, ART, LYRICS, DEMO | £2 |
-| 9 | 6 × 10 kΩ resistors | GPIO 34–39 are input-only and have **no internal pull-ups** — a button on one without an external resistor reads as random presses | £1 |
+| 9 | 3.5 mm TRS socket + 10 kΩ resistor | Steering wheel controls. See below — this is what makes your car's wheel buttons work | £2 |
 
 ### To put it in a car (~£30)
 
@@ -140,8 +140,8 @@ All buttons are wired **to ground** — one leg to the pin, one to GND.
 
 | Control | ESP32 | Pull-up |
 |---|---|---|
-| Encoder A | GPIO 34 | **external 10 kΩ to 3V3** |
-| Encoder B | GPIO 35 | **external 10 kΩ to 3V3** |
+| Encoder A | GPIO 22 | internal |
+| Encoder B | GPIO 21 | internal |
 | Encoder push | GPIO 32 | internal |
 | SRC | GPIO 33 | internal |
 | DISP | GPIO 25 | internal |
@@ -150,9 +150,12 @@ All buttons are wired **to ground** — one leg to the pin, one to GND.
 | LYRICS | GPIO 14 | internal |
 | DEMO | GPIO 13 | internal |
 
-> **GPIO 34–39 are input-only and have no internal pull-up.** Without the
-> external resistors those pins float, and a floating input reads as random
-> presses — which looks exactly like a firmware bug and is not one.
+> **GPIO 34–39 are input-only and have no internal pull-up.** Nothing a human
+> presses is wired to one — the encoder is on 22/21 for exactly this reason.
+> The three signals that do live there (ignition, dimmer, steering wheel) are
+> all driven by something external, so none of them floats. If you move a
+> button onto one of those pins, fit a 10 kΩ resistor to 3V3, or it will read
+> as random presses and look exactly like a firmware bug.
 
 ### The car side, when you get there
 

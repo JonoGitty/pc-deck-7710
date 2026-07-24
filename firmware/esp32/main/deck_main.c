@@ -45,6 +45,7 @@
 #include "deck_movies.h"
 #include "deck_net.h"
 #include "deck_selftest.h"
+#include "deck_swc.h"
 #include "deck_ui.h"
 #include "out.h"
 
@@ -141,6 +142,10 @@ void app_main(void) {
 
   /* --- 5. controls ------------------------------------------------------ */
   deck_input_start();
+  /* Steering wheel controls come through a universal interface box on a
+   * resistive line. Started after the panel so the learning wizard has
+   * somewhere to print its prompts. */
+  deck_swc_start();
 
   /* --- 6. the radio ----------------------------------------------------- */
   deck_audio_init();
@@ -182,11 +187,18 @@ void app_main(void) {
     const double now = (double)t0 / 1000000.0;
 
     /* input */
+    {
+      const deck_action_t sw = deck_swc_poll();
+      if (sw != DECK_ACT_NONE) deck_input_post(sw, 1);
+    }
     deck_event_t ev;
     while (deck_input_get(&ev)) {
       switch (ev.action) {
       case DECK_ACT_SELFTEST:
         selftest_hold = !selftest_hold;
+        break;
+      case DECK_ACT_SWC_LEARN:
+        deck_swc_run_wizard(s_fbpx, s_dev, s_scratch);
         break;
       case DECK_ACT_IGNITION_OFF:
         /* Whatever hold-up the supply has, spend it on the things that are

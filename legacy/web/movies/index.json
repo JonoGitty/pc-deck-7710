@@ -18,5 +18,9 @@
  {
   "name": "TOUGE",
   "url": "/web/movies/touge_192x48.dmv"
+ },
+ {
+  "name": "VTEC",
+  "url": "/web/movies/vtec_192x48.dmv"
  }
 ]

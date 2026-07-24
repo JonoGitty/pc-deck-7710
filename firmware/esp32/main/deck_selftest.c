@@ -42,6 +42,7 @@
 #include "deck_display.h"
 #include "font.h"
 #include "out.h"
+#include "deck_swc.h"
 
 void deck_selftest_run(uint8_t *fbpx, uint8_t *dev, uint8_t *scratch, int ms) {
   const deck_panel_t *p = deck_panel();
@@ -120,4 +121,68 @@ void deck_selftest_status(uint8_t *fbpx, uint8_t *dev, uint8_t *scratch) {
   }
   deck_out_frame(&fb, dev, p->levels);
   p->blit(dev, scratch);
+}
+
+/* --- the steering wheel learning wizard ---------------------------------
+ *
+ * On the panel rather than on a phone or a serial console, because it is done
+ * sitting in the driver's seat with the ignition on and both hands near the
+ * wheel. Anything requiring a laptop would be done once, badly, in a car park.
+ */
+void deck_swc_run_wizard(uint8_t *fbpx, uint8_t *dev, uint8_t *scratch) {
+  const deck_panel_t *p = deck_panel();
+  const deck_geom_t geom = {(uint16_t)p->w, (uint16_t)p->h, DECK_LEVELS, 0};
+  deck_fb_t fb = {&geom, fbpx};
+  char line[48];
+
+  deck_swc_learn_begin();
+
+  for (int i = 0; i < deck_swc_learn_count(); i++) {
+    deck_clear(&fb);
+    deck_text3(&fb, 2, 0, "LEARN WHEEL CONTROLS", DECK_HOT);
+    deck_text5(&fb, 2, 10, "PRESS", DECK_DIM, 1);
+    deck_text5(&fb, 2, 20, deck_swc_learn_prompt(i), DECK_MAIN, 2);
+    snprintf(line, sizeof line, "%d OF %d   OR WAIT TO SKIP",
+             i + 1, deck_swc_learn_count());
+    deck_text3(&fb, 2, p->h - 7, line, DECK_DIM);
+    deck_out_frame(&fb, dev, p->levels);
+    p->blit(dev, scratch);
+
+    int mv = 0;
+    const int r = deck_swc_learn_step(i, &mv);
+
+    deck_clear(&fb);
+    deck_text3(&fb, 2, 0, "LEARN WHEEL CONTROLS", DECK_HOT);
+    switch (r) {
+    case DECK_SWC_LEARN_OK:
+      snprintf(line, sizeof line, "GOT IT  %d MV", mv);
+      deck_text5(&fb, 2, 16, line, DECK_MAIN, 1);
+      break;
+    case DECK_SWC_LEARN_TIMEOUT:
+      /* Not a failure. Plenty of wheels have four buttons, not seven. */
+      deck_text5(&fb, 2, 16, "SKIPPED", DECK_DIM, 1);
+      break;
+    case DECK_SWC_LEARN_CLASH:
+      deck_text5(&fb, 2, 12, "TOO CLOSE TO", DECK_CLIP, 1);
+      deck_text5(&fb, 2, 22, "ANOTHER BUTTON", DECK_CLIP, 1);
+      break;
+    case DECK_SWC_LEARN_FULL:
+      deck_text5(&fb, 2, 16, "NO ROOM LEFT", DECK_CLIP, 1);
+      break;
+    default:
+      break;
+    }
+    deck_out_frame(&fb, dev, p->levels);
+    p->blit(dev, scratch);
+    deck_delay_ms(700);
+  }
+
+  deck_swc_learn_end();
+  deck_clear(&fb);
+  deck_text3(&fb, 2, 0, "LEARN WHEEL CONTROLS", DECK_HOT);
+  deck_text5(&fb, 2, 16, deck_swc_learned() ? "SAVED" : "NOTHING LEARNED",
+             deck_swc_learned() ? DECK_MAIN : DECK_CLIP, 2);
+  deck_out_frame(&fb, dev, p->levels);
+  p->blit(dev, scratch);
+  deck_delay_ms(1200);
 }

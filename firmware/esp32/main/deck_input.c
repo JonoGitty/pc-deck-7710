@@ -32,8 +32,12 @@
 /* Pin map. Matches docs/BUILD.md; change both together. Every one of these is
  * an input with a pull-up, so a button shorts to ground and an unconnected
  * pin reads as "not pressed" rather than as noise. */
-#define PIN_ENC_A   34
-#define PIN_ENC_B   35
+/* The encoder is on ordinary GPIOs, not on 34/35, for two reasons that turned
+ * out to be the same reason: 34-39 are input-only with no internal pull-ups,
+ * so an encoder there needs two external resistors — and 34 is an ADC pin the
+ * steering-wheel input needs. Moving the encoder costs nothing and buys both. */
+#define PIN_ENC_A   22
+#define PIN_ENC_B   21
 #define PIN_ENC_SW  32
 #define PIN_BTN_SRC 33
 #define PIN_BTN_DISP 25
@@ -44,26 +48,34 @@
 #define PIN_IGNITION 39      /* via opto-isolator — never straight from 12 V */
 #define PIN_DIMMER   36      /* likewise */
 
-/* GPIO 34-39 are input-only and have NO internal pull-ups on this chip. Wiring
- * a button to one without an external resistor gives a floating input that
- * reads as random presses, which looks exactly like a firmware bug. */
-#define NEEDS_EXTERNAL_PULLUP(p) ((p) >= 34)
+/* GPIO 34-39 are input-only and have NO internal pull-ups on this chip. Only
+ * the ignition sense, the dimmer and the steering-wheel line live there now,
+ * and all three are driven by something external — an opto-isolator or an
+ * interface box — so none of them floats. Nothing that a human presses is on
+ * one of those pins, which is deliberate: a floating input reads as random
+ * presses and looks exactly like a firmware bug. */
 
 typedef struct {
   int      pin;
   deck_action_t action;
   uint8_t  stable, count, level;
+  int64_t  down_at;         /* for long-press; 0 when up */
 } btn_t;
 
 static btn_t s_btn[] = {
-    {PIN_ENC_SW,   DECK_ACT_MODE_NEXT, 1, 0, 1},
-    {PIN_BTN_SRC,  DECK_ACT_SRC,       1, 0, 1},
-    {PIN_BTN_DISP, DECK_ACT_MODE_NEXT, 1, 0, 1},
-    {PIN_BTN_BAND, DECK_ACT_OCEAN,     1, 0, 1},
-    {PIN_BTN_ART,  DECK_ACT_ART,       1, 0, 1},
-    {PIN_BTN_LYR,  DECK_ACT_LYRICS,    1, 0, 1},
-    {PIN_BTN_DEMO, DECK_ACT_DEMO,      1, 0, 1},
+    {PIN_ENC_SW,   DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
+    {PIN_BTN_SRC,  DECK_ACT_SRC,       1, 0, 1, 0},
+    {PIN_BTN_DISP, DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
+    {PIN_BTN_BAND, DECK_ACT_OCEAN,     1, 0, 1, 0},
+    {PIN_BTN_ART,  DECK_ACT_ART,       1, 0, 1, 0},
+    {PIN_BTN_LYR,  DECK_ACT_LYRICS,    1, 0, 1, 0},
+    {PIN_BTN_DEMO, DECK_ACT_DEMO,      1, 0, 1, 0},
 };
+
+/* Long presses, and only two of them. A head unit whose every button does
+ * something different when held is one nobody can use without the manual;
+ * these two are setup actions you perform once. */
+#define LONG_PRESS_US (5 * 1000000LL)
 #define NBTN (sizeof s_btn / sizeof *s_btn)
 
 static QueueHandle_t s_q;
@@ -102,8 +114,24 @@ static void poll_task(void *arg) {
       if (++s_btn[i].count >= 25) {
         s_btn[i].count = 0;
         s_btn[i].level = lv;
-        if (lv == 0) deck_input_post(s_btn[i].action, 1);   /* active low */
+        if (lv == 0) {
+          s_btn[i].down_at = esp_timer_get_time();
+          deck_input_post(s_btn[i].action, 1);              /* active low */
+        } else {
+          s_btn[i].down_at = 0;
+        }
       }
+    }
+
+    /* Long-press: SRC opens the steering-wheel learning wizard, DISP the
+     * self-test screen. Fired once, by zeroing the timestamp, so holding does
+     * not re-enter the wizard every second. */
+    for (size_t i = 0; i < NBTN; i++) {
+      if (!s_btn[i].down_at) continue;
+      if (esp_timer_get_time() - s_btn[i].down_at < LONG_PRESS_US) continue;
+      s_btn[i].down_at = 0;
+      if (s_btn[i].pin == PIN_BTN_SRC)       deck_input_post(DECK_ACT_SWC_LEARN, 1);
+      else if (s_btn[i].pin == PIN_BTN_DISP) deck_input_post(DECK_ACT_SELFTEST, 1);
     }
 
     /* Ignition. The one input that is not a user action: when it drops, the

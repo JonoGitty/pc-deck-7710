@@ -21,6 +21,7 @@ typedef enum {
   DECK_ACT_IGNITION_ON,
   DECK_ACT_IGNITION_OFF,
   DECK_ACT_SELFTEST,
+  DECK_ACT_SWC_LEARN,
 } deck_action_t;
 
 typedef struct { deck_action_t action; int repeat; } deck_event_t;
