@@ -76,21 +76,32 @@ void deck_screen_cover(deck_fb_t *fb, const deck_state_t *v, const deck_meta_t *
     deck_text3(fb, W - 2 - deck_width3(both), 2, both, lab);
   }
 
+  /* Rows are stacked from the title rather than placed proportionally, so a
+   * taller panel spends the extra height on a bigger title instead of leaving
+   * a dead band above the analyzer. At H=48 this yields 11/21/31 — exactly the
+   * legacy positions. */
+  const int tscale = (H >= 60) ? 2 : 1;
+  const int gap = H * 3 / 48;
+  const int ty = H * 11 / 48;
+  const int ay = ty + 7 * tscale + gap;
+  const int by = ay + 7 + gap;
+  const int tcells = (W - tx - 2) / (6 * tscale);
+
   char win[DECK_STR_MAX + 8];
   const char *title = m->title[0] ? m->title : "PC DECK 7710";
-  deck_scroll(sc, dt, title, cells, win, sizeof win);
-  deck_text5(fb, tx, H * 11 / 48, win, DECK_HOT, 1);
+  deck_scroll(sc, dt, title, tcells, win, sizeof win);
+  deck_text5(fb, tx, ty, win, DECK_HOT, tscale);
 
   char cut[DECK_STR_MAX];
   int i = 0;
   for (; m->artist[i] && i < cells && i < DECK_STR_MAX - 1; i++) cut[i] = m->artist[i];
   cut[i] = 0;
-  deck_text5(fb, tx, H * 21 / 48, cut, DECK_MAIN, 1);
+  deck_text5(fb, tx, ay, cut, DECK_MAIN, 1);
 
   const int acells = (W - tx - 2) / 4;
   for (i = 0; m->album[i] && i < acells && i < DECK_STR_MAX - 1; i++) cut[i] = m->album[i];
   cut[i] = 0;
-  deck_text3(fb, tx, H * 31 / 48, cut, lab);
+  deck_text3(fb, tx, by, cut, lab);
 
   /* mini analyzer, segmented like the deck's other bars */
   const int pitch = (W - tx - 2) / DECK_BANDS;

@@ -84,8 +84,8 @@ void deck_screen_lyrics(deck_fb_t *fb, const deck_state_t *v, const deck_meta_t 
     }
     msg[n] = 0;
     centre5(fb, H * 14 / 48, msg, DECK_MAIN);
-    if (m->title[0])  centre5(fb, H * 27 / 48, m->title, deck_thin_inten(g, DECK_DIM));
-    if (m->artist[0]) centre5(fb, H * 37 / 48, m->artist, deck_thin_inten(g, DECK_DIM));
+    if (m->title[0])  centre5(fb, H * 27 / 48, m->title, DECK_DIM);
+    if (m->artist[0]) centre5(fb, H * 37 / 48, m->artist, DECK_DIM);
     return;
   }
 
@@ -120,10 +120,7 @@ void deck_screen_lyrics(deck_fb_t *fb, const deck_state_t *v, const deck_meta_t 
       continue;
     }
 
-    /* Glyphs are thin: the current line has to go through the rule too, or it
-     * dithers to mush on 1-bit while the dim lines around it stay crisp. */
-    const uint8_t inten = m->synced ? deck_thin_inten(g, isCur ? DECK_HOT : DECK_DIM)
-                                    : deck_thin_inten(g, DECK_MAIN);
+    const uint8_t inten = m->synced ? (isCur ? DECK_HOT : DECK_DIM) : DECK_MAIN;
     centre5(fb, y, text, inten);
 
     /* Once both are solid, brightness no longer marks the current line, so a

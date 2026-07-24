@@ -153,6 +153,7 @@ function loadTrack() {
       lum[y * S + x] = Math.max(0, Math.min(255, Math.round(ring)));
     }
   wasm.deck_make_art(S);
+  wasm.deck_scroll_reset();
   trackLoaded = true;
 }
 

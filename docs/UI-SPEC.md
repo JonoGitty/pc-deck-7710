@@ -60,9 +60,20 @@ dot, a graticule line. Below five device levels they come out as noise, or
 vanish entirely when a lone dot lands on the wrong Bayer cell.
 
 `deck_thin_inten(geom, want)` is the rule: on panels that resolve the full
-scale it returns `want` unchanged; below that it returns solid. **Every thin
-draw call must go through it.** Areas must not — they have the dots to carry a
-pattern, and that is where the intensity information survives.
+scale it returns `want` unchanged; below that it returns solid. Areas must not
+go through it — they have the dots to carry a pattern, and that is where the
+intensity information survives.
+
+**Text applies it automatically.** `deck_text5` and `deck_text3` call it
+internally, because a glyph is thin by definition and remembering per call
+proved unreliable: it was missed on the lyrics current line and again on the
+cover title and artist, each time producing unreadable text on 1-bit while the
+labels beside it stayed crisp. Screens pass the intensity they mean and the
+font layer decides what the panel can honour.
+
+Non-text thin features — scale marks, needles, peak caps, graticules, ridges —
+still call it explicitly, since only the screen knows whether it is drawing a
+line or filling an area.
 
 This was found by looking at the preview on a 1-bit target, not by reasoning:
 the VU scale arc had almost entirely disappeared and the labels were mush.
@@ -97,9 +108,16 @@ Ten today. Each gets an adaptation rule per tier.
 ### Album art — layout rule
 
 Art is a square of side `H`, left-aligned at `x = 2`. Text column starts at
-`x = H + 10`, giving `(W − H − 12) / CH5` characters. At 192×48 that's 21
-characters; at 256×64, 30. Rows: source and time at `y=2`, title at `y≈H/4`,
-artist below, album below that, mini analyser on the bottom `6` rows.
+`x = H + 10`, giving `(W − H − 12) / CH5` characters.
+
+Rows are **stacked from the title**, not placed proportionally: title at
+`H×11/48`, then artist and album each `glyph height + H×3/48` below. At 192×48
+this yields 11 / 21 / 31 — the legacy positions exactly. Placing them
+proportionally instead left a ten-row dead band above the analyser on a 64-row
+panel.
+
+Panels of 60 rows or more draw the title at **scale 2**, which is what the
+extra height is for. The marquee width divides by the scale accordingly.
 
 ### Lyrics — layout rule
 

@@ -94,6 +94,9 @@ EXPORT(deck_set_lyric_state) void deck_set_lyric_state(int state, int synced, do
   meta.lyricState = state; meta.synced = synced; meta.offsetMs = offsetMs;
 }
 EXPORT(deck_lyrics_clear) void deck_lyrics_clear(void) { deck_lyrics_reset(&meta); }
+EXPORT(deck_scroll_reset) void deck_scroll_reset(void) {
+  cover_scroll.offset = 0; cover_scroll.phase = 0; cover_scroll.t = 0.0;
+}
 EXPORT(deck_lyrics_push) int deck_lyrics_push(double t, int cells) {
   return deck_lyrics_add(&meta, t, strbuf, cells);
 }

@@ -41,6 +41,10 @@ static const uint8_t *glyph3(uint32_t cp) {
 int deck_text5(deck_fb_t *fb, int x, int y, const char *s, uint8_t inten, int scale) {
   if (scale <= 0) scale = 1;
   if (inten == 0) inten = DECK_MAIN;
+  /* Glyphs are thin by definition — apply the rule here so no screen has to
+   * remember to, which is a mistake already made twice. Identity on panels
+   * that resolve the full scale. */
+  inten = deck_thin_inten(fb->geom, inten);
   int cx = x;
   while (*s) {
     const uint8_t *g = glyph5(utf8_next(&s));
@@ -60,6 +64,7 @@ int deck_text5(deck_fb_t *fb, int x, int y, const char *s, uint8_t inten, int sc
 
 int deck_text3(deck_fb_t *fb, int x, int y, const char *s, uint8_t inten) {
   if (inten == 0) inten = DECK_MAIN;
+  inten = deck_thin_inten(fb->geom, inten);
   int cx = x;
   while (*s) {
     const uint8_t *g = glyph3(utf8_next(&s));
