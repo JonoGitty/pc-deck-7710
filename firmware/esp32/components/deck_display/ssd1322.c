@@ -43,16 +43,22 @@
 #define CMD_MUX_RATIO         0xca
 #define CMD_COMMAND_LOCK      0xfd
 
-/* Platform hooks — implemented per board so this file stays portable. */
-extern void deck_spi_cmd(uint8_t c);
-extern void deck_spi_data(const uint8_t *d, size_t n);
-extern void deck_spi_data1(uint8_t d);
-extern void deck_delay_ms(uint32_t ms);
-extern void deck_reset_pin(int level);
+/* Pin map. These are the defaults deckctl and the wiring guide assume; change
+ * them here and in docs/BUILD.md together or the two will disagree and the
+ * disagreement will be discovered with a soldering iron in hand. */
+#define PIN_MOSI 23
+#define PIN_SCLK 18
+#define PIN_CS    5
+#define PIN_DC   17
+#define PIN_RST  16
+#define SPI_MHZ  20      /* datasheet allows more; 20 is a frame in ~1.6 ms */
 
 static void cmd1(uint8_t c, uint8_t a) { deck_spi_cmd(c); deck_spi_data1(a); }
 
-void ssd1322_init(void) {
+int ssd1322_init(void) {
+  int err = deck_spi_begin(PIN_MOSI, PIN_SCLK, PIN_CS, PIN_DC, PIN_RST, SPI_MHZ);
+  if (err) return err;
+
   deck_reset_pin(0);
   deck_delay_ms(10);
   deck_reset_pin(1);
@@ -86,12 +92,17 @@ void ssd1322_init(void) {
   deck_spi_cmd(CMD_EXIT_PARTIAL);
   deck_spi_cmd(CMD_SLEEP_OFF);
   deck_delay_ms(10);
+  return 0;
 }
 
-/* Master contrast is the deck's brightness knob: 0..15, and unlike dimming in
- * software it costs no levels — the greyscale ramp stays intact. */
-void ssd1322_set_brightness(uint8_t level0_15) {
-  cmd1(CMD_MASTER_CONTRAST, level0_15 > 15 ? 15 : level0_15);
+/* Master contrast is the deck's brightness knob, and it is the right one:
+ * dimming in software would spend intensity levels on brightness, which on a
+ * panel that only has sixteen of them is the difference between a readable
+ * peak-hold dot and no peak-hold dot. The controller dims the whole ramp
+ * instead and the levels survive intact. */
+void ssd1322_brightness(uint8_t pct) {
+  if (pct > 100) pct = 100;
+  cmd1(CMD_MASTER_CONTRAST, (uint8_t)((pct * 15 + 50) / 100));
 }
 
 void ssd1322_sleep(int on) {
@@ -105,7 +116,8 @@ void ssd1322_sleep(int on) {
  * top nibble is taken. That is the whole of the conversion — every decision
  * about what a dot should look like was already made in core/out.c, which is
  * why the preview and the panel agree. */
-void ssd1322_blit(const uint8_t *dev, int w, int h, uint8_t *scratch) {
+void ssd1322_blit(const uint8_t *dev, uint8_t *scratch) {
+  const int w = SSD1322_W, h = SSD1322_H;
   const int cols = SSD1322_W / 2;
 
   deck_spi_cmd(CMD_SET_COLUMN);
@@ -127,5 +139,27 @@ void ssd1322_blit(const uint8_t *dev, int w, int h, uint8_t *scratch) {
       scratch[c] = (uint8_t)((l << 4) | r);
     }
     deck_spi_data(scratch, (size_t)cols);
+  }
+}
+
+/* Device-format test pattern for the boot self-test.
+ *
+ * Deliberately not a picture: it is a grey ramp, a one-dot grid and a border.
+ * The ramp proves all sixteen levels reach the glass, the grid proves the
+ * nibble packing is not doubling or halving the width — the classic SSD1322
+ * first-day fault — and the border proves the addressing window covers the
+ * whole panel rather than a plausible-looking subset of it.
+ */
+void ssd1322_test_pattern(uint8_t *dev, int phase) {
+  for (int y = 0; y < SSD1322_H; y++) {
+    for (int x = 0; x < SSD1322_W; x++) {
+      uint8_t v;
+      if (y < 16)                       v = (uint8_t)((x * 16 / SSD1322_W) * 17);
+      else if (y < 32)                  v = ((x + y + phase) & 1) ? 255 : 0;
+      else if (x == 0 || y == 0 ||
+               x == SSD1322_W - 1 || y == SSD1322_H - 1) v = 255;
+      else                              v = 0;
+      dev[y * SSD1322_W + x] = v;
+    }
   }
 }

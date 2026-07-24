@@ -2,7 +2,7 @@
 """Pack .dmv movies into a flash partition image.
 
     python3 tools/movies/pack.py build/movies.bin movies/*_256x64.dmv
-    esptool.py write_flash 0x490000 build/movies.bin
+    esptool.py write_flash 0x5B0000 build/movies.bin
 
 Movies do not go in the firmware image. A 256x64 movie is 300-850 KB and the
 app partition is 1.5 MB, which has to hold Bluetooth, WiFi, TLS, the FFT and
@@ -76,7 +76,7 @@ def main():
     for n, s, p in zip(names, sizes, srcs):
         print(f"  {n:<20s} {s / 1024:8.1f} KB  {p}")
     print(f"  {'-> ' + dst:<20s} {len(img) / 1024:8.1f} KB "
-          f"({len(img) / 1048576:.2f} MB of the 7.25 MB partition)")
+          f"({len(img) / 1048576:.2f} MB of the 7.6 MB partition)")
 
 
 if __name__ == "__main__":

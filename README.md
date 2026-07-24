@@ -228,7 +228,25 @@ dithering into mush on 1-bit panels.
 
 ---
 
+## Before you wire anything to a car
+
+> **This is an unfinished hobby project published as source, not a product.**
+> Nothing here has been tested in a vehicle, certified by anyone, or approved
+> for road use. The firmware has never run on hardware. If you build one, you
+> are the manufacturer, and every consequence is yours — including fire,
+> battery drain, airbag circuits, driver distraction, insurance and type
+> approval.
+>
+> **Read [SAFETY.md](SAFETY.md) first.** It is short, specific, and lists the
+> things that actually go wrong.
+
+Everything in this project can be built and run on a desk from USB before any
+of it goes near a dashboard, and the handbook is ordered so that it is.
+
+---
+
 Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics and the
 album-art dither idea came out of that consult.
 
-MIT licensed. Build one.
+MIT licensed — see [LICENSE](LICENSE), [NOTICE](NOTICE) and [SAFETY.md](SAFETY.md).
+Build one.

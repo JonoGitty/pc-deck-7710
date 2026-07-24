@@ -82,7 +82,7 @@ thin bright things cannot be dim: [MOVIE-RENDERING.md](MOVIE-RENDERING.md).
 
 ```sh
 python3 tools/movies/pack.py build/movies.bin movies/*_256x64.dmv
-esptool.py write_flash 0x490000 build/movies.bin
+esptool.py write_flash 0x5B0000 build/movies.bin
 ```
 
 That reflashes the deck's animations without touching the firmware. ⚠️ Untested

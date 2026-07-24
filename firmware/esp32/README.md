@@ -28,7 +28,7 @@ main/
 components/
   deck_display/      panel drivers. SSD1322 first, GP1294AI next.
   deck_movies/       baked movies, streamed out of their own flash partition
-partitions.csv       16 MB layout: factory + two OTA slots, 7.25 MB of movies
+partitions.csv       16 MB layout: factory + two OTA slots, 7.6 MB of movies
 ```
 
 `core/` is pulled in as an IDF component from the repo root, unmodified — the
@@ -40,14 +40,14 @@ A baked 256×64 movie is 300–850 KB. The app partition is 1.5 MB and has to ho
 Bluetooth, WiFi, TLS, the FFT and the renderer. One movie would take most of
 what is left; the four bundled ones total 1.4 MB and would not fit at all.
 
-So they do not go in the firmware. `partitions.csv` gives them 7.25 MB of their
+So they do not go in the firmware. `partitions.csv` gives them 7.6 MB of their
 own, `tools/movies/pack.py` builds the image, and the decoder streams out of it
 through the source interface in `core/movie.h` — 320 bytes of stack at a time,
 never the whole file:
 
 ```sh
 python3 tools/movies/pack.py build/movies.bin movies/*_256x64.dmv
-esptool.py write_flash 0x490000 build/movies.bin
+esptool.py write_flash 0x5B0000 build/movies.bin
 ```
 
 Reflashing that partition changes the deck's movies without touching the

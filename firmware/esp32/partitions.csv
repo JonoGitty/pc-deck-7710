@@ -2,7 +2,7 @@
 #
 # The size of this file is a direct consequence of one number: a 256x64 baked
 # movie is most of a megabyte. SOLAR is 848 KB, TOUGE 282 KB, DOLPHINS 347 KB.
-# They cannot go in the app image — an app slot is 1.5 MB and that has to hold
+# They cannot go in the app image — an app slot is 1.875 MB and that has to hold
 # Bluetooth, WiFi, TLS, the FFT and the renderer — so they get their own
 # read-only partition and the decoder streams out of it. See core/movie.h.
 #
@@ -10,7 +10,11 @@
 # and no console, so `factory` is the image that always boots and is never
 # written again; ota_0 and ota_1 take turns receiving updates and roll back to
 # each other. A car with no stereo until the dash comes apart is the failure
-# this is paying 1.5 MB to avoid. See docs/VERSIONING.md.
+# this is paying 1.875 MB to avoid. See docs/VERSIONING.md.
+#
+# The slot size is measured, not guessed: the image is 1.67 MB, of which
+# Bluedroid dual-mode is 466 KB and the TLS root bundle 200 KB. The remainder
+# is headroom for the OTA path that is not written yet.
 #
 # On a 4 MB part none of this fits. Either drop to one app slot and give up
 # rollback, or put movies on an SD card — the streaming source does not care
@@ -19,11 +23,12 @@
 # Offsets are exact: the table ends on 0x1000000 with no gap and no overlap.
 #
 # Name,     Type, SubType,  Offset,   Size,     Flags
-nvs,        data, nvs,      0x9000,   0x5000,
-otadata,    data, ota,      0xe000,   0x2000,
-factory,    app,  factory,  0x10000,  0x180000,
-ota_0,      app,  ota_0,    0x190000, 0x180000,
-ota_1,      app,  ota_1,    0x310000, 0x180000,
+nvs,        data, nvs,      0x9000,   0x4000,
+otadata,    data, ota,      0xd000,   0x2000,
+phy_init,   data, phy,      0xf000,   0x1000,
+factory,    app,  factory,  0x10000,  0x1E0000,
+ota_0,      app,  ota_0,    0x1F0000, 0x1E0000,
+ota_1,      app,  ota_1,    0x3D0000, 0x1E0000,
 # Everything below is content, not code, and survives an OTA untouched.
-movies,     data, 0x40,     0x490000, 0x740000,
-storage,    data, spiffs,   0xBD0000, 0x430000,
+movies,     data, 0x40,     0x5B0000, 0x7A0000,
+storage,    data, spiffs,   0xD50000, 0x2B0000,
