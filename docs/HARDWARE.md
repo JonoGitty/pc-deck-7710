@@ -121,6 +121,57 @@ The existing UI is already keyboard- and wheel-driven, which makes this easy:
 - **Custom fascia.** 3D-printed bezel over the chosen panel, in the standard
   DIN chassis. Needed if the donor's window doesn't match your display.
 
+## 7. Detachable head — parked, but shapes the enclosure
+
+Most period decks had a detachable face for anti-theft. Two ways to read that
+idea, and only one of them works.
+
+### What doesn't work: building a face for someone else's chassis
+
+The face↔chassis connector is proprietary and different on every model. Worse,
+the deck's main MCU owns the display — it sends draw commands to the face. A
+replacement face would have to *emulate the original* well enough that the MCU
+doesn't fault, and would then be rendering **their** UI, not ours. That defeats
+the entire point.
+
+The community evidence matches: people successfully *relocate* an OEM faceplate
+by desoldering the connector and running ribbon cable (around 20 conductors a
+side), but nobody publishes a general protocol spec, and the connectors are
+[non-standard per manufacturer](https://www.diymobileaudio.com/threads/head-unit-removable-face-connector-identification.395970/).
+Extending a face is a wiring job. Replacing one is a per-model reverse
+engineering project with a bad prize at the end.
+
+### What does work: our head, detachable from our chassis
+
+Build the detach mechanism ourselves. This is a real feature — anti-theft, and
+you can take the face indoors — and it costs nothing but connector design.
+
+The decision it forces:
+
+| | Brain in the head | Brain in the chassis |
+|---|---|---|
+| Head contains | ESP32, display, buttons, Bluetooth | display + buttons only |
+| Connector carries | 5 V, ground, line-level audio, ignition sense | display bus (SPI), button matrix, power |
+| Detached head is | a complete deck — dock it anywhere with 5 V | inert |
+| Pairing | travels with the head | stays in the car |
+| Risk | the expensive part is the removable part | SPI over a wear connector, signal integrity |
+
+**Brain in the head** is the more interesting answer, and it fits the project:
+the head *is* the deck, and the chassis becomes a dumb dock. That means the
+same head can dock to a **car chassis** (12 V, ignition, amplifier) or a **desk
+stand** (USB power, line out to speakers) — one unit, both use cases, which is
+exactly the split the software already has between the car build and the legacy
+PC deck.
+
+### Design notes for when this happens
+
+- **Gold-plated spring/pogo contacts**, as the OEM faces use — they survive
+  thousands of cycles and car vibration better than a board-to-board connector.
+- Keep the pin count low. Brain-in-head needs roughly six: 5 V, GND, L, R,
+  ignition sense, and one spare.
+- The dock is then trivial to make in more than one form factor, including a
+  3D-printed desk stand — which doubles as the hardware preview rig.
+
 ---
 
 ## Build tiers

@@ -122,6 +122,11 @@ Every platform produces the same event stream, so the renderer is identical:
 
 - **GIF support** — animated GIFs as a display source, dithered to the deck's
   intensity levels. Wanted, deliberately deferred until the core port lands.
+- **Detachable head** — our own detach mechanism, not a replacement face for a
+  donor deck. If the brain lives in the head, the head is the whole deck and
+  the chassis becomes a dumb dock: a car dock or a desk stand. See
+  [HARDWARE.md §7](HARDWARE.md). Parked, but it constrains enclosure and
+  connector design, so decide before anything is 3D-printed.
 - Additional display families: HUB75 LED matrix (suits the LED bulb schemes),
   larger colour panels.
 - FM tuner, local media playback — explicitly out of scope. The phone is the
