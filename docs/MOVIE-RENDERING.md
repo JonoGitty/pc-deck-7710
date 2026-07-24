@@ -57,6 +57,32 @@ green, say — becomes one flat blob here. The importer measures how saturated
 the source is and says so, but it cannot tell you which shapes were *meant* to
 be distinct, so check the ASCII dump it prints.
 
+### `--keep`, and why footage needs it
+
+A straight import of photographic footage almost always comes out as mush, and
+the reason is not resolution. A camera uses the whole tonal range; the deck has
+four levels. A mid-grey background does not become "background" — it becomes a
+50% dither, and that checkerboard is visually louder than the subject in front
+of it. Everything is lit, so nothing reads.
+
+```sh
+python3 tools/movies/import_gif.py reef.gif 256 64 --cover --keep=22
+```
+
+`--keep=P` lights the brightest P% of the picture and crushes the rest to off,
+so the four levels all land on the subject and the background is simply black —
+which is what a head unit looks like anyway. Start at 20 and adjust: too low
+and parts of the subject drop out, too high and the background creeps back in.
+
+The black point is measured once across the whole movie, not per frame. Frames
+are auto-stretched individually by default, which is right for a rendered scene
+(it always contains its own black and white) and wrong for footage, where a
+frame the subject has left re-normalises the background up to full brightness
+and the panel flashes.
+
+`--gamma=` shapes the curve between the two points if the midtones need pushing
+either way.
+
 ## The renderer
 
 `tools/movies/render3d.py` — pure Python, no numpy, no GPU, no Blender, so it

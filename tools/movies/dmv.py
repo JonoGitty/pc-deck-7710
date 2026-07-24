@@ -28,15 +28,28 @@ def luma(r, g, b):
     return 0.299 * r + 0.587 * g + 0.114 * b
 
 
-def quantise(rgb, w, h, black=24, stretch=True):
+def quantise(rgb, w, h, black=24, stretch=True, lo=None, hi=None, gamma=1.0):
     """RGB bytes -> one level per dot.
 
     `black` is the luminance below which a dot is off rather than dim; without
     it a dark scene dithers into a grey haze instead of reading as night.
+
+    `lo`/`hi` override the input range the levels are stretched across, and
+    `gamma` shapes the curve between them. Rendered scenes never need these —
+    they are composed against black already. Imported footage usually does: a
+    photographic source spreads its luminance over the whole range, and with
+    only four levels a mid-grey background does not become "background", it
+    becomes a 50% dither that is visually louder than the subject. Pulling `lo`
+    up to sit above the background crushes it to off and hands all four levels
+    to the thing you actually wanted to see.
     """
     lum = [luma(rgb[i * 3], rgb[i * 3 + 1], rgb[i * 3 + 2]) for i in range(w * h)]
-    lo, hi = (min(lum), max(lum)) if stretch else (0.0, 255.0)
+    if lo is None:
+        lo = min(lum) if stretch else 0.0
+    if hi is None:
+        hi = max(lum) if stretch else 255.0
     span = max(30.0, hi - lo)
+    black = max(black, lo)
 
     out = bytearray(w * h)
     for y in range(h):
@@ -44,7 +57,12 @@ def quantise(rgb, w, h, black=24, stretch=True):
             i = y * w + x
             if lum[i] < black:
                 continue                       # stays 0
-            v = ((lum[i] - lo) / span) * (LEVELS - 0.001)
+            v = (lum[i] - lo) / span
+            if v > 1.0:
+                v = 1.0
+            if gamma != 1.0:
+                v = v ** gamma
+            v *= LEVELS - 0.001
             t = (BAYER4[y & 3][x & 3] + 0.5) / 16.0
             q = int(v + t - 0.5)
             out[i] = 0 if q < 0 else (LEVELS - 1 if q > LEVELS - 1 else q)

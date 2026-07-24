@@ -8,6 +8,7 @@ play.
     python3 tools/movies/import_gif.py cat.gif                  # 256x64
     python3 tools/movies/import_gif.py cat.gif --legacy         # 192x48 + install
     python3 tools/movies/import_gif.py cat.gif 256 64 --cover   # crop, don't letterbox
+    python3 tools/movies/import_gif.py reef.gif --keep=20       # subject only, bg to black
 
 The interesting work is not the decoding — it is that a GIF assumes things this
 display does not have:
@@ -15,6 +16,11 @@ display does not have:
   * **Colour.** Folded to luminance, then dithered to four levels. A GIF that
     reads by hue alone (red shape on green) becomes one flat blob. Check the
     ASCII dump before assuming it worked.
+  * **A whole tonal range.** Photographic footage uses all of it, and with four
+    levels a mid-grey background does not read as background — it becomes a 50%
+    dither pattern louder than the subject. `--keep=P` lights only the brightest
+    P% of the picture and crushes the rest to off, which is what turns busy
+    footage into something a head unit can actually show. See `pick_levels`.
   * **Its own frame timing.** GIFs carry a per-frame delay; a .dmv has one
     rate. Frames are resampled onto a fixed fps by sampling the GIF's timeline,
     so a 30 ms frame does not become a 100 ms one.
@@ -89,7 +95,36 @@ def saturation(img):
     return tot / lit if lit else 0.0
 
 
-def convert(path, w, h, fps, cover=False, black=20, stretch=True):
+def pick_levels(imgs, keep):
+    """Black and white points that light the brightest `keep` percent, fixed
+    for the whole movie.
+
+    Two decisions worth spelling out.
+
+    *Percentile, not a fixed threshold*, because the caller knows how much of
+    the picture is subject ("the fish, not the water") and does not know what
+    luminance the water happens to be.
+
+    *One value for every frame, not per-frame.* The default auto-stretch is
+    per-frame, which is fine for a rendered scene that always contains its own
+    black and white. On footage it pumps: a frame where the subject leaves
+    re-normalises the background up to full brightness and the panel flashes.
+    Sampling across the movie and freezing the result is what stops that.
+    """
+    lum = []
+    for img in imgs:
+        px = img.tobytes()
+        n = len(px) // 3
+        lum.extend(M.luma(px[i * 3], px[i * 3 + 1], px[i * 3 + 2])
+                   for i in range(0, n, 7))          # sampled; this is a histogram
+    lum.sort()
+    lo = lum[min(len(lum) - 1, int(len(lum) * (1.0 - keep / 100.0)))]
+    hi = lum[min(len(lum) - 1, int(len(lum) * 0.998))]   # ignore specular outliers
+    return lo, max(lo + 30.0, hi)
+
+
+def convert(path, w, h, fps, cover=False, black=20, stretch=True,
+            keep=None, gamma=1.0):
     im = Image.open(path)
     timeline, total_ms = gif_timeline(im)
     if not timeline:
@@ -97,9 +132,9 @@ def convert(path, w, h, fps, cover=False, black=20, stretch=True):
 
     step = 1000.0 / fps
     n_out = max(1, int(round(total_ms / step)))
-    frames = []
     seq = list(ImageSequence.Iterator(Image.open(path)))
 
+    fitted = []
     for k in range(n_out):
         want = k * step
         # last GIF frame whose start time has passed
@@ -109,16 +144,26 @@ def convert(path, w, h, fps, cover=False, black=20, stretch=True):
                 idx = i
             else:
                 break
-        img = fit(seq[idx], w, h, cover)
-        if k == n_out // 2:
-            sat = saturation(img)
-            if sat > 60:
-                print(f"\n  ! strongly coloured source (mean chroma {sat:.0f}/255).\n"
-                      "    The deck has no hue — anything that reads by colour\n"
-                      "    alone will merge into one shape. Check the dump below;\n"
-                      "    if it looks flat, raise the contrast in the source.")
-        frames.append(M.quantise(bytearray(img.tobytes()), w, h,
-                                 black=black, stretch=stretch))
+        fitted.append(fit(seq[idx], w, h, cover))
+
+    sat = saturation(fitted[n_out // 2])
+    if sat > 60:
+        print(f"  ! strongly coloured source (mean chroma {sat:.0f}/255).\n"
+              "    The deck has no hue — anything that reads by colour\n"
+              "    alone will merge into one shape. Check the dump below;\n"
+              "    if it looks flat, try --keep= to drop the background out.")
+
+    lo = hi = None
+    if keep is not None:
+        # every 4th frame is plenty for a histogram and keeps this quick
+        lo, hi = pick_levels(fitted[::4] or fitted, keep)
+        print(f"  levels: keeping the brightest {keep:g}% — "
+              f"black at {lo:.0f}/255, white at {hi:.0f}/255")
+
+    frames = []
+    for k, img in enumerate(fitted):
+        frames.append(M.quantise(bytearray(img.tobytes()), w, h, black=black,
+                                 stretch=stretch, lo=lo, hi=hi, gamma=gamma))
         print(f"  {k + 1}/{n_out}", end="\r", flush=True)
     print()
     return frames, n_out, total_ms
@@ -136,14 +181,21 @@ def main():
     h = int(args[2]) if len(args) > 2 else 64
     if legacy:
         w, h = 192, 48
-    fps = 10
+    fps, keep, gamma, name = 10, None, 1.0, None
     for f in flags:
         if f.startswith("--fps="):
             fps = int(f.split("=")[1])
+        elif f.startswith("--keep="):
+            keep = float(f.split("=")[1])
+        elif f.startswith("--gamma="):
+            gamma = float(f.split("=")[1])
+        elif f.startswith("--name="):
+            name = f.split("=", 1)[1]
 
-    name = os.path.splitext(os.path.basename(src))[0].upper()[:24]
+    name = (name or os.path.splitext(os.path.basename(src))[0]).upper()[:24]
     frames, n, total = convert(src, w, h, fps, cover="--cover" in flags,
-                               stretch="--no-stretch" not in flags)
+                               stretch="--no-stretch" not in flags,
+                               keep=keep, gamma=gamma)
 
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(here, "..", "..", "movies",
