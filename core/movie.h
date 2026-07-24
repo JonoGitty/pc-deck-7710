@@ -31,6 +31,25 @@
  * Frames are deltas against the previous frame, and the decoder starts from a
  * cleared grid — so frame 0 encodes everything lit, and looping means clearing
  * and replaying rather than seeking.
+ *
+ * WHERE THE BYTES COME FROM
+ *
+ * A movie is read strictly forwards. Nothing seeks except the rewind to frame
+ * 0 that looping does, and that is a rewind to a known offset, not a search.
+ * So the decoder does not need the file — it needs a thing that will hand over
+ * bytes at an offset, which is `deck_movie_src_t`.
+ *
+ * That is not abstraction for its own sake. A 256x64 movie is most of a
+ * megabyte; the ESP32's app partition is a megabyte and a half in a common
+ * 4 MB layout. Baking even one into the firmware image does not fit, and
+ * baking three is absurd. With a source, a movie lives in its own read-only
+ * partition, or on an SD card, and plays out of a 320-byte stack buffer at
+ * whatever size it happens to be. The flash cost of a movie stops being a
+ * firmware problem and becomes a "how big is your card" problem.
+ *
+ * `deck_movie_open` still takes a flat pointer, because in the browser preview
+ * and in the verifier the whole file genuinely is in memory, and because an
+ * ESP32 can memory-map a flash partition and get a flat pointer for free.
  */
 #ifndef DECK_MOVIE_H
 #define DECK_MOVIE_H
@@ -39,14 +58,28 @@
 
 #define DECK_MOVIE_MAGIC "DMV1"
 #define DECK_MOVIE_LOOP  0x01
+#define DECK_MOVIE_NAME_MAX 31
+
+/* Read `n` bytes at absolute offset `off` into `dst`; return how many were
+ * actually read. Short reads are treated as end-of-movie. Must be safe to call
+ * with any offset — the decoder relies on it to bound-check, not the caller. */
+typedef struct {
+  uint32_t (*read)(void *ctx, uint32_t off, uint8_t *dst, uint32_t n);
+  void     *ctx;
+  uint32_t  size;
+} deck_movie_src_t;
 
 typedef struct {
-  const uint8_t *data;
-  uint32_t       size;
+  deck_movie_src_t src;
+  /* Set only when opened over a flat buffer; `src.ctx` then points at this
+   * struct, so a deck_movie_t opened that way must not be moved or copied. */
+  const uint8_t *mem;
   uint16_t       w, h;
   uint8_t        fps, flags;
   uint16_t       frameCount;
-  const char    *name;
+  /* Copied, not borrowed: with a streaming source there is nothing to borrow
+   * from. Longer names are truncated rather than rejected. */
+  char           name[DECK_MOVIE_NAME_MAX + 1];
   uint8_t        nameLen;
   uint32_t       firstFrame;      /* byte offset of frame 0 */
 } deck_movie_t;
@@ -61,8 +94,13 @@ typedef struct {
   int                 done;       /* set on a non-looping movie's last frame */
 } deck_movie_play_t;
 
-/* Validate a .dmv in memory. Returns 1 on success, 0 if malformed. */
+/* Validate a .dmv. Returns 1 on success, 0 if malformed.
+ *
+ * `_open` wraps a flat buffer; `_open_src` takes any source. The source is
+ * copied into the movie, so the caller's deck_movie_src_t need not outlive the
+ * call — but whatever `ctx` points at must. */
 int  deck_movie_open(deck_movie_t *m, const uint8_t *data, uint32_t size);
+int  deck_movie_open_src(deck_movie_t *m, const deck_movie_src_t *src);
 
 /* Rewind to frame 0 and clear the grid. */
 void deck_movie_start(deck_movie_play_t *p, const deck_movie_t *m, uint8_t *grid);

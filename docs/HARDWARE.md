@@ -22,6 +22,7 @@ non-standard fascia.
 | **Futaba GP1294AI** | 256×48 | 1-bit | SPI, 3.3 V logic | ~6" | ~$15–40 ✅ | Real VFD. Sold as pulls from car radios. [u8g2 supports it](https://github.com/olikraus/u8g2/issues/2213) |
 | **Futaba GP1287BI** | 256×50 | 1-bit | SPI | ~6.1" | ~$16 ✅ | Same family, [known-good Arduino project](https://hackaday.io/project/194849-arduino-fft-spectrum-analyzer-on-vfddisplay-gp1287) |
 | **Noritake GU256×64D-3900B** | 256×64 | 1-bit | RS232 / parallel, USB opt. | 115 × 28.6 mm | RFQ only ⚠️ | Current production, industrial. Every distributor quotes rather than lists |
+| **4.58" bar IPS TFT** | 960×320 | **full colour** ✅ | 3-wire SPI **+ parallel RGB** | outline 118.8 × 41.57 mm, active 110.3 × 36.77 mm ✅ | ~$14 ✅ | **Fits 1-DIN with room to spare.** Needs a host with an RGB peripheral — see §1b |
 | **8.8" bar LCD** | 1920×480 | full colour | HDMI + USB | ~217 × 54 mm ⚠️ | ~£50–70 ⚠️ | **Too wide for a 1-DIN slot.** Desk/bench use, or a custom fascia |
 
 ### Decision — SSD1322 first, the rest scheduled
@@ -50,8 +51,62 @@ part the original decks used, unbeatable in daylight. Costs you the greyscale.
 - **OLED burn-in.** A head unit shows static annunciators for hours. The deck
   already has a screensaver and mode cycling, but a dedicated pixel-shift and
   an idle blank need to be in the firmware from day one.
-- Bar LCD physical dimensions are computed from the diagonal and aspect, not
-  read off a datasheet.
+- 8.8" bar LCD physical dimensions are computed from the diagonal and aspect,
+  not read off a datasheet.
+
+---
+
+## 1b. Colour — yes, and here is the exact catch
+
+The question "can this be in colour?" has a better answer than it used to, and
+a specific obstacle. Both halves matter.
+
+**The panel exists, it is cheap, and it fits.** A 4.58" bar-type IPS TFT,
+960 × 320 in landscape, is sold by several vendors off what appears to be one
+piece of glass — BuyDisplay list it as **ER-TFT4.58-1** at
+[**US$14.33**](https://www.buydisplay.com/bar-type-4-58-inch-320x960-ips-tft-lcd-display-spi-rgb-interface),
+and the same 118.8 × 41.57 mm outline / 110.3 × 36.77 mm active area appears
+under [ESHX046AQV8466ANT](https://www.lcdtftdisplays.com/quality-38363610-4-58-inch-bar-type-tft-display-320x960-40-pins-3spi-18rgb-interface-400c-d)
+and [DBC046AVN40R030A](https://www.aptusdisplay.com/products/4-6-inch-320x960-rgb-mipi-interface-ips-bar-type-tft-lcd-display).
+✅ Against a 180 × 50 mm single-DIN fascia that leaves 60 mm of width and 8 mm
+of height spare. It is the first colour option in this document that is not a
+compromise on fit.
+
+**It maps onto the deck's grid exactly.** 960 × 320 is 192 × 64 logical dots at
+5× — the legacy deck's exact width with sixteen rows added, landing in the same
+`DECK_TIER_CLASSIC` layout tier as the SSD1322. At 5× each logical dot is
+0.575 mm and can be drawn as a round bulb with a gap, which is the OEM
+dot-matrix look rather than a tablet pretending to be one. Colour also finally
+makes `DECK_CLIP` mean what the core has always said it means: level 4 renders
+red, and the illumination schemes stop being a PC-only feature.
+
+**The catch is the interface, and it is not negotiable.** The panel is
+ST7701S. On that part SPI is *configuration only* — pixel data must go over a
+parallel RGB bus, continuously refreshed, and no amount of cleverness gets a
+frame in over three wires. That needs a host with an RGB/DPI peripheral, and
+**the original ESP32 does not have one.** ESP-IDF publishes its RGB LCD driver
+for the S3 and later only; the same page
+[404s for `esp32`](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/lcd/rgb_lcd.html)
+and [resolves for `esp32s3`](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-reference/peripherals/lcd/rgb_lcd.html).
+✅ Plain ESP32 gets SPI, I²C and Intel-8080 parallel, and that is the list.
+
+So colour collides head-on with §2: the chip that can drive the panel is the
+chip that cannot do A2DP, and vice versa. Three ways out, none free:
+
+| Route | How | Cost |
+|---|---|---|
+| **Two chips** | ESP32 (WROVER-E) does Bluetooth and the analysis; an ESP32-S3 does nothing but hold the framebuffer and refresh the panel. They talk over SPI or UART — a frame of 192 × 64 intensities is 12 KB, or far less delta-coded, which is nothing at 10–30 fps | ~£8 and a second board |
+| **HMI panel** | The [same glass with an on-board controller and a UART command set](https://www.buydisplay.com/ips-4-58-inch-960x320-bar-type-hmi-display-intelligent-smart-uart-tft-lcd), US$28 ✅. One chip — but the deck pushes a full dot-matrix frame, not widgets, and whether that fits down a UART at frame rate is **unverified** ⚠️ | +$14, and a real risk it is too slow |
+| **Pi Zero 2 W** | DPI or DSI out, BlueZ for A2DP, one board | boots in 20–30 s, needs the SD-card protection of §3 |
+
+**Recommendation: two chips, and not yet.** The split is clean — it is exactly
+the `core/` + output-stage boundary the architecture already has, with a wire
+where a function call used to be — but it doubles the firmware surface on a
+firmware that has never run on hardware at all. Get the SSD1322 working first.
+Colour is a follow-on, and this section exists so that when someone does it
+they start from the right part number instead of the search results.
+
+⚠️ Nothing in this section has been bought, wired or run.
 
 ---
 
@@ -258,4 +313,5 @@ PC deck.
 | **Bench** | SSD1322 | ESP32-WROVER-E | ~£32 | Developing firmware on a desk |
 | **Car — greyscale** | SSD1322 | ESP32-WROVER-E | ~£82 | The recommended build |
 | **Car — authentic VFD** | GP1294AI | ESP32-WROVER-E | ~£92 | Real glass, 1-bit |
+| **Car — colour** ⚠️ | 4.58" bar IPS | ESP32-WROVER-E **+ ESP32-S3** | ~£90 | Fits 1-DIN, 960×320, but two chips and no firmware yet — see §1b |
 | **Desk — full colour** | 8.8" bar LCD | none, PC drives it | ~£90 | No firmware at all; the legacy PC deck on a second monitor |

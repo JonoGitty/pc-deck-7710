@@ -1,0 +1,25 @@
+# Partition table — 16 MB flash (ESP32-WROVER-E is sold in 4/8/16 MB).
+#
+# The size of this file is a direct consequence of one number: a 256x64 baked
+# movie is most of a megabyte. SOLAR is 848 KB, TOUGE 282 KB, DOLPHINS 347 KB.
+# They cannot go in the app image — a factory app is 1.5 MB and that has to
+# hold Bluetooth, WiFi, TLS, the FFT and the renderer — so they get their own
+# read-only partition and the decoder streams out of it. See core/movie.h.
+#
+# Two OTA slots, because updates arrive over BLE from a phone with no cable
+# and no console, and a failed flash that cannot roll back is a car with no
+# stereo until it comes out of the dash again.
+#
+# On a 4 MB part this does not fit: two 1.5 MB app slots leave under a
+# megabyte, which is one movie. Either drop to a single app slot and give up
+# rollback, or put movies on an SD card — the streaming source does not care
+# which, and that is the point of it.
+#
+# Name,     Type, SubType,  Offset,   Size,     Flags
+nvs,        data, nvs,      0x9000,   0x5000,
+otadata,    data, ota,      0xe000,   0x2000,
+app0,       app,  ota_0,    0x10000,  0x180000,
+app1,       app,  ota_1,    0x190000, 0x180000,
+# Everything below is content, not code, and survives an OTA untouched.
+movies,     data, 0x40,     0x310000, 0x8C0000,
+storage,    data, spiffs,   0xBD0000, 0x430000,

@@ -1,8 +1,12 @@
 # firmware/esp32 — the car deck
 
-ESP32-S3 + SSD1322. Bluetooth A2DP sink for audio, AVRCP for metadata and
-transport, WiFi to a phone hotspot for lyrics and album art, `core/` for every
-dot on the panel.
+**Original ESP32 (WROVER-E)** + SSD1322. Bluetooth A2DP sink for audio, AVRCP
+for metadata and transport, WiFi to a phone hotspot for lyrics and album art,
+`core/` for every dot on the panel.
+
+> Not the S3. The S3 has no Bluetooth Classic, so no A2DP, so no audio from a
+> phone — see [HARDWARE.md §2](../../docs/HARDWARE.md). The WROVER-E variant is
+> for the PSRAM, which album-art decoding needs.
 
 > **Status: skeleton, not yet run on hardware.** Nothing here has been flashed.
 > The structure, the pin map and the driver command sequences come from the
@@ -23,10 +27,37 @@ main/
   deck_config.c      NVS-backed settings: display, colour, brightness, mode
 components/
   deck_display/      panel drivers. SSD1322 first, GP1294AI next.
+  deck_movies/       baked movies, streamed out of their own flash partition
+partitions.csv       16 MB layout: two app slots, 8.75 MB of movies
 ```
 
 `core/` is pulled in as an IDF component from the repo root, unmodified — the
 same source the browser preview compiles.
+
+## Where the movies live, and why it is not in the app image
+
+A baked 256×64 movie is 300–850 KB. The app partition is 1.5 MB and has to hold
+Bluetooth, WiFi, TLS, the FFT and the renderer. One movie would take most of
+what is left; the four bundled ones total 1.4 MB and would not fit at all.
+
+So they do not go in the firmware. `partitions.csv` gives them 8.75 MB of their
+own, `tools/movies/pack.py` builds the image, and the decoder streams out of it
+through the source interface in `core/movie.h` — 320 bytes of stack at a time,
+never the whole file:
+
+```sh
+python3 tools/movies/pack.py build/movies.bin movies/*_256x64.dmv
+esptool.py write_flash 0x310000 build/movies.bin
+```
+
+Reflashing that partition changes the deck's movies without touching the
+firmware, and an OTA update leaves them alone. The same source interface takes
+an SD card instead, which is the answer on a 4 MB part where two app slots
+leave under a megabyte.
+
+`sh tools/verify/run.sh` packs the container and reads it back with an
+independent implementation, because the C that parses it at boot runs on a chip
+the test suite cannot execute.
 
 ## Why the render loop looks like it does
 
