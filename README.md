@@ -2,8 +2,8 @@
 
 A Pioneer-style OEM head-unit display for your PC. Whatever the machine plays —
 Spotify, YouTube, games — shows up live on an amber VFD faceplate: 13-band
-spectrum analyzer, VU needles, oscilloscope, waterfall, and the classic
-dolphin ocean screensaver when the music stops.
+spectrum analyzer, VU needles, oscilloscope, waterfall, album art, synced
+lyrics, and the classic dolphin ocean screensaver when the music stops.
 
 Co-designed with GPT 5.6 (Sol) — visual spec, ballistics, and the album-art
 dither idea came out of that consult.
@@ -16,8 +16,13 @@ starts the server if it isn't already running. Play music anywhere; the deck
 lights up on its own.
 
 - Audio: WASAPI loopback of the default output device (survives device switches).
-- Track/artist/album art: Windows SMTC — works with Spotify, browsers, most players.
-- Nothing is recorded or sent anywhere; it all stays on 127.0.0.1.
+- Track/artist/album art/playback position: Windows SMTC — works with Spotify,
+  browsers, most players.
+- Lyrics: looked up on [lrclib.net](https://lrclib.net) (open, no account). This
+  is the one thing that leaves the machine: on a track change the deck sends the
+  title, artist, album and duration to fetch the LRC. Nothing is recorded, and
+  no audio ever leaves; set `LYRICS_ENABLED = False` at the top of `server.py`
+  to keep the deck fully offline. Everything else stays on 127.0.0.1.
 
 Always-on: put a shortcut to `start.cmd` in `shell:startup`, drag the browser
 tab to the TV, press `T` for TV mode.
@@ -27,7 +32,10 @@ tab to the TV, press `T` for TV mode.
 | Control | Action |
 |---|---|
 | DISP / knob click / `D` | cycle display mode |
-| Presets 1–6 / keys `1–8` | jump straight to a mode |
+| Presets 1–6 / keys `1–9`, `0` | jump straight to a mode |
+| ART / `A` | album art screen — the sleeve, full time |
+| LYRICS / `L` | lyrics screen |
+| `[` / `]` | nudge lyric sync ±0.25 s when a track's LRC drifts |
 | BAND / `B` | force the ocean cruise (dolphins) |
 | EQ | LOUD on/off (loudness lamp + fatter bass bars) |
 | AUDIO | second line: artist ↔ clock |
@@ -54,7 +62,7 @@ for the **Panasonic TX-32LXD70** (1366×768): the head-unit display strip
 width-fills the screen, centred on black. The separate `F` / double-click
 fullscreen keeps the whole faceplate instead.
 
-## Display modes (keys 1–8)
+## Display modes (keys 1–9, 0)
 
 1. **Spectrum Analyzer** — 13-band segmented bars, 63 Hz–16 kHz, peak-hold dots
 2. **Mirror Spectrum** — L/R split growing out from centre
@@ -64,6 +72,10 @@ fullscreen keeps the whole faceplate instead.
 6. **Waterfall** — chunky 32×12 spectral memory climbing upward
 7. **3D Spectrum** — perspective-receding analyzer landscape with hidden-line removal
 8. **Ocean Cruise** — the dolphin movie as a full-time display
+9. **Album Art** — the dithered sleeve at full panel height, with title, artist,
+   elapsed/total time and a slim analyzer along the bottom
+10. **Lyrics** — synced LRC, current line hot and neighbours dim, long lines
+    wrapped, instrumental gaps shown as a rest that pulses with the bass
 
 The dolphins are rasterized from a smooth bezier silhouette per frame (rotation
 quantized to 10°, stepped 10 fps playback), so they arc through breaches like the
@@ -72,12 +84,30 @@ breach; high-frequency energy drives the bubbles.
 
 Idle behaviour, faithful to the era: music stops → 3 s → clock; 12 s → the
 dolphins take over; music returns → hard horizontal wipe back to the analyzer.
+The two metadata screens (Album Art, Lyrics) are the exception — they are about
+the track rather than the audio, so they hold through a pause instead of handing
+over to the clock.
+
 On every track change the album art is ordered-dithered into a 3-tone amber
-bitmap and shown as a "NOW PLAYING" interstitial for two seconds.
+bitmap and shown as a "NOW PLAYING" interstitial for two seconds — unchanged,
+including on the album art and lyrics screens. The art is dithered twice: 40×40
+for that interstitial and 48×48 for the full-height cover screen.
+
+## Lyrics
+
+Synced lyrics come from LRCLIB — an exact title/artist/album/duration match
+first, then a looser search, falling back to plain (unsynced) text paced by
+track progress and marked `NO SYNC`. The playback head comes from SMTC once a
+second and is interpolated between updates, so lines land on the beat. If a
+track's LRC is offset, `[` and `]` trim the sync in 0.25 s steps (shown bottom
+left, reset on the next track). Lyrics are folded to the 5×7 character ROM —
+accents stripped, curly quotes squared off — and a line in a script the ROM
+can't draw shows as a rest rather than a row of `?`.
 
 ## Files
 
-- `server.py` — WASAPI loopback capture, 13-band FFT, SMTC metadata, WebSocket
+- `server.py` — WASAPI loopback capture, 13-band FFT, SMTC metadata + playback
+  position, LRCLIB lyrics lookup, WebSocket
 - `web/` — the faceplate: `app.js` (renderer/state), `viz.js` (modes),
   `dolphin.js` (ocean movie), `font.js` (5×7 + 3×5 dot fonts)
 - `launch.ps1` — opens the deck, starting the server if needed (used by the
@@ -85,7 +115,7 @@ bitmap and shown as a "NOW PLAYING" interstitial for two seconds.
 - `start.cmd` — double-click launcher
 
 Tunables at the top of `server.py`: `DB_FLOOR` (sensitivity), `DB_TILT`
-(treble lift), `BROADCAST_FPS`.
+(treble lift), `BROADCAST_FPS`, `LYRICS_ENABLED`.
 
 ## `music visualiser` command
 

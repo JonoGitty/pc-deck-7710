@@ -3,23 +3,33 @@ PC-DECK 7710 — Pioneer-style OEM head-unit display for PC audio.
 
 Captures whatever the machine is playing (Spotify, browser, games) via WASAPI
 loopback, runs a 13-band analysis + oscilloscope feed, reads now-playing
-metadata/album art from Windows SMTC, and streams it all to the faceplate UI
-over a WebSocket at http://127.0.0.1:7710
+metadata/album art/playback position from Windows SMTC, looks up lyrics, and
+streams it all to the faceplate UI over a WebSocket at http://127.0.0.1:7710
 """
 
 import asyncio
 import base64
 import json
+import re
 import threading
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
+import aiohttp
 import numpy as np
 import pyaudiowpatch as pyaudio
 from aiohttp import web, WSMsgType
 
 PORT = 7710
 WEB = Path(__file__).parent / "web"
+
+# Lyrics: the only thing on the deck that leaves the machine. When enabled, a
+# track change sends title/artist/album/duration to lrclib.net (an open, no-key
+# lyrics database) to fetch the LRC. Set False to keep the deck fully offline.
+LYRICS_ENABLED = True
+LYRICS_API = "https://lrclib.net/api"
+LYRICS_UA = "pc-deck-7710 (local head-unit display)"
 
 # 13-band analyzer, 63 Hz .. 16 kHz (classic head-unit spacing)
 BAND_CENTERS = [63, 100, 160, 250, 400, 630, 1000, 1600, 2500, 4000, 6300, 10000, 16000]
@@ -49,6 +59,20 @@ _meta = {
     "app": "",
     "status": "stopped",
     "art": None,            # data URL or None
+}
+_pos = {                    # playback head, pushed once a second
+    "type": "pos",
+    "position": 0.0,        # seconds into the track
+    "duration": 0.0,        # 0 when unknown
+    "status": "stopped",
+}
+_lyrics = {                 # last lyrics lookup result
+    "type": "lyrics",
+    "key": "",              # title\x1fartist the lines belong to
+    "state": "idle",        # idle | searching | ok | none
+    "synced": False,
+    "lines": [],            # [[seconds|null, "text"], ...]
+    "source": "",
 }
 _clients: set = set()
 
@@ -145,6 +169,78 @@ def audio_thread():
                 pass
 
 
+# ---------------------------------------------------------------- lyrics
+_LRC_TAG = re.compile(r"\[(\d{1,3}):(\d{1,2}(?:[.:]\d{1,3})?)\]")
+
+
+def parse_lrc(text: str) -> list:
+    """LRC -> [[seconds, line], ...]. Blank bodies are kept: they are the
+    instrumental gaps, and the faceplate shows them as a rest."""
+    out = []
+    for raw in text.splitlines():
+        tags = list(_LRC_TAG.finditer(raw))
+        if not tags:
+            continue
+        body = raw[tags[-1].end():].strip()
+        for m in tags:                       # one line can carry several stamps
+            secs = int(m.group(1)) * 60 + float(m.group(2).replace(":", "."))
+            out.append([round(secs, 2), body])
+    out.sort(key=lambda r: r[0])
+    return out
+
+
+async def _lrclib(session, path: str, params: dict):
+    async with session.get(f"{LYRICS_API}/{path}", params=params) as r:
+        if r.status != 200:
+            return None
+        return await r.json()
+
+
+async def fetch_lyrics(title, artist, album, duration):
+    """Exact LRCLIB match first, then a looser search. -> (synced, lines)."""
+    params = {"track_name": title, "artist_name": artist}
+    if album:
+        params["album_name"] = album
+    if duration:
+        params["duration"] = str(int(round(duration)))
+    timeout = aiohttp.ClientTimeout(total=8)
+    async with aiohttp.ClientSession(timeout=timeout,
+                                     headers={"User-Agent": LYRICS_UA}) as s:
+        rec = await _lrclib(s, "get", params)
+        if not rec:
+            hits = await _lrclib(s, "search", {"track_name": title,
+                                               "artist_name": artist}) or []
+            rec = next((h for h in hits if h.get("syncedLyrics")), None) or \
+                (hits[0] if hits else None)
+        if not rec:
+            return False, []
+        if rec.get("syncedLyrics"):
+            lines = parse_lrc(rec["syncedLyrics"])
+            if lines:
+                return True, lines
+        if rec.get("plainLyrics"):
+            return False, [[None, l.strip()] for l in rec["plainLyrics"].splitlines()]
+    return False, []
+
+
+async def lyrics_task(key, title, artist, album, duration):
+    """Look a track's lyrics up in the background; drop the result if the
+    track has moved on by the time it lands."""
+    global _lyrics
+    try:
+        synced, lines = await fetch_lyrics(title, artist, album, duration)
+    except Exception as e:
+        print(f"[lyrics] lookup failed ({e})")
+        synced, lines = False, []
+    if _lyrics.get("key") != key:
+        return
+    _lyrics = {"type": "lyrics", "key": key, "state": "ok" if lines else "none",
+               "synced": synced, "lines": lines, "source": "LRCLIB"}
+    kind = "synced" if synced else ("plain" if lines else "none")
+    print(f"[lyrics] {title} — {kind} ({len(lines)} lines)")
+    await broadcast(json.dumps(_lyrics))
+
+
 # ---------------------------------------------------------------- SMTC metadata
 async def _read_art(thumb_ref) -> str | None:
     from winsdk.windows.storage.streams import Buffer, DataReader, InputStreamOptions
@@ -165,6 +261,23 @@ async def _read_art(thumb_ref) -> str | None:
         return None
 
 
+def _timeline(session, playing: bool):
+    """(position, duration) in seconds, extrapolated from the last SMTC update."""
+    try:
+        tl = session.get_timeline_properties()
+        start = tl.start_time.total_seconds()
+        duration = max(0.0, tl.end_time.total_seconds() - start)
+        pos = max(0.0, tl.position.total_seconds() - start)
+        if playing and tl.last_updated_time is not None:
+            age = (datetime.now(timezone.utc) - tl.last_updated_time).total_seconds()
+            pos += min(max(age, 0.0), 5.0)     # apps report lazily; never trust a big gap
+        if duration:
+            pos = min(pos, duration)
+        return round(pos, 2), round(duration, 2)
+    except Exception:
+        return 0.0, 0.0
+
+
 async def smtc_task():
     from winsdk.windows.media.control import (
         GlobalSystemMediaTransportControlsSessionManager as Manager,
@@ -175,6 +288,7 @@ async def smtc_task():
         try:
             mgr = await Manager.request_async()
             session = mgr.get_current_session()
+            pos = dur = 0.0
             if session is None:
                 update = {"title": "", "artist": "", "album": "", "app": "",
                           "status": "stopped", "art": None}
@@ -194,13 +308,34 @@ async def smtc_task():
                     update["art"] = await _read_art(props.thumbnail) if props.thumbnail else None
                 else:
                     update["art"] = _meta["art"]
+                pos, dur = _timeline(session, status == "playing")
             if key != last_key:
                 last_key = key
                 _meta.update(update)
                 await broadcast(json.dumps(_meta))
+                await _sync_lyrics(update, dur)
+            _pos.update({"position": pos, "duration": dur,
+                         "status": update["status"]})
+            await broadcast(json.dumps(_pos))
         except Exception as e:
             print(f"[smtc] {e}")
         await asyncio.sleep(1.0)
+
+
+async def _sync_lyrics(meta: dict, duration: float):
+    """Kick off a lookup when the track (not just the play state) changed."""
+    global _lyrics
+    title, artist = meta["title"], meta["artist"]
+    key = f"{title}\x1f{artist}"
+    if key == _lyrics.get("key"):
+        return
+    searching = bool(LYRICS_ENABLED and title)
+    _lyrics = {"type": "lyrics", "key": key,
+               "state": "searching" if searching else "none",
+               "synced": False, "lines": [], "source": "LRCLIB" if searching else ""}
+    await broadcast(json.dumps(_lyrics))
+    if searching:
+        asyncio.create_task(lyrics_task(key, title, artist, meta["album"], duration))
 
 
 # ---------------------------------------------------------------- web + ws
@@ -229,6 +364,8 @@ async def ws_handler(request):
     await ws.prepare(request)
     _clients.add(ws)
     await ws.send_str(json.dumps(_meta))
+    await ws.send_str(json.dumps(_pos))
+    await ws.send_str(json.dumps(_lyrics))
     try:
         async for msg in ws:
             if msg.type == WSMsgType.ERROR:

@@ -2,6 +2,7 @@
 "use strict";
 
 const GRID_W = 192, GRID_H = 48, CELL = 4, PAD = 8;
+const LYRIC_CELLS = 30;         // 5x7 glyphs at 6 px pitch, with a margin
 
 // Sol's VFD palette
 const PAL = {
@@ -154,7 +155,20 @@ const V = {                     // smoothed values the visualizers read
   wave: new Array(96).fill(0), waveHist: [], wfHist: [], scopeGain: 1,
   bassAvg: 0, hfAvg: 0, rms01: 0, clip: false, oceanTick: 0,
 };
-const META = { title: "", artist: "", album: "", app: "", status: "stopped", artFb: null };
+const META = {
+  title: "", artist: "", album: "", app: "", status: "stopped",
+  artFb: null,                  // 40x40 dither for the NOW PLAYING interstitial
+  artBig: null,                 // 48x48 dither for the full-time cover screen
+};
+// playback head, from SMTC once a second; interpolated between updates
+const POS = { base: 0, at: 0, duration: 0, status: "stopped" };
+// lyrics for the current track, wrapped into display rows
+const LYR = {
+  key: "", state: "idle",       // idle | searching | ok | none
+  synced: false, lines: [],     // [[seconds|null, text], ...]
+  rows: [], rowStart: [],       // wrapped rows + first row of each lyric line
+  offset: 0,                    // manual sync trim, ms
+};
 const UI = {
   mode: 0, illum: 0, loud: false, secondClock: false, bright: 1, forceSaver: false,
   state: "live",                // live | simplified | saver | nowplaying | nosignal
@@ -162,6 +176,7 @@ const UI = {
   flashText: "", flashUntil: 0,
   wipeStart: 0,                 // horizontal wipe on state return
   scroll: { offset: 0, phase: 0, t: 0 },
+  coverScroll: { offset: 0, phase: 0, t: 0 },
   connected: false,
   demo: false, demoNext: 0,     // attract loop: auto-cycle every display
 };
@@ -177,18 +192,26 @@ function connect() {
                          rmsL: m.rmsL, rmsR: m.rmsR, wave: m.wave, clip: m.clip });
       A.lastMsg = performance.now();
     } else if (m.type === "meta") {
-      const newTrack = m.title && (m.title !== META.title || m.artist !== META.artist);
-      Object.assign(META, { title: m.title, artist: m.artist, album: m.album,
-                            app: m.app, status: m.status });
+      const title = deckText(m.title), artist = deckText(m.artist);
+      const newTrack = title && (title !== META.title || artist !== META.artist);
+      Object.assign(META, { title, artist, album: deckText(m.album),
+                            app: deckText(m.app), status: m.status });
       document.title = m.title ? `${m.title} — PC·DECK 7710` : "PC·DECK 7710";
-      if (m.art) ditherArt(m.art); else if (newTrack) META.artFb = null;
+      if (m.art) ditherArt(m.art);
+      else if (newTrack) { META.artFb = null; META.artBig = null; }
       if (newTrack) {
         UI.scroll = { offset: 0, phase: 0, t: 0 };
+        UI.coverScroll = { offset: 0, phase: 0, t: 0 };
         if (UI.state === "live" || UI.state === "nowplaying") {
           UI.state = "nowplaying";
           UI.npUntil = performance.now() + 2300;
         }
       }
+    } else if (m.type === "pos") {
+      POS.base = m.position; POS.at = performance.now();
+      POS.duration = m.duration; POS.status = m.status;
+    } else if (m.type === "lyrics") {
+      setLyrics(m);
     }
   };
   ws.onclose = () => { UI.connected = false; setTimeout(connect, 1500); };
@@ -200,34 +223,107 @@ connect();
 const BAYER4 = [
   [0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5],
 ];
+function ditherSquare(img, S) {
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const g = c.getContext("2d");
+  const m = Math.min(img.width, img.height);
+  g.drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, S, S);
+  const d = g.getImageData(0, 0, S, S).data;
+  const out = new Uint8Array(S * S);
+  // contrast-stretch luminance, then 4x4 ordered dither into 4 amber levels
+  let lo = 255, hi = 0;
+  const lum = new Float32Array(S * S);
+  for (let i = 0; i < S * S; i++) {
+    const l = 0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2];
+    lum[i] = l; if (l < lo) lo = l; if (l > hi) hi = l;
+  }
+  const span = Math.max(30, hi - lo);
+  for (let y = 0; y < S; y++)
+    for (let x = 0; x < S; x++) {
+      const v = ((lum[y * S + x] - lo) / span) * 3.999;
+      const t = (BAYER4[y & 3][x & 3] + 0.5) / 16;
+      out[y * S + x] = Math.max(0, Math.min(3, Math.floor(v + t - 0.5)));
+    }
+  return out;
+}
+
 function ditherArt(dataUrl) {
   const img = new Image();
   img.onload = () => {
-    const S = 40, c = document.createElement("canvas");
-    c.width = c.height = S;
-    const g = c.getContext("2d");
-    const m = Math.min(img.width, img.height);
-    g.drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, S, S);
-    const d = g.getImageData(0, 0, S, S).data;
-    const out = new Uint8Array(S * S);
-    // contrast-stretch luminance, then 4x4 ordered dither into 4 amber levels
-    let lo = 255, hi = 0;
-    const lum = new Float32Array(S * S);
-    for (let i = 0; i < S * S; i++) {
-      const l = 0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2];
-      lum[i] = l; if (l < lo) lo = l; if (l > hi) hi = l;
-    }
-    const span = Math.max(30, hi - lo);
-    for (let y = 0; y < S; y++)
-      for (let x = 0; x < S; x++) {
-        const v = ((lum[y * S + x] - lo) / span) * 3.999;
-        const t = (BAYER4[y & 3][x & 3] + 0.5) / 16;
-        out[y * S + x] = Math.max(0, Math.min(3, Math.floor(v + t - 0.5)));
-      }
-    META.artFb = out;
+    META.artFb = ditherSquare(img, 40);      // interstitial, beside the text
+    META.artBig = ditherSquare(img, 48);     // cover screen, full panel height
   };
   img.src = dataUrl;
 }
+
+// ---------------------------------------------------------------- text
+// The character ROM is 5x7 uppercase ASCII, so fold everything else down to it:
+// accents stripped, typographic punctuation squared off. Without this, half the
+// apostrophes in a lyric sheet come back as "?".
+function deckText(s) {
+  return (s || "")
+    .normalize("NFKD").replace(/[̀-ͯ]/g, "")
+    .replace(/[‘’ʼ′]/g, "'")
+    .replace(/[“”″]/g, '"')
+    .replace(/[–—−]/g, "-")
+    .replace(/…/g, "...")
+    .replace(/[^\x20-\x7e]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// ---------------------------------------------------------------- lyrics
+// Wrap each lyric line to the display width, keeping a map back to the line it
+// came from so the "current" line highlights across all of its wrapped rows.
+function wrapLyric(text, cells) {
+  if (!text) return [""];
+  const words = text.split(/\s+/).filter(Boolean);
+  const rows = [];
+  let line = "";
+  for (let w of words) {
+    while (w.length > cells) {                 // a single monster word
+      if (line) { rows.push(line); line = ""; }
+      rows.push(w.slice(0, cells));
+      w = w.slice(cells);
+    }
+    if (!line) line = w;
+    else if (line.length + 1 + w.length <= cells) line += " " + w;
+    else { rows.push(line); line = w; }
+  }
+  if (line) rows.push(line);
+  return rows.length ? rows : [""];
+}
+
+function setLyrics(m) {
+  LYR.key = m.key; LYR.state = m.state; LYR.synced = m.synced;
+  LYR.lines = m.lines || [];
+  LYR.offset = 0;
+  LYR.rows = []; LYR.rowStart = [];
+  LYR.lines.forEach((ln, i) => {
+    LYR.rowStart[i] = LYR.rows.length;
+    for (const text of wrapLyric(deckText(ln[1]), LYRIC_CELLS)) LYR.rows.push({ i, text });
+  });
+}
+
+// Binary search: index of the last lyric line whose stamp has passed.
+function lyricIndexAt(t) {
+  let lo = 0, hi = LYR.lines.length - 1, res = -1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (LYR.lines[mid][0] <= t) { res = mid; lo = mid + 1; } else hi = mid - 1;
+  }
+  return res;
+}
+
+// Seconds into the current track, interpolated between SMTC updates.
+function trackPos(now) {
+  if (!POS.at) return 0;
+  const t = POS.status === "playing" ? POS.base + (now - POS.at) / 1000 : POS.base;
+  return POS.duration ? Math.min(t, POS.duration) : t;
+}
+
+function trackKey() { return `${META.title}\x1f${META.artist}`; }
 
 // ---------------------------------------------------------------- ballistics
 function stepAnalysis(dt, now) {
@@ -314,6 +410,11 @@ function stepState(dt, now) {
   if (!silent) {
     if (UI.state !== "live") UI.wipeStart = now;   // hard wipe back in
     UI.state = "live";
+  } else if (MODES[UI.mode].holdIdle) {
+    // cover art / lyrics are about the track, not the audio: they stay up
+    // through a pause instead of handing over to the clock and the dolphins
+    if (UI.state !== "live") UI.wipeStart = now;
+    UI.state = "live";
   } else if (UI.silentMs > 12000) {
     UI.state = "saver";
   } else if (UI.silentMs > 3000) {
@@ -348,9 +449,10 @@ function drawAnnunciators(now) {
   drawText3(fb, 176, 0, "OVER", V.clip ? 4 : 1);
 }
 
-function stepScroll(dt, text, cells) {
+function stepScroll(dt, text, cells) { return scrollText(UI.scroll, dt, text, cells); }
+
+function scrollText(sc, dt, text, cells) {
   // hold 1.2s -> scroll 8 cells/s -> 5 blank cells -> pause -> repeat
-  const sc = UI.scroll;
   if (text.length <= cells) { sc.offset = 0; return text; }
   const loop = text + "     ";
   sc.t += dt;
@@ -369,7 +471,7 @@ function composeLive(dt, now) {
   const title = META.title || (META.status === "playing" ? "" : "PC DECK 7710");
 
   if (mode.big === "full") {
-    mode.draw(fb, V);
+    mode.draw(fb, V, dt, now);
     if (now < UI.flashUntil) drawText3(fb, 2, 0, UI.flashText, 3);
     return;
   }
@@ -385,7 +487,7 @@ function composeLive(dt, now) {
   } else if (now < UI.flashUntil) {
     drawText3(fb, 2, 25, UI.flashText, 3);
   }
-  mode.draw(fb, V);
+  mode.draw(fb, V, dt, now);
 }
 
 function composeSimplified(now) {
@@ -469,6 +571,14 @@ function updatePresets() {
     el.classList.toggle("lit", n === UI.mode));
 }
 
+function modeIndex(id) { return MODES.findIndex((m) => m.id === id); }
+
+function nudgeLyrics(ms) {
+  LYR.offset += ms;
+  flash("LYRIC SYNC " + (LYR.offset >= 0 ? "+" : "-") +
+        Math.abs(LYR.offset / 1000).toFixed(2) + "S");
+}
+
 function setMode(i) {
   UI.mode = ((i % MODES.length) + MODES.length) % MODES.length;
   UI.forceSaver = false;
@@ -509,6 +619,8 @@ bind("btn-eq", () => { UI.loud = !UI.loud; flash(UI.loud ? "LOUDNESS ON" : "LOUD
 bind("btn-audio", () => { UI.secondClock = !UI.secondClock; });
 bind("btn-illum", cycleColor);
 bind("btn-demo", toggleDemo);
+bind("btn-art", () => setMode(modeIndex("COVER")));
+bind("btn-lyr", () => setMode(modeIndex("LYRICS")));
 bind("btn-src", () => flash("SOURCE · " + (META.app || "PC")));
 document.querySelectorAll(".preset").forEach((el, n) =>
   el.addEventListener("click", () => { beep(1568); setMode(n); }));
@@ -549,5 +661,10 @@ addEventListener("keydown", (ev) => {
   if (ev.key === "m" || ev.key === "M") { beep(); toggleDemo(); }
   if (ev.key === "t" || ev.key === "T") { beep(); toggleTV(); }
   if (ev.key === "f" || ev.key === "F") { beep(); toggleUnitFull(); }
-  if (ev.key >= "1" && ev.key <= "8") { beep(1568); setMode(Number(ev.key) - 1); }
+  if (ev.key === "a" || ev.key === "A") { beep(1568); setMode(modeIndex("COVER")); }
+  if (ev.key === "l" || ev.key === "L") { beep(1568); setMode(modeIndex("LYRICS")); }
+  if (ev.key === "[") { nudgeLyrics(-250); }        // lyrics running early: hold back
+  if (ev.key === "]") { nudgeLyrics(250); }         // lyrics running late: pull forward
+  if (ev.key >= "1" && ev.key <= "9") { beep(1568); setMode(Number(ev.key) - 1); }
+  if (ev.key === "0") { beep(1568); setMode(9); }
 });

@@ -173,6 +173,113 @@ function vizOcean(fb, V) {
   oceanFrame(fb, V.oceanTick, { rms01: V.rms01, hf01: V.hfAvg, bass01: V.bassAvg });
 }
 
+// --- 9. album art, full time ----------------------------------------------
+// The NOW PLAYING interstitial keeps its two-second cameo; this is the same
+// dithered sleeve as a display you can sit on, at the full 48-dot panel height.
+function _timeStr(sec) {
+  const s = Math.max(0, Math.floor(sec));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+function _progressBar(fb, y, x0, x1, frac) {
+  const edge = x0 + Math.round((x1 - x0) * Math.max(0, Math.min(1, frac)));
+  for (let x = x0; x <= x1; x++)
+    if (x <= edge) setDot(fb, x, y, 2);
+    else if ((x - x0) % 3 === 0) setDot(fb, x, y, 1);
+}
+
+function vizCover(fb, V, dt, now) {
+  const S = 48, ax = 2;
+  if (META.artBig) {
+    for (let y = 0; y < S; y++)
+      for (let x = 0; x < S; x++) {
+        const v = META.artBig[y * S + x];
+        if (v) setDot(fb, ax + x, y, v);
+      }
+  } else {                                   // empty sleeve
+    for (let x = 0; x < S; x++) { setDot(fb, ax + x, 0, 1); setDot(fb, ax + x, S - 1, 1); }
+    for (let y = 0; y < S; y++) { setDot(fb, ax, y, 1); setDot(fb, ax + S - 1, y, 1); }
+    drawText5(fb, ax + 19, 14, "♪", 2, 2);
+    drawText3(fb, ax + 12, 34, "NO ART", 1);
+  }
+
+  const tx = ax + S + 10;                    // text column, right of the sleeve
+  const cells = Math.floor((GRID_W - tx - 2) / 6);
+  drawText3(fb, tx, 2, (META.app || "PC").slice(0, 8), 1);
+  const el = POS.duration ? `${_timeStr(trackPos(now))}/${_timeStr(POS.duration)}`
+                          : clockStr(now);
+  drawText3(fb, GRID_W - 2 - textWidth3(el), 2, el, 1);
+
+  const title = META.title || "PC DECK 7710";
+  drawText5(fb, tx, 11, scrollText(UI.coverScroll, dt, title, cells), 3, 1);
+  drawText5(fb, tx, 21, (META.artist || "").slice(0, cells), 2, 1);
+  drawText3(fb, tx, 31, (META.album || "").toUpperCase().slice(0, Math.floor((GRID_W - tx - 2) / 4)), 1);
+
+  // a slim analyzer along the bottom so the sleeve still breathes with the music
+  const bw = 8, pitch = 10, segs = 3, segH = 2;
+  for (let b = 0; b < 13; b++) {
+    const x0 = tx + b * pitch;
+    if (x0 + bw > GRID_W) break;
+    const lit = Math.round(V.bands[b] * segs);
+    for (let s = 0; s < lit; s++)
+      for (let dy = 0; dy < segH; dy++)
+        for (let x = 0; x < bw; x++)
+          setDot(fb, x0 + x, 45 - s * segH - dy, s >= segs - 1 ? 3 : 2);
+    for (let x = 0; x < bw; x++) setDot(fb, x0 + x, 47, 1);   // baseline rail
+  }
+}
+
+// --- 10. lyrics -------------------------------------------------------------
+// Synced LRC scrolls with the playback head (current line hot, neighbours dim);
+// unsynced words are paced by track progress. Long lines wrap, and the
+// instrumental gaps show a rest that pulses with the bass.
+const LYRIC_Y = [1, 12, 23, 34];        // 4 rows, clear of the status row at 42
+
+function _centre5(fb, y, text, intensity) {
+  const x = Math.max(0, Math.floor((GRID_W - textWidth5(text, 1)) / 2));
+  drawText5(fb, x, y, text, intensity, 1);
+}
+
+function vizLyrics(fb, V, dt, now) {
+  const pos = trackPos(now) + LYR.offset / 1000;
+
+  if (LYR.state !== "ok" || !LYR.rows.length) {
+    const msg = LYR.state === "searching"
+      ? "SEARCHING LYRICS" + ".".repeat(Math.floor(now / 400) % 4)
+      : META.title ? "NO LYRICS FOUND" : "NO TRACK";
+    _centre5(fb, 14, msg, 2);
+    if (META.title) _centre5(fb, 27, META.title.slice(0, LYRIC_CELLS), 1);
+    if (META.artist) _centre5(fb, 37, META.artist.slice(0, LYRIC_CELLS), 1);
+    return;
+  }
+
+  let cur = -1, top;
+  if (LYR.synced) {
+    cur = lyricIndexAt(pos);
+    top = (cur >= 0 ? LYR.rowStart[cur] : 0) - 1;
+  } else {
+    const frac = POS.duration ? pos / POS.duration : 0;
+    top = Math.floor(Math.max(0, Math.min(1, frac)) * Math.max(1, LYR.rows.length - 3));
+  }
+  top = Math.max(0, Math.min(top, Math.max(0, LYR.rows.length - LYRIC_Y.length)));
+
+  for (let k = 0; k < LYRIC_Y.length; k++) {
+    const row = LYR.rows[top + k];
+    if (!row) break;
+    const isCur = LYR.synced && cur >= 0 && row.i === cur;
+    if (isCur && !row.text) {                       // instrumental rest
+      _centre5(fb, LYRIC_Y[k], "♪", V.bassAvg > 0.45 ? 3 : 2);
+      continue;                                     // rest, not a blank line
+    }
+    _centre5(fb, LYRIC_Y[k], row.text, LYR.synced ? (isCur ? 3 : 1) : 2);
+  }
+
+  if (POS.duration) _progressBar(fb, 47, 4, GRID_W - 5, pos / POS.duration);
+  if (LYR.offset) drawText3(fb, 2, 42, (LYR.offset > 0 ? "+" : "-") +
+                            Math.abs(LYR.offset / 1000).toFixed(2) + "S", 1);
+  if (!LYR.synced) drawText3(fb, GRID_W - 2 - textWidth3("NO SYNC"), 42, "NO SYNC", 1);
+}
+
 const MODES = [
   { id: "SPECTRUM",  name: "SPECTRUM ANALYZER", draw: vizSpectrum,  big: false },
   { id: "MIRROR",    name: "MIRROR SPECTRUM",   draw: vizMirror,    big: false },
@@ -182,4 +289,6 @@ const MODES = [
   { id: "WATERFALL", name: "WATERFALL",         draw: vizWaterfall, big: true  },
   { id: "3D",        name: "3D SPECTRUM",       draw: viz3D,        big: true  },
   { id: "OCEAN",     name: "OCEAN CRUISE",      draw: vizOcean,     big: "full" },
+  { id: "COVER",     name: "ALBUM ART",         draw: vizCover,     big: "full", holdIdle: true },
+  { id: "LYRICS",    name: "LYRICS",            draw: vizLyrics,    big: "full", holdIdle: true },
 ];
