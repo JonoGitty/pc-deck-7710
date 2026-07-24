@@ -7,7 +7,7 @@
 | **Renderer** | Portable C99, compiled to both WASM (preview) and native (firmware) |
 | **First brain** | ESP32 **WROVER-E** (dual-mode BT — the S3 has no Classic BT and so cannot do A2DP). Pi kept as an alternative |
 | **First display** | SSD1322 256×64. The others stay scheduled, not dropped |
-| **Movies** | Compiled into the firmware; dolphins stay the default and stay procedural |
+| **Movies** | Streamed from their own flash partition (they are too big for the app image); dolphins stay the default and stay procedural |
 | **Updates** | OTA over BLE, only while idle |
 | **Control** | Full transport + volume back to the phone over AVRCP |
 | **Legacy split** | Done — the PC deck lives in `legacy/`, still launched by the same commands |
@@ -30,7 +30,7 @@ So the renderer becomes **portable C99 with no dependencies**, compiled two ways
 ```
                     ┌── WASM ──────► browser preview (any display emulated)
    core/ (C99) ─────┤
-                    ├── ESP32-S3 ──► firmware
+                    ├── ESP32 ────► firmware
                     └── Linux/Pi ──► firmware
 ```
 
@@ -119,7 +119,7 @@ Every platform produces the same event stream, so the renderer is identical:
    - Every port step is verified against the JS original by rendering the same
      cases both ways and diffing framebuffers — `sh tools/verify/run.sh`. A
      screen is not ported until it matches.
-2. **Bench firmware.** ESP32-S3 + SSD1322 on a desk. Bluetooth, audio, display.
+2. **Bench firmware.** ESP32 WROVER-E + SSD1322 on a desk. Bluetooth, audio, display.
 3. **Car build.** Power, ignition, enclosure, controls.
 4. **Guides.** Per-display build docs, diagrams, downloadable firmware packages,
    and a `CLAUDE.md` so others can get an assistant to walk them through it.

@@ -1,153 +1,223 @@
-# PC·DECK 7710
+<h1 align="center">DECK·7710</h1>
 
-> **Where this is going.** This started as a PC music visualiser and is becoming
-> an open-source kit for building your own 1-DIN head unit — pick a display,
-> preview it in the browser before buying anything, flash the firmware for your
-> setup. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md),
-> [docs/HARDWARE.md](docs/HARDWARE.md) and [docs/UI-SPEC.md](docs/UI-SPEC.md).
->
-> The PC version documented below keeps working, and will stay working — and it
-> gained a **MOVIE** screen (`V`), so animations made for a head unit can be
-> watched on the PC first.
->
-> **Make your own animations.** A pure-Python 3D renderer builds them for
-> whichever display you have, hardware or not — or import any animated GIF.
-> Four come bundled: `SPIN`, `SOLAR`, `DOLPHINS` and `TOUGE`.
-> See [docs/MOVIE-RENDERING.md](docs/MOVIE-RENDERING.md), or ask Claude:
-> [CLAUDE.md](CLAUDE.md) tells it how to pick the format for your display.
+<p align="center">
+  <b>Build your own 1-DIN car head unit.</b><br>
+  One portable C renderer drives real glass, a browser preview and a PC
+  visualiser — the same code, the same dots, on all three.
+</p>
 
-![SOLAR — a solar system tour rendered for a 256×64 head-unit panel](docs/media/solar.gif)
+![The PC deck playing, showing the 13-band spectrum analyser](docs/media/faceplate.png)
 
-*`SOLAR`, one of the bundled animations: 56 seconds, thirteen stops from the Sun
-to Pluto, rendered by `tools/movies/scene_solar.py` for a 256×64 SSD1322 panel.
-Run it with* `--legacy` *and it installs into the PC deck below — press `V`.*
+A *deck* is what a head unit is called. This one started as a music visualiser
+for a PC and turned into a kit for building the real thing: pick a display,
+preview it in a browser before spending money, flash the firmware for your
+setup, and slide it into the dash.
 
-A Pioneer-style OEM head-unit display for your PC. Whatever the machine plays —
-Spotify, YouTube, games — shows up live on an amber VFD faceplate: 13-band
-spectrum analyzer, VU needles, oscilloscope, waterfall, album art, synced
-lyrics, and the classic dolphin ocean screensaver when the music stops.
+Two things live here and both are supported:
 
-Co-designed with GPT 5.6 (Sol) — visual spec, ballistics, and the album-art
-dither idea came out of that consult.
+|  | What it is | Status |
+|---|---|---|
+| **The PC deck** | A Pioneer-style faceplate in a browser, fed by whatever your PC is playing | **Working.** This is what most people run |
+| **The car deck** | ESP32 + an OLED or VFD panel, Bluetooth audio from your phone | **Renderer done and verified. Firmware is a skeleton that has never been flashed** |
 
-## Run
+Everything below was rendered by the code in this repo. Nothing is a mockup —
+`sh tools/media/make.sh` regenerates the lot.
 
-Type **`music visualiser`** in a PowerShell terminal (set up as a profile
-command), or double-click `start.cmd`. Either opens http://127.0.0.1:7710 and
-starts the server if it isn't already running. Play music anywhere; the deck
-lights up on its own.
+---
 
-- Audio: WASAPI loopback of the default output device (survives device switches).
-- Track/artist/album art/playback position: Windows SMTC — works with Spotify,
-  browsers, most players.
-- Lyrics: looked up on [lrclib.net](https://lrclib.net) (open, no account).
-- Album art fallback: SMTC hands over no thumbnail for a lot of players — most
-  browsers, plenty of desktop apps — which leaves the art screen empty. When
-  that happens the deck asks the free [iTunes Search API](https://performance-partners.apple.com/search-api)
-  for the sleeve. Never used when the player supplied art of its own.
+## The screens
 
-These two lookups are the only things that leave the machine, and both send just
-the title, artist and album (plus duration, for lyrics). Nothing is recorded and
-no audio ever leaves; `LYRICS_ENABLED = False` and `ART_LOOKUP_ENABLED = False`
-at the top of `legacy/server.py` turn them off. Everything else stays on 127.0.0.1.
+Ten display modes, all drawn by `core/` — the same C the firmware runs.
 
-Always-on: put a shortcut to `start.cmd` in `shell:startup`, drag the browser
-tab to the TV, press `T` for TV mode.
-
-## Controls
-
-| Control | Action |
+| | |
 |---|---|
-| DISP / knob click / `D` | cycle display mode |
-| Presets 1–6 / keys `1–9`, `0` | jump straight to a mode |
-| ART / `A` | album art screen — the sleeve, full time |
-| LYRICS / `L` | lyrics screen |
-| `[` / `]` | nudge lyric sync ±0.25 s when a track's LRC drifts |
-| BAND / `B` | force the ocean cruise (dolphins) |
-| EQ | LOUD on/off (loudness lamp + fatter bass bars) |
-| AUDIO | second line: artist ↔ clock |
-| COLOR / `C` | cycle colour scheme (8 illumination colours) |
-| DEMO / `M` | attract loop: auto-cycles every display until you touch it |
-| TV / `T` | **TV mode** — fullscreen the display only (visuals, no chrome) |
-| `F` / double-click display | fullscreen the whole faceplate |
-| SRC | flash the current source |
-| scroll on knob | display dimmer |
+| **Spectrum analyser** — 13 bands, 63 Hz–16 kHz, peak-hold dots<br>![](docs/media/spectrum.gif) | **Mirror spectrum** — L/R split growing out from centre<br>![](docs/media/mirror.gif) |
+| **VU meter** — twin needles with overshoot and recoil<br>![](docs/media/vu.gif) | **Oscilloscope** — dot-matrix scope with phosphor persistence<br>![](docs/media/scope.gif) |
+| **Cityscape EQ** — coarse tower blocks with a rising scan sweep<br>![](docs/media/city.gif) | **Waterfall** — 32×12 spectral memory climbing upward<br>![](docs/media/waterfall.gif) |
+| **3D spectrum** — a receding analyser landscape, hidden lines removed<br>![](docs/media/3d.gif) | **Ocean cruise** — the dolphins, and they react to the bass<br>![](docs/media/ocean.gif) |
+| **Album art** — the sleeve, ordered-dithered to four levels<br>![](docs/media/cover.gif) | **Lyrics** — synced from LRCLIB, current line hot<br>![](docs/media/lyrics.gif) |
 
-## Colour schemes (COLOR / `C`)
+<details>
+<summary><b>And the whole faceplate</b> — album art, lyrics, the dolphins</summary>
 
-Authentic head-unit illumination colours, cycled with the COLOR button:
-**Amber** (default), **Pioneer Red**, **Emerald**, **Ice Blue**, **Purple**,
-**White**, plus two round-LED-bulb variants — **LED Amber** and **LED Lime**
-(lime/cyan), which swap the square VFD dot for a spherically shaded round bulb
-at the same OEM dot pitch.
+![Album art screen on the faceplate](docs/media/faceplate-cover.png)
+![Lyrics screen on the faceplate](docs/media/faceplate-lyrics.png)
+![Ocean cruise on the faceplate](docs/media/faceplate-ocean.png)
 
-## TV mode (TV / `T`)
+</details>
 
-Fills a TV with just the visuals — no bezel, buttons, knob or hint text. Built
-for the **Panasonic TX-32LXD70** (1366×768): the head-unit display strip
-width-fills the screen, centred on black. The separate `F` / double-click
-fullscreen keeps the whole faceplate instead.
+## The movies
 
-## Display modes (keys 1–9, 0)
+Animations you can make yourself, in pure Python, with no GPU and no Blender.
+They play on the PC deck and on the hardware — same file, same decoder.
 
-1. **Spectrum Analyzer** — 13-band segmented bars, 63 Hz–16 kHz, peak-hold dots
-2. **Mirror Spectrum** — L/R split growing out from centre
-3. **VU Meter** — twin needles with overshoot and recoil
-4. **Oscilloscope** — dot-matrix scope with phosphor persistence
-5. **Cityscape EQ** — coarse tower blocks with rising scan sweeps
-6. **Waterfall** — chunky 32×12 spectral memory climbing upward
-7. **3D Spectrum** — perspective-receding analyzer landscape with hidden-line removal
-8. **Ocean Cruise** — the dolphin movie as a full-time display
-9. **Album Art** — the dithered sleeve at full panel height, with title, artist,
-   elapsed/total time and a slim analyzer along the bottom
-10. **Lyrics** — synced LRC, current line hot and neighbours dim, long lines
-    wrapped, instrumental gaps shown as a rest that pulses with the bass
-11. **Movie** (`V`, `N` for next) — plays `.dmv` animations from
-    `legacy/web/movies/`, the same ones the head-unit firmware plays
+![SOLAR — a tour of the solar system](docs/media/solar.gif)
 
-The dolphins are rasterized from a smooth bezier silhouette per frame (rotation
-quantized to 10°, stepped 10 fps playback), so they arc through breaches like the
-period animations rather than looping rigid sprites. Bass transients make the pod
-breach; high-frequency energy drives the bubbles.
+*`SOLAR` — thirteen stops from the Sun to Pluto, with labels drawn from the
+deck's own character ROM. `tools/movies/scene_solar.py`.*
 
-Idle behaviour, faithful to the era: music stops → 3 s → clock; 12 s → the
-dolphins take over; music returns → hard horizontal wipe back to the analyzer.
-The two metadata screens (Album Art, Lyrics) are the exception — they are about
-the track rather than the audio, so they hold through a pause instead of handing
-over to the clock.
+![TOUGE — a roadster sideways down a mountain pass at night](docs/media/touge.gif)
 
-On every track change the album art is ordered-dithered into a 3-tone amber
-bitmap and shown as a "NOW PLAYING" interstitial for two seconds — unchanged,
-including on the album art and lyrics screens. The art is dithered twice: 40×40
-for that interstitial and 48×48 for the full-height cover screen.
+*`TOUGE` — a night run lit only by the car's own headlights, where the subject
+is the hole in the light. `tools/movies/scene_touge.py`.*
 
-## Lyrics
+![DOLPHINS — the classic head-unit screensaver in 3D](docs/media/dolphins.gif)
 
-Synced lyrics come from LRCLIB — an exact title/artist/album/duration match
-first, then a looser search, falling back to plain (unsynced) text paced by
-track progress and marked `NO SYNC`. The playback head comes from SMTC once a
-second and is interpolated between updates, so lines land on the beat. If a
-track's LRC is offset, `[` and `]` trim the sync in 0.25 s steps (shown bottom
-left, reset on the next track). Lyrics are folded to the 5×7 character ROM —
-accents stripped, curly quotes squared off — and a line in a script the ROM
-can't draw shows as a rest rather than a row of `?`.
+*`DOLPHINS` — the classic screensaver, rebuilt with a real mesh and a real sea.
+`tools/movies/scene_dolphins.py`.*
 
-## Files
+Already have a GIF? `tools/movies/import_gif.py` converts it:
 
-- `legacy/server.py` — WASAPI loopback capture, 13-band FFT, SMTC metadata + playback
-  position, LRCLIB lyrics and iTunes art lookups, WebSocket
-- `legacy/web/` — the faceplate: `app.js` (renderer/state), `viz.js` (modes),
-  `dolphin.js` (ocean movie), `movie.js` (`.dmv` playback), `font.js` (fonts)
-- `tools/movies/` — the animation maker: 3D renderer and `.dmv` exporter
-- `launch.ps1` — opens the deck, starting the server if needed (used by the
-  `music visualiser` command in the PowerShell profile)
-- `start.cmd` — double-click launcher
+![REEF — an imported reef clip](docs/media/reef.gif)
 
-Tunables at the top of `legacy/server.py`: `DB_FLOOR` (sensitivity), `DB_TILT`
-(treble lift), `BROADCAST_FPS`, `LYRICS_ENABLED`, `ART_LOOKUP_ENABLED`.
+**Making one is a conversation, not a tutorial.** [CLAUDE.md](CLAUDE.md) tells
+Claude the constraints — the grid for your panel, the level budget, why thin
+bright things dither into noise — so you can describe what you want and get
+something that reads on the glass. Full detail in
+[docs/MOVIE-RENDERING.md](docs/MOVIE-RENDERING.md).
 
-## `music visualiser` command
+---
 
-The PowerShell profile (`Documents\PowerShell\Microsoft.PowerShell_profile.ps1`)
-defines a `music` function, so typing `music visualiser` (or just `music`) in a
-new PowerShell window launches the deck via `launch.ps1`.
+## Run the PC deck
+
+Windows, because it captures WASAPI loopback and Windows media metadata.
+
+```sh
+python legacy/server.py          # or double-click start.cmd
+```
+
+Opens <http://127.0.0.1:7710>. Play music anywhere — Spotify, YouTube, a game —
+and the deck lights up on its own.
+
+- **Audio** — WASAPI loopback of the default output, surviving device switches
+- **Track, art, position** — Windows SMTC
+- **Lyrics** — [lrclib.net](https://lrclib.net), no account
+- **Album art fallback** — the [iTunes Search API](https://performance-partners.apple.com/search-api), only when the player supplies none
+
+Those two lookups are the only things that leave the machine, and both send
+just title, artist and album. No audio ever leaves. `LYRICS_ENABLED = False`
+and `ART_LOOKUP_ENABLED = False` at the top of `legacy/server.py` turn them off.
+
+### Controls
+
+| | |
+|---|---|
+| `D` / DISP / knob click | cycle display mode |
+| `1`–`9`, `0` | jump to a mode |
+| `A` / `L` | album art / lyrics |
+| `[` `]` | nudge lyric sync ±0.25 s |
+| `V` / `N` | movies / next movie |
+| `B` | force the ocean cruise |
+| `C` | colour scheme — eight OEM illumination colours |
+| `M` | demo: auto-cycle everything |
+| `T` | TV mode — fullscreen the display only |
+| `F` | fullscreen the whole faceplate |
+
+**Idle behaviour, faithful to the era:** music stops → 3 s → clock; 12 s → the
+dolphins take over; music returns → a hard horizontal wipe back to the
+analyser. On every track change the album art is dithered to a 3-tone bitmap
+and shown as a NOW PLAYING interstitial for two seconds.
+
+## Preview a panel you have not bought
+
+```sh
+sh tools/serve.sh          # http://127.0.0.1:7720
+```
+
+Compiles `core/` to WASM and emulates any panel: grid size, level count, dot
+shape, illumination colour. Because it is the same C the firmware runs, what
+you see is what the glass does — not an artist's impression of it.
+
+## Build the hardware
+
+Start at **[docs/HANDBOOK.md](docs/HANDBOOK.md)** — parts, tiers, bring-up
+order. Then [docs/HARDWARE.md](docs/HARDWARE.md) for the BOM, where every claim
+is marked ✅ verified against a datasheet or listing, or ⚠️ not.
+
+| Tier | Display | Brain | Rough cost |
+|---|---|---|---|
+| Bench | SSD1322 OLED 256×64, 16 grey | ESP32-WROVER-E | ~£32 |
+| Car — greyscale | SSD1322 | ESP32-WROVER-E | ~£82 |
+| Car — authentic VFD | Futaba GP1294AI, 1-bit | ESP32-WROVER-E | ~£92 |
+| Car — colour ⚠️ | 4.58" bar IPS, 960×320 | ESP32 **+ ESP32-S3** | ~£90 |
+
+Two corrections already made the hard way, so you do not have to:
+
+- **It must be the original ESP32, not the S3.** The S3 has no Bluetooth
+  Classic, so no A2DP, so no audio from a phone. Espressif closed that request
+  "Won't Do".
+- **The 8.8" bar LCD does not fit a 1-DIN slot** — ~217 mm wide against a
+  180 mm fascia. There *is* a colour panel that fits; see
+  [HARDWARE.md §1b](docs/HARDWARE.md).
+
+---
+
+## How it holds together
+
+```
+                     ┌── WASM ─────► browser preview (emulates any panel)
+   core/  (C99) ─────┼── ESP32 ────► car firmware
+                     └── Linux/Pi ─► firmware
+   legacy/ (JS)  ───────────────────► the PC deck
+```
+
+`core/` is C99 with no libc, no libm, no allocation and no floating-point
+surprises — it ships its own trig so a dolphin breaches on the same frame in
+V8, glibc and on an ESP32. Screens write intensity levels 0–4; a per-target
+output stage decides what a panel shows, whether that is 16 greys, a 1-bit
+Bayer dither or an RGB palette.
+
+### The one rule
+
+**`core/` is verified against the JavaScript it was ported from.**
+
+```sh
+sh tools/verify/run.sh
+```
+
+Both implementations render the same input and the framebuffers are diffed:
+fonts, every screen, text handling, metadata screens, the ocean, and every
+movie decoded three ways. If you change a screen's output on purpose the diff
+fails — **update the expectation, never delete the case.**
+
+This is not ceremony. It has caught a dolphin breaching one frame early,
+waterfall thresholds landing differently at double precision, and text
+dithering into mush on 1-bit panels.
+
+## What is in here
+
+| Path | |
+|---|---|
+| `legacy/` | The PC deck. Python server + JS faceplate. Moves slowly and deliberately |
+| `core/` | The portable renderer. C99, no deps, no allocation |
+| `preview/` | `core/` as WASM, emulating any panel in a browser |
+| `firmware/esp32/` | The car deck. **Skeleton — never run on hardware** |
+| `tools/movies/` | The animation maker: 3D renderer, GIF importer, `.dmv` packer |
+| `tools/verify/` | The differential test suite |
+| `tools/media/` | Regenerates every picture in this README |
+| `docs/` | Handbook, hardware, architecture, UI spec, control, versioning |
+
+## Status, honestly
+
+| | |
+|---|---|
+| PC deck | Working, in daily use |
+| `core/` renderer | Complete, all ten screens, verified against the JS |
+| Browser preview | Working |
+| Movie tooling | Working — 3D scenes, GIF import, flash packing |
+| ESP32 firmware | **Skeleton.** Structure and command sequences from datasheets. Never flashed |
+| Colour panel | Researched, part identified, ⚠️ nothing bought or wired |
+
+## Docs
+
+[Handbook](docs/HANDBOOK.md) · [Hardware](docs/HARDWARE.md) ·
+[Architecture](docs/ARCHITECTURE.md) · [UI spec](docs/UI-SPEC.md) ·
+[Making animations](docs/MOVIE-RENDERING.md) · [Control](docs/CONTROL.md) ·
+[Versioning](docs/VERSIONING.md) · [For Claude](CLAUDE.md)
+
+---
+
+Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics and the
+album-art dither idea came out of that consult.
+
+MIT licensed. Build one.

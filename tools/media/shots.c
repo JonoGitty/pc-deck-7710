@@ -28,6 +28,7 @@
 #include "../../core/screens.h"
 #include "../../core/art.h"
 #include "../../core/text.h"
+#include "../../core/font.h"
 
 #define FPS    20
 #define FRAMES 60                 /* 3 s, and it loops */
@@ -113,6 +114,43 @@ static void write_raw(const char *dir, const char *name,
   fwrite(frames, 1, (size_t)nf * W * H, f);
   fclose(f);
   printf("  %-10s %d frames  %dx%d\n", name, nf, W, H);
+}
+
+/* ------------------------------------------------------------- the chrome
+ * `core/` draws the visualiser and nothing else — the annunciator row, the
+ * track text and the clock belong to the platform, which is app.js on the PC
+ * and deck_main.c on the ESP32. Left out, a preview of the spectrum analyser
+ * is two-thirds empty black and looks like a broken image rather than a deck.
+ *
+ * So this reproduces what composeLive() in legacy/web/app.js does, including
+ * which modes get a second line: the tall visualisers take the lower half of
+ * the panel, so they get the title and nothing else.
+ */
+static void chrome(deck_fb_t *fb, const deck_meta_t *m, int big, double t) {
+  const int W_ = fb->geom->w;
+  deck_text3(fb, 2, 0, m->app, DECK_MAIN);
+  const int px = 4 + deck_width3(m->app);
+  static const uint8_t PLAY[5] = { 4, 6, 7, 6, 4 };        /* a small triangle */
+  for (int r = 0; r < 5; r++)
+    for (int c = 0; c < 3; c++)
+      if (PLAY[r] & (4 >> c)) deck_set(fb, px + c, r, DECK_MAIN);
+
+  deck_text3(fb, W_ * 100 / 192, 0, "RPT",  DECK_DIM);
+  deck_text3(fb, W_ * 114 / 192, 0, "RDM",  DECK_DIM);
+  deck_text3(fb, W_ * 130 / 192, 0, "ST",   DECK_MAIN);
+  deck_text3(fb, W_ * 140 / 192, 0, "DEMO", DECK_DIM);
+  deck_text3(fb, W_ * 158 / 192, 0, "LOUD", DECK_DIM);
+  deck_text3(fb, W_ * 176 / 192, 0, "OVER", DECK_DIM);
+
+  deck_text5(fb, 2, 8, m->title, DECK_MAIN, 2);
+  if (!big) {
+    deck_text5(fb, 2, 24, m->artist, DECK_DIM, 1);
+    /* A clock that never moves is the giveaway that a screenshot is a still.
+     * It ticks with the loop; the minute is fixed because three seconds of
+     * animation cannot show one turning over anyway. */
+    char clk[6] = { '2', '1', (int)t % 2 ? ':' : ' ', '4', '7', 0 };
+    deck_text3(fb, W_ - 24, 25, clk, DECK_DIM);
+  }
 }
 
 static const char *LYRICS[] = {
@@ -249,6 +287,15 @@ int main(int argc, char **argv) {
 
       /* --- draw ---------------------------------------------------------- */
       deck_clear(&fb);
+      /* Which modes get chrome, and how much, mirrors MODES[] in viz.js:
+       * false = short visualiser with title and artist above it,
+       * true  = tall visualiser, title only,
+       * full  = the screen owns the whole panel. */
+      const int full = !strcmp(mode, "ocean") || !strcmp(mode, "cover") ||
+                       !strcmp(mode, "lyrics");
+      const int big  = !(!strcmp(mode, "spectrum") || !strcmp(mode, "mirror"));
+      if (!full) chrome(&fb, &m, big, t);
+
       if      (!strcmp(mode, "spectrum"))  deck_screen_spectrum(&fb, &v);
       else if (!strcmp(mode, "mirror"))    deck_screen_mirror(&fb, &v);
       else if (!strcmp(mode, "vu"))        deck_screen_vu(&fb, &v);

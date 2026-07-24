@@ -14,7 +14,7 @@ Three routes, and the cheapest one needs no soldering at all.
 | | What | Cost | Needs |
 |---|---|---|---|
 | **Desk deck** | The legacy PC visualiser on a bar LCD as a second monitor | ~£70 | A PC. No firmware at all |
-| **Bench deck** | ESP32-S3 + SSD1322 on a desk | ~£30 | Soldering iron, USB |
+| **Bench deck** | ESP32 WROVER-E + SSD1322 on a desk | ~£30 | Soldering iron, USB |
 | **Car deck** | The above, in a 1-DIN cage, on ignition power | ~£80 | The bench deck first |
 
 Start at the preview either way: `sh tools/serve.sh` renders every screen on

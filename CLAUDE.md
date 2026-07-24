@@ -1,4 +1,4 @@
-# Working on PC·DECK with Claude
+# Working on DECK·7710 with Claude
 
 Notes for an assistant helping someone with this repo. Written for Claude, but
 useful to a human skimming for how the project holds together.
@@ -9,12 +9,19 @@ An open-source kit for building a 1-DIN car head unit, plus the PC music
 visualiser it grew out of. One renderer in portable C serves both: compiled to
 WebAssembly it drives the browser preview, compiled natively it drives firmware.
 
+**The project is DECK·7710. `PC·DECK` is the name of the legacy PC application
+specifically** — it is on that faceplate, and it stays there. Do not rename the
+faceplate branding to match the project; the PC deck is one target among
+several now, and its own badge is correct.
+
 - `legacy/` — the PC deck. Python server + JS faceplate. **Still supported.**
 - `core/` — the portable renderer. C99, no libc, no libm, no allocation.
 - `preview/` — `core/` as WASM, emulating any panel.
 - `firmware/` — ESP32. **Skeleton, never run on hardware.**
 - `tools/movies/` — the animation maker.
-- `docs/` — hardware, architecture, UI spec, handbook.
+- `tools/media/` — regenerates every picture in the README and on the site.
+- `docs/` — hardware, architecture, UI spec, handbook, and `index.html`, the
+  project page served by GitHub Pages.
 
 ## The one rule
 
@@ -25,9 +32,10 @@ sh tools/verify/run.sh
 ```
 
 Both implementations render the same input and the framebuffers are diffed:
-fonts, every screen, text handling, metadata screens, the ocean, and the movie
-container. If you change a screen's output *deliberately*, the diff will fail —
-**update the expectation, never delete the case.**
+fonts, every screen, text handling, metadata screens, the ocean, and every
+bundled movie decoded three ways — buffered C, streaming C, and Python. If you
+change a screen's output *deliberately*, the diff will fail — **update the
+expectation, never delete the case.**
 
 This is not ceremony. It has caught bugs invisible by eye: a dolphin breach
 starting one frame early, waterfall thresholds landing differently at double
@@ -113,3 +121,14 @@ unverified for a reason.
 - Generated files (`font_rom.h`, `fold_table.h`, `dolphin_rom.h`) are generated.
   Regenerate, don't edit.
 - `legacy/` moves slowly and deliberately. It is what most people actually run.
+
+## The pictures are generated too
+
+Everything in `docs/media/` comes out of `sh tools/media/make.sh` — the screen
+animations from `core/` itself, the faceplate stills from the real page in a
+real browser. **If you change a screen's appearance, rerun it** rather than
+letting the README show the old behaviour. A convincing but stale picture is
+worse than none, because nobody checks it.
+
+Do not hand-draw a mockup and put it in `docs/media/`. If something needs a
+picture that the pipeline cannot produce, extend the pipeline.
