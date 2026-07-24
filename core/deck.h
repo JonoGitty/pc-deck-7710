@@ -1,4 +1,4 @@
-/* PC-DECK — portable core.
+/* DECK-7710 — portable core.
  *
  * The renderer never knows what it is drawing on. It writes intensity values
  * 0..4 into a framebuffer described by deck_geom_t; a per-target output stage

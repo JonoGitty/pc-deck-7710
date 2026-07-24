@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""render3d — a software 3D renderer for PC·DECK movies.
+"""render3d — a software 3D renderer for DECK·7710 movies.
 
 Pure Python. No numpy, no GPU, no Blender — because this has to run anywhere
 someone might want to make an animation, including inside a container with

@@ -1,4 +1,4 @@
-# PC·DECK handbook
+# DECK·7710 handbook
 
 Build your own 1-DIN head unit. Pick a display, see it before you buy it, flash
 your setup, make your own animations.
@@ -54,12 +54,39 @@ rather than on the panel: [CONTROL.md](CONTROL.md).
 ## 7. Make a movie — ✅ ready
 
 ```sh
-python3 tools/movies/scene_spin.py 256 64      # renders for your panel
+python3 tools/movies/scene_spin.py 256 64        # a 3D scene, for your panel
+python3 tools/movies/scene_spin.py --legacy      # and onto the PC deck
+python3 tools/movies/import_gif.py cat.gif 256 64 --keep=25   # or convert a GIF
 ```
 
-Two kinds: procedural (code, reacts to audio — the dolphins) and baked
-(pre-rendered frames — 3D scenes, loops, GIFs). The 3D renderer is pure Python,
-no GPU, no Blender. See [MOVIES.md](MOVIES.md).
+Two kinds, and the difference decides everything else. **Procedural** is C in
+`core/screens/` that draws a frame from the audio state — the dolphins are one,
+which is why bass makes the pod breach. **Baked** is pre-rendered frames in a
+`.dmv`: a 3D scene, a loop, an imported GIF. Baked is far easier and cannot
+react to anything.
+
+The 3D renderer is pure Python — no numpy, no GPU, no Blender — so it runs
+anywhere, including a bare container. Start from `scene_spin.py`; the four
+bundled scenes each work out a different problem and are worth reading first.
+
+**The constraints are unusual enough that habits from normal screens actively
+mislead**, and the shortest path is to let Claude do that thinking for you:
+[CLAUDE.md](../CLAUDE.md) tells it the grid for your display, the level budget,
+and the traps. Describe what you want and which panel you have.
+
+Full detail, including why large flat areas must sit on a level centre and why
+thin bright things cannot be dim: [MOVIE-RENDERING.md](MOVIE-RENDERING.md).
+
+**Getting one onto hardware.** Movies are too big for the app image — one
+256×64 scene is most of a megabyte — so they live in their own flash partition:
+
+```sh
+python3 tools/movies/pack.py build/movies.bin movies/*_256x64.dmv
+esptool.py write_flash 0x490000 build/movies.bin
+```
+
+That reflashes the deck's animations without touching the firmware. ⚠️ Untested
+on hardware, like everything under `firmware/`.
 
 ## 8. Contribute a display — ⚠️ needs the firmware first
 
@@ -79,8 +106,8 @@ both and diffing the framebuffers.
 sh tools/verify/run.sh
 ```
 
-Font, screens, text handling, metadata screens, the ocean, and the movie
-container round-trip. **A screen is not ported until it matches.** If you change
+Font, screens, text handling, metadata screens, the ocean, and every bundled
+movie decoded three separate ways — buffered C, streaming C and Python. **A screen is not ported until it matches.** If you change
 a screen deliberately, the diff will fail — update the case, don't delete it.
 
 This has caught real bugs that were invisible by eye: a one-frame-early dolphin

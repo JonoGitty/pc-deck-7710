@@ -6,7 +6,7 @@ versioned separately rather than everything sharing one number.
 | Component | Versioned as | Changes when |
 |---|---|---|
 | **core** | semver `core-1.4.0` | the renderer changes. A minor bump may change pixels; a major bump changes the API screens are written against |
-| **firmware** | `<board>-<display>-<semver>` e.g. `esp32s3-ssd1322-0.3.1` | anything in `firmware/` changes, or it is rebuilt against a new core |
+| **firmware** | `<board>-<display>-<semver>` e.g. `esp32-ssd1322-0.3.1` | anything in `firmware/` changes, or it is rebuilt against a new core |
 | **movies** | `.dmv` container version in the magic (`DMV1`) | the container format changes. Individual movies are content, not versions |
 | **legacy PC deck** | `legacy-1.x` | the Python/JS deck changes. Deliberately slow-moving |
 
@@ -21,8 +21,8 @@ the wrong one and concluding the project is broken.
 A release therefore publishes a **matrix**, not a file:
 
 ```
-esp32s3-ssd1322-0.3.1.bin      256x64, 16 levels
-esp32s3-gp1294ai-0.3.1.bin     256x48, 1-bit
+esp32-ssd1322-0.3.1.bin        256x64, 16 levels
+esp32-gp1294ai-0.3.1.bin      256x48, 1-bit
 pi-ssd1322-0.3.1.tar.gz        same core, Linux platform layer
 ```
 
@@ -71,15 +71,33 @@ mid-song costs nothing: nobody wants to flash firmware while driving to music.
 unreliable even when idle, the fallback is OTA over the WiFi hotspot the deck
 already joins for lyrics — same partition scheme, different transport.
 
-## Movies ship inside the firmware
+## Movies ship beside the firmware, not inside it
 
-Movies are compiled into the binary rather than stored separately. That keeps
-the firmware self-contained: no filesystem, no storage layer, no possibility of
-a corrupt movie file stopping the deck booting.
+> **Reversed.** This section used to say movies were compiled into the binary,
+> for the good reason that it keeps the firmware self-contained — no filesystem,
+> no storage layer, no corrupt file able to stop the deck booting. Then the
+> movies got made and the numbers settled it: SOLAR is 848 KB, DOLPHINS 347 KB,
+> TOUGE 282 KB, against an app partition of 1.5 MB that also has to hold
+> Bluetooth, WiFi, TLS, the FFT and the renderer. One movie would take most of
+> what is left and the four bundled ones do not fit at all. Self-contained was
+> never on the table; it just looked like it was until someone did the sums.
 
-The cost is that adding an animation means reflashing — which BLE OTA makes a
-phone-side operation rather than a fascia-off one, so the two decisions fit
-together.
+Movies live in their own read-only partition and the decoder streams out of it
+— see `core/movie.h` and `firmware/esp32/partitions.csv`. They are **content**,
+not code, and they version like content:
+
+- A movie is identified by the name inside its own header, not by a number.
+  Replacing one is replacing a file.
+- The container is versioned by its magic (`DMV1`), and a decoder that does not
+  recognise the magic refuses to play rather than rendering noise.
+- The partition survives an OTA untouched, and reflashing it changes the deck's
+  animations without touching the firmware — which is the property the
+  compiled-in scheme was trying to buy and could not afford.
+
+The safety argument still has to be answered, since a corrupt file can no
+longer be ruled out by construction: the decoder bounds-checks every run
+against the grid, treats a short read as end-of-movie, and applies a frame
+whole or not at all. A damaged partition stops a movie, not the deck.
 
 The dolphins stay **procedural and compiled in** regardless. They are the
 fallback that always works, and being code rather than data is what lets them
