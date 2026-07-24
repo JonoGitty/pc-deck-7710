@@ -18,7 +18,7 @@ Two things live here and both are supported:
 |  | What it is | Status |
 |---|---|---|
 | **The PC deck** | A Pioneer-style faceplate in a browser, fed by whatever your PC is playing | **Working.** This is what most people run |
-| **The car deck** | ESP32 + an OLED or VFD panel, Bluetooth audio from your phone | **Renderer done and verified. Firmware is a skeleton that has never been flashed** |
+| **The car deck** | ESP32 + an OLED or VFD panel, Bluetooth audio from your phone | **Renderer verified, firmware written and compiling — but never run on hardware** |
 
 Everything below was rendered by the code in this repo. Nothing is a mockup —
 `sh tools/media/make.sh` regenerates the lot.
@@ -141,9 +141,35 @@ you see is what the glass does — not an artist's impression of it.
 
 ## Build the hardware
 
-Start at **[docs/HANDBOOK.md](docs/HANDBOOK.md)** — parts, tiers, bring-up
-order. Then [docs/HARDWARE.md](docs/HARDWARE.md) for the BOM, where every claim
-is marked ✅ verified against a datasheet or listing, or ⚠️ not.
+**[docs/BUILD.md](docs/BUILD.md) is the end-to-end guide** — shopping list with
+part numbers, pin-by-pin wiring, flashing, pairing, and the car install last.
+One tool does the whole loop:
+
+```sh
+python3 tools/deckctl.py            # guided: check, build, flash, load movies
+```
+
+```sh
+python3 tools/deckctl.py doctor     # what is plugged in, and does it work
+python3 tools/deckctl.py build      # compile for your panel
+python3 tools/deckctl.py flash      # firmware onto the deck
+python3 tools/deckctl.py movies     # choose animations, write them to flash
+python3 tools/deckctl.py pictures *.jpg   # your own photographs
+python3 tools/deckctl.py logs       # watch it run
+python3 tools/deckctl.py coredump   # why it crashed
+```
+
+`doctor` reads the chip ID off the board, which catches the most expensive
+mistake here: an ESP32-S3 cannot do A2DP and looks identical in a listing.
+
+**When it does not work:** [docs/DIAGNOSTICS.md](docs/DIAGNOSTICS.md). The deck
+runs a four-stage self-test at every boot, in an order where each stage can
+only fail for reasons the previous ones ruled out — so a blank panel at stage 1
+is hardware and a blank panel after stage 1 is software.
+
+Then [docs/HARDWARE.md](docs/HARDWARE.md) for the full component survey, where
+every claim is marked ✅ verified against a datasheet or listing, or ⚠️ not, and
+[docs/HANDBOOK.md](docs/HANDBOOK.md) for the tiers and bring-up order.
 
 | Tier | Display | Brain | Rough cost |
 |---|---|---|---|
@@ -203,7 +229,8 @@ dithering into mush on 1-bit panels.
 | `core/` | The portable renderer. C99, no deps, no allocation |
 | `preview/` | `core/` as WASM, emulating any panel in a browser |
 | `firmware/esp32/` | The car deck. **Skeleton — never run on hardware** |
-| `tools/movies/` | The animation maker: 3D renderer, GIF importer, `.dmv` packer |
+| `tools/deckctl.py` | Build, flash, load movies and pictures, read logs and crashes |
+| `tools/movies/` | The animation maker: 3D renderer, GIF and photo importers, `.dmv` packer |
 | `tools/verify/` | The differential test suite |
 | `tools/media/` | Regenerates every picture in this README |
 | `docs/` | Handbook, hardware, architecture, UI spec, control, versioning |
@@ -216,12 +243,14 @@ dithering into mush on 1-bit panels.
 | `core/` renderer | Complete, all ten screens, verified against the JS |
 | Browser preview | Working |
 | Movie tooling | Working — 3D scenes, GIF import, flash packing |
-| ESP32 firmware | **Skeleton.** Structure and command sequences from datasheets. Never flashed |
+| ESP32 firmware | **Written and compiles.** A2DP + AVRCP, FFT analyser, SSD1322 and VFD drivers, movies from flash, self-test and diagnostics. 1.74 MB image, ESP-IDF v5.3. **Never run on hardware** |
+| Flash tooling | Working — `deckctl` does build, flash, content and logs |
 | Colour panel | Researched, part identified, ⚠️ nothing bought or wired |
 
 ## Docs
 
-[Handbook](docs/HANDBOOK.md) · [Hardware](docs/HARDWARE.md) ·
+[Build guide](docs/BUILD.md) · [Diagnostics](docs/DIAGNOSTICS.md) ·
+[Safety](SAFETY.md) · [Handbook](docs/HANDBOOK.md) · [Hardware](docs/HARDWARE.md) ·
 [Architecture](docs/ARCHITECTURE.md) · [UI spec](docs/UI-SPEC.md) ·
 [Making animations](docs/MOVIE-RENDERING.md) · [Control](docs/CONTROL.md) ·
 [Versioning](docs/VERSIONING.md) · [For Claude](CLAUDE.md)
@@ -247,6 +276,8 @@ of it goes near a dashboard, and the handbook is ordered so that it is.
 
 Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics and the
 album-art dither idea came out of that consult.
+
+Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 MIT licensed — see [LICENSE](LICENSE), [NOTICE](NOTICE) and [SAFETY.md](SAFETY.md).
 Build one.

@@ -77,6 +77,13 @@ header::after {                       /* the panel's own glow, not a gradient */
 .tag { font-size: clamp(1.05rem, 2.6vw, 1.35rem); color: var(--ink); margin: 0.6rem auto 0; max-width: 34ch; }
 .sub { color: var(--dim); max-width: 56ch; margin: 0.9rem auto 0; }
 .shot { margin: 2.5rem 0 0; border: 1px solid var(--edge); border-radius: 10px; overflow: hidden; background: #000; }
+.reel-lede { color: var(--dim); font-size: 0.95rem; margin: 2.25rem 0 0.9rem; }
+.reel { display: grid; gap: 0.9rem; grid-template-columns: repeat(3, 1fr); }
+.reel figure { margin: 0; }
+.reel img { border: 1px solid var(--edge); border-radius: 7px; background: #000; width: 100%; }
+.reel figcaption { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
+                   color: var(--amber); margin-top: 0.45rem; }
+@media (max-width: 720px) { .reel { grid-template-columns: 1fr; } }
 
 .cta { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; margin-top: 1.6rem; }
 .btn {
@@ -137,10 +144,18 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
       music visualiser — the same code, the same dots, on all three.</p>
     <div class="cta">
       <a class="btn primary" href="https://github.com/JonoGitty/pc-deck-7710">Source on GitHub</a>
-      <a class="btn" href="#screens">The screens</a>
+      <a class="btn" href="#movies">The animations</a>
       <a class="btn" href="#build">Build one</a>
+      <a class="btn" href="#diagnose">When it breaks</a>
     </div>
     <div class="shot"><img src="media/faceplate.png" alt="The deck playing, showing a 13-band spectrum analyser on an amber dot-matrix panel"></div>
+
+    <p class="reel-lede">Animations made with the tools in this repository, playing on the panel.</p>
+    <div class="reel">
+      <figure><img loading="lazy" src="media/touge.gif" alt="A car drifting down a night mountain road lit only by its headlights"><figcaption>TOUGE</figcaption></figure>
+      <figure><img loading="lazy" src="media/dolphins.gif" alt="Dolphins arcing out of a shimmering sea"><figcaption>DOLPHINS</figcaption></figure>
+      <figure><img loading="lazy" src="media/solar.gif" alt="A camera flying past the planets in turn, each labelled"><figcaption>SOLAR</figcaption></figure>
+    </div>
   </div>
 </header>
 
@@ -158,8 +173,10 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
       <div class="card">
         <h3>The car deck <span class="warn">— renderer done, firmware not</span></h3>
         <p>ESP32 and an OLED or VFD panel, Bluetooth audio from your phone, into a
-          standard DIN cage. The renderer is finished and verified. The firmware is
-          a skeleton that has never been flashed, and this site will say so until it has.</p>
+          standard DIN cage. The renderer is finished and verified, and the firmware
+          is written and compiles — A2DP, metadata, the analyser, both panels,
+          movies and diagnostics. It has never run on hardware, and this site will
+          say so until it has.</p>
       </div>
     </div>
     <div class="note">
@@ -304,11 +321,93 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
         times five — but it needs a parallel RGB bus the original ESP32 does not have,
         so colour is a two-chip build.</p>
     </div>
-    <p>Start at the <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HANDBOOK.md">handbook</a>,
-      then the <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HARDWARE.md">hardware survey</a>,
+    <h3 style="margin:2.5rem 0 0.8rem">What it takes, start to finish</h3>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Step</th><th>What happens</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr><td>1. Buy</td><td>An ESP32-WROVER-E with 16 MB flash, an SSD1322 panel, a DAC, and a handful of buttons. About £35 for a working deck on a desk</td><td>None</td></tr>
+        <tr><td>2. Tools</td><td><code>deckctl doctor</code> tells you what is missing and how to get it — and reads the chip ID, which catches buying an S3 by mistake</td><td>None</td></tr>
+        <tr><td>3. Wire</td><td>Seven wires for the panel, three for the DAC, one per button. Pin-by-pin table in the guide</td><td>None</td></tr>
+        <tr><td>4. Flash</td><td><code>deckctl build</code> then <code>deckctl flash</code>, or just <code>deckctl</code> for the guided version</td><td>None</td></tr>
+        <tr><td>5. Watch</td><td><code>deckctl logs</code>. Four self-test stages prove the glass, the levels, the font, then the subsystems</td><td>None</td></tr>
+        <tr><td>6. Pair</td><td>Your phone's Bluetooth menu. No app, no code. Play something</td><td>None</td></tr>
+        <tr><td>7. Fit</td><td>DIN cage, ISO harness, ignition sense through an opto-isolator</td><td><span class="warn">Real. Read SAFETY.md</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>Steps 1–6 happen on a desk from USB and risk nothing but your time.
+      Step 7 is where a car is involved and where the consequences change.</p>
+
+    <pre><code># the whole thing, guided
+python3 tools/deckctl.py
+
+# or step by step
+python3 tools/deckctl.py doctor
+python3 tools/deckctl.py build   --display ssd1322
+python3 tools/deckctl.py flash
+python3 tools/deckctl.py movies          # choose what it plays
+python3 tools/deckctl.py pictures *.jpg  # your own photographs
+python3 tools/deckctl.py logs</code></pre>
+
+    <p><b>The full guide is <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/BUILD.md">BUILD.md</a></b>
+      — shopping list with part numbers, wiring table, pairing, and the car
+      install. The component survey is
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HARDWARE.md">HARDWARE.md</a>,
       where every claim is marked ✅ verified against a datasheet or listing, or ⚠️ not.
       Fitting is standard: an <b>ISO 7736</b> cage and an <b>ISO 10487</b> harness, so a
       home-built deck drops into any car that takes a normal head unit.</p>
+
+    <div class="note">
+      <p><b>Two traps that each cost an evening.</b> GPIO 34–39 on this chip are
+        input-only and have <em>no internal pull-ups</em> — a button on one floats
+        and reads as random presses, which looks exactly like a firmware bug.
+        And ISO 10487 standardises the connector but not the pinout: A4 and A7
+        get swapped by manufacturers, so meter the harness before connecting
+        anything.</p>
+    </div>
+  </div>
+</section>
+
+<section id="diagnose">
+  <div class="wrap">
+    <h2>When it does not work</h2>
+    <p class="lede">A blank panel has six causes and one symptom. So the deck reports on itself.</p>
+    <p class="muted">This is the part hobby firmware usually skips, and skipping
+      it is why people give up. There are three layers, each usable when the one
+      above it is not.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>1 — the panel</h3>
+        <p>A four-stage boot self-test. Stage 1 is a pattern straight from the
+          driver, before <code>core/</code> is involved at all; stage 2 adds the
+          output stage; stage 3 the font; stage 4 the subsystem table.
+          <b>Blank at stage 1 is hardware. Blank after stage 1 is software.</b>
+          That distinction is the whole reason it is staged.</p>
+      </div>
+      <div class="card">
+        <h3>2 — the serial line</h3>
+        <p>One structured line per event, so a tool can parse it rather than
+          needing a regexp per message. Health is four states, not a boolean:
+          <code>unknown</code> means not tried yet, which is <em>not</em>
+          <code>failed</code> — conflating them sends people hunting a Bluetooth
+          bug on a deck nobody paired.</p>
+      </div>
+      <div class="card">
+        <h3>3 — the crash</h3>
+        <p>A core dump written to flash survives the reboot, because the crash
+          you care about happens in a car and not on the bench. <code>deckctl
+          coredump</code> gives you the faulting task and a backtrace. A brownout
+          reset says so plainly — in a vehicle that is cranking, not software.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem">Symptom-by-symptom table in
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/DIAGNOSTICS.md">DIAGNOSTICS.md</a>,
+      along with what to include in a bug report. On a dot-matrix display a
+      photograph of the fault is worth more than any description of it.</p>
   </div>
 </section>
 
@@ -381,7 +480,8 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
         <tr><td><code>core/</code> renderer</td><td class="ok">Complete — all ten screens, verified against the JS</td></tr>
         <tr><td>Browser preview</td><td class="ok">Working</td></tr>
         <tr><td>Movie tooling</td><td class="ok">Working — 3D scenes, GIF import, flash packing</td></tr>
-        <tr><td>ESP32 firmware</td><td class="warn">Skeleton. Structure and command sequences from datasheets. Never flashed</td></tr>
+        <tr><td>ESP32 firmware</td><td class="warn">Written and <b>compiles</b> — A2DP, AVRCP, FFT, two panel drivers, movies, diagnostics, 1.74 MB image. <b>Never run on hardware</b></td></tr>
+        <tr><td>Flash tooling</td><td class="ok">deckctl: doctor, build, flash, movies, pictures, logs, coredump</td></tr>
         <tr><td>Colour panel</td><td class="warn">Researched, part identified, nothing bought or wired</td></tr>
       </tbody>
     </table>
@@ -393,6 +493,9 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
   <div class="wrap">
     <div class="links">
       <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/BUILD.md">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/SAFETY.md">Safety</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HANDBOOK.md">Handbook</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HARDWARE.md">Hardware</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/ARCHITECTURE.md">Architecture</a>
@@ -404,6 +507,13 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
     </div>
     <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics and the
       album-art dither idea came out of that consult.</p>
+    <p><b>This is an unfinished hobby project published as source, not a product.</b>
+      Nothing here has been tested in a vehicle or certified by anybody, and the
+      firmware has never run on hardware. If you build one you are the
+      manufacturer, and every consequence is yours — including fire, battery
+      drain, airbag circuits, driver distraction, insurance and type approval.
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/SAFETY.md">Read SAFETY.md</a>
+      before wiring anything to a car.</p>
     <p>MIT licensed. Build one.</p>
   </div>
 </footer>
