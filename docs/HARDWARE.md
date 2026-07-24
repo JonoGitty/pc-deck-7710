@@ -57,19 +57,34 @@ part the original decks used, unbeatable in daylight. Costs you the greyscale.
 
 ## 2. The brain
 
-| | ESP32-S3 | Raspberry Pi Zero 2 W |
+> ### ⚠️ Correction — it is the ORIGINAL ESP32, not the S3
+>
+> An earlier draft of this document recommended the ESP32-S3. That was wrong,
+> and it would have killed the build: **the S3 has no Bluetooth Classic**, so it
+> cannot do A2DP, so it cannot receive audio from a phone. Espressif closed the
+> request to add it as ["Resolution: Won't Do"](https://github.com/espressif/esp-idf/issues/16232).
+>
+> The **original ESP32** is dual-mode — Classic BR/EDR *and* BLE — which is what
+> makes it the right part here, and it is why every ESP32 Bluetooth speaker
+> project uses it. Get a **WROVER-E** variant for the PSRAM: album art means
+> decoding a 600×600 JPEG, which will not fit in internal RAM.
+>
+> Being dual-mode also gives the update path for free: **Classic for audio, BLE
+> for firmware updates**, on one radio.
+
+| | ESP32 (WROVER-E) | Raspberry Pi Zero 2 W |
 |---|---|---|
 | Boot | Under a second | 20–30 s |
 | Power loss | Safe, no filesystem | Corrupts the SD card without protection |
-| Bluetooth | Native A2DP sink + [AVRCP metadata, position and play-status callbacks](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/bluetooth/esp_avrc.html) ✅ | BlueZ, richer, D-Bus |
+| Bluetooth | **Dual-mode.** Classic A2DP sink + [AVRCP metadata, position and play-status callbacks](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/bluetooth/esp_avrc.html) ✅, plus BLE | BlueZ, richer, D-Bus |
 | Lyrics / art lookup | WiFi to a phone hotspot | Same, easier |
-| Album art decode | JPEG decode + dither on-device, needs PSRAM | Trivial |
-| Cost | ~£6–12 ⚠️ | ~£18 ⚠️ |
+| Album art decode | JPEG decode + dither on-device — **needs the PSRAM** | Trivial |
+| Cost | ~£8–14 ⚠️ | ~£18 ⚠️ |
 | Firmware language | C / C++ | Anything |
 
-### Decision — ESP32-S3 primary, Pi supported
+### Decision — ESP32 (WROVER-E) primary, Pi supported
 
-**ESP32-S3 as the primary target.** In a car, instant-on and surviving a
+**The original ESP32 as the primary target.** In a car, instant-on and surviving a
 yanked ignition matter more than convenience — a head unit that takes half a
 minute to appear is a head unit you resent. The Pi stays a supported target for
 people who want the easy path, which the architecture gives us for free.
@@ -240,7 +255,7 @@ PC deck.
 
 | Tier | Display | Brain | Rough cost ⚠️ | For |
 |---|---|---|---|---|
-| **Bench** | SSD1322 | ESP32-S3 | ~£30 | Developing firmware on a desk |
-| **Car — greyscale** | SSD1322 | ESP32-S3 | ~£80 | The recommended build |
-| **Car — authentic VFD** | GP1294AI | ESP32-S3 | ~£90 | Real glass, 1-bit |
+| **Bench** | SSD1322 | ESP32-WROVER-E | ~£32 | Developing firmware on a desk |
+| **Car — greyscale** | SSD1322 | ESP32-WROVER-E | ~£82 | The recommended build |
+| **Car — authentic VFD** | GP1294AI | ESP32-WROVER-E | ~£92 | Real glass, 1-bit |
 | **Desk — full colour** | 8.8" bar LCD | none, PC drives it | ~£90 | No firmware at all; the legacy PC deck on a second monitor |

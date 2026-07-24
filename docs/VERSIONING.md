@@ -43,28 +43,44 @@ Same `core` version across a row; that is the point of the shared renderer.
 - **Movies are not tied to a panel.** A movie baked at 192×48 plays on a 256×64
   panel, centred. That is why `deck_movie_blit` centres rather than scales.
 
-## Updates on the deck
+## Updates — OTA over BLE
 
-Deliberately not decided yet — it depends on the control surface (see
-[CONTROL.md](CONTROL.md)), and getting it wrong means bricking a unit behind a
-dashboard. The options, with the tradeoff that actually matters:
+Decided: **firmware updates arrive over Bluetooth LE**, from a phone, with no
+cable and no fascia removal.
 
-1. **USB only.** Pull the fascia, plug in, flash. Zero risk of a half-written
-   OTA, zero attack surface, and genuinely annoying if the deck is fitted.
-2. **OTA over WiFi**, from the phone hotspot the deck already uses for lyrics.
-   Convenient, and needs an A/B partition scheme with rollback or one bad
-   flash in a tunnel leaves a dead dashboard.
-3. **SD card.** Drop a `.bin` on a card, hold a button at power-on. No network,
-   recoverable by hand, and the card slot is a mechanical part that fails.
+This works because the deck runs the **original ESP32**, which is dual-mode: it
+uses Bluetooth **Classic** for A2DP audio and **BLE** for the update channel, on
+one radio. (It would not have worked on an ESP32-S3, which has no Classic BT at
+all — see [HARDWARE.md](HARDWARE.md).)
 
-**Whatever is chosen, movies must update separately from firmware.** Adding an
-animation should not mean reflashing, and a corrupt movie must not stop the deck
-booting — that is the single most important safety property here, because
-movies are the part users will be adding constantly.
+Espressif publish a BLE OTA component, and the standard partition layout gives
+the safety property that matters:
 
-## Open questions
+```
+factory   the image that always boots — never overwritten
+ota_0     ┐ new firmware lands here, is verified, and only then
+ota_1     ┘ marked bootable; a bad flash rolls back to the last good one
+```
 
-- Which update path (above)?
-- Does the deck need to boot with no valid movies at all? It should, falling
-  back to the built-in procedural dolphins — which is an argument for the
-  dolphins staying compiled in rather than shipping as a `.dmv`.
+**Updates are only accepted while the deck is idle** — not streaming. Classic
+and BLE coexisting on one radio is supported but tight, and running an OTA
+during A2DP playback is the case most likely to expose it. Refusing to update
+mid-song costs nothing: nobody wants to flash firmware while driving to music.
+
+⚠️ Coexistence has not been proven on hardware yet. If it turns out to be
+unreliable even when idle, the fallback is OTA over the WiFi hotspot the deck
+already joins for lyrics — same partition scheme, different transport.
+
+## Movies ship inside the firmware
+
+Movies are compiled into the binary rather than stored separately. That keeps
+the firmware self-contained: no filesystem, no storage layer, no possibility of
+a corrupt movie file stopping the deck booting.
+
+The cost is that adding an animation means reflashing — which BLE OTA makes a
+phone-side operation rather than a fascia-off one, so the two decisions fit
+together.
+
+The dolphins stay **procedural and compiled in** regardless. They are the
+fallback that always works, and being code rather than data is what lets them
+react to the bass.

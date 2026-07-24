@@ -5,8 +5,11 @@
 | | Decision |
 |---|---|
 | **Renderer** | Portable C99, compiled to both WASM (preview) and native (firmware) |
-| **First brain** | ESP32-S3. Pi kept as a documented alternative |
+| **First brain** | ESP32 **WROVER-E** (dual-mode BT — the S3 has no Classic BT and so cannot do A2DP). Pi kept as an alternative |
 | **First display** | SSD1322 256×64. The others stay scheduled, not dropped |
+| **Movies** | Compiled into the firmware; dolphins stay the default and stay procedural |
+| **Updates** | OTA over BLE, only while idle |
+| **Control** | Full transport + volume back to the phone over AVRCP |
 | **Legacy split** | Done — the PC deck lives in `legacy/`, still launched by the same commands |
 
 
@@ -63,7 +66,7 @@ preview/           the browser harness — core compiled to WASM
 
 firmware/
   esp32/           A2DP sink, AVRCP, esp-dsp FFT, SPI display driver,
-                   WiFi lookups, GPIO controls
+                   WiFi lookups, GPIO controls, BLE OTA
   pi/              BlueZ + PipeWire equivalent
 
 docs/              this, HARDWARE.md, UI-SPEC.md, build guides, diagrams
