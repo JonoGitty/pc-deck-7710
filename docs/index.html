@@ -198,6 +198,16 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
       <figure class="card" style="margin:0"><img loading="lazy" src="media/lyrics.gif" alt="Lyric lines with the current line brighter than its neighbours">
         <h3>Lyrics</h3><p>Synced from LRCLIB. Current line hot, neighbours dim, long lines wrapped.</p></figure>
     </div>
+
+    <h3 style="margin:2.5rem 0 1rem">On the whole faceplate</h3>
+    <figure class="film"><img loading="lazy" src="media/faceplate-cover.png" alt="The full deck showing the album art screen"></figure>
+    <figure class="film"><img loading="lazy" src="media/faceplate-lyrics.png" alt="The full deck showing the lyrics screen"></figure>
+    <figure class="film"><img loading="lazy" src="media/faceplate-vu.png" alt="The full deck showing the VU meter"></figure>
+    <figure class="film"><img loading="lazy" src="media/faceplate-waterfall.png" alt="The full deck showing the waterfall display"></figure>
+    <figure class="film" style="margin-bottom:0"><img loading="lazy" src="media/faceplate-ocean.png" alt="The full deck showing dolphins under a waterline">
+      <figcaption>Idle behaviour, faithful to the era: music stops, three seconds
+        to the clock, twelve to the dolphins, and a hard horizontal wipe back to
+        the analyser when it returns.</figcaption></figure>
   </div>
 </section>
 
@@ -229,6 +239,10 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
         Footage needs <code>--keep</code>: a camera uses the whole tonal range and the
         deck has four levels, so a mid-grey background becomes a checkerboard louder
         than the subject. Lighting only the brightest fifth fixes it.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/spin.gif" alt="A simple solid rotating on the panel">
+      <figcaption><b>SPIN</b> — the minimal template, deliberately small. Copy it and
+        change the scene. <code>tools/movies/scene_spin.py</code></figcaption></figure>
 
     <div class="note">
       <p><b>Making one is a conversation, not a tutorial.</b> The repository carries a
@@ -326,6 +340,32 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
     <p class="muted small">This is not ceremony. It has caught a dolphin breaching one
       frame early, waterfall thresholds landing differently at double precision, and
       text dithering into mush on 1-bit panels — none of which was visible by eye.</p>
+  </div>
+</section>
+
+<section id="repo">
+  <div class="wrap">
+    <h2>What is in the repository</h2>
+    <p class="lede">Seven directories, and it is worth knowing which one you are in.</p>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Path</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td><code>legacy/</code></td><td>The PC deck — a Python server that captures audio and metadata, and a JS faceplate that draws it. Moves slowly and deliberately, because it is what most people actually run</td></tr>
+        <tr><td><code>core/</code></td><td>The portable renderer. C99, no libc, no libm, no allocation, its own trigonometry. Every screen lives here</td></tr>
+        <tr><td><code>preview/</code></td><td><code>core/</code> compiled to WASM, with a harness that emulates any panel — grid, levels, dot shape, illumination</td></tr>
+        <tr><td><code>firmware/esp32/</code></td><td>The car deck. Structure, pin map, driver command sequences and partition table. <span class="warn">Never flashed</span></td></tr>
+        <tr><td><code>tools/movies/</code></td><td>The animation maker: a pure-Python 3D renderer, a GIF importer, the <code>.dmv</code> exporter and the flash packer</td></tr>
+        <tr><td><code>tools/verify/</code></td><td>The differential suite. The reason anything here can be trusted</td></tr>
+        <tr><td><code>tools/media/</code></td><td>Regenerates every picture on this page and in the README</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="muted small">Two files are worth opening before anything else:
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/UI-SPEC.md">UI-SPEC.md</a>,
+      which explains why brightness alone must never carry meaning, and
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/CLAUDE.md">CLAUDE.md</a>,
+      which is the short version of everything the project learned the hard way.</p>
   </div>
 </section>
 

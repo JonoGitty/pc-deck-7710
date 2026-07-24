@@ -38,10 +38,12 @@ Ten display modes, all drawn by `core/` — the same C the firmware runs.
 | **Album art** — the sleeve, ordered-dithered to four levels<br>![](docs/media/cover.gif) | **Lyrics** — synced from LRCLIB, current line hot<br>![](docs/media/lyrics.gif) |
 
 <details>
-<summary><b>And the whole faceplate</b> — album art, lyrics, the dolphins</summary>
+<summary><b>And the whole faceplate</b> — VU, album art, lyrics, waterfall, dolphins</summary>
 
+![VU meter on the faceplate](docs/media/faceplate-vu.png)
 ![Album art screen on the faceplate](docs/media/faceplate-cover.png)
 ![Lyrics screen on the faceplate](docs/media/faceplate-lyrics.png)
+![Waterfall on the faceplate](docs/media/faceplate-waterfall.png)
 ![Ocean cruise on the faceplate](docs/media/faceplate-ocean.png)
 
 </details>
@@ -66,9 +68,18 @@ is the hole in the light. `tools/movies/scene_touge.py`.*
 *`DOLPHINS` — the classic screensaver, rebuilt with a real mesh and a real sea.
 `tools/movies/scene_dolphins.py`.*
 
+![SPIN — the minimal template scene](docs/media/spin.gif)
+
+*`SPIN` — the minimal template. Copy `tools/movies/scene_spin.py` and change
+the scene; it is deliberately small.*
+
 Already have a GIF? `tools/movies/import_gif.py` converts it:
 
 ![REEF — an imported reef clip](docs/media/reef.gif)
+
+*Footage needs `--keep`. A camera uses the whole tonal range and the deck has
+four levels, so a mid-grey background becomes a checkerboard louder than the
+subject; lighting only the brightest fifth is what fixes it.*
 
 **Making one is a conversation, not a tutorial.** [CLAUDE.md](CLAUDE.md) tells
 Claude the constraints — the grid for your panel, the level budget, why thin
