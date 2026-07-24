@@ -39,8 +39,8 @@
 #define PIN_MOSI 23
 #define PIN_SCLK 18
 #define PIN_CS    5
-#define PIN_DC   17     /* unused by this panel; kept so the harness is common */
-#define PIN_RST  16
+#define PIN_DC   19     /* unused by this panel; kept so the harness is common */
+#define PIN_RST   4
 #define SPI_MHZ   4     /* datasheet tops out well below the SSD1322 */
 
 /* --- commands ----------------------------------------------------------- */

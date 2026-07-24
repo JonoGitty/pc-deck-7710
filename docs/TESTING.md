@@ -256,7 +256,21 @@ python3 tools/deckctl.py coredump
 The reconnect test is the one people skip and the one that matters in a car,
 because you will never once pair it while driving.
 
-### 3.4 — steering wheel controls
+### 3.4 — the buttons
+
+- [ ] the encoder turns both ways and never jumps backwards when turned fast
+- [ ] the encoder push changes screen
+- [ ] each discrete button does what its label says
+- [ ] **if you built a resistor ladder**: the log says
+      `DECK|…|input|ladder|fitted=1` at boot, and every one of the six buttons
+      fires its own action
+
+A ladder button that fires the *wrong* action means a resistor in the wrong
+place; one that fires nothing means a reading between rungs. Two buttons
+pressed together are ignored by design — the parallel resistance lands in a
+gap — so check them one at a time.
+
+### 3.5 — steering wheel controls
 
 Hold **SRC** for five seconds. The panel walks you through each function and
 records the voltage your wheel's ladder produces.
@@ -273,7 +287,7 @@ Learning rather than decoding is deliberate: the aftermarket standardised the
 per model and per adapter. Learning makes any universal interface work,
 including on an S2000.
 
-### 3.5 — content
+### 3.6 — content
 
 ```sh
 python3 tools/deckctl.py movies      # choose animations, write them to flash
@@ -284,7 +298,7 @@ python3 tools/deckctl.py pictures    # your own photos
 - [ ] the last one wraps back to the first
 - [ ] a photo you added looks like the thing it is a photo of
 
-### 3.6 — soak
+### 3.7 — soak
 
 Leave it running for an hour with music playing.
 

@@ -35,9 +35,16 @@ Minimum that feels like a real deck:
 - **Rotary encoder with push.** Rotate = volume; push = mode; push-and-hold =
   enter the menu. Long-press for a second function is how every OEM deck
   handles a small panel, and it means one part covers three jobs.
-- **Six to eight buttons**: `SRC`, `DISP`, `BAND`, `ART`, `LYRICS`, and
-  presets. Skip/back double as long-press on presets 1 and 2, or get their own
-  keys if the fascia has room.
+- **Six buttons**: `SRC`, `DISP`, `BAND`, `ART`, `LYRICS`, `DEMO`. Skip/back
+  double as long-press, which is how every OEM deck handles a small panel.
+
+How many of those you can actually wire is decided by the chip, not the UI: an
+ESP32-WROVER-E has **six** pins left for a human to press once the panel, the
+DAC and the encoder are wired, because GPIO 16/17 are the module's PSRAM. Three
+buttons go straight on GPIOs; all six go on one ADC pin as a resistor ladder —
+which is also how you reuse a donor head unit's own fascia. Values and wiring
+are in [BUILD.md §3](BUILD.md#controls-the-full-six-on-one-pin), reasoning in
+[HARDWARE.md §5](HARDWARE.md#5-controls).
 
 Brightness deserves comment: on the SSD1322 it should drive **master contrast**,
 not scale the framebuffer. Dimming in software costs levels — a dot at DIM on a

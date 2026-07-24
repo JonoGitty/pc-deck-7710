@@ -1,5 +1,5 @@
-/* The physical surface: one encoder with a push, six buttons, an ignition
- * sense and a dimmer.
+/* The physical surface: one encoder with a push, the buttons — three on
+ * GPIOs or six on a resistor ladder — an ignition sense and a dimmer.
  *
  * Every one of these maps onto an action the PC deck already has bound to a
  * key, which is not a coincidence — it is why the firmware needed no new UI
@@ -27,33 +27,56 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+#include "deck_adc.h"
 #include "deck_diag.h"
 
-/* Pin map. Matches docs/BUILD.md; change both together. Every one of these is
- * an input with a pull-up, so a button shorts to ground and an unconnected
- * pin reads as "not pressed" rather than as noise. */
-/* The encoder is on ordinary GPIOs, not on 34/35, for two reasons that turned
- * out to be the same reason: 34-39 are input-only with no internal pull-ups,
- * so an encoder there needs two external resistors — and 34 is an ADC pin the
- * steering-wheel input needs. Moving the encoder costs nothing and buys both. */
-#define PIN_ENC_A   22
-#define PIN_ENC_B   21
-#define PIN_ENC_SW  32
-#define PIN_BTN_SRC 33
-#define PIN_BTN_DISP 25
-#define PIN_BTN_BAND 26
-#define PIN_BTN_ART  27
-#define PIN_BTN_LYR  14
-#define PIN_BTN_DEMO 13
+/* Pin map. Matches docs/BUILD.md; change both together.
+ *
+ * THE PIN BUDGET, BECAUSE IT IS TIGHTER THAN IT LOOKS
+ *
+ * On an ESP32-WROVER-E, GPIO 6-11 are the SPI flash and **GPIO 16 and 17 are
+ * the PSRAM** — the datasheet says so, and the PSRAM is the entire reason this
+ * build uses a WROVER rather than a WROOM. GPIO 1 and 3 are the serial console
+ * you read the logs on. GPIO 0, 2, 12 and 15 are strapping pins: fine as
+ * outputs, never as buttons, because a button held at power-on changes the
+ * boot mode. GPIO 34-39 are input-only with no internal pull-ups.
+ *
+ * What is left for something a human presses is exactly six pins:
+ *
+ *     13  14  21  27  32  33
+ *
+ * The encoder takes three of them. So a plain-GPIO build gets three buttons,
+ * not six, and the sixth version of this pin map — which had them — could not
+ * have worked on the recommended module. The fix is not to shuffle pins; there
+ * is nowhere to shuffle to.
+ *
+ * SO THE FULL PANEL IS A RESISTOR LADDER ON ONE ADC PIN
+ *
+ * Six buttons, six resistors, one wire. Identical in principle to the
+ * steering-wheel input in deck_swc.c — which is the point: it is the same
+ * technique a car's wheel uses, and it is how you wire the front panel of a
+ * gutted donor head unit, whose buttons are already a matrix on a flexi you
+ * would otherwise have to reverse-engineer.
+ *
+ * Both paths are compiled in and the ladder is detected at boot, so a bench
+ * build with three buttons and a car build with a full fascia run the same
+ * binary. */
+#define PIN_ENC_A    21
+#define PIN_ENC_B    27
+#define PIN_ENC_SW   14
+#define PIN_BTN_SRC  33
+#define PIN_BTN_DISP 32
+#define PIN_BTN_ART  13
 #define PIN_IGNITION 39      /* via opto-isolator — never straight from 12 V */
 #define PIN_DIMMER   36      /* likewise */
 
-/* GPIO 34-39 are input-only and have NO internal pull-ups on this chip. Only
- * the ignition sense, the dimmer and the steering-wheel line live there now,
- * and all three are driven by something external — an opto-isolator or an
- * interface box — so none of them floats. Nothing that a human presses is on
- * one of those pins, which is deliberate: a floating input reads as random
- * presses and looks exactly like a firmware bug. */
+/* GPIO 34-39 are input-only and have NO internal pull-ups on this chip. The
+ * ignition sense, the dimmer, the steering-wheel line and the button ladder
+ * all live there, and all four are driven by something external — an
+ * opto-isolator, an interface box, or the ladder's own divider — so none of
+ * them floats. Nothing is wired directly to one of those pins as a bare
+ * switch: a floating input reads as random presses and looks exactly like a
+ * firmware bug. */
 
 typedef struct {
   int      pin;
@@ -66,11 +89,62 @@ static btn_t s_btn[] = {
     {PIN_ENC_SW,   DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
     {PIN_BTN_SRC,  DECK_ACT_SRC,       1, 0, 1, 0},
     {PIN_BTN_DISP, DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
-    {PIN_BTN_BAND, DECK_ACT_OCEAN,     1, 0, 1, 0},
     {PIN_BTN_ART,  DECK_ACT_ART,       1, 0, 1, 0},
-    {PIN_BTN_LYR,  DECK_ACT_LYRICS,    1, 0, 1, 0},
-    {PIN_BTN_DEMO, DECK_ACT_DEMO,      1, 0, 1, 0},
 };
+
+/* --- the button ladder --------------------------------------------------
+ *
+ *   3V3 ── 10k ──┬── GPIO 35 (ADC1_CH7)
+ *                │
+ *                ├── [SRC]    ── 0R    ── GND
+ *                ├── [DISP]   ── 1k    ── GND
+ *                ├── [BAND]   ── 2k2   ── GND
+ *                ├── [ART]    ── 4k7   ── GND
+ *                ├── [LYRICS] ── 10k   ── GND
+ *                └── [DEMO]   ── 18k   ── GND
+ *
+ * The values are not arbitrary. Each is far enough from its neighbours that
+ * the gap survives resistor tolerance, and all of them sit below about
+ * 2.2 V — the original ESP32's ADC is badly non-linear above roughly 2.5 V
+ * and saturates before the rail, so a ladder that used the top of the range
+ * would merge its highest buttons with "nothing pressed".
+ *
+ * Unlike the steering-wheel input this does NOT need to be learned, because
+ * you built it: the resistors are specified above, so the expected voltages
+ * are known. Learning exists over there because a car's values are whatever
+ * the interface box was configured for, and there is nothing to look up. */
+#define LADDER_ADC_CHAN ADC_CHANNEL_7      /* GPIO 35 */
+#define LADDER_MATCH_MV 110                /* smallest gap is 295 mV */
+#define LADDER_IDLE_MV  2700               /* above this, nothing is pressed */
+
+static const struct { int mv; deck_action_t act; } LADDER[] = {
+    {   0, DECK_ACT_SRC},
+    { 300, DECK_ACT_MODE_NEXT},
+    { 595, DECK_ACT_OCEAN},
+    {1055, DECK_ACT_ART},
+    {1650, DECK_ACT_LYRICS},
+    {2121, DECK_ACT_DEMO},
+};
+#define NLADDER ((int)(sizeof LADDER / sizeof *LADDER))
+
+static int s_have_ladder;
+static int s_ladder_idx = -1, s_ladder_count;
+static int64_t s_ladder_down_at;
+
+static int ladder_mv(void) { return deck_adc1_mv(LADDER_ADC_CHAN); }
+
+/* Which rung, or -1. A reading that lands between rungs is deliberately
+ * nothing: two buttons pressed together put the resistors in parallel and
+ * produce a value in one of the gaps, so a chord is ignored rather than
+ * silently read as some third button. */
+static int ladder_lookup(int mv) {
+  if (mv < 0 || mv >= LADDER_IDLE_MV) return -1;
+  for (int i = 0; i < NLADDER; i++) {
+    const int d = mv - LADDER[i].mv;
+    if (d > -LADDER_MATCH_MV && d < LADDER_MATCH_MV) return i;
+  }
+  return -1;
+}
 
 /* Long presses, and only two of them. A head unit whose every button does
  * something different when held is one nobody can use without the manual;
@@ -81,6 +155,7 @@ static btn_t s_btn[] = {
 static QueueHandle_t s_q;
 static uint8_t s_enc_state;
 static int8_t  s_enc_accum;
+static int     s_ladder_div;
 
 /* Full-step quadrature table. Index is (previous state << 2) | current state;
  * the value is -1, 0 or +1. Invalid transitions — the ones a bouncing contact
@@ -123,6 +198,28 @@ static void poll_task(void *arg) {
       }
     }
 
+    /* The ladder, if one is fitted. Sampled every 10th pass rather than every
+     * pass: an ADC conversion is far more expensive than reading a GPIO, and
+     * 100 Hz is still ten times faster than anybody presses a button. */
+    if (s_have_ladder && (++s_ladder_div >= 10)) {
+      s_ladder_div = 0;
+      const int idx = ladder_lookup(ladder_mv());
+      if (idx != s_ladder_idx) {
+        if (++s_ladder_count >= 4) {          /* 40 ms of agreement */
+          s_ladder_count = 0;
+          s_ladder_idx = idx;
+          if (idx >= 0) {
+            s_ladder_down_at = esp_timer_get_time();
+            deck_input_post(LADDER[idx].act, 1);
+          } else {
+            s_ladder_down_at = 0;
+          }
+        }
+      } else {
+        s_ladder_count = 0;
+      }
+    }
+
     /* Long-press: SRC opens the steering-wheel learning wizard, DISP the
      * self-test screen. Fired once, by zeroing the timestamp, so holding does
      * not re-enter the wizard every second. */
@@ -132,6 +229,16 @@ static void poll_task(void *arg) {
       s_btn[i].down_at = 0;
       if (s_btn[i].pin == PIN_BTN_SRC)       deck_input_post(DECK_ACT_SWC_LEARN, 1);
       else if (s_btn[i].pin == PIN_BTN_DISP) deck_input_post(DECK_ACT_SELFTEST, 1);
+    }
+
+    /* ...and the same two from the ladder, so a donor fascia can reach the
+     * setup screens without also needing a discrete button soldered on. */
+    if (s_ladder_down_at &&
+        esp_timer_get_time() - s_ladder_down_at >= LONG_PRESS_US) {
+      const deck_action_t a = LADDER[s_ladder_idx].act;
+      s_ladder_down_at = 0;
+      if (a == DECK_ACT_SRC)            deck_input_post(DECK_ACT_SWC_LEARN, 1);
+      else if (a == DECK_ACT_MODE_NEXT) deck_input_post(DECK_ACT_SELFTEST, 1);
     }
 
     /* Ignition. The one input that is not a user action: when it drops, the
@@ -171,12 +278,30 @@ int deck_input_start(void) {
 
   s_enc_state = (uint8_t)((gpio_get_level(PIN_ENC_A) << 1) | gpio_get_level(PIN_ENC_B));
 
+  /* Is a ladder fitted? With no divider on the pin the 10k pull-up is absent
+   * too, so the input floats and reads as anything at all. With one fitted and
+   * nothing pressed it sits at the top of the range. So: sample a few times,
+   * and only believe in a ladder if every reading agrees it is idle. A
+   * floating pin will not do that twice in a row, which is exactly the
+   * property being tested for.
+   *
+   * Detecting rather than configuring, because the alternative is a build flag
+   * that half the people who need it will not know exists, and whose symptom
+   * when wrong is a deck with dead buttons. */
+  if (deck_adc1_channel(LADDER_ADC_CHAN) == 0) {
+    int idle = 1;
+    for (int i = 0; i < 8; i++)
+      if (ladder_mv() < LADDER_IDLE_MV) idle = 0;
+    s_have_ladder = idle;
+  }
+
   if (xTaskCreate(poll_task, "deck_in", 2560, NULL, 6, NULL) != pdPASS) {
     deck_diag_set(DECK_SUB_INPUT, DECK_HEALTH_FAILED, "task create");
     return -1;
   }
-  deck_diag_set(DECK_SUB_INPUT, DECK_HEALTH_OK, "encoder + %u buttons",
-                (unsigned)NBTN);
+  deck_diag_set(DECK_SUB_INPUT, DECK_HEALTH_OK, "encoder + %u buttons%s",
+                (unsigned)NBTN, s_have_ladder ? " + ladder" : "");
+  deck_diag_event(DECK_SUB_INPUT, "ladder", "fitted=%d", s_have_ladder);
   return 0;
 }
 

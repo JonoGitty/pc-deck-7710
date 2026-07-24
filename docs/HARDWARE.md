@@ -175,13 +175,82 @@ output. That's a cleaner signal than the loopback capture the PC version uses.
 
 ## 5. Controls
 
-The existing UI is already keyboard- and wheel-driven, which makes this easy:
+The existing UI is already keyboard- and wheel-driven, so every physical
+control maps onto an action that already has a key binding. What is *not*
+obvious is that the pin budget, not the UI, decides how many buttons you get.
 
-- **Rotary encoder with push** — volume/dimmer, push to change mode. Maps to
-  the existing wheel handler.
-- **6–8 momentary tactile buttons** — SRC, DISP, BAND, ART, LYRICS, and presets.
-  Every one of these already has a key binding.
-- On ESP32 these are GPIO. On a Pi, GPIO or a USB macropad with zero firmware.
+### The pin budget ✅
+
+On an ESP32-WROVER-E the module keeps more pins than the pinout admits:
+GPIO 6–11 are the internal SPI flash and **GPIO 16 and 17 are the internal
+PSRAM** ([datasheet](https://documentation.espressif.com/esp32-wrover-e_esp32-wrover-ie_datasheet_en.html)).
+Add UART0 (1, 3), the strapping pins (0, 2, 12, 15 — usable as outputs, never
+as buttons) and the input-only bank (34–39, no pull-ups), and after the panel
+and the DAC are wired there are exactly **six** pins left for a human to press.
+
+The encoder takes three. This is not a limit anyone would predict from the
+board, and the first version of this project's pin map quietly exceeded it.
+
+### Three ways to get buttons
+
+| Option | Buttons | Cost | Trade |
+|---|---|---|---|
+| **Discrete GPIO** | 3 + encoder | £1 | Nothing to build. Every screen still reachable, because DISP and the encoder push both cycle modes |
+| **Resistor ladder on one ADC pin** ✅ | 6 + encoder | £3 | Six resistors. One wire. The same technique the steering-wheel input uses, and the only one that scales |
+| **I²C expander** (MCP23017, PCF8574) ⚠️ | 8–16 | £2 | More buttons than the UI has actions, an extra bus, and an interrupt line. Not implemented — the ladder covers the need |
+
+**The ladder is the recommended build**, and not only for the pin count: it is
+how you reuse a donor head unit's own front panel. Those buttons are a scanned
+matrix on a flexi cable, driven by an MCU you have removed; reverse-engineering
+the scan is a weekend. Lifting the switch commons and giving each switch a
+resistor is an hour, and the result is an OEM fascia with your firmware behind
+it.
+
+Resistor values, expected voltages and the wiring diagram are in
+[BUILD.md §3](BUILD.md#controls-the-full-six-on-one-pin). The values stay
+below ~2.2 V deliberately: the original ESP32's SAR ADC is markedly non-linear
+near the rail and saturates before it, so a ladder spread across the full range
+merges its top button with "nothing pressed".
+
+### The rest
+
+- **Rotary encoder with push** — volume/dimmer, push to change mode. Read as a
+  quadrature state machine, not as an edge interrupt; the naive version
+  double-counts at detents and the symptom is a knob that sometimes goes the
+  wrong way.
+- On a Pi, all of this is GPIO, or a USB macropad with zero firmware.
+
+## 5b. Steering wheel controls — and they work in any car
+
+The deck **does not talk to your car**, and it does not need to. What the
+aftermarket standardised is the *radio* side of the link: a **resistance to
+ground**, usually on a 3.5 mm jack marked "SWC" or "W/R". A button is a
+resistor; nothing pressed is open circuit. An interface box sits between the
+car and the radio and does the car-specific translation it was built for.
+
+So the deck implements the receiving half of that convention and nothing else,
+which puts the whole existing adapter ecosystem behind it for the price of one
+ADC pin — an S2000, an E46 and a Fiesta all work without this firmware knowing
+anything about any of them.
+
+| Interface | Fits | Programming | ~Cost ⚠️ |
+|---|---|---|---|
+| **InCarTec 29-629** | **S2000-specific**, plug-in to the car's 20-pin connector | none — pre-configured | £30 |
+| **Connects2 CTSHO00xx** | Honda-specific, per-model looms | none | £30 |
+| **Metra ASWC-1** | Universal, analogue and CAN | self-programming | £40 |
+| **PAC SWI-RC-1** | Universal, analogue and CAN | DIP switches | £45 |
+
+⚠️ Prices are typical UK retail and move. None of these has been bought or
+tested against this firmware.
+
+**It learns rather than decoding**, because there is nothing to decode:
+Pioneer's own published values disagree between their own models, and a box is
+configured for whichever radio you told it you had. Hold SRC for five seconds
+and the panel walks you through each function. Two minutes, once. That is also
+the only approach that copes with a cheap box's resistor tolerance or a bad
+crimp adding a few hundred ohms.
+
+Wiring and the learning procedure: [BUILD.md §3](BUILD.md#steering-wheel-controls).
 
 ## 6. Fitting the car — cage and connector
 

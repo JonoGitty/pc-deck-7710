@@ -56,16 +56,15 @@
 
 #include <string.h>
 
-#include "esp_adc/adc_oneshot.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "nvs.h"
 
+#include "deck_adc.h"
 #include "deck_diag.h"
 
 static const char *TAG = "deck.swc";
 
-#define SWC_ADC_UNIT    ADC_UNIT_1
 #define SWC_ADC_CHAN    ADC_CHANNEL_6      /* GPIO 34 */
 #define NVS_NS          "deck"
 #define NVS_KEY         "swc"
@@ -84,7 +83,6 @@ static const char *TAG = "deck.swc";
 #define REPEAT_START_MS 600
 #define REPEAT_EVERY_MS 140
 
-static adc_oneshot_unit_handle_t s_adc;
 static deck_swc_map_t s_map;
 static int s_have_map;
 
@@ -108,16 +106,11 @@ const char *deck_swc_learn_prompt(int i) {
 }
 
 /* --- reading ------------------------------------------------------------ */
-static int read_mv(void) {
-    int raw = 0;
-    if (!s_adc) return -1;
-    if (adc_oneshot_read(s_adc, SWC_ADC_CHAN, &raw) != ESP_OK) return -1;
-    /* Raw counts, scaled to a nominal millivolt figure. Not calibrated against
-     * the eFuse curve on purpose: learning and matching both happen on this
-     * same scale, so an absolute error cancels out entirely and a calibration
-     * that differs between chips would make a learned map non-portable. */
-    return raw * 3300 / 4095;
-}
+/* Nominal millivolts on the shared ADC1 handle. Deliberately uncalibrated —
+ * see deck_adc.h. The unit is shared with the front-panel button ladder
+ * because the driver permits exactly one handle per ADC unit, and the second
+ * caller to ask for its own would come up dead. */
+static int read_mv(void) { return deck_adc1_mv(SWC_ADC_CHAN); }
 
 int deck_swc_raw_mv(void) { return read_mv(); }
 
@@ -132,19 +125,10 @@ static void save(void) {
 }
 
 int deck_swc_start(void) {
-    adc_oneshot_unit_init_cfg_t unit = {.unit_id = SWC_ADC_UNIT};
-    if (adc_oneshot_new_unit(&unit, &s_adc) != ESP_OK) {
+    if (deck_adc1_channel(SWC_ADC_CHAN) != 0) {
         deck_diag_set(DECK_SUB_INPUT, DECK_HEALTH_DEGRADED, "no ADC for SWC");
         return -1;
     }
-    adc_oneshot_chan_cfg_t chan = {
-        .bitwidth = ADC_BITWIDTH_12,
-        /* Widest attenuation: the divider swings nearly rail to rail and
-         * clipping the top would merge "nothing pressed" with the highest
-         * resistance button. */
-        .atten = ADC_ATTEN_DB_12,
-    };
-    adc_oneshot_config_channel(s_adc, SWC_ADC_CHAN, &chan);
 
     memset(&s_map, 0, sizeof s_map);
     nvs_handle_t h;

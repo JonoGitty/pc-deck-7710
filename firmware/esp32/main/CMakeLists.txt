@@ -1,5 +1,5 @@
 idf_component_register(
-  SRCS "deck_main.c" "deck_config.c" "deck_diag.c" "deck_audio.c"
+  SRCS "deck_main.c" "deck_config.c" "deck_diag.c" "deck_adc.c" "deck_audio.c"
        "deck_bt.c" "deck_i2s.c" "deck_input.c" "deck_swc.c" "deck_net.c" "deck_ui.c" "deck_selftest.c"
   INCLUDE_DIRS "."
   REQUIRES deck_core deck_display deck_movies

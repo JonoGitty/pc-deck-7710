@@ -39,7 +39,11 @@
 
 #include "deck_diag.h"
 
-static const char *TAG = "deck.net";
+/* Everything worth reading goes through deck_diag_event() in the structured
+ * DECK| format, not through ESP_LOG — one parseable stream beats two. The tag
+ * stays declared and unused-suppressed because a temporary ESP_LOGI while
+ * debugging a TLS handshake is the single most likely edit to this file. */
+__attribute__((unused)) static const char *TAG = "deck.net";
 static volatile int s_up;
 static TaskHandle_t s_task;
 

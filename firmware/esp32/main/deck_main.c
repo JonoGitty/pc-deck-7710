@@ -56,9 +56,9 @@
 /* I2S pins for the line-out DAC. Zero of the deck's function depends on these
  * being connected; a bench build with no DAC simply logs that it did not come
  * up and carries on displaying. */
-#define PIN_I2S_BCLK 4
-#define PIN_I2S_LRCK 15
-#define PIN_I2S_DOUT 2
+#define PIN_I2S_BCLK 26
+#define PIN_I2S_LRCK 25
+#define PIN_I2S_DOUT 22
 
 /* The three big buffers go to PSRAM. Together they are 48 KB against 320 KB of
  * internal DRAM that Bluetooth, WiFi and lwIP have first claim on — left

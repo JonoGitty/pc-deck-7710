@@ -58,7 +58,8 @@ That is a complete, working deck on a desk. Everything below adds a car.
 | # | Part | Why | ~Cost |
 |---|---|---|---|
 | 7 | **Rotary encoder with push**, EC11 type ⚠️ | Dim, and push to change screen | £2 |
-| 8 | 6 × momentary tactile buttons | SRC, DISP, BAND, ART, LYRICS, DEMO | £2 |
+| 8 | 3 × momentary tactile buttons | SRC, DISP, ART — all the pins a WROVER-E has left. See §3 | £1 |
+| 8b | *or* 6 buttons + a resistor ladder: 1 kΩ, 2.2 kΩ, 4.7 kΩ, 10 kΩ, 18 kΩ, plus one 10 kΩ pull-up | The full fascia on one ADC pin. Also how you reuse a donor deck's own front panel | £3 |
 | 9 | 3.5 mm TRS socket + 10 kΩ resistor | Steering wheel control input. See below | £2 |
 | 10 | **Steering wheel interface box** ⚠️ | Only if you want the wheel buttons. Universal (PAC SWI-RC-1, Metra ASWC-1) or S2000-specific (InCarTec 29-629) | £30–45 |
 
@@ -113,6 +114,24 @@ Pin numbers are GPIO numbers, and they match the firmware. If you change one,
 change it in `firmware/esp32/components/deck_display/ssd1322.c` and here
 together.
 
+### First, why the pins are where they are
+
+A WROVER-E has fewer usable pins than the pinout suggests, and the reasons are
+not guessable:
+
+| GPIO | Why you cannot have it |
+|---|---|
+| **6–11** | The SPI flash, inside the module |
+| **16, 17** | **The PSRAM**, inside the module ✅ [datasheet](https://documentation.espressif.com/esp32-wrover-e_esp32-wrover-ie_datasheet_en.html). The PSRAM is the whole reason this build specifies a WROVER rather than the cheaper WROOM |
+| **1, 3** | UART0 — the serial console you read the logs on |
+| **0, 2, 12, 15** | Strapping pins. Fine as outputs. **Never as buttons**: one held at power-on changes the boot mode |
+| **34–39** | Input-only, and no internal pull-ups |
+
+Which leaves exactly six pins for something a human presses — 13, 14, 21, 27,
+32, 33 — and the encoder takes three. **So a plain-GPIO build gets three
+buttons, not six.** For a full fascia, the six buttons go on one ADC pin as a
+resistor ladder; see below. Both work with the same firmware binary.
+
 ### The panel — SPI
 
 | Panel pin | ESP32 | Note |
@@ -122,8 +141,8 @@ together.
 | DIN / MOSI | **GPIO 23** | |
 | CLK / SCLK | **GPIO 18** | |
 | CS | **GPIO 5** | |
-| DC | **GPIO 17** | command/data select |
-| RST | **GPIO 16** | |
+| DC | **GPIO 19** | command/data select |
+| RST | **GPIO 4** | |
 
 ### The DAC — I2S
 
@@ -131,32 +150,77 @@ together.
 |---|---|
 | VIN | 5V (or 3V3 — check your board) |
 | GND | GND |
-| BCK | **GPIO 4** |
-| LRCK / WS | **GPIO 15** |
-| DIN | **GPIO 2** |
+| BCK | **GPIO 26** |
+| LRCK / WS | **GPIO 25** |
+| DIN | **GPIO 22** |
 
-### Controls
+### Controls: the bench build
 
 All buttons are wired **to ground** — one leg to the pin, one to GND.
 
 | Control | ESP32 | Pull-up |
 |---|---|---|
-| Encoder A | GPIO 22 | internal |
-| Encoder B | GPIO 21 | internal |
-| Encoder push | GPIO 32 | internal |
+| Encoder A | GPIO 21 | internal |
+| Encoder B | GPIO 27 | internal |
+| Encoder push | GPIO 14 | internal |
 | SRC | GPIO 33 | internal |
-| DISP | GPIO 25 | internal |
-| BAND | GPIO 26 | internal |
-| ART | GPIO 27 | internal |
-| LYRICS | GPIO 14 | internal |
-| DEMO | GPIO 13 | internal |
+| DISP | GPIO 32 | internal |
+| ART | GPIO 13 | internal |
 
-> **GPIO 34–39 are input-only and have no internal pull-up.** Nothing a human
-> presses is wired to one — the encoder is on 22/21 for exactly this reason.
-> The three signals that do live there (ignition, dimmer, steering wheel) are
-> all driven by something external, so none of them floats. If you move a
-> button onto one of those pins, fit a 10 kΩ resistor to 3V3, or it will read
-> as random presses and look exactly like a firmware bug.
+That is enough to drive everything: the encoder push and DISP both cycle
+screens, so every mode is reachable. **Hold SRC** for the wheel-control
+learner, **hold DISP** for the self-test.
+
+### Controls: the full six, on one pin
+
+Six buttons, six resistors, one wire into **GPIO 35**:
+
+```
+  3V3 ──[10k]──┬── GPIO 35  (ADC1_CH7)
+               │
+               ├──[ SRC    ]── 0R   ──┐
+               ├──[ DISP   ]── 1k   ──┤
+               ├──[ BAND   ]── 2k2  ──┤
+               ├──[ ART    ]── 4k7  ──┼── GND
+               ├──[ LYRICS ]── 10k  ──┤
+               └──[ DEMO   ]── 18k  ──┘
+```
+
+| Button | Resistor | Reads |
+|---|---|---|
+| SRC | 0 Ω (wire) | 0 mV |
+| DISP | 1 kΩ | 300 mV |
+| BAND | 2.2 kΩ | 595 mV |
+| ART | 4.7 kΩ | 1055 mV |
+| LYRICS | 10 kΩ | 1650 mV |
+| DEMO | 18 kΩ | 2121 mV |
+| nothing pressed | — | ~3300 mV |
+
+E24 5% resistors are fine — the smallest gap is 295 mV and the firmware
+accepts ±110 mV. Values above about 2.2 V are deliberately unused: the
+original ESP32's ADC goes non-linear near the rail and saturates before it,
+so a ladder using the top of the range merges its highest button with
+"nothing pressed".
+
+**Nothing to configure.** The deck measures the pin at boot: a fitted ladder
+sits at the top of the range, an unfitted pin floats and does not read
+consistently idle. It logs `DECK|…|input|ladder|fitted=1` either way, so you
+can tell.
+
+Two presses become long-presses here too, so a fascia with no discrete buttons
+can still reach the setup screens: **hold SRC** for the wheel-control learner,
+**hold DISP** for the self-test.
+
+**This is also how you use a donor head unit's own front panel.** Its buttons
+are a scanned matrix on a flexi you would otherwise have to reverse-engineer;
+lift the switch commons, wire each switch to a resistor, and it becomes this.
+
+> **GPIO 34–39 are input-only and have no internal pull-up.** Nothing is wired
+> to one as a bare switch — the encoder is on 21/27 for exactly this reason.
+> The four signals that live there (ignition, dimmer, steering wheel, button
+> ladder) are all driven by something external, so none of them floats. Put a
+> bare button on one and it will read as random presses and look exactly like
+> a firmware bug.
 
 ### Steering wheel controls
 

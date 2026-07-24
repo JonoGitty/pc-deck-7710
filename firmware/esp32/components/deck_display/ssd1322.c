@@ -49,8 +49,8 @@
 #define PIN_MOSI 23
 #define PIN_SCLK 18
 #define PIN_CS    5
-#define PIN_DC   17
-#define PIN_RST  16
+#define PIN_DC   19
+#define PIN_RST   4
 #define SPI_MHZ  20      /* datasheet allows more; 20 is a frame in ~1.6 ms */
 
 static void cmd1(uint8_t c, uint8_t a) { deck_spi_cmd(c); deck_spi_data1(a); }
