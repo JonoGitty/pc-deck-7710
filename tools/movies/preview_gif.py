@@ -38,6 +38,9 @@ def decode(path):
     return name, w, h, fps, frames
 
 
+COLORS = 32          # the panel is one hue; more just costs bytes
+
+
 def render(frames, w, h, scale):
     imgs = []
     r = scale * 0.42
@@ -76,7 +79,7 @@ def render(frames, w, h, scale):
                     continue
                 cx, cy = x * scale + scale / 2, y * scale + scale / 2
                 d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=LEVEL.get(v, LEVEL[3]))
-        imgs.append(base.convert("P", palette=Image.ADAPTIVE, colors=64))
+        imgs.append(base.convert("P", palette=Image.ADAPTIVE, colors=COLORS))
     return imgs
 
 
