@@ -83,6 +83,7 @@ function reconfigure() {
   rebuildAppearance();
   trackLoaded = false;
   oceanReady = false;
+  movieLoaded = -1;
 
   const tier = ["STRIP", "CLASSIC", "LARGE"][wasm.deck_tier_of()];
   $("readout").textContent =
@@ -169,8 +170,36 @@ const SCREENS = {
 };
 
 // The metadata screens own the whole panel, so they draw no label of their own.
+// Movies are fetched and handed to the C decoder, which is the same one the
+// firmware runs — so what plays here is what plays on the panel.
+const MOVIE_FILES = [
+  { name: "SPIN 192x48", url: "../movies/spin_192x48.dmv" },
+];
+let movieLoaded = -1, lastT = 0;
+
+async function loadMovie(i) {
+  if (i === movieLoaded) return;
+  try {
+    const res = await fetch(MOVIE_FILES[i].url);
+    if (!res.ok) throw new Error(String(res.status));
+    const bytes = new Uint8Array(await res.arrayBuffer());
+    if (bytes.length > wasm.deck_movie_cap()) throw new Error("too big");
+    new Uint8Array(mem.buffer, wasm.deck_movie_buf(), bytes.length).set(bytes);
+    if (!wasm.deck_movie_load(bytes.length)) throw new Error("bad dmv");
+    movieLoaded = i;
+  } catch (e) {
+    movieLoaded = -2;
+    $("readout").textContent = "movie load failed: " + e.message;
+  }
+}
+
 let oceanReady = false;
 const META_SCREENS = {
+  movie: (t) => {
+    if (movieLoaded < 0) { loadMovie(0); return; }
+    const dt = lastT ? Math.min(200, t - lastT) : 16.7;
+    wasm.deck_render_movie(dt);
+  },
   ocean: (t) => {
     if (!oceanReady) { wasm.deck_ocean_init(); oceanReady = true; }
     wasm.deck_render_ocean(Math.floor(t / 100));   // 10 movie fps
@@ -299,6 +328,7 @@ function frame(t) {
   else if (mode === "text") drawText();
   else drawRamp();
   wasm.deck_emit();
+  lastT = t;
 
   const zoom = Number($("zoom").value);
   const off = Math.round((sprites[0].width - zoom) / 2);

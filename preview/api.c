@@ -11,6 +11,7 @@
 #include "../core/screens.h"
 #include "../core/art.h"
 #include "../core/text.h"
+#include "../core/movie.h"
 
 /* wasm-ld garbage-collects anything unreachable from an entry point, and this
  * library has none — so every entry point says so explicitly. */
@@ -34,6 +35,12 @@ static deck_meta_t  meta;
 static deck_scroll_t cover_scroll;
 static deck_ocean_t  ocean;
 static uint8_t lum[128 * 128];
+static uint8_t moviebuf[256 * 1024];      /* the .dmv, written from JS */
+static uint8_t moviegrid[MAX_W * MAX_H];
+static deck_movie_t      movie;
+static deck_movie_play_t movieplay;
+static int               movie_ok = 0;
+static double            movie_acc = 0.0;
 static uint8_t artbuf[128 * 128];
 
 /* --- setup ------------------------------------------------------------- */
@@ -144,6 +151,36 @@ EXPORT(deck_render_ocean) void deck_render_ocean(int tick) {
 
 EXPORT(deck_dot) void deck_dot(int x, int y, int inten) { deck_set(&fb, x, y, (uint8_t)inten); }
 EXPORT(deck_wipe) void deck_wipe(int edge) { deck_wipe_from(&fb, edge); }
+
+/* --- movies -------------------------------------------------------------
+ * JS writes the .dmv bytes into moviebuf and calls load. The decoder is the
+ * same one the firmware runs, so a movie that plays here plays there. */
+EXPORT(deck_movie_buf) uint8_t *deck_movie_buf(void) { return moviebuf; }
+EXPORT(deck_movie_cap) int deck_movie_cap(void) { return (int)sizeof moviebuf; }
+
+EXPORT(deck_movie_load) int deck_movie_load(int size) {
+  movie_ok = deck_movie_open(&movie, moviebuf, (uint32_t)size);
+  if (!movie_ok) return 0;
+  if ((uint32_t)movie.w * movie.h > sizeof moviegrid) { movie_ok = 0; return 0; }
+  deck_movie_start(&movieplay, &movie, moviegrid);
+  movie_acc = 0.0;
+  return 1;
+}
+
+EXPORT(deck_movie_w) int deck_movie_w(void) { return movie_ok ? movie.w : 0; }
+EXPORT(deck_movie_h) int deck_movie_h(void) { return movie_ok ? movie.h : 0; }
+EXPORT(deck_movie_frames) int deck_movie_frames(void) { return movie_ok ? movie.frameCount : 0; }
+EXPORT(deck_movie_at) int deck_movie_at(void) { return movie_ok ? movieplay.frame : 0; }
+
+/* Advance by wall-clock and draw. The movie's own fps governs stepping, so a
+ * 10 fps animation stays 10 fps however fast the panel refreshes. */
+EXPORT(deck_render_movie) void deck_render_movie(double dt_ms) {
+  if (!movie_ok) return;
+  const double step = 1000.0 / (movie.fps ? movie.fps : 10);
+  movie_acc += dt_ms;
+  while (movie_acc >= step) { deck_movie_step(&movieplay); movie_acc -= step; }
+  deck_movie_blit(&fb, &movieplay);
+}
 
 /* --- output stage ------------------------------------------------------- */
 EXPORT(deck_emit) void deck_emit(void) { deck_out_frame(&fb, dev, geom.levels); }
