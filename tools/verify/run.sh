@@ -88,3 +88,16 @@ if [ -x "$CHROMIUM" ] && node -e "require('playwright-core')" 2>/dev/null; then
 else
   printf 'ocean check SKIPPED (needs playwright-core + Chromium)\n'
 fi
+
+if [ -f movies/spin_192x48.dmv ]; then
+  gcc -std=c99 -Wall -Wextra -Werror -O2 \
+      -o build/verify_movie_c core/fb.c core/movie.c tools/verify/render_movie.c
+  build/verify_movie_c movies/spin_192x48.dmv > build/mv_c.txt
+  python3 tools/verify/render_movie.py movies/spin_192x48.dmv > build/mv_py.txt
+  if diff -u build/mv_py.txt build/mv_c.txt > build/mv_diff.txt; then
+    printf '.dmv round-trips: C and python decoders agree on %s frames\n' \
+      "$(( $(wc -l < build/mv_c.txt) - 1 ))"
+  else
+    printf 'MISMATCH — .dmv decoders disagree:\n\n'; cat build/mv_diff.txt; exit 1
+  fi
+fi

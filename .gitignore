@@ -8,3 +8,4 @@ __pycache__/
 *.pyc
 .venv/
 preview/deck.wasm
+movies/*.json
