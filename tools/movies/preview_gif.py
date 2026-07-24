@@ -7,6 +7,11 @@ model the browser preview uses — a flat pixel grid badly misrepresents how a
 dot-matrix display actually reads.
 
     python3 tools/movies/preview_gif.py movies/solar_256x64.dmv out.gif [scale]
+    python3 tools/movies/preview_gif.py in.dmv out.gif 3 --from=40 --max=200
+
+`--from` / `--max` cut an excerpt. A GIF is roughly 3 KB a frame, so the full
+56-second SOLAR is a megabyte and a half — fine to play on a deck, not fine to
+put at the top of a README that someone opens on a phone.
 """
 import struct
 import sys
@@ -84,11 +89,23 @@ def render(frames, w, h, scale):
 
 
 def main():
-    src = sys.argv[1]
-    dst = sys.argv[2] if len(sys.argv) > 2 else src.rsplit(".", 1)[0] + ".gif"
-    scale = int(sys.argv[3]) if len(sys.argv) > 3 else 4
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    flags = [a for a in sys.argv[1:] if a.startswith("--")]
+    src = args[0]
+    dst = args[1] if len(args) > 1 else src.rsplit(".", 1)[0] + ".gif"
+    scale = int(args[2]) if len(args) > 2 else 4
+    start, limit = 0, None
+    for f in flags:
+        if f.startswith("--from="):
+            start = int(f.split("=")[1])
+        elif f.startswith("--max="):
+            limit = int(f.split("=")[1])
+
     name, w, h, fps, frames = decode(src)
-    print(f"{name}  {w}x{h}  {len(frames)} frames @ {fps}fps -> {dst}")
+    total = len(frames)
+    frames = frames[start: None if limit is None else start + limit]
+    cut = "" if len(frames) == total else f"  (excerpt of {total})"
+    print(f"{name}  {w}x{h}  {len(frames)} frames @ {fps}fps{cut} -> {dst}")
     imgs = render(frames, w, h, scale)
     imgs[0].save(dst, save_all=True, append_images=imgs[1:],
                  duration=int(1000 / fps), loop=0, optimize=True)
