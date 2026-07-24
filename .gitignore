@@ -7,3 +7,4 @@ legacy/web/media/
 __pycache__/
 *.pyc
 .venv/
+preview/deck.wasm

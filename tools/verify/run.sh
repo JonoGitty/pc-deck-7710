@@ -18,3 +18,17 @@ else
   cat build/out_diff.txt
   exit 1
 fi
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/verify_screens_c core/fb.c core/screens/spectrum.c tools/verify/render_screens.c
+
+build/verify_screens_c tools/verify/screens.tsv > build/scr_c.txt
+node tools/verify/render_screens.js tools/verify/screens.tsv > build/scr_js.txt
+
+if diff -u build/scr_js.txt build/scr_c.txt > build/scr_diff.txt; then
+  printf 'screens match legacy JS on %s cases\n' "$(wc -l < build/scr_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — ported screens differ from legacy JS:\n\n'
+  cat build/scr_diff.txt
+  exit 1
+fi

@@ -12,7 +12,7 @@ check before ordering. Nothing here has been bought or bench-tested yet.
 ## 1. The display
 
 This is the decision the whole build hangs off, because it fixes the dot grid
-the UI is laid out on. A 1-DIN aperture is **180 × 50 mm** (ISO 7736), so the
+the UI is laid out on. A 1-DIN fascia is **180 × 50 mm** (ISO 7736 — see §6), so the
 active area has to fit inside roughly 178 × 48 mm unless you build a
 non-standard fascia.
 
@@ -113,7 +113,69 @@ The existing UI is already keyboard- and wheel-driven, which makes this easy:
   Every one of these already has a key binding.
 - On ESP32 these are GPIO. On a Pi, GPIO or a USB macropad with zero firmware.
 
-## 6. Enclosure
+## 6. Fitting the car — cage and connector
+
+Two standards do the work here, and between them they mean a home-built deck
+can drop into any car that takes a normal head unit.
+
+### The cage — ISO 7736
+
+Defines the slot, not the box. **Single DIN is a 180 × 50 mm fascia**; double
+DIN is 180 × 100.3 mm. The aperture behind it is at least 188 mm wide and
+182 ± 8 mm tall.
+
+**Depth is deliberately not standardised** ✅ — which is the trap. Some cars
+have a correct front aperture but a shallow cavity that only ever fitted the
+original radio. Measure the car before designing the enclosure depth, not
+after. The published guidance is 175 mm minimum plus room for connectors, but
+treat that as aspirational rather than guaranteed.
+
+Mounting is via a **metal cage/sleeve** that slides into the dash, with tabs
+bent outward to lock it. The unit then slides into the cage and is released
+with a pair of U-shaped **DIN removal keys** pushed into holes at each end of
+the fascia. Both the cage and the keys are cheap commodity parts — buy, don't
+design. Some cars use side brackets bolted to factory rails instead; a donor
+deck usually comes with whichever its era used.
+
+### The connector — ISO 10487
+
+Standard since 1995 ✅. Two mandatory blocks, often moulded as one:
+
+**Connector A — power and control (black)**
+
+| Pin | Signal |
+|---|---|
+| A4 | +12 V constant, from battery — memory/standby |
+| A5 | Antenna remote out, +12 V, 150–300 mA |
+| A6 | Dash illumination, +12 V in when the lights are on |
+| A7 | +12 V switched — ignition in ACC or ON |
+| A8 | Ground / chassis |
+
+**Connector B — speakers (brown)**
+
+| Pin | | Pin | |
+|---|---|---|---|
+| B1 | Right rear + | B2 | Right rear − |
+| B3 | Right front + | B4 | Right front − |
+| B5 | Left front + | B6 | Left front − |
+| B7 | Left rear + | B8 | Left rear − |
+
+Three of these map straight onto things the build already needs:
+
+- **A7** is the ignition sense — exactly the wake/shutdown signal §3 calls for.
+  Opto-isolate it; don't feed it to a GPIO through a divider.
+- **A4** is the standby rail, if the deck should remember state with the key out.
+- **A6** is a free dimmer input. The deck already has a brightness control, and
+  wiring it to the headlight feed is what a real head unit does at dusk.
+
+⚠️ **The standard fixes the plastics, not the pinout.** ISO 10487 specifies the
+physical connectors; signal assignment is manufacturer-defined, and A4/A7 are
+commonly swapped. Meter the harness before connecting anything.
+
+An **ISO adapter loom** for the specific car turns all of this into plug-in
+work, and costs a few pounds.
+
+## 7. Enclosure
 
 - **Donor deck.** A dead 1-DIN head unit off eBay (~£10–25 ⚠️) gutted for its
   chassis, fascia and DIN cage. Keeps the OEM look and the mounting hardware,
@@ -121,7 +183,7 @@ The existing UI is already keyboard- and wheel-driven, which makes this easy:
 - **Custom fascia.** 3D-printed bezel over the chosen panel, in the standard
   DIN chassis. Needed if the donor's window doesn't match your display.
 
-## 7. Detachable head — parked, but shapes the enclosure
+## 8. Detachable head — parked, but shapes the enclosure
 
 Most period decks had a detachable face for anti-theft. Two ways to read that
 idea, and only one of them works.

@@ -9,7 +9,10 @@
 #ifndef DECK_H
 #define DECK_H
 
+/* stdint.h and stddef.h are freestanding headers — available with -nostdlib,
+ * unlike string.h. The core pulls in nothing else. */
 #include <stdint.h>
+#include <stddef.h>
 
 /* Canonical intensity scale. Every screen speaks these five values and nothing
  * else, so a target with fewer levels degrades in one place instead of ten. */

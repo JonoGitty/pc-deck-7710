@@ -1,5 +1,6 @@
 #include "deck.h"
-#include <string.h>
+
+/* No libc: this compiles freestanding for wasm32 and for bare-metal firmware. */
 
 deck_tier_t deck_tier(const deck_geom_t *g) {
   if (g->h < 40) return DECK_TIER_STRIP;
@@ -8,7 +9,8 @@ deck_tier_t deck_tier(const deck_geom_t *g) {
 }
 
 void deck_clear(deck_fb_t *fb) {
-  memset(fb->px, 0, (size_t)fb->geom->w * fb->geom->h);
+  size_t n = (size_t)fb->geom->w * fb->geom->h;
+  for (size_t i = 0; i < n; i++) fb->px[i] = 0;
 }
 
 void deck_set(deck_fb_t *fb, int x, int y, uint8_t inten) {

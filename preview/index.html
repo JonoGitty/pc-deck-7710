@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PC·DECK — hardware preview</title>
+<link rel="stylesheet" href="preview.css">
+</head>
+<body>
+
+<header>
+  <h1>PC·DECK <b>hardware preview</b></h1>
+  <p>Rendered by <code>core/</code> compiled to WebAssembly — the same source the
+     firmware builds from. What you see here is what the panel shows.</p>
+</header>
+
+<div id="stage">
+  <div id="panel"><canvas id="screen"></canvas></div>
+  <p id="readout"></p>
+</div>
+
+<div id="controls">
+  <label>Display
+    <select id="target"></select>
+  </label>
+  <label>Levels
+    <select id="levels">
+      <option value="2">2 — 1-bit (VFD / mono OLED)</option>
+      <option value="5" selected>5 — deck native</option>
+      <option value="16">16 — greyscale (SSD1322)</option>
+      <option value="256">256 — full range</option>
+    </select>
+  </label>
+  <label>Colour
+    <select id="scheme"></select>
+  </label>
+  <label>Pixel
+    <select id="shape">
+      <option value="square">square</option>
+      <option value="round">round bulb</option>
+    </select>
+  </label>
+  <label>Zoom
+    <select id="zoom">
+      <option value="2">2×</option>
+      <option value="4" selected>4×</option>
+      <option value="6">6×</option>
+      <option value="8">8×</option>
+    </select>
+  </label>
+  <label>Content
+    <select id="content">
+      <option value="spectrum">Spectrum analyzer</option>
+      <option value="text">Text / font sheet</option>
+      <option value="ramp">Intensity ramp</option>
+    </select>
+  </label>
+</div>
+
+<script src="preview.js"></script>
+</body>
+</html>
