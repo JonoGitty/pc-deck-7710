@@ -83,6 +83,51 @@ and the panel flashes.
 `--gamma=` shapes the curve between the two points if the midtones need pushing
 either way.
 
+## Or import a video
+
+Anything ffmpeg can open — a phone clip, a screen recording, an MP4:
+
+```sh
+python3 tools/movies/import_video.py clip.mov --probe          # where to crop
+python3 tools/movies/import_video.py clip.mov --crop=0.43,0.41,0.32,0.13 \
+        --from=4 --dur=8 --keep=25
+```
+
+Same tonal problems as a GIF and more of them, because video is always
+photographic. Everything above about `--keep` applies, harder. Three
+differences worth knowing:
+
+- **`--cover` is the default here**, not letterbox. A portrait phone video
+  letterboxed onto a 4:1 panel occupies about a ninth of it.
+- **`--from` and `--dur` cut a section**, and an import caps at 30 seconds
+  unless told otherwise. A minute at 10 fps is 600 frames of flash.
+- **`--probe` suggests a crop** by finding the part of the frame that *moves*,
+  which is a better detector for "the screen in this shot" than brightness —
+  brightness selects the lit wall behind it. It is a suggestion; look at the
+  ASCII it prints before believing it.
+
+### Filming a display is the case that does not work
+
+The obvious thing to point this at is another head unit, and it is the one
+source that resists every flag here. It fails three times over:
+
+1. **Moiré.** The source's dot grid beats against the deck's. `--blur=3`
+   before the downscale removes the source's dots and keeps its picture, and
+   the difference is not subtle.
+2. **Inversion.** A VFD lights its background and leaves the subject dark —
+   the opposite of how this deck draws. `--invert` fixes that.
+3. **The tone that is left lands in the middle**, and the middle is the 50/50
+   checkerboard. A whole panel of it beats anything in front of it.
+
+The first two have flags. The third does not, because there is nothing to
+recover: a hand-held camera photographing a lit panel produces an image whose
+dominant tone *is* mid-grey, and no black point puts it anywhere good. A clip
+of a Pioneer deck playing its dolphin screensaver was tried at every setting in
+this document and came out as noise every time.
+
+**So film a display for reference, not for import.** If you want what it shows,
+draw it — which is what `core/screens/ocean.c` is.
+
 ## The bundled animations
 
 Four, and they are worth reading before writing your own — each one solves a

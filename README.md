@@ -81,7 +81,7 @@ hesitation at the top of a gear is what makes it look like driving.
 *`SPIN` — the minimal template. Copy `tools/movies/scene_spin.py` and change
 the scene; it is deliberately small.*
 
-Already have a GIF? `tools/movies/import_gif.py` converts it:
+Already have a GIF or a video? `import_gif.py` and `import_video.py` convert them:
 
 ![REEF — an imported reef clip](docs/media/reef.gif)
 
@@ -90,6 +90,11 @@ uses the whole tonal range and the deck has four levels, so a mid-grey
 background does not read as background — it becomes a checkerboard louder than
 the subject. Lighting only the brightest quarter drops the water out and hands
 all four levels to the fish.*
+
+`import_video.py` takes anything ffmpeg opens, with `--probe` to find the crop,
+`--from`/`--dur` to cut a section, and — for the commonest hard case, filming
+another display — `--blur` and `--invert`. What that case cannot survive is in
+[docs/MOVIE-RENDERING.md](docs/MOVIE-RENDERING.md).
 
 **Making one is a conversation, not a tutorial.** [CLAUDE.md](CLAUDE.md) tells
 Claude the constraints — the grid for your panel, the level budget, why thin

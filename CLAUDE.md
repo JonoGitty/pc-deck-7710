@@ -71,9 +71,19 @@ that, and `--legacy` installs straight into it.
 good, *bake* it with `tools/movies/`. Say which you've picked and why; people
 assume everything can react.
 
-**Do they already have a GIF?** Then use `tools/movies/import_gif.py` rather
-than building a scene — it is one command. Warn them if the source is strongly
-coloured: the deck has no hue, so shapes that differ only in colour merge.
+**Do they already have a GIF or a video?** Then use `tools/movies/import_gif.py`
+or `import_video.py` rather than building a scene — it is one command. Warn
+them if the source is strongly coloured: the deck has no hue, so shapes that
+differ only in colour merge. Video additionally wants `--probe` to find a crop
+and `--keep` to drop the background.
+
+**If they want to import footage of another head unit, say up front that it
+will not work.** It is the obvious thing to try and it fails three ways:
+moiré between the two dot grids (`--blur`), a VFD lighting its background
+rather than its subject (`--invert`), and — with no flag, because there is no
+fix — a dominant tone that lands on the 50/50 checkerboard. Point them at
+`core/screens/ocean.c`: if they want what a deck shows, it is drawn, not
+filmed.
 
 **Otherwise pick a starting point:** `scene_spin.py` is the minimal template;
 `scene_solar.py` shows a camera path, per-body detail and labels drawn from the
