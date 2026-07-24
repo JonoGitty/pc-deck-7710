@@ -1,0 +1,31 @@
+/* name	fn	x	y	inten	scale	text  — a name starting with '+' keeps the previous framebuffer */
+ascii5-lo	5	2	2	2	1	 !"#$%&'()*+,-./0123456789:;<=>?
+ascii5-mid	5	2	12	2	1	@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_
+ascii5-hi	5	2	22	2	1	`abcdefghijklmnopqrstuvwxyz{|}~
+ascii3-lo	3	2	2	1	1	 !"#$%&'()*+,-./0123456789:;<=>?
+ascii3-mid	3	2	10	1	1	@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_
+ascii3-hi	3	2	18	1	1	`abcdefghijklmnopqrstuvwxyz{|}~
+specials5	5	4	4	3	1	· ° ♪ ▶ ‖
+specials3	3	4	4	2	1	· A · B ·
+case-fold	5	0	0	2	1	Hallelujah Jeff Buckley
+scale2	5	2	8	2	2	SCALE TWO 123
+scale3	5	0	0	1	3	BIG
+inten-dim	5	10	10	1	1	DIM TEXT
+inten-hot	5	10	20	3	1	HOT TEXT
+inten-clip	5	10	30	4	1	CLIP
+clip-left	5	-14	6	2	1	OFF THE LEFT EDGE
+clip-right	5	170	6	2	1	OFF THE RIGHT EDGE
+clip-top	5	20	-5	2	1	ABOVE THE TOP
+clip-bottom	5	20	44	2	1	BELOW THE BOTTOM
+clip-far	5	-400	-400	2	1	NOWHERE NEAR
+clip-scale2	5	184	40	2	2	XY
+blend-base	5	20	20	1	1	OVERLAP TEST
++blend-over	5	20	20	3	1	OVERLAP TEST
++blend-under	5	20	20	1	1	OVERLAP TEST
+blend-hot-first	5	30	30	4	1	MAX BLEND
++blend-dim-after	5	30	30	1	1	MAX BLEND
+empty5	5	5	5	2	1
+empty3	3	5	5	2	1
+long-wrap	5	0	40	2	1	A VERY LONG LINE THAT RUNS PAST THE RIGHT HAND EDGE OF THE GRID
+unknown5	5	2	2	2	1	{|}~@$^
+mixed	5	1	1	2	1	TRACK 07 · 3:42 ♪ OK!

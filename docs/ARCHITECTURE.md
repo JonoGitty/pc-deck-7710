@@ -48,10 +48,10 @@ legacy/            the PC deck exactly as it is today — frozen, still works
   server.py        WASAPI + SMTC + lyrics/art lookups
   web/             JS renderer, 192x48, eight colour schemes
 
-core/              portable C99, no deps, no allocation
-  deck.h           geometry descriptor + public API
-  fb.c             framebuffer, setDot, intensity model
-  font.c           5x7 and 3x5 ROMs (+ larger fonts for big panels)
+core/              portable C99, no deps, no allocation          [started]
+  deck.h           geometry descriptor + public API              ✅
+  fb.c             framebuffer, setDot, intensity model          ✅
+  font.c           5x7 and 3x5 ROMs (+ larger fonts for big panels) ✅
   layout.c         picks a layout tier from the geometry
   screens/         spectrum, mirror, vu, scope, city, waterfall, 3d,
                    ocean, cover, lyrics
@@ -113,6 +113,9 @@ Every platform produces the same event stream, so the renderer is identical:
 
 1. **Spec and preview.** Port the core to C, get WASM preview running with a
    display picker. No hardware needed, nothing to buy.
+   - Every port step is verified against the JS original by rendering the same
+     cases both ways and diffing framebuffers — `sh tools/verify/run.sh`. A
+     screen is not ported until it matches.
 2. **Bench firmware.** ESP32-S3 + SSD1322 on a desk. Bluetooth, audio, display.
 3. **Car build.** Power, ignition, enclosure, controls.
 4. **Guides.** Per-display build docs, diagrams, downloadable firmware packages,

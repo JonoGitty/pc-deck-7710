@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+# Prove the C core renders identically to the legacy JS it was ported from.
+# Run from the repo root:  sh tools/verify/run.sh
+set -e
+cd "$(dirname "$0")/../.."
+
+mkdir -p build
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/verify_c core/fb.c core/font.c tools/verify/render.c
+
+build/verify_c tools/verify/cases.tsv > build/out_c.txt
+node tools/verify/render.js tools/verify/cases.tsv > build/out_js.txt
+
+if diff -u build/out_js.txt build/out_c.txt > build/out_diff.txt; then
+  printf 'core matches legacy JS on %s cases\n' "$(wc -l < build/out_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — C core differs from legacy JS:\n\n'
+  cat build/out_diff.txt
+  exit 1
+fi

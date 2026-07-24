@@ -2,7 +2,8 @@
 Thumbs.db
 desktop.ini
 *.log
-web/media/
+build/
+legacy/web/media/
 __pycache__/
 *.pyc
 .venv/
