@@ -120,3 +120,21 @@ if [ "$mv_total" -gt 0 ]; then
     python3 tools/verify/pack_roundtrip.py build/movies.bin
   fi
 fi
+
+# The firmware's UI layer, run on this machine. core/ is verified against the
+# JavaScript; this covers the layer above it — which screen is on, when the
+# dolphins take over, how a track change interrupts — which no amount of
+# framebuffer diffing reaches and which is impractical to test on hardware,
+# because seeing the idle machine takes fifteen seconds of silence per attempt.
+# Piping to tail would swallow the exit status and turn a failing suite into a
+# passing one, which is the worst possible outcome for a test runner.
+if command -v gcc > /dev/null; then
+  sh tools/sim/run.sh --secs 1 > /dev/null 2>&1
+  if python3 tools/sim/test_behaviour.py > build/sim_test.txt 2>&1; then
+    tail -1 build/sim_test.txt
+  else
+    printf 'MISMATCH — the deck behaves differently than expected:\n\n'
+    cat build/sim_test.txt
+    exit 1
+  fi
+fi

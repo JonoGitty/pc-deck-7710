@@ -40,6 +40,11 @@ jobs:
           wasm-ld --version
           sh tools/build_wasm.sh
 
+      - name: the deck's own behaviour, simulated
+        run: |
+          sh tools/sim/run.sh --secs 1 > /dev/null
+          python3 tools/sim/test_behaviour.py
+
       - name: the animation tools still run
         run: |
           python3 -m pip install --quiet Pillow
