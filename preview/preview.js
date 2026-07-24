@@ -81,6 +81,7 @@ function reconfigure() {
   $("scheme").disabled = !colourCapable;
 
   rebuildAppearance();
+  trackLoaded = false;
 
   const tier = ["STRIP", "CLASSIC", "LARGE"][wasm.deck_tier_of()];
   $("readout").textContent =
@@ -113,6 +114,48 @@ function feed(t) {
                               Math.cos(r * 0.6 + t / 2100));
 }
 
+// A canned track so the metadata screens have something real to show.
+const TRACK = {
+  title: "Hallelujah (Live At The Beacon Theatre)",
+  artist: "Jeff Buckley", album: "Grace", app: "SPOTIFY",
+  duration: 414,
+  lyrics: [
+    [0, ""], [4, "Well I heard there was a secret chord"],
+    [9.5, "That David played and it pleased the Lord"],
+    [15, "But you don\u2019t really care for music, do you?"],
+    [21, "It goes like this, the fourth, the fifth"],
+    [26, "The minor fall, the major lift"],
+    [31, "The baffled king composing hallelujah"],
+    [38, ""], [42, "Hallelujah"], [46, "Hallelujah"],
+    [50, "Hallelujah"], [54, "Hallelujah"],
+  ],
+};
+
+let trackLoaded = false;
+function loadTrack() {
+  writeStr(TRACK.title);  wasm.deck_set_title();
+  writeStr(TRACK.artist); wasm.deck_set_artist();
+  writeStr(TRACK.album);  wasm.deck_set_album();
+  writeStr(TRACK.app);    wasm.deck_set_app();
+  wasm.deck_set_lyric_state(2 /* ok */, 1 /* synced */, 0);
+  wasm.deck_lyrics_clear();
+  for (const [t, text] of TRACK.lyrics) { writeStr(text); wasm.deck_lyrics_push(t, 30); }
+
+  // A stand-in sleeve: luminance written into wasm memory, dithered by the
+  // core — the same call the firmware makes after decoding a JPEG.
+  const S = Math.min(H, 128);
+  const lum = new Uint8Array(mem.buffer, wasm.deck_lum_ptr(), S * S);
+  for (let y = 0; y < S; y++)
+    for (let x = 0; x < S; x++) {
+      const dx = x / S - 0.5, dy = y / S - 0.5;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      const ring = r < 0.09 ? 235 : r < 0.34 ? 20 : 40 + 200 * (1 - r);
+      lum[y * S + x] = Math.max(0, Math.min(255, Math.round(ring)));
+    }
+  wasm.deck_make_art(S);
+  trackLoaded = true;
+}
+
 const SCREENS = {
   spectrum:  ["SPECTRUM ANALYZER", () => wasm.deck_render_spectrum()],
   mirror:    ["MIRROR SPECTRUM",   () => wasm.deck_render_mirror()],
@@ -121,6 +164,14 @@ const SCREENS = {
   waterfall: ["WATERFALL",         () => wasm.deck_render_waterfall()],
   vu:        ["VU METER",          () => wasm.deck_render_vu()],
   "3d":      ["3D SPECTRUM",       () => wasm.deck_render_3d()],
+};
+
+// The metadata screens own the whole panel, so they draw no label of their own.
+const META_SCREENS = {
+  cover:  (t) => { wasm.deck_set_transport((t / 1000) % TRACK.duration, TRACK.duration, 1);
+                   wasm.deck_render_cover(16.7); },
+  lyrics: (t) => { wasm.deck_set_transport((t / 1000) % 60, TRACK.duration, 1);
+                   wasm.deck_render_lyrics(t); },
 };
 
 function drawScreen(key, t) {
@@ -236,7 +287,8 @@ function rebuildAppearance() { buildSprites(); buildUnlit(); }
 function frame(t) {
   wasm.deck_begin();
   const mode = $("content").value;
-  if (SCREENS[mode]) drawScreen(mode, t);
+  if (META_SCREENS[mode]) { if (!trackLoaded) loadTrack(); feed(t); META_SCREENS[mode](t); }
+  else if (SCREENS[mode]) drawScreen(mode, t);
   else if (mode === "text") drawText();
   else drawRamp();
   wasm.deck_emit();

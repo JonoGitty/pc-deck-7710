@@ -25,7 +25,7 @@ else
 fi
 
 gcc -std=c99 -Wall -Wextra -Werror -O2 \
-    -o build/verify_screens_c core/fb.c core/font.c core/trig.c core/screens/*.c tools/verify/render_screens.c
+    -o build/verify_screens_c core/fb.c core/font.c core/trig.c core/text.c core/art.c core/screens/*.c tools/verify/render_screens.c
 
 build/verify_screens_c tools/verify/screens.tsv > build/scr_c.txt
 node tools/verify/render_screens.js tools/verify/screens.tsv > build/scr_js.txt
@@ -49,5 +49,20 @@ if diff -u build/txt_js.txt build/txt_c.txt > build/txt_diff.txt; then
 else
   printf 'MISMATCH — text helpers differ from legacy JS:\n\n'
   cat build/txt_diff.txt
+  exit 1
+fi
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 -o build/verify_meta_c \
+    core/fb.c core/font.c core/text.c core/art.c core/trig.c \
+    core/screens/cover.c core/screens/lyrics.c tools/verify/render_meta.c
+
+build/verify_meta_c tools/verify/meta.tsv > build/meta_c.txt
+node tools/verify/render_meta.js tools/verify/meta.tsv > build/meta_js.txt
+
+if diff -u build/meta_js.txt build/meta_c.txt > build/meta_diff.txt; then
+  printf 'metadata screens match legacy JS on %s cases\n' "$(wc -l < build/meta_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — cover/lyrics differ from legacy JS:\n\n'
+  cat build/meta_diff.txt
   exit 1
 fi

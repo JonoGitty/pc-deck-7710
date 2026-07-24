@@ -17,6 +17,8 @@ preview (WASM), ESP32-S3 firmware, and a Pi. See
 | `compat.c` | memset/memcpy/memmove/memcmp for freestanding builds |
 | `text.c/.h` | folding, word wrap, marquee scroller |
 | `fold_table.h` | **generated** — character folding, see below |
+| `art.c/.h` | album art dither — decode/scale stay platform-side |
+| `meta.h` | track, playhead and lyric rows |
 | `screens/` | one file per screen |
 
 ## Two things that bite freestanding builds

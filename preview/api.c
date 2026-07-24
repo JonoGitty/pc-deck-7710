@@ -9,6 +9,8 @@
 #include "../core/font.h"
 #include "../core/out.h"
 #include "../core/screens.h"
+#include "../core/art.h"
+#include "../core/text.h"
 
 /* wasm-ld garbage-collects anything unreachable from an entry point, and this
  * library has none — so every entry point says so explicitly. */
@@ -28,6 +30,10 @@ static char         strbuf[STR_MAX];
 static deck_geom_t  geom = { 192, 48, DECK_LEVELS, 0 };
 static deck_fb_t    fb   = { &geom, px };
 static deck_state_t st;
+static deck_meta_t  meta;
+static deck_scroll_t cover_scroll;
+static uint8_t lum[128 * 128];
+static uint8_t artbuf[128 * 128];
 
 /* --- setup ------------------------------------------------------------- */
 EXPORT(deck_config) int deck_config(int w, int h, int levels, int flags) {
@@ -69,6 +75,39 @@ EXPORT(deck_set_scope_gain) void deck_set_scope_gain(double g) { st.scopeGain = 
 EXPORT(deck_set_clip) void deck_set_clip(int c) { st.clip = c; }
 EXPORT(deck_text_i) int deck_text_i(int want) { return deck_thin_inten(&geom, (uint8_t)want); }
 
+/* --- track metadata ----------------------------------------------------- */
+static void copy_str(char *dst, size_t cap, const char *src) {
+  size_t i = 0;
+  for (; src[i] && i + 1 < cap; i++) dst[i] = src[i];
+  dst[i] = 0;
+}
+
+EXPORT(deck_set_title)  void deck_set_title(void)  { copy_str(meta.title,  DECK_STR_MAX, strbuf); }
+EXPORT(deck_set_artist) void deck_set_artist(void) { copy_str(meta.artist, DECK_STR_MAX, strbuf); }
+EXPORT(deck_set_album)  void deck_set_album(void)  { copy_str(meta.album,  DECK_STR_MAX, strbuf); }
+EXPORT(deck_set_app)    void deck_set_app(void)    { copy_str(meta.app,    16, strbuf); }
+
+EXPORT(deck_set_transport) void deck_set_transport(double pos, double dur, int status) {
+  meta.position = pos; meta.duration = dur; meta.status = status;
+}
+EXPORT(deck_set_lyric_state) void deck_set_lyric_state(int state, int synced, double offsetMs) {
+  meta.lyricState = state; meta.synced = synced; meta.offsetMs = offsetMs;
+}
+EXPORT(deck_lyrics_clear) void deck_lyrics_clear(void) { deck_lyrics_reset(&meta); }
+EXPORT(deck_lyrics_push) int deck_lyrics_push(double t, int cells) {
+  return deck_lyrics_add(&meta, t, strbuf, cells);
+}
+
+/* JS writes luminance here, the core dithers it — the same call the firmware
+ * makes after decoding a JPEG. */
+EXPORT(deck_lum_ptr) uint8_t *deck_lum_ptr(void) { return lum; }
+EXPORT(deck_make_art) void deck_make_art(int side) {
+  if (side <= 0 || side > 128) { meta.art = 0; meta.artSide = 0; return; }
+  deck_art_dither(lum, side, artbuf);
+  meta.art = artbuf; meta.artSide = side;
+}
+EXPORT(deck_clear_art) void deck_clear_art(void) { meta.art = 0; meta.artSide = 0; }
+
 /* --- drawing ------------------------------------------------------------ */
 EXPORT(deck_begin) void deck_begin(void) { deck_clear(&fb); }
 
@@ -88,6 +127,12 @@ EXPORT(deck_render_city)      void deck_render_city(void)      { deck_screen_cit
 EXPORT(deck_render_waterfall) void deck_render_waterfall(void) { deck_screen_waterfall(&fb, &st); }
 EXPORT(deck_render_vu)        void deck_render_vu(void)        { deck_screen_vu(&fb, &st); }
 EXPORT(deck_render_3d)        void deck_render_3d(void)        { deck_screen_3d(&fb, &st); }
+EXPORT(deck_render_cover)     void deck_render_cover(double dt) {
+  deck_screen_cover(&fb, &st, &meta, &cover_scroll, dt);
+}
+EXPORT(deck_render_lyrics)    void deck_render_lyrics(double now) {
+  deck_screen_lyrics(&fb, &st, &meta, now);
+}
 
 EXPORT(deck_dot) void deck_dot(int x, int y, int inten) { deck_set(&fb, x, y, (uint8_t)inten); }
 EXPORT(deck_wipe) void deck_wipe(int edge) { deck_wipe_from(&fb, edge); }
