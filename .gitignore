@@ -1,4 +1,10 @@
 # scratch / os
+# node_modules was once committed here as a SYMLINK into a build machine's
+# temp directory — broken on every clone, and a scratch path leaked into a
+# public repository. Playwright is a dev dependency of the verify suite and
+# nothing that runs the deck needs it.
+node_modules/
+node_modules
 Thumbs.db
 desktop.ini
 *.log
