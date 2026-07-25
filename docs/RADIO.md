@@ -55,10 +55,18 @@ See [UI-SPEC.md](UI-SPEC.md).
 | Si4703 ✅ | FM only | ✅ | £5–8 | Fine, and cheaper, and FM only. Buy it if you will never want medium wave |
 | RDA5807M | FM only | ✅ | £2–3 | Very cheap, widely cloned, noticeably worse sensitivity. For a bench toy, not a car |
 | TEA5767 | FM only | ❌ | £2–3 | **No RDS.** Half this screen would be empty. Skip |
+| **TEF6686** ⚠️ | FM, AM, and it is an SDR | ✅ | **$25–50** | **The upgrade path, not the starting point.** NXP's actual car-radio receiver — software-defined, with DSP, and reputedly in a different class for sensitivity and selectivity. I²C to an ESP32 exactly like the Si4735, and **open firmware and schematics** exist: [PE5PVB's project](https://github.com/PE5PVB/TEF6686_ESP32), written up by [IEEE Spectrum](https://spectrum.ieee.org/hacking-a-car-radio-chip). ⚠️ Two to four times the price, and **this project has no driver for it** — `deck_tuner.c` speaks AN332 to a Si4735 |
 
 The Si4735 costs a few pounds more than the FM-only parts and gets you the
 whole band structure, better sensitivity, and a station name on the screen.
 On a build where the display is the point, that is not a close call.
+
+**If the radio ever needs to be genuinely good rather than merely working**, the
+TEF6686 is where to look — and unusually for this hobby, there is real working
+code to read rather than a datasheet to guess from. It is a bigger job than
+swapping a part: a new driver, a new command set, and none of the AN332 timing
+work in `deck_tuner.c` carries over. Worth it only once the deck is finished and
+the radio is the weakest thing about it.
 
 ⚠️ Nothing here has been bought or bench-tested.
 
