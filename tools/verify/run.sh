@@ -179,6 +179,20 @@ else
   exit 1
 fi
 
+# The buying page, against the parts list and the cars. It is maintained by
+# hand and it drifted twice: it recommended a £59.99 steering-wheel interface
+# for a car that has no steering-wheel controls, and it omitted the amplifier
+# entirely — so you could order everything on it and end up with a deck that
+# could not drive a speaker. Both are one failure: a second copy of something
+# that already exists in vehicles/ or in the BOM, going stale quietly.
+if python3 tools/verify/test_buying.py > build/buying_test.txt 2>&1; then
+  grep -E 'buying checks passed' build/buying_test.txt
+else
+  printf 'MISMATCH — the buying page has drifted from the parts or the cars:\n\n'
+  cat build/buying_test.txt
+  exit 1
+fi
+
 # The donor families. Same shape as the vehicle check, plus one thing it can
 # do that the vehicle check cannot: the window-fit drawings are scaled from
 # these numbers, so a measurement that changes without the picture following
