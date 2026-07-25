@@ -6,6 +6,7 @@ The documentation, and the project's web page.
 |---|---|
 | [HANDBOOK.md](HANDBOOK.md) | Build one. Tiers, parts, bring-up order, what to do first |
 | [BUYING.md](BUYING.md) | Where to actually buy it, in the order to order it |
+| [ORDER.md](ORDER.md) | **Generated.** The exact list for one set of choices — `python3 tools/order/build.py` |
 | [HARDWARE.md](HARDWARE.md) | The component survey and BOM. Every claim marked ✅ verified or ⚠️ not |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Why there is one renderer compiled twice, and what that cost |
 | [UI-SPEC.md](UI-SPEC.md) | Layout tiers, the intensity model, the thin-feature rule |

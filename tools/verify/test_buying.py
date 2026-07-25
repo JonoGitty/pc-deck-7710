@@ -108,6 +108,37 @@ def main():
           not named_as_recommendation,
           f"{named_as_recommendation} — put it in vehicles/ instead")
 
+    # The order list is generated from its own PARTS table, which is a second
+    # copy of the parts information — so it gets the same staleness treatment
+    # as everything else generated here, and its parts must be findable in
+    # BUYING.md too.
+    print("\nand the generated order list is current")
+    import subprocess
+    import tempfile
+    tmp = tempfile.mkdtemp(prefix="deck-order-")
+    out = os.path.join(tmp, "ORDER.md")
+    r = subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "order", "build.py"),
+         "-o", out], capture_output=True, text=True)
+    check("the order generator runs", r.returncode == 0,
+          (r.stderr or r.stdout)[-400:])
+    live = os.path.join(ROOT, "docs", "ORDER.md")
+    if r.returncode == 0 and os.path.exists(live):
+        check("docs/ORDER.md matches the generator",
+              open(out, encoding="utf-8").read() ==
+              open(live, encoding="utf-8").read(),
+              "run: python3 tools/order/build.py")
+    elif r.returncode == 0:
+        check("docs/ORDER.md is committed", False,
+              "run: python3 tools/order/build.py")
+
+    # And the rule the list exists to enforce: bench first.
+    if os.path.exists(live):
+        text = open(live, encoding="utf-8").read()
+        check("the order list still says to buy the bench parts first",
+              "NOTHING else first" in text and "never run on hardware" in text,
+              "that ordering is the whole point of the page")
+
     print()
     if _fails:
         print(f"{len(_fails)} buying check(s) failed")
