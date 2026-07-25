@@ -34,6 +34,7 @@
 #include "nvs.h"
 
 #include "deck_diag.h"
+#include "deck_i2c.h"
 
 #define PIN_SDA 32
 #define PIN_SCL 33
@@ -117,7 +118,6 @@ typedef struct {
   uint8_t n_presets;
 } tuner_nv_t;
 
-static i2c_master_bus_handle_t s_bus;
 static i2c_master_dev_handle_t s_dev;
 static int       s_present;
 static tuner_nv_t s_nv;
@@ -298,15 +298,10 @@ int deck_tuner_start(void) {
   gpio_config(&rst);
   gpio_set_level(PIN_RST, 0);
 
-  const i2c_master_bus_config_t bc = {
-      .i2c_port = I2C_NUM_0,
-      .sda_io_num = PIN_SDA,
-      .scl_io_num = PIN_SCL,
-      .clk_source = I2C_CLK_SRC_DEFAULT,
-      .glitch_ignore_cnt = 7,
-      .flags = {.enable_internal_pullup = true},
-  };
-  if (i2c_new_master_bus(&bc, &s_bus) != ESP_OK) {
+  /* The bus is shared with the audio processor, so neither driver creates it
+   * — see deck_i2c.h. This used to live here only because the tuner was the
+   * first device on it. */
+  if (!deck_i2c_bus()) {
     deck_diag_set(DECK_SUB_AUDIO, DECK_HEALTH_DEGRADED, "no I2C for tuner");
     return -1;
   }
@@ -319,10 +314,8 @@ int deck_tuner_start(void) {
 
   const uint8_t addrs[2] = {ADDR_A, ADDR_B};
   for (int i = 0; i < 2 && !s_present; i++) {
-    i2c_device_config_t dc = {.dev_addr_length = I2C_ADDR_BIT_LEN_7,
-                              .device_address = addrs[i],
-                              .scl_speed_hz = I2C_HZ};
-    if (i2c_master_bus_add_device(s_bus, &dc, &s_dev) != ESP_OK) continue;
+    s_dev = deck_i2c_device(addrs[i], I2C_HZ);
+    if (!s_dev) continue;
     if (power_up((deck_band_t)s_nv.band) == 0) {
       uint8_t rev[9] = {0};
       const uint8_t g[1] = {CMD_GET_REV};

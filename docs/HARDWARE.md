@@ -303,6 +303,8 @@ A 3.5 mm jack, and the audio should never enter the ESP32.
 
 | Approach | ~Cost | Trade |
 |---|---|---|
+| **Audio processor — PT2313 / TDA7313** ✅ | £2–4 | **The recommended part, and the one that gives the deck a volume control.** Three stereo inputs with selection, volume in 1.25 dB steps, bass, treble, balance and fader, all over I²C on the bus the tuner already uses — so it costs no pins and returns GPIO 2 and 12. Pin-compatible with the TDA7313 |
+| **Amplifier — TDA7850 or TDA7388 board** ✅ | £12–20 | ⚠️ **NOT part of the deck, and you need one.** The deck is line-out only; these are the exact ICs real head units contain — 4 × 45–50 W off the car's 12 V, with thermal and short-circuit protection. Its own fused feed, NOT through the deck's 5 V buck |
 | **Analogue source switch** ✅ | £1 | A **74HC4052** dual 4-channel analogue mux: two GPIOs select one of four stereo sources — Bluetooth, radio, aux, spare. Nothing is resampled and nothing is degraded |
 | Digitise it | £5 | A PCM1808 I²S ADC, so aux drives the spectrum analyser. Costs a pin this build does not have |
 

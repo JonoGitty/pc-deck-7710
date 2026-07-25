@@ -129,6 +129,53 @@ That is a complete, working deck on a desk. Everything below adds a car.
 | 10d | **74HC4052** analogue mux + socket | Selects Bluetooth / radio / aux into the amplifier, so the radio never enters the ESP32's audio path | £1 |
 | 10e | **TSOP38238** IR receiver ⚠️ | Only if you want a remote, and only fits with the ignition/dimmer resistor network — [HARDWARE.md §5c](HARDWARE.md#5c-the-remote-control-aux-and-usb) | £1 |
 
+### To make a sound — ⚠️ THE DECK HAS NO AMPLIFIER (~£12–60)
+
+**This is the part people assume is included and it is not.** The deck's
+output is **line level**: about 2 V into a high impedance, which is what an
+amplifier expects and what a speaker does nothing useful with. A real head
+unit has four channels of amplifier inside it. This one does not.
+
+You need one of these three, and which depends on your car:
+
+| | What | ~Cost | When |
+|---|---|---|---|
+| **a** | **Nothing — use the car's existing amp** | £0 | Only if your car has a factory amplifier that the head unit fed at line level. Many do not: on most cars the head unit IS the amplifier |
+| **b** | **A TDA7850 or TDA7388 4-channel board** ✅ | £12–20 | **The usual answer.** These are the exact ICs real head units use: 4 × 45–50 W, runs straight off the car's 12 V, thermal and short-circuit protection built in. The XH-M180 is a common ready-made TDA7850 board |
+| **c** | **A separate under-seat 4-channel amplifier** | £40–90 | If you want more than 50 W a channel, or want the deck's box to stay cool and small |
+
+⚠️ **Option (b) is not a 5 V device.** It runs from the car's 12 V rail
+directly, NOT through the buck converter that feeds the ESP32 — four channels
+at 45 W is tens of amps of peak current and the little buck will not survive
+being asked. Give it **its own fused feed** from the permanent 12 V, and size
+the fuse to the amplifier's rating rather than to the deck's.
+
+⚠️ **One ground, one point.** The amplifier and the ESP32 must return to the
+same place on the chassis. Two grounds a metre apart is a ground loop, and a
+ground loop in a car is alternator whine that rises and falls with the engine
+— the classic symptom, and the one that is miserable to chase after the dash
+is back together.
+
+### And the volume control, which is the other thing that is not included
+
+A bare mux passes a signal or it does not. It has no volume. So a **74HC4052
+build has no way to change how loud it is** — not on Bluetooth, not on radio,
+not on aux.
+
+| | What | ~Cost | What you get |
+|---|---|---|---|
+| **74HC4052** | Source switch only | £1 | Three inputs, one output. **No volume, no tone.** Volume has to come from your phone, and aux has none at all |
+| **PT2313 / TDA7313** ✅ | Audio processor | £2–4 | **Recommended.** Same three inputs, plus volume in 1.25 dB steps, bass, treble, balance and fader — over I²C, on the bus the tuner already uses. Costs no pins and gives back GPIO 2 and 12 |
+
+The firmware probes for a PT2313 at boot. Find one and the encoder is a volume
+knob; find nothing and it falls back to the mux, and the encoder keeps its old
+job of dimming the panel — which is the honest behaviour, because there is
+nothing else for it to turn.
+
+⚠️ **Volume is not shown on the panel yet.** `core/` has no volume overlay and
+adding one means new expectations in the differential suite. Recorded as a gap
+rather than half-built.
+
 ### To put it in a car (~£30)
 
 | # | Part | Why | ~Cost |
@@ -534,7 +581,8 @@ tolerance.
 | Dash dimmer | **A6** | GPIO 36 | Same arrangement |
 | Permanent 12 V | **A4** | buck in | **Fused within 150 mm** |
 | Ground | **A8** | buck GND | |
-| Speakers | **B1–B8** | your amplifier | The deck is line-out only; it has no amplifier |
+| Speakers | **B1–B8** | **your amplifier's outputs**, not the deck's | ⚠️ The deck is line-out only. See "To make a sound" above — the amplifier is a part you have to buy |
+| Amplifier 12 V | **A4**, own fuse | the amp board | ⚠️ NOT through the deck's 5 V buck. Its own fused feed from permanent 12 V |
 
 ⚠️ ISO 10487 fixes the connector, not the pinout. **A4 and A7 are commonly
 swapped.** Meter the harness.

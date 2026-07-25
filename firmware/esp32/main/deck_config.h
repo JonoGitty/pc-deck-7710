@@ -14,6 +14,9 @@
 typedef struct {
   uint8_t mode;          /* display mode index at power-on */
   uint8_t brightness;    /* 0..100, overridden by the dimmer input when wired */
+  uint8_t volume;        /* 0..63, the audio processor's scale. Only means
+                          * anything with a PT2313 fitted — a mux-only build
+                          * has no volume control at all. */
   uint8_t demo;          /* attract loop on */
   uint8_t movie;         /* which movie the MOVIE screen plays */
   uint8_t loud;          /* loudness lamp + fatter bass bars */

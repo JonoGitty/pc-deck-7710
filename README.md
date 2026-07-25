@@ -443,7 +443,8 @@ dithering into mush on 1-bit panels.
 | Flash tooling | Working — `deckctl` does build, flash, content and logs |
 | Calling | Screens **written and rendered** from `core/`; HFP client **written** (`deck_hfp.c`), microphone on the I²S clocks. ⚠️ Never met a phone; mic specified, not bought |
 | Radio | Screen **written and rendered** from `core/`; Si4735 driver **written** (`deck_tuner.c`) with tune, seek, RDS and presets. ⚠️ Never met a tuner; part specified, not bought |
-| Sources | Bluetooth / radio / aux through a 74HC4052 — **written** (`deck_source.c`). Audio never enters the ESP32. ⚠️ Never wired |
+| Sources + volume | Bluetooth / radio / aux, **written** (`deck_source.c`, `deck_audioproc.c`). A PT2313 gives source selection *and* volume/tone over I²C; a bare 74HC4052 gives selection only and **no volume at all**. Audio never enters the ESP32. ⚠️ Never wired |
+| Amplifier | ❌ **Not included, and not optional.** The deck is line level out. You need a TDA7850/TDA7388 board (~£15) or the car's own amp — [BUILD.md](docs/BUILD.md#to-make-a-sound--️-the-deck-has-no-amplifier-1260) |
 | Colour panel | Researched, part identified, ⚠️ nothing bought or wired |
 
 ## Docs

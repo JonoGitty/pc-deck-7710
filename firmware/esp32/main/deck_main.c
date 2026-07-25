@@ -46,6 +46,7 @@
 #include "deck_net.h"
 #include "deck_selftest.h"
 #include "deck_hfp.h"
+#include "deck_audioproc.h"
 #include "deck_source.h"
 #include "deck_swc.h"
 #include "deck_tuner.h"
@@ -170,9 +171,14 @@ void app_main(void) {
    * Classic and both live on the one radio; see docs/CALLING.md. */
   deck_hfp_start();
 
-  /* Sources. The mux wakes selecting Bluetooth on its own pull-downs, so a
-   * deck whose switch was never wired still passes the DAC through. */
+  /* Sources, and the volume control. The audio processor is probed FIRST,
+   * because if one is fitted it does the source selection too and the mux's
+   * GPIOs are not wanted. Absent, deck_source falls back to the 74HC4052 and
+   * the deck has no volume control at all — which is logged, because it is
+   * the sort of thing to find out on a bench rather than on a slip road. */
+  deck_audioproc_start();
   deck_source_start((deck_source_t)s_cfg.source);
+  if (deck_audioproc_present()) deck_audioproc_volume(s_cfg.volume);
   /* A tuner is optional. Absent, this returns non-zero, logs "no tuner" and
    * the deck carries on with two sources instead of three.
    *
@@ -277,9 +283,24 @@ void app_main(void) {
       default:
         deck_ui_action(&s_ui, ev.action, now);
         if (ev.action == DECK_ACT_MOVIE_NEXT) load_movie(++s_ui.movie);
+        /* The encoder is the VOLUME knob. It used to change panel
+         * brightness, which meant the steering wheel's VOLUME UP button —
+         * labelled exactly that in deck_swc.c — dimmed the display. On a deck
+         * with an audio processor fitted the knob now does what it says; with
+         * only the mux there is nothing to turn, so it keeps the old
+         * behaviour rather than doing nothing at all. */
         if (ev.action == DECK_ACT_ENC_CW || ev.action == DECK_ACT_ENC_CCW) {
-          panel->brightness(s_ui.brightness);
-          s_cfg.brightness = s_ui.brightness;
+          if (deck_audioproc_present()) {
+            const int step = ev.action == DECK_ACT_ENC_CW ? 1 : -1;
+            deck_audioproc_volume(deck_audioproc_volume_get() + step);
+            s_cfg.volume = (uint8_t)deck_audioproc_volume_get();
+            /* ⚠️ Not shown on the panel yet. core/ has no volume overlay and
+             * adding one means new expectations in the differential suite —
+             * a real gap, recorded rather than half-done. */
+          } else {
+            panel->brightness(s_ui.brightness);
+            s_cfg.brightness = s_ui.brightness;
+          }
         }
         s_cfg.mode = (uint8_t)s_ui.mode;
         s_cfg.demo = (uint8_t)s_ui.demo;
