@@ -147,6 +147,7 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
       <a class="btn" href="#phone">Calls &amp; radio</a>
       <a class="btn" href="#movies">The animations</a>
       <a class="btn" href="#build">Build one</a>
+      <a class="btn" href="#fit">Your car &amp; donor</a>
       <a class="btn" href="#diagnose">When it breaks</a>
     </div>
     <div class="shot"><img src="media/faceplate.png" alt="The deck playing, showing a 13-band spectrum analyser on an amber dot-matrix panel"></div>
@@ -448,6 +449,128 @@ python3 tools/deckctl.py logs</code></pre>
         get swapped by manufacturers, so meter the harness before connecting
         anything.</p>
     </div>
+  </div>
+</section>
+
+<section id="fit">
+  <div class="wrap">
+    <h2>Your car, and your donor</h2>
+    <p class="lede">The deck is the same object in every car. What changes is a bag
+      of adapters — and where the amplifier goes.</p>
+
+    <div class="note">
+      <p><b>⚠️ The deck has no amplifier, and you need one.</b> Its output is
+        <b>line level</b> — what an amplifier expects and what a speaker does nothing
+        useful with. On most cars the head unit <em>is</em> the amplifier, so there is
+        nothing already in the dash to feed. A <b>TDA7850</b> or <b>TDA7388</b>
+        4-channel board is £12–20 and is the same IC a real head unit contains.
+        It needs its <b>own fused 12 V feed</b>, not the deck's 5 V buck, and it must
+        share <b>one ground point</b> with the ESP32 or you get alternator whine.</p>
+      <p><b>And a bare mux has no volume control.</b> Fit a <b>PT2313 / TDA7313</b>
+        audio processor (£2–4) instead and you get source selection <em>plus</em>
+        volume, bass, treble, balance and fader over the I²C bus the tuner already
+        uses — no extra pins, and it gives two back.</p>
+    </div>
+
+    <h3>Where the amplifier lives is car-specific</h3>
+    <p class="muted">In a small roadster it is genuinely hard, and the answer for a
+      mid-engined MR2 is not the answer for an MX-5. <b>A 2-DIN aperture is the way
+      out</b>: deck in the top half, amplifier board in the bottom half — front end
+      and amp in one box, which is exactly what a factory head unit is.</p>
+
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Car</th><th>Aperture</th><th>Wheel controls</th><th>Amp in the dash?</th></tr></thead>
+      <tbody>
+        <tr><td>Honda S2000 <b>AP1 / AP2</b></td><td>single DIN</td><td class="ok">none fitted, any market</td><td>no — 1-DIN only</td></tr>
+        <tr><td>Mazda MX-5 <b>NA / NB</b></td><td>single DIN</td><td>none known</td><td>no — 1-DIN only</td></tr>
+        <tr><td>Mazda MX-5 <b>NC</b></td><td>double DIN</td><td>⚠️ some trims — check yours</td><td class="ok">yes — 2-DIN</td></tr>
+        <tr><td>Mazda MX-5 <b>ND</b></td><td class="warn">no DIN slot at all — the deck cannot be the head unit</td><td>present</td><td>—</td></tr>
+        <tr><td>Toyota MR2 <b>W10 / W30</b></td><td>single DIN</td><td>none known</td><td>no — 1-DIN only</td></tr>
+        <tr><td>Toyota MR2 <b>W20</b></td><td>⚠️ double DIN, believed — measure it</td><td>none known</td><td class="ok">yes — 2-DIN</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="muted small">Nine entries in full, with harness and aerial adapters, depth
+      and per-market notes:
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">VEHICLES.md</a>,
+      or <code>python3 tools/deckctl.py fit s2000 ap1</code>.
+      <b>The S2000 has no steering-wheel controls at all</b> — no interface box, no
+      learning step. Adding your car is one JSON file.</p>
+
+    <div class="note">
+      <p><b>⚠️ The radio region follows where you drive, not where the car was built.</b>
+        A JDM import in Britain receives British stations. Japan's FM band is
+        76–95 MHz against Europe's 87.5–108, and the Americas use 10 kHz AM spacing
+        against 9 kHz — get it wrong and most of the band is missing or mistuned.
+        Five regions, stored in NVS, set once.</p>
+    </div>
+
+    <h3 style="margin-top:2rem">The chassis comes from a scrap head unit — buy a broken one</h3>
+    <p class="muted">You are buying <b>a box, a face, a cage and a bag of buttons</b>.
+      The CD mechanism, the amplifier, the tuner and the microcontroller all go in the
+      bin on the first evening — so a jammed unit at £8 is worth as much to you as a
+      working one at £40. A working CD mechanism is the biggest driver of price on a
+      listing and the first thing you remove.</p>
+
+    <figure class="film"><img loading="lazy" src="media/donor-dot-matrix.svg" alt="To-scale drawing of a donor fascia, its window, and the deck's lit area">
+      <figcaption><b>The window decides it, and nothing else comes close.</b> Everything
+        else about a donor is recoverable — shim the chassis, rewire the buttons, swap
+        the knob. The window cannot be: it is a hole in the one part you chose the
+        donor for. So each family gets this drawing, to scale, and a verdict reporting
+        the shortfall in <em>millimetres</em> — “needs 3 mm” is a filing job, “needs
+        24 mm” is a different donor.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/teardown-dot-matrix.svg" alt="Colour-coded strip-down order for a donor head unit">
+      <figcaption><b>And a strip-down per family</b>, in the order it comes apart, in
+        three colours: green you keep, red goes in the bin, amber gets discharged first.
+        A list gives you the order; this answers the question you actually have with a
+        screwdriver in your hand — <em>which of these am I about to throw away.</em></figcaption></figure>
+
+    <div class="note">
+      <p><b>⚠️ The hazard is not the one people expect.</b> The CD laser is class 1 with
+        the lid shut. The real one is a <b>VFD donor's inverter</b>: it makes its own
+        filament and anode supplies — tens of volts, held on a capacitor after
+        power-off. Treat any VFD power board as live until proved otherwise. The safest
+        donors to gut are the LCD ones, even though the VFD ones are prettier.</p>
+    </div>
+
+    <p class="muted small"><b>Eight routes, 42 named models</b>, each flagged ✅ buy it /
+      ⚠️ read the note / ❌ avoid — including a <b>brand-new empty 1-DIN pocket</b> at
+      £6–12, which is the closest thing that exists to a blank head unit and has no
+      laser, no inverter and nothing charged in it.
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">DONORS.md</a>.
+      ❌ Avoid motorised or dual faceplates — DEH-P85BT, Clarion DXZ925, Kenwood
+      KDC-716S — the mechanism eats the depth this build has least of.</p>
+
+    <h3 style="margin-top:2rem">Moving the parts across</h3>
+    <figure class="film"><img loading="lazy" src="media/transplant-panel.svg" alt="The display module, its lit area, and where the fascia window goes">
+      <figcaption><b>The module is bigger than the hole and its lit area is not centred
+        on it.</b> A 3.12" SSD1322 board is 100.5 × 33.5 mm and only 76.8 × 19.2 mm
+        glows. Mark the window from the glass and the deck looks bought; mark it from
+        the PCB and it is permanently a few millimetres out. Also: the panel sits
+        <em>at</em> the fascia plane, not behind it, or you are looking down a tunnel.
+        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/TRANSPLANT.md">TRANSPLANT.md</a></figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/transplant-buttons.svg" alt="Converting a donor's scanned button matrix into the deck's one-wire resistor ladder">
+      <figcaption><b>The button rewire is a subtraction.</b> A donor's panel is a scanned
+        matrix into a decoder you are binning; the deck reads one analogue pin. Break the
+        matrix, common one side of every switch, other leg to ground through its own
+        resistor — and you never have to work out the original scanning order, which is
+        the part everybody assumes will be hard.</figcaption></figure>
+
+    <h3 style="margin-top:2rem">Eleven steps, drawn</h3>
+    <figure class="film"><img loading="lazy" src="media/assembly-sheet1.svg" alt="Build manual sheet 1: chassis, standoffs, main board, nuts">
+      <figcaption>One action per step, the parts for it boxed in the corner with
+        quantities, the new part ghosted where it is going. Isometric and to scale in
+        millimetres. Sheets <a href="media/assembly-sheet1.svg">1</a>,
+        <a href="media/assembly-sheet2.svg">2</a>,
+        <a href="media/assembly-sheet3.svg">3</a> — or the same thing as
+        <a href="media/assembly.svg">one exploded stack</a>.</figcaption></figure>
+
+    <p class="muted small">⚠️ Every drawing on this page describes an <b>intended</b>
+      build, from the standards and the datasheets. No deck has been assembled and no
+      window here has been measured with calipers.</p>
   </div>
 </section>
 

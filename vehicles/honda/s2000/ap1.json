@@ -75,5 +75,20 @@
     "The deck has no aerial-power output. If the car has a powered or amplified aerial, it needs its 12 V from a switched source of your own; the deck will not supply it.",
     "The deck is line-out only and has no amplifier. The S2000's speakers expect to be driven — plan for an amplifier, or accept that it will be quiet.",
     "It is a convertible. Water gets into a centre stack far more readily than in a coupé; think about where the boards sit before the first wet week."
-  ]
+  ],
+  "factory_amp": {
+    "v": "⚠️ believed none — the head unit drives the speakers directly",
+    "c": "unverified",
+    "why": "If there is no factory amp, the deck CANNOT feed the speakers on its own: it is line-out only. Budget for a TDA7850-class board."
+  },
+  "amp_space": {
+    "v": "tight. Behind the seats or in the shallow boot",
+    "c": "measure",
+    "why": "⚠️ It is a convertible with a small boot and no rear seats. There is no generous hidden space in an S2000 — decide where the amp goes BEFORE building, not after. Damp is a real consideration in an open car."
+  },
+  "din_options": {
+    "v": "1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below.",
+    "c": "unverified",
+    "why": ""
+  }
 }

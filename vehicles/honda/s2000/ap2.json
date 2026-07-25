@@ -76,5 +76,20 @@
   "differs_from_ap1": [
     "Nothing that affects this build has been identified. The AP2 changed engine (2.2 F22C1 outside Japan), gearbox ratios, suspension geometry and the wheels; the head-unit aperture, the harness family and the aerial are believed unchanged.",
     "⚠️ Japanese-market AP2 cars kept the 2.0 F20C. That is an engine difference and does not reach the centre stack."
-  ]
+  ],
+  "factory_amp": {
+    "v": "⚠️ believed none — the head unit drives the speakers directly",
+    "c": "unverified",
+    "why": "If there is no factory amp, the deck CANNOT feed the speakers on its own: it is line-out only. Budget for a TDA7850-class board."
+  },
+  "amp_space": {
+    "v": "tight. Behind the seats or in the shallow boot",
+    "c": "measure",
+    "why": "⚠️ It is a convertible with a small boot and no rear seats. There is no generous hidden space in an S2000 — decide where the amp goes BEFORE building, not after. Damp is a real consideration in an open car."
+  },
+  "din_options": {
+    "v": "1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below.",
+    "c": "unverified",
+    "why": ""
+  }
 }

@@ -33,6 +33,9 @@ FIELDS = [
     ("harness", "Harness adapter"),
     ("aerial", "Aerial adapter"),
     ("swc", "Steering-wheel controls"),
+    ("factory_amp", "Factory amplifier"),
+    ("amp_space", "Where YOUR amplifier goes"),
+    ("din_options", "What the aperture permits"),
     ("illumination", "Dash dimmer"),
     ("ignition", "Switched live"),
 ]
@@ -95,6 +98,20 @@ def render(cars):
     w("What varies is a bag of adapters — something to fill the hole, "
       "something to reach the car's connector, something to reach its aerial "
       "— and how much room is behind the dash.\n")
+    w("> ### ⚠️ The deck has no amplifier, and that is car-specific\n>\n"
+      "> The deck's output is **line level**. Unless your car already has a "
+      "factory amplifier that the head unit fed at line level — and most do "
+      "not, because on most cars the head unit *is* the amplifier — you need "
+      "to buy one. A TDA7850-class 4-channel board is £12–20 and is the same "
+      "IC a real head unit contains. See "
+      "[BUILD.md](BUILD.md#to-make-a-sound--️-the-deck-has-no-amplifier-1260).\n>\n"
+      "> **Where it physically goes is the car-specific part**, and in a small "
+      "roadster it is genuinely hard. Every entry below says where, and the "
+      "answer for a mid-engined MR2 is not the answer for an MX-5.\n>\n"
+      "> **A 2-DIN aperture is the way out.** Deck in the top half, amplifier "
+      "board in the bottom half — front end and amp in one box, which is "
+      "exactly what a factory head unit is. The table below has a column for "
+      "which cars permit it.\n")
     w("> ### The one people get backwards\n>\n"
       "> **The radio region follows where you drive, not where the car was "
       "built.** A JDM import in Britain receives British stations, so it wants "
@@ -124,14 +141,16 @@ def render(cars):
     # ---- the comparison table, on the three questions every car answers
     w("---\n")
     w("## At a glance\n")
-    w("| Car | Years | Fits? | Aperture | Wheel controls |")
-    w("|---|---|---|---|---|")
+    w("| Car | Years | Fits? | Aperture | Wheel controls | Amp in the dash? |")
+    w("|---|---|---|---|---|---|")
     for c in cars:
         name = f"[{c['brand']} {c['model']} {c['generation']}](#{anchor(c)})"
-        fits = c["fits"]
-        swc = c["swc"]
-        w(f"| {name} | {c['years']} | {mark(fits)} | {mark(c['aperture'])} "
-          f"| {mark(swc)} |")
+        # The 2-DIN payoff, reduced to the one word somebody is scanning for.
+        dv = c.get("din_options", {}).get("v", "")
+        dash = ("✅ yes — 2-DIN" if "2-DIN" in dv and "not applicable" not in dv
+                else ("—" if "not applicable" in dv else "❌ no — 1-DIN only"))
+        w(f"| {name} | {c['years']} | {mark(c['fits'])} "
+          f"| {mark(c['aperture'])} | {mark(c['swc'])} | {dash} |")
     w("")
 
     # ---- one section per car

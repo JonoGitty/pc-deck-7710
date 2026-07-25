@@ -75,5 +75,20 @@
     "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
     "Convertible. Same water caution as the NA.",
     "Depth. Measure before building."
-  ]
+  ],
+  "factory_amp": {
+    "v": "⚠️ believed none on base cars",
+    "c": "unverified",
+    "why": "As the NA."
+  },
+  "amp_space": {
+    "v": "behind the seats, or the boot",
+    "c": "measure",
+    "why": "As the NA — convertible, so think about water before location."
+  },
+  "din_options": {
+    "v": "1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below.",
+    "c": "unverified",
+    "why": ""
+  }
 }

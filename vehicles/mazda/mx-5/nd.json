@@ -69,5 +69,20 @@
   "gotchas": [
     "⚠️ Do not buy parts for this on the assumption an adapter exists. It is not an adapter problem.",
     "The deck still runs perfectly well on a desk, and the PC deck needs no car at all."
-  ]
+  ],
+  "factory_amp": {
+    "v": "yes — integrated",
+    "c": "unverified",
+    "why": "Moot: the deck cannot be the head unit on an ND."
+  },
+  "amp_space": {
+    "v": "not applicable",
+    "c": "unverified",
+    "why": ""
+  },
+  "din_options": {
+    "v": "not applicable — no DIN aperture at all",
+    "c": "unverified",
+    "why": ""
+  }
 }

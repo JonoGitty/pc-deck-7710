@@ -10,6 +10,14 @@ Every car below takes the same deck: the same ESP32, the same panel, the same DA
 
 What varies is a bag of adapters — something to fill the hole, something to reach the car's connector, something to reach its aerial — and how much room is behind the dash.
 
+> ### ⚠️ The deck has no amplifier, and that is car-specific
+>
+> The deck's output is **line level**. Unless your car already has a factory amplifier that the head unit fed at line level — and most do not, because on most cars the head unit *is* the amplifier — you need to buy one. A TDA7850-class 4-channel board is £12–20 and is the same IC a real head unit contains. See [BUILD.md](BUILD.md#to-make-a-sound--️-the-deck-has-no-amplifier-1260).
+>
+> **Where it physically goes is the car-specific part**, and in a small roadster it is genuinely hard. Every entry below says where, and the answer for a mid-engined MR2 is not the answer for an MX-5.
+>
+> **A 2-DIN aperture is the way out.** Deck in the top half, amplifier board in the bottom half — front end and amp in one box, which is exactly what a factory head unit is. The table below has a column for which cars permit it.
+
 > ### The one people get backwards
 >
 > **The radio region follows where you drive, not where the car was built.** A JDM import in Britain receives British stations, so it wants the European band plan. Everything *else* about fitting an import follows the car's market.
@@ -30,17 +38,17 @@ What varies is a bag of adapters — something to fill the hole, something to re
 
 ## At a glance
 
-| Car | Years | Fits? | Aperture | Wheel controls |
-|---|---|---|---|---|
-| [Honda S2000 AP1](#honda-s2000-ap1) | 1999–2003 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736), one slot | ✅ none — no factory steering-wheel audio controls, any generation, any market, any trim |
-| [Honda S2000 AP2](#honda-s2000-ap2) | 2004–2009 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736), one slot | ✅ none — no factory steering-wheel audio controls, any market, any trim |
-| [Mazda MX-5 NA](#mazda-mx-5-na) | 1989–1997 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736) | ⚠️ none — no factory steering-wheel audio controls |
-| [Mazda MX-5 NB](#mazda-mx-5-nb) | 1998–2005 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736) | ⚠️ none — no factory steering-wheel audio controls |
-| [Mazda MX-5 NC](#mazda-mx-5-nc) | 2005–2015 | ⚠️ yes, but the aperture is bigger than the deck | ⚠️ double DIN (2 × ISO 7736) | ⚠️ present on some trims — unlike the NA and NB |
-| [Mazda MX-5 ND](#mazda-mx-5-nd) | 2015– | ⚠️ no — not as a head unit | ⚠️ none — integrated infotainment, no DIN slot | ⚠️ present |
-| [Toyota MR2 W10](#toyota-mr2-w10) | 1984–1989 | ⚠️ yes — believed to take a single-DIN unit | ⚠️ single DIN (ISO 7736) | ⚠️ none |
-| [Toyota MR2 W20](#toyota-mr2-w20) | 1989–1999 | ⚠️ yes, though the aperture may be larger than the deck | ⚠️ double DIN, or single DIN with a pocket | ⚠️ none |
-| [Toyota MR2 W30](#toyota-mr2-w30) | 1999–2007 | ⚠️ yes — believed to take a single-DIN unit | ⚠️ single DIN (ISO 7736) | ⚠️ none |
+| Car | Years | Fits? | Aperture | Wheel controls | Amp in the dash? |
+|---|---|---|---|---|---|
+| [Honda S2000 AP1](#honda-s2000-ap1) | 1999–2003 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736), one slot | ✅ none — no factory steering-wheel audio controls, any generation, any market, any trim | ❌ no — 1-DIN only |
+| [Honda S2000 AP2](#honda-s2000-ap2) | 2004–2009 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736), one slot | ✅ none — no factory steering-wheel audio controls, any market, any trim | ❌ no — 1-DIN only |
+| [Mazda MX-5 NA](#mazda-mx-5-na) | 1989–1997 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736) | ⚠️ none — no factory steering-wheel audio controls | ❌ no — 1-DIN only |
+| [Mazda MX-5 NB](#mazda-mx-5-nb) | 1998–2005 | ⚠️ yes — the deck goes in as built | ⚠️ single DIN (ISO 7736) | ⚠️ none — no factory steering-wheel audio controls | ❌ no — 1-DIN only |
+| [Mazda MX-5 NC](#mazda-mx-5-nc) | 2005–2015 | ⚠️ yes, but the aperture is bigger than the deck | ⚠️ double DIN (2 × ISO 7736) | ⚠️ present on some trims — unlike the NA and NB | ✅ yes — 2-DIN |
+| [Mazda MX-5 ND](#mazda-mx-5-nd) | 2015– | ⚠️ no — not as a head unit | ⚠️ none — integrated infotainment, no DIN slot | ⚠️ present | — |
+| [Toyota MR2 W10](#toyota-mr2-w10) | 1984–1989 | ⚠️ yes — believed to take a single-DIN unit | ⚠️ single DIN (ISO 7736) | ⚠️ none | ❌ no — 1-DIN only |
+| [Toyota MR2 W20](#toyota-mr2-w20) | 1989–1999 | ⚠️ yes, though the aperture may be larger than the deck | ⚠️ double DIN, or single DIN with a pocket | ⚠️ none | ✅ yes — 2-DIN |
+| [Toyota MR2 W30](#toyota-mr2-w30) | 1999–2007 | ⚠️ yes — believed to take a single-DIN unit | ⚠️ single DIN (ISO 7736) | ⚠️ none | ❌ no — 1-DIN only |
 
 ---
 
@@ -59,6 +67,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Honda 20-pin to ISO 10487 harness adapter” | Honda used their own multi-pin connector, not a bare ISO block. The adapter is the standard fit-any-aftermarket-radio part and is cheap and widely stocked. |
 | **Aerial adapter** | ⚠️ search: “Honda aerial adapter to DIN (Motorola)” | Check whether your car's aerial is powered. If it is, the deck has no aerial-power output — see the gotcha below. |
 | **Steering-wheel controls** | ✅ none — no factory steering-wheel audio controls, any generation, any market, any trim | The S2000 has no steering-wheel controls at all — not audio, not cruise. This is the single biggest simplification of the whole build for this car: no interface box to buy, no wire to run to the column, and no learning step during bring-up. |
+| **Factory amplifier** | ⚠️ believed none — the head unit drives the speakers directly | If there is no factory amp, the deck CANNOT feed the speakers on its own: it is line-out only. Budget for a TDA7850-class board. |
+| **Where YOUR amplifier goes** | 📏 tight. Behind the seats or in the shallow boot | ⚠️ It is a convertible with a small boot and no rear seats. There is no generous hidden space in an S2000 — decide where the amp goes BEFORE building, not after. Damp is a real consideration in an open car. |
+| **What the aperture permits** | ⚠️ 1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below. |  |
 | **Dash dimmer** | ⚠️ dash dimmer available at the ISO A connector | Standard ISO A6. Meter it — ISO fixes the connector, not the pinout. |
 | **Switched live** | ⚠️ switched live available at the ISO A connector | Standard ISO A7. Commonly swapped with A4 permanent live by manufacturers; meter before connecting. |
 
@@ -101,6 +112,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Honda 20-pin to ISO 10487 harness adapter” | Honda used their own multi-pin connector, not a bare ISO block. The adapter is the standard fit-any-aftermarket-radio part and is cheap and widely stocked. |
 | **Aerial adapter** | ⚠️ search: “Honda aerial adapter to DIN (Motorola)” | Check whether your car's aerial is powered. If it is, the deck has no aerial-power output — see the gotcha below. |
 | **Steering-wheel controls** | ✅ none — no factory steering-wheel audio controls, any market, any trim | The S2000 has no steering-wheel controls at all — not audio, not cruise. This is the single biggest simplification of the whole build for this car: no interface box to buy, no wire to run to the column, and no learning step during bring-up. |
+| **Factory amplifier** | ⚠️ believed none — the head unit drives the speakers directly | If there is no factory amp, the deck CANNOT feed the speakers on its own: it is line-out only. Budget for a TDA7850-class board. |
+| **Where YOUR amplifier goes** | 📏 tight. Behind the seats or in the shallow boot | ⚠️ It is a convertible with a small boot and no rear seats. There is no generous hidden space in an S2000 — decide where the amp goes BEFORE building, not after. Damp is a real consideration in an open car. |
+| **What the aperture permits** | ⚠️ 1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below. |  |
 | **Dash dimmer** | ⚠️ dash dimmer available at the ISO A connector | Standard ISO A6. Meter it — ISO fixes the connector, not the pinout. |
 | **Switched live** | ⚠️ switched live available at the ISO A connector | Standard ISO A7. Commonly swapped with A4 permanent live by manufacturers; meter before connecting. |
 
@@ -144,6 +158,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Mazda to ISO 10487 harness adapter” | ⚠️ Eunos Roadster imports may carry the JDM harness rather than the European one. Check which connector is actually behind your dash rather than ordering by model year. |
 | **Aerial adapter** | ⚠️ search: “Mazda aerial adapter to DIN (Motorola)” | Many NAs have a powered mast aerial — see the gotchas. |
 | **Steering-wheel controls** | ⚠️ none — no factory steering-wheel audio controls | None known on any NA trim. Skip the interface box and the learning step. |
+| **Factory amplifier** | ⚠️ believed none on base cars | Same consequence: the deck is line level and needs an amplifier. |
+| **Where YOUR amplifier goes** | 📏 behind the seats, or the boot | ⚠️ Convertible, thirty years old, and water in the cabin is a known NA trait rather than a hypothetical. Mount high and dry. |
+| **What the aperture permits** | ⚠️ 1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below. |  |
 | **Dash dimmer** | ⚠️ dash dimmer at the ISO A connector | Standard ISO A6. Meter it. |
 | **Switched live** | ⚠️ switched live at the ISO A connector | Standard ISO A7, commonly swapped with A4. Meter before connecting. |
 
@@ -181,6 +198,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Mazda to ISO 10487 harness adapter” | ⚠️ Japanese-market Roadster imports may carry the JDM connector. Check what is behind the dash, not the model year. |
 | **Aerial adapter** | ⚠️ search: “Mazda aerial adapter to DIN (Motorola)” | Check whether yours is powered. |
 | **Steering-wheel controls** | ⚠️ none — no factory steering-wheel audio controls | None known on any NB trim. |
+| **Factory amplifier** | ⚠️ believed none on base cars | As the NA. |
+| **Where YOUR amplifier goes** | 📏 behind the seats, or the boot | As the NA — convertible, so think about water before location. |
+| **What the aperture permits** | ⚠️ 1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below. |  |
 | **Dash dimmer** | ⚠️ dash dimmer at the ISO A connector | Standard ISO A6. |
 | **Switched live** | ⚠️ switched live at the ISO A connector | Standard ISO A7, commonly swapped with A4. Meter it. |
 
@@ -222,6 +242,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Mazda to ISO 10487 harness adapter” | ⚠️ Cars with the Bose system are wired differently from the base system. Establish which you have before ordering. |
 | **Aerial adapter** | ⚠️ search: “Mazda aerial adapter to DIN (Motorola)” | The NC generally uses a fixed aerial rather than a powered mast. |
 | **Steering-wheel controls** | ⚠️ present on some trims — unlike the NA and NB | This is the one car in this directory where the steering-wheel controls are worth checking for. If yours has them, they work through the same universal interface box and the deck's learning wizard; see docs/CONTROL.md. If not, skip it. |
+| **Factory amplifier** | ⚠️ Bose-equipped cars have one; base cars believed not | ⚠️ This matters more on the NC than any other car here. A Bose system is amplified and does NOT behave like plain speakers on an ISO block — establish which you have before buying an amplifier or cutting anything. |
+| **Where YOUR amplifier goes** | 📏 the bottom half of the dash aperture, or the boot | ✅ The NC is the best case in this document: a double-DIN hole means the amplifier can sit behind the fascia with the deck. |
+| **What the aperture permits** | ⚠️ 2-DIN, which permits the one thing a single-DIN car cannot: **the deck in the top half and the amplifier board in the bottom half.** That is what a real head unit does — amp and front end in one box — and it is the only route in this project where the amp lives in the dash rather than under a seat. The alternative is deck + storage pocket. |  |
 | **Dash dimmer** | ⚠️ dash dimmer at the ISO A connector | Standard ISO A6. |
 | **Switched live** | ⚠️ switched live at the ISO A connector | Standard ISO A7. Meter it. |
 
@@ -259,6 +282,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ not applicable as a head-unit replacement | Removing MZD Connect takes vehicle settings and the reversing camera with it. That is a different and much larger project. |
 | **Aerial adapter** | ⚠️ not applicable |  |
 | **Steering-wheel controls** | ⚠️ present | The ND has steering-wheel controls, which is moot while the deck cannot be the head unit. |
+| **Factory amplifier** | ⚠️ yes — integrated | Moot: the deck cannot be the head unit on an ND. |
+| **Where YOUR amplifier goes** | ⚠️ not applicable |  |
+| **What the aperture permits** | ⚠️ not applicable — no DIN aperture at all |  |
 | **Dash dimmer** | ⚠️ not applicable |  |
 | **Switched live** | ⚠️ not applicable |  |
 
@@ -293,6 +319,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Toyota to ISO 10487 harness adapter” | ⚠️ On a car this old the loom may already have been cut by a previous owner's radio. Inspect before ordering anything. |
 | **Aerial adapter** | ⚠️ search: “Toyota aerial adapter to DIN (Motorola)” | Powered mast aerials were common in this era. |
 | **Steering-wheel controls** | ⚠️ none | No factory steering-wheel audio controls known. |
+| **Factory amplifier** | ⚠️ believed none | A mid-eighties car. Assume the head unit drove the speakers. |
+| **Where YOUR amplifier goes** | ⚠️ genuinely awkward — mid-engined | ⚠️ The MR2 is mid-engined, so there is no conventional boot: a small front compartment and a smaller rear one, both near heat. This is the hardest car here to place an amplifier in. |
+| **What the aperture permits** | ⚠️ 1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below. |  |
 | **Dash dimmer** | ⚠️ dash dimmer, if the original loom is intact | Meter it. On a car this age, assume nothing about what is still connected. |
 | **Switched live** | ⚠️ switched live at the radio connector | Meter it. |
 
@@ -329,6 +358,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Toyota to ISO 10487 harness adapter” | ⚠️ UK cars and JDM imports may differ. Check the connector. |
 | **Aerial adapter** | ⚠️ search: “Toyota aerial adapter to DIN (Motorola)” | Check whether the aerial is powered. |
 | **Steering-wheel controls** | ⚠️ none | No factory steering-wheel audio controls known. |
+| **Factory amplifier** | ⚠️ believed none on most trims |  |
+| **Where YOUR amplifier goes** | 📏 the bottom half of the dash aperture, if it is 2-DIN | ⚠️ Mid-engined, so hidden space is scarce and warm. If the aperture really is double-height, putting the amp behind the fascia solves a problem this car makes hard. |
+| **What the aperture permits** | ⚠️ 2-DIN, which permits the one thing a single-DIN car cannot: **the deck in the top half and the amplifier board in the bottom half.** That is what a real head unit does — amp and front end in one box — and it is the only route in this project where the amp lives in the dash rather than under a seat. The alternative is deck + storage pocket. ⚠️ Confirm the aperture is genuinely 2-DIN first — it is unverified for this car. |  |
 | **Dash dimmer** | ⚠️ dash dimmer at the radio connector | Meter it. |
 | **Switched live** | ⚠️ switched live at the radio connector | Meter it. |
 
@@ -364,6 +396,9 @@ What varies is a bag of adapters — something to fill the hole, something to re
 | **Harness adapter** | ⚠️ search: “Toyota to ISO 10487 harness adapter” | ⚠️ MR-S imports may carry the Japanese loom. |
 | **Aerial adapter** | ⚠️ search: “Toyota aerial adapter to DIN (Motorola)” |  |
 | **Steering-wheel controls** | ⚠️ none | No factory steering-wheel audio controls known. |
+| **Factory amplifier** | ⚠️ believed none |  |
+| **Where YOUR amplifier goes** | ⚠️ awkward — mid-engined and a convertible | Both problems at once: little hidden space, and what there is gets damp. Plan the location first. |
+| **What the aperture permits** | ⚠️ 1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below. |  |
 | **Dash dimmer** | ⚠️ dash dimmer at the radio connector | Meter it. |
 | **Switched live** | ⚠️ switched live at the radio connector | Meter it. |
 
