@@ -137,6 +137,22 @@ else
   printf 'importer check SKIPPED (needs Pillow)\n'
 fi
 
+# The pictures in the README and on the site, checked as CONTAINERS rather than
+# as images. Every one of them once rendered as a motionless still outside a
+# browser — the frames were all there and all different, and one flag three
+# layers down made them display as one. Nothing else here would notice.
+if python3 -c "import PIL" 2>/dev/null; then
+  if python3 tools/verify/test_gifs.py > build/gif_test.txt 2>&1; then
+    grep -E 'animations animate' build/gif_test.txt
+  else
+    printf 'MISMATCH — an animation in docs/media does not animate:\n\n'
+    cat build/gif_test.txt
+    exit 1
+  fi
+else
+  printf 'GIF container check SKIPPED (needs Pillow)\n'
+fi
+
 # The firmware's UI layer, run on this machine. core/ is verified against the
 # JavaScript; this covers the layer above it — which screen is on, when the
 # dolphins take over, how a track change interrupts — which no amount of

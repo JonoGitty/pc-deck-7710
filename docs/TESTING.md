@@ -44,9 +44,10 @@ What it checks, in order:
 | every `.dmv` in `movies/` | all frames | The movie decoders disagree |
 | the flash container | `build/movies.bin` | Packing and unpacking are not inverses |
 | the GIF importer | synthesised GIFs | An import lost the animation |
+| every picture in `docs/media` | GIF block structure | A published animation renders as a still |
 | the deck's behaviour | 20 assertions | See §2 |
 
-Three of those deserve a note.
+Four of those deserve a note.
 
 **The movie check decodes each file twice** — once from a buffer, once through
 the streaming source that never holds the whole file — and fails if they
@@ -57,6 +58,15 @@ otherwise exercise.
 **The ocean check needs Chromium** because its JavaScript reference draws
 dolphin silhouettes on a canvas. It skips itself when Playwright is absent and
 says so, so the rest of the suite still runs on a bare machine.
+
+**The `docs/media` check reads the container, not the image.** Every animation
+in the repository once rendered as a motionless still everywhere except a
+browser: each frame carried its own local colour table, which is legal, and
+which a great many viewers treat as licence to draw the first frame and stop.
+The frames were all present and all different. The fault was one flag three
+layers below anything else here looks at, so this parses the GIF blocks and
+asserts on them directly. Three screens are static by design and say so by
+name in the test.
 
 **The importer check asks a different question from everything else here.**
 Every other test asks whether a movie is *faithful*; this one asks whether it

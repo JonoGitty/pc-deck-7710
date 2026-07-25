@@ -108,8 +108,13 @@ int main(int argc, char **argv) {
   clip(dir, "call-active",   DECK_CALL_ACTIVE,   "MUM", "07700900123", 96, 2.5, w, h);
   clip(dir, "call-ended",    DECK_CALL_ENDED,    "MUM", "07700900123", 214, 1.0, w, h);
 
+  /* RDS radio text runs to 64 characters, and the short sample this used to
+   * carry fitted the panel — so the marquee never moved and the preview
+   * showed a feature standing still. A realistic-length string is what
+   * demonstrates it. */
   radioclip(dir, "radio-fm", DECK_BAND_FM, 98500, 87500, 108000,
-            "RADIO 1", "NOW PLAYING - KAVINSKY / NIGHTCALL", 210, 1, w, h);
+            "RADIO 1", "NOW PLAYING - KAVINSKY / NIGHTCALL - "
+            "TEXT THIS LONG IS WHAT A STATION ACTUALLY SENDS", 210, 1, w, h);
   radioclip(dir, "radio-noRds", DECK_BAND_FM, 104700, 87500, 108000,
             "", "", 120, 0, w, h);
   radioclip(dir, "radio-am", DECK_BAND_AM, 1053, 522, 1710,
