@@ -233,7 +233,14 @@ person reading a wiring diagram is holding a soldering iron.*
 socket go to a 74HC4052, and the chip only selects which pair reaches the
 amplifier — nothing is resampled and nothing is re-encoded.*
 
-![Exploded view: cage, chassis, main board, panel, window, fascia](docs/media/assembly.svg)
+![Steps 1–4: the chassis, standoffs, main board and nuts](docs/media/assembly-sheet1.svg)
+
+*The mechanical build is **eleven steps, drawn** — one action each, the parts
+for that step boxed in the corner with quantities, the new part ghosted where
+it goes. Isometric and to scale in millimetres, so you can measure the drawing.
+Sheets [1](docs/media/assembly-sheet1.svg) ·
+[2](docs/media/assembly-sheet2.svg) · [3](docs/media/assembly-sheet3.svg), or
+the same thing as [one exploded stack](docs/media/assembly.svg).*
 
 *Also [dimensions](docs/media/dimensions.svg) — 182 × 53 mm at the face, and
 what has to clear behind it. ⚠️ Drawings of an intended build, from the

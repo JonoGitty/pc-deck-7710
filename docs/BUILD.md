@@ -25,7 +25,8 @@ moves here or `sh tools/verify/run.sh` fails.
 |---|---|
 | [Pin map](media/pinmap.svg) | which hole this wire goes in |
 | [Wiring](media/wiring.svg) | what connects to what, and what never touches the ESP32 |
-| [Assembly](media/assembly.svg) | what order it goes together in |
+| [Build manual — sheets **1**](media/assembly-sheet1.svg) · [**2**](media/assembly-sheet2.svg) · [**3**](media/assembly-sheet3.svg) | eleven steps, one part each, with a parts list per step |
+| [Assembly](media/assembly.svg) | the same eleven steps as one exploded stack |
 | [Dimensions](media/dimensions.svg) | will it fit, and what am I cutting |
 | [Finished](media/finished.svg) | what I am aiming at |
 
@@ -608,6 +609,20 @@ screen works with the radio off, which is the point.
 
 Only after §5 and §6 work on the bench. Putting a deck that does not yet boot
 into a chassis means taking it out again.
+
+### The eleven steps, drawn
+
+One action per step, the parts for it boxed in the corner, and the new part
+ghosted where it is going. Everything is isometric and to scale in millimetres,
+so you can measure the drawing.
+
+![Steps 1–4: the chassis, standoffs, main board and nuts](media/assembly-sheet1.svg)
+
+![Steps 5–8: the panel, the ribbon, the window and the encoder](media/assembly-sheet2.svg)
+
+![Steps 9–11: the fascia, the cage and sliding it home](media/assembly-sheet3.svg)
+
+### The same thing as one exploded stack
 
 ![Exploded view: cage, chassis, main board, panel, window, fascia](media/assembly.svg)
 

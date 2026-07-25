@@ -60,6 +60,9 @@ printf '\n== diagrams (pin map read out of the firmware) ==\n'
 # read. The pin map is parsed from the deck_*.c defines and refuses to draw a
 # GPIO twice, so it cannot quietly stop describing the firmware.
 python3 tools/diagrams/make.py "$OUT"
+# ...and the step-by-step build manual, drawn isometrically from the same
+# millimetre dimensions the overview drawings use.
+python3 tools/diagrams/steps.py "$OUT"
 
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"

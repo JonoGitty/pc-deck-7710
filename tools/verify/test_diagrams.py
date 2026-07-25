@@ -31,6 +31,7 @@ sys.path.insert(0, os.path.join(ROOT, "tools", "diagrams"))
 
 DIAGRAMS = ["pinmap.svg", "wiring.svg", "assembly.svg", "dimensions.svg",
             "finished.svg"]
+SHEETS = ["assembly-sheet1.svg", "assembly-sheet2.svg", "assembly-sheet3.svg"]
 
 _fails = []
 
@@ -79,16 +80,16 @@ def main():
 
     print("\nthe committed diagrams match what the generator produces now")
     tmp = tempfile.mkdtemp(prefix="deck-diagrams-")
-    r = subprocess.run([sys.executable,
-                        os.path.join(ROOT, "tools", "diagrams", "make.py"),
-                        tmp], capture_output=True, text=True)
-    check("the generator runs", r.returncode == 0,
-          (r.stderr or r.stdout)[-400:])
-    if r.returncode != 0:
-        print(f"\n{len(_fails)} failed\n")
-        return 1
+    for gen in ("make.py", "steps.py"):
+        r = subprocess.run([sys.executable,
+                            os.path.join(ROOT, "tools", "diagrams", gen), tmp],
+                           capture_output=True, text=True)
+        check(f"{gen} runs", r.returncode == 0, (r.stderr or r.stdout)[-400:])
+        if r.returncode != 0:
+            print(f"\n{len(_fails)} failed\n")
+            return 1
 
-    for name in DIAGRAMS:
+    for name in DIAGRAMS + SHEETS:
         live = os.path.join(tmp, name)
         committed = os.path.join(ROOT, "docs", "media", name)
         if not os.path.exists(committed):
