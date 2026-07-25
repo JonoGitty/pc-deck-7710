@@ -10,6 +10,8 @@ The documentation, and the project's web page.
 | [UI-SPEC.md](UI-SPEC.md) | Layout tiers, the intensity model, the thin-feature rule |
 | [MOVIE-RENDERING.md](MOVIE-RENDERING.md) | Making animations, and the traps that have been hit for real |
 | [CONTROL.md](CONTROL.md) | Buttons, encoder, and what goes back to the phone over AVRCP |
+| [CALLING.md](CALLING.md) | Taking calls: HFP, the microphone, and the four call screens |
+| [RADIO.md](RADIO.md) | The tuner, the aerial, and a radio screen worth having |
 | [TESTING.md](TESTING.md) | Running the deck on your computer, and the bring-up checks on hardware |
 | [DIAGNOSTICS.md](DIAGNOSTICS.md) | When it does not work: the self-test, the serial line, crash dumps |
 | [VERSIONING.md](VERSIONING.md) | How the PC deck, the core and the firmware version separately |

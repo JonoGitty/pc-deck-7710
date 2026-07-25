@@ -21,6 +21,16 @@ gcc -std=c99 -Wall -Wextra -O2 -o build/mkshots \
 build/mkshots build/shots
 python3 tools/media/shots.py build/shots "$OUT" 20 4
 
+printf '\n== telephone screens ==\n'
+# Driven by a call state machine rather than by audio, so they get their own
+# harness. Same .raw format, same renderer.
+gcc -std=c99 -Wall -Wextra -O2 -Icore -o build/mkcall \
+    core/fb.c core/font.c core/text.c core/art.c core/trig.c core/screens/*.c \
+    tools/media/callshots.c -lm
+mkdir -p build/callshots
+build/mkcall build/callshots 256 64
+python3 tools/media/shots.py build/callshots "$OUT" 20 3
+
 printf '\n== movie previews ==\n'
 # Excerpts, not the whole film. A preview GIF costs about 3 KB a frame, so the
 # full 56-second SOLAR is 1.5 MB on its own — the point of the picture is to

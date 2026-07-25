@@ -252,6 +252,102 @@ crimp adding a few hundred ohms.
 
 Wiring and the learning procedure: [BUILD.md §3](BUILD.md#steering-wheel-controls).
 
+## 5c. The remote control, aux and USB
+
+### An infrared remote — possible, and not the first thing to fit
+
+Pioneer shipped a credit-card IR remote with their decks and people used them,
+so it is a period-correct idea as well as a practical one.
+
+| Part | ~Cost ⚠️ | Notes |
+|---|---|---|
+| **TSOP38238** / VS1838B ✅ | £1 | 38 kHz IR receiver. Three pins, demodulated digital output, actively driven |
+| Any NEC-protocol remote | £2–5 | A spare TV remote works; the deck learns the codes the same way it learns the wheel |
+
+Decoding is free: the ESP32's **RMT** peripheral times the pulses in hardware,
+which is what it exists for, and ESP-IDF ships an IR NEC example.
+
+**The catch is one pin, and by the time the microphone and the tuner are in
+there is not one.** See the budget below. The fix is the same trick the deck
+already uses twice — put the ignition sense and the dimmer on *one* ADC pin
+through a resistor network, since both are slow on/off signals from
+opto-isolators:
+
+```
+   3V3 ──[10k]──┬── GPIO 36  (ADC1_CH0)
+                ├──[10k]── ignition opto ── GND
+                └──[22k]── dimmer   opto ── GND
+```
+
+| State | Reads |
+|---|---|
+| neither | ~3300 mV |
+| dimmer only | ~2270 mV |
+| ignition only | ~1650 mV |
+| both | ~1350 mV |
+
+The narrowest gap is 300 mV, the same margin the button ladder runs on. That
+frees **GPIO 39** for the IR receiver.
+
+⚠️ Do **not** put the receiver on GPIO 0, 2 or 12 instead. An IR receiver's
+output idles *high*, and those are strapping pins with boot-time requirements
+it will violate.
+
+**Recommendation: fit the wheel controls first and see whether you still want
+a remote.** In a car the wheel is strictly better — it needs no line of sight,
+no aim, and no hand leaving the wheel. The remote is for a deck on a desk.
+
+### Aux in
+
+A 3.5 mm jack, and the audio should never enter the ESP32.
+
+| Approach | ~Cost | Trade |
+|---|---|---|
+| **Analogue source switch** ✅ | £1 | A **74HC4052** dual 4-channel analogue mux: two GPIOs select one of four stereo sources — Bluetooth, radio, aux, spare. Nothing is resampled and nothing is degraded |
+| Digitise it | £5 | A PCM1808 I²S ADC, so aux drives the spectrum analyser. Costs a pin this build does not have |
+
+The switch is the right first version, and it is what every real head unit
+does. The cost is that **the analyser goes flat on aux and radio**, which on a
+deck built around an analyser is a genuine loss — so if that matters to you,
+plan the I²S ADC in from the start rather than retrofitting it.
+
+### USB — power and flashing, not media
+
+**The original ESP32 has no USB peripheral at all.** Flashing and the serial
+console go through a CP2102 or CH340 bridge, which is already on every dev
+board.
+
+| Want | Answer |
+|---|---|
+| USB-C on the fascia for flashing and logs | ✅ Wire the board's existing bridge to a panel-mount USB-C socket |
+| USB-C for 5 V power on the bench | ✅ Same socket. In the car the buck converter feeds it instead |
+| **A USB stick full of MP3s** | ❌ **Not possible on this chip.** USB host needs an external controller (MAX3421E over SPI), and the pins and the effort are better spent elsewhere. Music comes over Bluetooth |
+| USB-C Power Delivery negotiation | ❌ Not implemented, and not needed — the deck draws well under 5 V/1 A |
+
+An SD card over SPI is the cheap way to add local storage if you ever want it,
+but the movies already live in flash and the music already arrives over
+Bluetooth, so nothing currently wants one.
+
+### The pin budget, with everything fitted
+
+The deck fits a plain ESP32 twice over — until it does not. This is what the
+options cost:
+
+| Build | Pins used | Fits? |
+|---|---|---|
+| Panel + DAC + encoder + 3 buttons + car inputs | 18 | ✅ comfortably |
+| ...with the 6-button ladder instead of 3 buttons | 16 | ✅ frees three pins |
+| ...+ microphone (shares the I²S clocks; GPIO 15) | 17 | ✅ |
+| ...+ Si4735 tuner (I²C + reset; GPIO 32/33/13) | 20 | ✅ exactly, using what the ladder freed |
+| ...+ IR remote | 21 | ⚠️ **only** with ignition and dimmer combined onto one ADC pin |
+| ...+ I²S ADC for aux/radio analyser | 22 | ❌ needs a GPIO expander or a bigger chip |
+
+**The button ladder is what makes the full build possible.** It was added
+because six discrete buttons did not fit; it turns out to be the thing that
+pays for the tuner as well.
+
+---
+
 ## 6. Fitting the car — cage and connector
 
 Two standards do the work here, and between them they mean a home-built deck

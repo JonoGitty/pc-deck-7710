@@ -46,6 +46,15 @@ which is also how you reuse a donor head unit's own fascia. Values and wiring
 are in [BUILD.md §3](BUILD.md#controls-the-full-six-on-one-pin), reasoning in
 [HARDWARE.md §5](HARDWARE.md#5-controls).
 
+An **infrared remote** is possible — a TSOP38238 and the ESP32's RMT
+peripheral, which times the pulses in hardware — but by the time a microphone
+and a tuner are fitted there is no pin left for it without combining the
+ignition and dimmer inputs onto one ADC channel. The full budget, and the
+resistor network that buys the pin back, are in
+[HARDWARE.md §5c](HARDWARE.md#5c-the-remote-control-aux-and-usb). In a car the
+steering wheel beats a remote anyway: no line of sight, no aim, no hand off
+the wheel.
+
 Brightness deserves comment: on the SSD1322 it should drive **master contrast**,
 not scale the framebuffer. Dimming in software costs levels — a dot at DIM on a
 half-brightness frame quantises to nothing — whereas master contrast keeps the

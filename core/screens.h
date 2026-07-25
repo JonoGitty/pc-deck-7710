@@ -29,6 +29,56 @@ void deck_screen_lyrics(deck_fb_t *fb, const deck_state_t *v, const deck_meta_t 
 
 void deck_progress_bar(deck_fb_t *fb, int y, int x0, int x1, double frac);
 
+/* ---- the telephone ------------------------------------------------------
+ * Filled in by the firmware from HFP events; the screen itself knows nothing
+ * about Bluetooth, which is what lets the PC deck and the simulator drive it
+ * from a script. `mic` is 0..255 and exists so the driver can see that the
+ * microphone is working — without it a call screen looks identical whether
+ * the mic is wired up or still in its bag. */
+typedef enum {
+  DECK_CALL_IDLE = 0,
+  DECK_CALL_INCOMING,
+  DECK_CALL_OUTGOING,
+  DECK_CALL_ACTIVE,
+  DECK_CALL_ENDED
+} deck_call_state_t;
+
+typedef struct {
+  deck_call_state_t state;
+  char    name[DECK_STR_MAX];      /* caller ID, empty if the AG sent none */
+  char    number[DECK_STR_MAX];
+  int     secs;                    /* call duration, or how long it has rung */
+  uint8_t mic;                     /* live microphone level, 0..255 */
+} deck_call_t;
+
+void deck_screen_call(deck_fb_t *fb, const deck_call_t *c, double now_ms);
+
+/* ---- the tuner ----------------------------------------------------------
+ * Filled in by the firmware from an Si4735 (or whatever tuner is fitted); the
+ * screen knows nothing about I2C. Frequencies are in kHz throughout — one
+ * unit for both bands, so nothing has to remember which scale it is holding.
+ * `name` and `text` are RDS and are empty until the station sends them, which
+ * on a weak signal can be never. */
+#define DECK_PRESETS 6
+
+typedef enum { DECK_BAND_FM = 0, DECK_BAND_AM } deck_band_t;
+
+typedef struct {
+  deck_band_t band;
+  int      freq_khz;
+  int      band_lo_khz, band_hi_khz;
+  int      preset;                  /* 1..DECK_PRESETS, or 0 for none */
+  int      n_presets;
+  int      preset_khz[DECK_PRESETS];
+  uint8_t  rssi;                    /* 0..255 */
+  uint8_t  stereo;
+  char     name[DECK_STR_MAX];      /* RDS programme service, 8 chars */
+  char     text[DECK_STR_MAX];      /* RDS radio text, up to 64 */
+} deck_radio_t;
+
+void deck_screen_radio(deck_fb_t *fb, const deck_radio_t *r,
+                       deck_scroll_t *sc, double dt);
+
 /* ---- ocean --------------------------------------------------------------
  * The only screen with a world that persists between frames. The caller owns
  * the state and advances it by bumping `tick` — the scene steps once per tick

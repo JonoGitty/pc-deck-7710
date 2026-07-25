@@ -37,6 +37,31 @@ Ten display modes, all drawn by `core/` — the same C the firmware runs.
 | **3D spectrum** — a receding analyser landscape, hidden lines removed<br>![](docs/media/3d.gif) | **Ocean cruise** — the dolphins, and they react to the bass<br>![](docs/media/ocean.gif) |
 | **Album art** — the sleeve, ordered-dithered to four levels<br>![](docs/media/cover.gif) | **Lyrics** — synced from LRCLIB, current line hot<br>![](docs/media/lyrics.gif) |
 
+## Calls, and the radio
+
+![Incoming call](docs/media/call-incoming.gif)
+
+The deck can take hands-free calls: the ESP32 does HFP alongside A2DP, and it
+needs one £4 I²S microphone and one spare pin. The caller's name at the largest
+size that fits, the border pulsing in a telephone's cadence, and what the
+buttons do labelled in the corners — because nobody learns a control layout
+while a phone is ringing at them.
+
+| | |
+|---|---|
+| **In a call** — duration, and a live mic level so you can see they can hear you<br>![](docs/media/call-active.gif) | **Dialling out**<br>![](docs/media/call-outgoing.gif) |
+
+![FM radio with RDS](docs/media/radio-fm.gif)
+
+And it is a radio. Station name from RDS first, frequency under it, a band
+scale with your presets marked so seeking feels like movement rather than a
+number jumping. Signal strength is a *count* of segments and stereo is a glyph
+that is there or is not — never brightness, which vanishes on a 1-bit panel.
+
+**Both screens are written and rendered from the real `core/`. Neither driver
+is.** [docs/CALLING.md](docs/CALLING.md) and [docs/RADIO.md](docs/RADIO.md) say
+exactly what exists, what is designed, and what it costs to build.
+
 <details>
 <summary><b>And the whole faceplate</b> — VU, album art, lyrics, waterfall, dolphins</summary>
 
@@ -299,6 +324,7 @@ dithering into mush on 1-bit panels.
 [Safety](SAFETY.md) · [Handbook](docs/HANDBOOK.md) · [Hardware](docs/HARDWARE.md) ·
 [Architecture](docs/ARCHITECTURE.md) · [UI spec](docs/UI-SPEC.md) ·
 [Making animations](docs/MOVIE-RENDERING.md) · [Control](docs/CONTROL.md) ·
+[Calling](docs/CALLING.md) · [Radio](docs/RADIO.md) ·
 [Testing](docs/TESTING.md) · [Versioning](docs/VERSIONING.md) ·
 [For Claude](CLAUDE.md)
 

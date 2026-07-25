@@ -13,6 +13,7 @@ idf_component_register(
     "${CORE}/screens/waterfall.c" "${CORE}/screens/vu.c"
     "${CORE}/screens/spectrum3d.c" "${CORE}/screens/cover.c"
     "${CORE}/screens/lyrics.c" "${CORE}/screens/ocean.c"
+    "${CORE}/screens/call.c" "${CORE}/screens/radio.c"
   INCLUDE_DIRS "${CORE}"
 )
 

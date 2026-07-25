@@ -12,9 +12,15 @@ CONFIG_BT_CLASSIC_ENABLED=y
 CONFIG_BT_A2DP_ENABLE=y
 CONFIG_BT_SPP_ENABLED=n
 CONFIG_BT_BLE_ENABLED=y
-# Just Works pairing: a head unit has no keyboard and no display worth typing
-# a passkey into, and the alternative is a device nothing will pair with.
-CONFIG_BT_SSP_ENABLED=y
+# Secure Simple Pairing — "Just Works", because a head unit has no keyboard and
+# no display worth typing a passkey into.
+#
+# There is no option to set. CONFIG_BT_SSP_ENABLED was removed from ESP-IDF;
+# it does not exist in v5.3 and setting it produced an "unknown kconfig
+# symbol" warning on every build while doing nothing at all. Bluedroid now
+# always supports SSP for Classic. The comment stays because the question
+# "how does pairing work on a thing with no keypad" is a real one and the
+# answer is no longer visible in the config.
 
 # --- memory -------------------------------------------------------------
 # WROVER-E, so PSRAM. Album art means decoding a 600x600 JPEG, which does not
