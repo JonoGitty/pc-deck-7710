@@ -72,5 +72,20 @@
     "The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
     "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
     "Depth unknown. Measure."
-  ]
+  ],
+  "factory_amp": {
+    "v": "⚠️ believed none",
+    "c": "unverified",
+    "why": ""
+  },
+  "amp_space": {
+    "v": "⚠️ awkward — mid-engined and a convertible",
+    "c": "measure",
+    "why": "Both problems at once: little hidden space, and what there is gets damp. Plan the location first."
+  },
+  "din_options": {
+    "v": "1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below.",
+    "c": "unverified",
+    "why": ""
+  }
 }

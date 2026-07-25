@@ -72,5 +72,20 @@
     "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
     "The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
     "A 1-DIN deck in a 2-DIN hole needs the pocket to look intentional."
-  ]
+  ],
+  "factory_amp": {
+    "v": "⚠️ Bose-equipped cars have one; base cars believed not",
+    "c": "unverified",
+    "why": "⚠️ This matters more on the NC than any other car here. A Bose system is amplified and does NOT behave like plain speakers on an ISO block — establish which you have before buying an amplifier or cutting anything."
+  },
+  "amp_space": {
+    "v": "the bottom half of the dash aperture, or the boot",
+    "c": "measure",
+    "why": "✅ The NC is the best case in this document: a double-DIN hole means the amplifier can sit behind the fascia with the deck."
+  },
+  "din_options": {
+    "v": "2-DIN, which permits the one thing a single-DIN car cannot: **the deck in the top half and the amplifier board in the bottom half.** That is what a real head unit does — amp and front end in one box — and it is the only route in this project where the amp lives in the dash rather than under a seat. The alternative is deck + storage pocket.",
+    "c": "unverified",
+    "why": ""
+  }
 }

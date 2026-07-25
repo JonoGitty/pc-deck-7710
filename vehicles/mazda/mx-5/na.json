@@ -72,5 +72,20 @@
     "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
     "It is a convertible with a thirty-year-old hood. Water in the centre console is a known NA trait, not a hypothetical one — think about where the boards sit.",
     "Depth. The NA console is the smallest in this directory; measure before building."
-  ]
+  ],
+  "factory_amp": {
+    "v": "⚠️ believed none on base cars",
+    "c": "unverified",
+    "why": "Same consequence: the deck is line level and needs an amplifier."
+  },
+  "amp_space": {
+    "v": "behind the seats, or the boot",
+    "c": "measure",
+    "why": "⚠️ Convertible, thirty years old, and water in the cabin is a known NA trait rather than a hypothetical. Mount high and dry."
+  },
+  "din_options": {
+    "v": "1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below.",
+    "c": "unverified",
+    "why": ""
+  }
 }

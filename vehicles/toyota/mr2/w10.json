@@ -70,5 +70,20 @@
     "The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
     "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
     "Depth is unknown and unlisted. Measure before building anything."
-  ]
+  ],
+  "factory_amp": {
+    "v": "⚠️ believed none",
+    "c": "unverified",
+    "why": "A mid-eighties car. Assume the head unit drove the speakers."
+  },
+  "amp_space": {
+    "v": "⚠️ genuinely awkward — mid-engined",
+    "c": "measure",
+    "why": "⚠️ The MR2 is mid-engined, so there is no conventional boot: a small front compartment and a smaller rear one, both near heat. This is the hardest car here to place an amplifier in."
+  },
+  "din_options": {
+    "v": "1-DIN only. The deck fills the aperture and **the amplifier has to live elsewhere in the car** — see the space note below.",
+    "c": "unverified",
+    "why": ""
+  }
 }

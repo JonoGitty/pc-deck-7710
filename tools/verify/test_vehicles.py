@@ -34,7 +34,8 @@ SRC = os.path.join(ROOT, "vehicles")
 CONFIDENCE = {"verified", "unverified", "measure"}
 
 REQUIRED_FIELDS = ["fits", "aperture", "depth_mm", "fascia_adapter", "harness",
-                   "aerial", "swc", "illumination", "ignition"]
+                   "aerial", "swc", "illumination", "ignition",
+                   "factory_amp", "amp_space", "din_options"]
 REQUIRED_KEYS = ["brand", "model", "generation", "years", "markets",
                  "market_notes", "gotchas"]
 

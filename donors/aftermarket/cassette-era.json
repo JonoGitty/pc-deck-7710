@@ -114,5 +114,52 @@
       "flag": "good",
       "c": "unverified"
     }
+  ],
+  "teardown": [
+    {
+      "part": "fascia",
+      "action": "keep",
+      "note": "⚠️ Often PAINTED rather than moulded, and paint from 1988 does not survive being worked on."
+    },
+    {
+      "part": "knobs",
+      "action": "keep",
+      "note": "Twin concentric knobs on many. The nicest to use of any donor here."
+    },
+    {
+      "part": "buttons",
+      "action": "keep",
+      "note": "Discrete switches, not a matrix — which makes the ladder rewire EASIER, not harder."
+    },
+    {
+      "part": "top + bottom covers",
+      "action": "keep",
+      "note": "Keep the screws."
+    },
+    {
+      "part": "cassette mechanism",
+      "action": "bin",
+      "note": "One sub-assembly on four screws. Its aperture becomes your window."
+    },
+    {
+      "part": "amplifier board",
+      "action": "hazard",
+      "note": "Discharge the electrolytics. Older units have bigger ones."
+    },
+    {
+      "part": "tuner + main PCB",
+      "action": "bin",
+      "note": "No microcontroller worth the name in the oldest units."
+    },
+    {
+      "part": "chassis",
+      "action": "keep",
+      "note": "Steel, deep, heavy. Built like furniture."
+    },
+    {
+      "part": "mounting brackets",
+      "action": "keep",
+      "note": "⚠️ Pre-ISO on the older ones — check before assuming a modern cage fits."
+    }
   ]
 }

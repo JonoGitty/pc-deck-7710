@@ -106,5 +106,52 @@
       "flag": "good",
       "c": "unverified"
     }
+  ],
+  "teardown": [
+    {
+      "part": "fascia",
+      "action": "keep",
+      "note": "Often clipped; ⚠️ at the bottom of the market they are glued and will not come off intact."
+    },
+    {
+      "part": "button panel",
+      "action": "keep",
+      "note": "Fewer switches than the dot-matrix units. Count them before you rely on six."
+    },
+    {
+      "part": "top + bottom covers",
+      "action": "keep",
+      "note": "Keep the screws."
+    },
+    {
+      "part": "its own display",
+      "action": "bin",
+      "note": "Segment LCD — backlit, no inverter. Nothing charged."
+    },
+    {
+      "part": "CD mechanism, if fitted",
+      "action": "bin",
+      "note": "A mechless unit has none, which is why it is the safest thing here."
+    },
+    {
+      "part": "amplifier board",
+      "action": "hazard",
+      "note": "Discharge the electrolytics."
+    },
+    {
+      "part": "main PCB",
+      "action": "bin",
+      "note": ""
+    },
+    {
+      "part": "chassis",
+      "action": "keep",
+      "note": "⚠️ Check it is steel. The very cheapest units are plastic."
+    },
+    {
+      "part": "cage",
+      "action": "keep",
+      "note": "Usually included."
+    }
   ]
 }

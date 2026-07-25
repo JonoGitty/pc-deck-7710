@@ -3,6 +3,7 @@
 
 #include "driver/gpio.h"
 
+#include "deck_audioproc.h"
 #include "deck_diag.h"
 
 /* The 74HC4052's two select inputs.
@@ -44,6 +45,17 @@ int deck_source_start(deck_source_t initial) {
 void deck_source_set(deck_source_t s) {
   if (s < 0 || s >= DECK_SRC_COUNT) s = DECK_SRC_BT;
   s_cur = s;
+
+  /* A PT2313, if one is fitted, does the selecting AND gives the deck a
+   * volume control. Its input numbering matches this enum on purpose, so the
+   * two paths agree about which socket is which and a build can swap one for
+   * the other without rewiring. See deck_audioproc.h. */
+  if (deck_audioproc_present()) {
+    deck_audioproc_source(s);
+    deck_diag_event(DECK_SUB_AUDIO, "source", "sel=%d name=%s via=pt2313",
+                    (int)s, NAMES[s]);
+    return;
+  }
   /* Channel number straight onto the two select lines. The enum order and the
    * mux channel order are the same on purpose — a lookup table here would be
    * one more thing to get out of step with the wiring diagram. */

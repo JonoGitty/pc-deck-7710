@@ -69,6 +69,9 @@ python3 tools/diagrams/donors.py "$OUT"
 # ...and the two transplant drawings: aligning the panel to its lit area,
 # and turning a donor's scanned matrix into the deck's one-wire ladder.
 python3 tools/diagrams/transplant.py "$OUT"
+# ...and a colour-coded strip-down per donor: green keep, red bin, amber
+# discharge it first.
+python3 tools/diagrams/teardown.py "$OUT"
 
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"

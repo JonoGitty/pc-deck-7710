@@ -65,5 +65,52 @@
     "Measure the window before any disassembly. If it will not take 76 × 19 mm, decide now whether you are cutting it or choosing a different route.",
     "Note how it mounts — brackets or cage — because that decides the chassis you build.",
     "Then the standard teardown: fascia first, keep every screw."
+  ],
+  "teardown": [
+    {
+      "part": "fascia / surround",
+      "action": "keep",
+      "note": "The reason you chose this route. Car-specific and single-source — break it and there is no generic replacement."
+    },
+    {
+      "part": "buttons",
+      "action": "keep",
+      "note": "Often fewer than an aftermarket unit. Count before committing."
+    },
+    {
+      "part": "car-specific brackets",
+      "action": "keep",
+      "note": "⚠️ OEM units usually bolt to these rather than sliding into a cage. They ARE your mounting."
+    },
+    {
+      "part": "covers",
+      "action": "keep",
+      "note": "Keep the screws."
+    },
+    {
+      "part": "its own display",
+      "action": "bin",
+      "note": "⚠️ Many OEM units of the right era use a VFD. Treat the power board as live."
+    },
+    {
+      "part": "CD / cassette mechanism",
+      "action": "bin",
+      "note": ""
+    },
+    {
+      "part": "amplifier board",
+      "action": "hazard",
+      "note": "Discharge. OEM amps are often integrated into the main board — cut carefully."
+    },
+    {
+      "part": "main PCB",
+      "action": "bin",
+      "note": "⚠️ On some cars this also handles chimes or the clock. Losing it may be more than losing a radio."
+    },
+    {
+      "part": "chassis",
+      "action": "keep",
+      "note": "Varies entirely by manufacturer — some are a standard box in a car-specific surround, some are not."
+    }
   ]
 }

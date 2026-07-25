@@ -1,0 +1,151 @@
+{
+  "family": "A 2-DIN unit, split down to 1-DIN plus a pocket",
+  "examples": [
+    "Any double-DIN CD/DVD receiver, spares-or-repair",
+    "2-DIN cage + trim ring bought separately",
+    "1-DIN + pocket fascia kits"
+  ],
+  "category": "aftermarket",
+  "era": "≈2000–present",
+  "grade": "B",
+  "one_liner": "For cars with a double-height hole. The deck fills the top half and a pocket fills the bottom, which is how every 1-DIN radio has gone into a 2-DIN dash for thirty years.",
+  "price": {
+    "v": "£10–25 spares-or-repair, or £12–20 for a cage and pocket new",
+    "c": "unverified",
+    "why": "Broken 2-DIN units are cheap because a cracked touchscreen makes them worthless — and you were binning the screen anyway."
+  },
+  "window_w_mm": {
+    "v": 84,
+    "c": "verified",
+    "why": "You are building the top half yourself, so the window is whatever you cut. The donor supplies the cage and the surround, not the face."
+  },
+  "window_h_mm": {
+    "v": 27,
+    "c": "verified",
+    "why": "As above."
+  },
+  "chassis": {
+    "v": "steel, 2-DIN cage; you build a 1-DIN box inside it",
+    "c": "unverified",
+    "why": "The useful part is the CAGE and the trim ring, which are car-aperture-sized and hard to fabricate."
+  },
+  "cage_included": {
+    "v": "yes, and it is the reason to buy one",
+    "c": "unverified",
+    "why": "A 2-DIN cage plus a 1-DIN-and-pocket adapter is the whole point of this route."
+  },
+  "buttons": {
+    "v": "whatever the donor had, often on a touchscreen instead",
+    "c": "measure",
+    "why": "⚠️ A touchscreen unit may have almost NO physical buttons. Count before relying on the fascia for six."
+  },
+  "knob": {
+    "v": "often a single encoder, sometimes none",
+    "c": "measure",
+    "why": "Touchscreen-era units frequently have no knob at all, which is a poor start for a deck built around one."
+  },
+  "display_tech": {
+    "v": "TFT or touchscreen",
+    "c": "unverified",
+    "why": "⚠️ A backlit TFT has an inverter on the older ones. LED backlights do not. Check before probing."
+  },
+  "why": [
+    "It is the only sensible answer for a car with a 2-DIN aperture, and two cars in this project's vehicle list have one.",
+    "Cracked-screen 2-DIN units are worth nothing to anybody, and the screen is the part you were throwing away.",
+    "You get a 2-DIN cage and trim ring, which are the parts that are genuinely awkward to make and are sized to the car's hole.",
+    "The bottom half becomes real storage, which every owner of a small car wants anyway."
+  ],
+  "watch_out": [
+    "⚠️ You are building the 1-DIN box yourself — this route gives you the cage and the surround, not a ready-made chassis. Combine it with the fold-your-own or empty-pocket entries.",
+    "⚠️ Touchscreen units often have no usable buttons and no knob. Establish what physical controls exist before buying.",
+    "The 1-DIN half must sit at the TOP of the aperture, not the bottom, or the display ends up below the driver's sight line.",
+    "Older TFT backlights use an inverter. Not as lively as a VFD supply, still not something to probe blind."
+  ],
+  "steps": [
+    "Confirm your car's aperture is actually 2-DIN — VEHICLES.md, then measure.",
+    "Buy the broken 2-DIN unit for its cage and trim ring, or buy those new.",
+    "Strip it: the screen, the mechanism and all the boards go.",
+    "Build or buy the 1-DIN box for the top half — see the fold-your-own and empty-pocket entries, which are the same job from here on.",
+    "Fit a 1-DIN storage pocket in the bottom half so the result looks intentional rather than gap-toothed.",
+    "⚠️ Mount the deck in the TOP half. A display below the centre console's midline is one you have to look down at."
+  ],
+  "models": [
+    {
+      "name": "Any 2-DIN CD/DVD receiver with a cracked screen",
+      "years": "≈2005–2018",
+      "display": "TFT, usually broken",
+      "note": "The cheapest source of a 2-DIN cage there is. The fault that makes it worthless is in the part you are removing.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer AVH- series",
+      "years": "≈2006–present",
+      "display": "TFT touchscreen",
+      "note": "Common, and the cages and trim rings are well made.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Kenwood DDX / DNX series",
+      "years": "≈2006–present",
+      "display": "TFT touchscreen",
+      "note": "As above. DNX are navigation units and go cheaper still once the maps are obsolete.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Sony XAV- series",
+      "years": "≈2008–present",
+      "display": "TFT touchscreen",
+      "note": "Widely available broken.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "A 2-DIN cage and 1-DIN+pocket fascia, bought new",
+      "years": "current",
+      "display": "none",
+      "note": "✅ Skip the donor entirely. Under £20 for both, no teardown, no hazards — the same logic as the empty-pocket route one size up.",
+      "flag": "good",
+      "c": "unverified"
+    }
+  ],
+  "teardown": [
+    {
+      "part": "fascia / screen assembly",
+      "action": "bin",
+      "note": "Off first, as on any unit. ⚠️ Older TFT backlights run from an inverter — do not probe it blind."
+    },
+    {
+      "part": "trim ring / surround",
+      "action": "keep",
+      "note": "Comes off the front once the fascia is away. Sized to the car's aperture and one of the two reasons for this route."
+    },
+    {
+      "part": "covers",
+      "action": "bin",
+      "note": "You are not keeping this chassis, so the screws matter less than usual — but keep a few anyway."
+    },
+    {
+      "part": "optical drive / mechanism",
+      "action": "bin",
+      "note": "Same caution as any disc unit: do not power it to test the laser."
+    },
+    {
+      "part": "main board + amplifier",
+      "action": "hazard",
+      "note": "Discharge the large electrolytics before binning."
+    },
+    {
+      "part": "chassis",
+      "action": "bin",
+      "note": "⚠️ Unusual — on this route you do NOT keep the donor's box. It is the wrong height. You build a 1-DIN one."
+    },
+    {
+      "part": "2-DIN cage",
+      "action": "keep",
+      "note": "The other reason for this route, and the part that is genuinely awkward to fabricate. It stays in the car."
+    }
+  ]
+}

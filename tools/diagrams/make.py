@@ -147,7 +147,7 @@ def pinmap(out):
 
 # ---------------------------------------------------------------- wiring
 def wiring(out):
-    W, H = 1180, 820
+    W, H = 1180, 872
     s = Svg(W, H, "WIRING  ·  THE WHOLE DECK",
             "Signal flow, not a schematic. The thing worth noticing is that "
             "audio never enters the ESP32.")
@@ -217,11 +217,11 @@ def wiring(out):
     s.box(BX, 342, BW, 62, "Si4735 TUNER",
           ["FM/AM + RDS", "0x11 or 0x63 — probed"], accent=GREEN)
     s.box(BX, 424, BW, 48, "AUX IN", ["3.5 mm, passive"], accent="#c9a0ff")
-    s.box(BX, 492, BW, 68, "74HC4052 MUX",
-          ["two select lines pick one", "of four stereo pairs"],
+    s.box(BX, 492, BW, 68, "PT2313 AUDIO PROC",
+          ["source + VOLUME + tone, I²C", "or a 74HC4052 — no volume"],
           accent="#c9a0ff")
-    s.box(BX, 580, BW, 58, "AMPLIFIER",
-          ["the car's, or your own", "ISO 10487 B"], accent=CLIP)
+    s.box(BX, 580, BW, 58, "AMPLIFIER  ⚠ NOT INCLUDED",
+          ["TDA7850 / TDA7388 4×50 W", "its OWN fused 12 V feed"], accent=CLIP)
 
     # ---- wires in
     wire(218, 127, cx, 200, CLIP, "5 V", mid=330)
@@ -239,7 +239,7 @@ def wiring(out):
             (248, 209, HOT, "I²S", "26 25 22"),
             (292, 291, HOT, "mic", "15"),
             (340, 373, GREEN, "I²C", "32 33 + 13"),
-            (420, 526, "#c9a0ff", "select", "2 12")]:
+            (420, 526, "#c9a0ff", "I²C", "32 33")]:
         s.path(f"M {cx + cw} {y1} H {MID} V {y2} H {BX}", stroke=colour,
                sw=1.6)
         s.circle(BX, y2, 2.6, fill=colour)
@@ -257,10 +257,22 @@ def wiring(out):
     bus(373, 524, GREEN, "FM / AM")           # tuner → mux ch1
     bus(448, 540, "#c9a0ff", "aux")           # aux   → mux ch2
 
-    # the one selected pair, out of the mux and into the amplifier
+    # the one selected pair, out of the processor and into the amplifier
     s.path(f"M {BX + 40} 560 V 580", stroke=CLIP, sw=2.6)
     s.circle(BX + 40, 580, 3.4, fill=CLIP)
     s.text(BX + 52, 574, "one pair, selected", size=8, fill=CLIP)
+
+    # The amplifier's own supply. Drawn straight from the car rather than
+    # through the buck, because that is the mistake: four channels at 45 W is
+    # tens of amps of peak current and the deck's little 3 A buck does not
+    # survive being asked for it.
+    s.path(f"M 218 110 H 262 V 800 H {BX + BW / 2} V 638",
+           stroke=CLIP, sw=2, dash="7 4")
+    s.circle(BX + BW / 2, 638, 3.4, fill=CLIP)
+    s.text(272, 762, "12 V straight from the car, its OWN fuse — NOT through "
+           "the 5 V buck", size=8.5, fill=CLIP)
+    s.text(272, 778, "⚠ The amplifier is not part of this build. "
+           "BUILD.md — 'To make a sound'.", size=8.5, fill=CLIP)
 
     # ---- the callout, under the chip where there is actually room
     s.rect(cx - 2, 640, 400, 100, fill="#1a1208", stroke=AMBER, sw=1, rx=5)
