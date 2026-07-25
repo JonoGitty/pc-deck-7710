@@ -121,16 +121,16 @@ source that resists every flag here. It fails three times over:
 
 The first two have flags. The third does not, because there is nothing to
 recover: a hand-held camera photographing a lit panel produces an image whose
-dominant tone *is* mid-grey, and no black point puts it anywhere good. A clip
-of a Pioneer deck playing its dolphin screensaver was tried at every setting in
-this document and came out as noise every time.
+dominant tone *is* mid-grey, and no black point puts it anywhere good. This was
+tried on real footage of a real head unit, at every setting in this document,
+and came out as noise every time.
 
 **So film a display for reference, not for import.** If you want what it shows,
 draw it — which is what `core/screens/ocean.c` is.
 
 ## The bundled animations
 
-Four, and they are worth reading before writing your own — each one solves a
+Five, and they are worth reading before writing your own — each one solves a
 different version of the same problem, which is that four levels is not many.
 
 | | What it is | The thing it works out |
@@ -139,6 +139,7 @@ different version of the same problem, which is that four levels is not many.
 | `scene_solar.py` | Sun to Pluto, 56 s | A camera path, and labels that survive a bright background — see `deckfont.plate`. |
 | `scene_dolphins.py` | A pod breaching, 24 s | A bright subject needs something dim to sit against; the sea is shaded on a steep curve so only crests glint. |
 | `scene_touge.py` | A car sideways at night, 30 s | The inverse: an almost-black frame, lit only by the car's own headlights, where the subject is the *hole* in the light. |
+| `scene_vtec.py` | A bar tachometer, 26 s | Instrumentation rather than a scene: a bar tacho *is* a 4:1 strip, and the revs are a crude engine with a limiter rather than a waveform. |
 
 Each takes a grid — `scene_touge.py 256 64` — or `--legacy` for the PC deck.
 
