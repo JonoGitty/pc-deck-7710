@@ -303,16 +303,27 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 
 ### Specific units to search for
 
-| | Model | Years | Its own display | Notes |
-|---|---|---|---|---|
-| ✅ | **Blaupunkt Bremen SQR 46** | 1986 onward | small dial; the cassette door is the space you want | The cult classic, reissued in 2019 as the Bremen SQR 46 DAB. The original is period-correct and the fascia is beautiful. ⚠️ Price reflects the cult status — you may pay more than for a grade-A donor. |
-| ✅ | **Blaupunkt Woodstock / London / Toronto (1990s)** | ≈1990–1998 | small backlit dial | The city-named Blaupunkts are everywhere in the UK and EU and nobody wants them. Steel, deep, and the cassette aperture is a clean rectangle. |
-| ✅ | **Pioneer KEH- series** | ≈1988–1997 | small dial | Pioneer's cassette line. Plentiful, cheap, and built well. |
-| ✅ | **Sony XR- series** | ≈1990–1998 | small dial | The same story as the Pioneer. Often free with a scrapyard dash. |
-| ⚠️ | **Becker Mexico / Grand Prix** | ≈1985–1998 | small dial | ⚠️ The nicest cassette fascias made, and priced like it — these are sought after for period-correct restorations. Buy one only if you want that specific look and can justify the cost. |
-| ✅ | **Any OEM cassette head unit from a scrapyard** | ≈1985–1998 | varies | ✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with. |
+| | Model | Years | Face | Its own display | Notes |
+|---|---|---|---|---|---|
+| ✅ | **Blaupunkt Bremen SQR 46** | 1986 onward | — | small dial; the cassette door is the space you want | The cult classic, reissued in 2019 as the Bremen SQR 46 DAB. The original is period-correct and the fascia is beautiful. ⚠️ Price reflects the cult status — you may pay more than for a grade-A donor. |
+| ✅ | **Blaupunkt Woodstock / London / Toronto (1990s)** | ≈1990–1998 | — | small backlit dial | The city-named Blaupunkts are everywhere in the UK and EU and nobody wants them. Steel, deep, and the cassette aperture is a clean rectangle. |
+| ✅ | **Pioneer KEH- series** | ≈1988–1997 | — | small dial | Pioneer's cassette line. Plentiful, cheap, and built well. |
+| ⚠️ | **Pioneer KEH-P6020R** | ≈1999–2001 | drop-down + detachable | small backlit LCD on a detachable, drop-down front panel | ✅ **4 × 50 W amplifier confirmed on the spec for this exact model**, so the free-amplifier claim is not a family generalisation here. ✅ It also has an **AUX input**, which is unusual for a cassette unit and may matter more than it looks: an aux socket is a line-level input ALREADY wired into the amplifier chain, which is exactly what the scalpel job in REUSE.md is trying to create. ⚠️ But the front panel both drops down and detaches, and detachable-face units generally refuse to operate with the face off — that is what the feature is for. So the aux shortcut needs the original face PCB left connected and hidden inside, which is untested reasoning, not a plan. ⚠️ The cassette loads behind the face, so the face is solid and roomy — but you are cutting a new aperture into a part that also hinges and unclips. Pin it shut and it is a good fixed fascia; leave it moving and the panel ribbon flexes every time. |
+| ✅ | **Sony XR- series** | ≈1990–1998 | — | small dial | The same story as the Pioneer. Often free with a scrapyard dash. |
+| ⚠️ | **Becker Mexico / Grand Prix** | ≈1985–1998 | — | small dial | ⚠️ The nicest cassette fascias made, and priced like it — these are sought after for period-correct restorations. Buy one only if you want that specific look and can justify the cost. |
+| ✅ | **Any OEM cassette head unit from a scrapyard** | ≈1985–1998 | — | varies | ✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with. |
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled.</sub>
+
+> **📏 No window in this table has been measured, and that is deliberate.** Nobody publishes the window size of a 1998 head unit — not the service manual, not the spec sheet, not the listing. Forty guessed numbers would look authoritative and somebody would buy a fascia on one.
+>
+> You do not need them. **Every 1-DIN fascia is 182 mm wide**, fixed by ISO 7736 — so any straight-on photograph is a ruler with a known scale, including the listing you are looking at now:
+>
+> ```sh
+> python3 tools/donors/fit.py --fascia 1180 --window 476x104 --slot 810x78
+> ```
+>
+> It answers in millimetres: fits, file it by *this much*, use the CD slot instead, or buy a different donor. Twenty seconds per listing, ±1–2 mm, which is exactly the precision that decides whether you bid.
 
 ### Keeping more of it
 

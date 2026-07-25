@@ -118,6 +118,21 @@
       "c": "unverified"
     },
     {
+      "name": "Pioneer KEH-P6020R",
+      "years": "≈1999–2001",
+      "display": "small backlit LCD on a detachable, drop-down front panel",
+      "face": "drop-down + detachable",
+      "note": "✅ **4 × 50 W amplifier confirmed on the spec for this exact model**, so the free-amplifier claim is not a family generalisation here. ✅ It also has an **AUX input**, which is unusual for a cassette unit and may matter more than it looks: an aux socket is a line-level input ALREADY wired into the amplifier chain, which is exactly what the scalpel job in REUSE.md is trying to create. ⚠️ But the front panel both drops down and detaches, and detachable-face units generally refuse to operate with the face off — that is what the feature is for. So the aux shortcut needs the original face PCB left connected and hidden inside, which is untested reasoning, not a plan. ⚠️ The cassette loads behind the face, so the face is solid and roomy — but you are cutting a new aperture into a part that also hinges and unclips. Pin it shut and it is a good fixed fascia; leave it moving and the panel ribbon flexes every time.",
+      "flag": "caution",
+      "c": "unverified",
+      "window": {
+        "w_mm": 0,
+        "h_mm": 0,
+        "c": "measure",
+        "why": "Measure it off the listing photograph with tools/donors/fit.py — the fascia is 182 mm wide."
+      }
+    },
+    {
       "name": "Sony XR- series",
       "years": "≈1990–1998",
       "display": "small dial",
