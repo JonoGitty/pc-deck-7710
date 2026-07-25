@@ -64,5 +64,55 @@
     "The cassette aperture becomes the window. Back it with 1 mm smoked acrylic bonded from behind and it looks like it was always a display.",
     "Convert the discrete switches to the ladder directly — no flexi to lift, just a wire per switch and a common return.",
     "⚠️ Check the mounting before you build the chassis: if it is pre-ISO you need a modern cage and the donor's own brackets are no use."
+  ],
+  "models": [
+    {
+      "name": "Blaupunkt Bremen SQR 46",
+      "years": "1986 onward",
+      "display": "small dial; the cassette door is the space you want",
+      "note": "The cult classic, reissued in 2019 as the Bremen SQR 46 DAB. The original is period-correct and the fascia is beautiful. ⚠️ Price reflects the cult status — you may pay more than for a grade-A donor.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Blaupunkt Woodstock / London / Toronto (1990s)",
+      "years": "≈1990–1998",
+      "display": "small backlit dial",
+      "note": "The city-named Blaupunkts are everywhere in the UK and EU and nobody wants them. Steel, deep, and the cassette aperture is a clean rectangle.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer KEH- series",
+      "years": "≈1988–1997",
+      "display": "small dial",
+      "note": "Pioneer's cassette line. Plentiful, cheap, and built well.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Sony XR- series",
+      "years": "≈1990–1998",
+      "display": "small dial",
+      "note": "The same story as the Pioneer. Often free with a scrapyard dash.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Becker Mexico / Grand Prix",
+      "years": "≈1985–1998",
+      "display": "small dial",
+      "note": "⚠️ The nicest cassette fascias made, and priced like it — these are sought after for period-correct restorations. Buy one only if you want that specific look and can justify the cost.",
+      "flag": "caution",
+      "c": "unverified"
+    },
+    {
+      "name": "Any OEM cassette head unit from a scrapyard",
+      "years": "≈1985–1998",
+      "display": "varies",
+      "note": "✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with.",
+      "flag": "good",
+      "c": "unverified"
+    }
   ]
 }

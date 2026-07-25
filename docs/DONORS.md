@@ -54,7 +54,7 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 
 <sub>`donors/aftermarket/dot-matrix.json`</sub>
 
-*For example: Pioneer DEH-P series, Sony CDX with the wide display, Kenwood KDC / eXcelon, JVC KD- with the full-width display, Alpine CDE / CDA.*
+*For example: Pioneer DEH-P / MEH-P with OEL, Alpine CDA BioLite, Sony CDX-GT with the FL dot matrix, Clarion DXZ, Kenwood KDC eXcelon, Blaupunkt Bremen.*
 
 ![Window fit for Aftermarket 1-DIN with a large dot-matrix display](media/donor-dot-matrix.svg)
 
@@ -69,11 +69,39 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **Knob** | ⚠️ rotary volume, usually an encoder or a pot with a detent feel | Reuse the KNOB and fit your own EC11 behind it — the original's electrical type does not matter, only its shaft and cap do. |
 | **Its own display** | ⚠️ LCD or VFD depending on model | ⚠️ If it is a VFD, its power board makes tens of volts and holds them after power-off. See the hazards. |
 
+### Specific units to search for
+
+| | Model | Years | Its own display | Notes |
+|---|---|---|---|---|
+| ✅ | **Pioneer DEH-P9000R** | 1998–1999 | monochrome OEL dot matrix | The first car-audio OEL display Pioneer ever shipped, and the start of the whole look this project is chasing. Sought after, so not the cheapest — but the fascia is exactly right. |
+| ✅ | **Pioneer MEH-P9000R** | 1998–1999 | monochrome OEL dot matrix | The MiniDisc sibling of the DEH-P9000R with the same face. MiniDisc is worthless to everybody, which makes this the cheap way to that fascia. |
+| ✅ | **Pioneer DEH-P9100R** | 2001–2002 | OEL dot matrix | Second-generation OEL. Same idea, easier to find than the 9000R. |
+| ✅ | **Pioneer MEH-P9100R** | 2001–2002 | OEL dot matrix | Again the MiniDisc twin — same fascia, a fraction of the price. |
+| ✅ | **Pioneer DEH-P6600** | ≈2002 | OEL dot matrix, 128×32 + 24×32, blue and white | ⚠️ The most useful model here because its display resolution is published. 128×32 is HALF the deck's 256×64 across — the window is sized for a coarser display, so measure before assuming the panel drops in. See the note under the drawing. |
+| ✅ | **Pioneer DEH-P6800MP** | ≈2003 | dot matrix | Common, cheap, and the right shape. A good default if you see one. |
+| ✅ | **Pioneer DEH-P6300** | ≈2001 | OEL with screensavers | Screensavers on the original, which tells you the window is generous — nobody animates a two-line display. |
+| ✅ | **Pioneer DEH-P9400MP** | ≈2003 | OEL, user-loadable animation via PC Link | Pioneer let owners upload their own animations to this one. That means the window was made to be looked at, which is exactly what you want. |
+| ✅ | **Pioneer DEH-P7800MP** | ≈2004 | full-colour 65,000-colour OEL | A colour OEL. The deck's panel is monochrome, so you are buying the window and the face, not the technology — but both are excellent. |
+| ✅ | **Pioneer DEH-P9600MP** | ≈2004 | colour OEL, dual faceplate | ⚠️ Dual-faceplate design. More mechanism than you need and more to defeat. Buy one only if it is cheap. |
+| ❌ | **Pioneer DEH-P85BT** | ≈2007 | blue OEL dot matrix | ⚠️ AVOID for this build. Motorised faceplate: the mechanism eats depth, it is fragile, and it is one more thing to work around. |
+| ✅ | **Alpine CDA-9855 / CDA-9855R** | ≈2005 | BioLite | Alpine's BioLite is bright and wide-angle, and the fold-down face is well made. A very good donor. |
+| ✅ | **Alpine CDA-9887 / CDA-9887R** | ≈2007 | BioLite | Top of Alpine's CD line at the time — the best-built fascia in this list. Priced accordingly even broken. |
+| ⚠️ | **Sony CDX-GT700D** | ≈2006 | fluorescent (VFD) dot matrix | ⚠️ VFD. Nice window, and its power board makes tens of volts and holds them after power-off. Treat it as live. See the hazards. |
+| ✅ | **Sony CDX-M9905X** | ≈2003 | large display | Sony's flagship of the era. Big face, big window. |
+| ⚠️ | **Clarion DXZ935** | ≈2003 | large display, two-piece front panel | ⚠️ The two-piece panel is more mechanism than you need. |
+| ❌ | **Clarion DXZ925** | ≈2002 | large display behind a motorised face | ⚠️ AVOID. Dual-action motorised face that slides down to reveal a second faceplate. Impressive, and completely wrong for this. |
+| ⚠️ | **Kenwood KDC-716S** | ≈2000 | dot matrix, adjustable viewing angle | ⚠️ Motorised D-MASK+ faceplate that rotates 180°. The display itself is good; the mechanism is not what you want. |
+| ✅ | **Blaupunkt Bremen MP76** | ≈2004 | DMS dot matrix | European, common in the UK, and the Bremen fascia is a genuinely handsome thing to build into. |
+| ✅ | **Blaupunkt Woodstock DAB53** | ≈2005 | dot matrix | Same family, often cheaper than the Bremen because the name carries less weight. |
+
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
 **Why this one**
 
 - The window is already a wide letterbox of roughly the right size, in roughly the right place, and usually already amber on black — which is exactly what the deck draws.
 - They were made in enormous numbers and are worthless to everybody else once the CD mechanism jams, which is what makes them cheap.
 - The fascia has enough buttons to fill the ladder without drilling.
+- ⚠️ One caution that applies to the whole family: several of these have a native display of 128×32, which is HALF the deck's 256×64 across. The physical window is usually close to right because our panel has a finer pitch — but 'usually close' is not 'measured', and this is the family where a few millimetres decides it.
 
 **⚠️ Watch out for**
 
@@ -114,6 +142,19 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **Buttons** | ⚠️ mechanical, large, satisfying, and often not on a flexi | Discrete switches are EASIER to convert to a ladder than a matrix, not harder. |
 | **Knob** | ⚠️ often twin concentric knobs — volume and tone | The best-feeling knobs of any donor here, by a wide margin. |
 | **Its own display** | ⚠️ none, or a small backlit dial | Nothing to discharge. The safest possible teardown. |
+
+### Specific units to search for
+
+| | Model | Years | Its own display | Notes |
+|---|---|---|---|---|
+| ✅ | **Blaupunkt Bremen SQR 46** | 1986 onward | small dial; the cassette door is the space you want | The cult classic, reissued in 2019 as the Bremen SQR 46 DAB. The original is period-correct and the fascia is beautiful. ⚠️ Price reflects the cult status — you may pay more than for a grade-A donor. |
+| ✅ | **Blaupunkt Woodstock / London / Toronto (1990s)** | ≈1990–1998 | small backlit dial | The city-named Blaupunkts are everywhere in the UK and EU and nobody wants them. Steel, deep, and the cassette aperture is a clean rectangle. |
+| ✅ | **Pioneer KEH- series** | ≈1988–1997 | small dial | Pioneer's cassette line. Plentiful, cheap, and built well. |
+| ✅ | **Sony XR- series** | ≈1990–1998 | small dial | The same story as the Pioneer. Often free with a scrapyard dash. |
+| ⚠️ | **Becker Mexico / Grand Prix** | ≈1985–1998 | small dial | ⚠️ The nicest cassette fascias made, and priced like it — these are sought after for period-correct restorations. Buy one only if you want that specific look and can justify the cost. |
+| ✅ | **Any OEM cassette head unit from a scrapyard** | ≈1985–1998 | varies | ✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with. |
+
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
 
 **Why this one**
 
@@ -248,6 +289,18 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **Buttons** | ⚠️ typically 5–8, plus a knob | Enough for the ladder. |
 | **Knob** | ⚠️ rotary, usually an encoder |  |
 | **Its own display** | ⚠️ segment or small dot LCD, backlit | No inverter, so this is the SAFEST category to gut. |
+
+### Specific units to search for
+
+| | Model | Years | Its own display | Notes |
+|---|---|---|---|---|
+| ✅ | **Sony CDX-GT / MEX series, later units** | ≈2008–2015 | segment LCD | Enormous numbers made, worthless broken, and a perfectly good steel box with a cage. The window is the problem, not the unit. |
+| ✅ | **Pioneer DEH-1000 / DEH-2000 series** | ≈2008–2016 | segment LCD | Pioneer's budget line. The cheapest route to a chassis and cage in this entire document. |
+| ✅ | **Kenwood KDC-100 / KDC-200 series** | ≈2010–2018 | segment LCD | As above. Mechless variants are shallower, which helps in a tight dash. |
+| ✅ | **JVC KD-R series** | ≈2009–2016 | segment LCD | Common and cheap. Check the fascia is clipped rather than glued. |
+| ✅ | **Any 'mechless' Bluetooth/USB 1-DIN receiver** | ≈2012–present | small segment LCD | ✅ The SAFEST donor of all — no CD laser, no VFD inverter, nothing charged. Shallow too. You are just going to cut the window. |
+
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
 
 **Why this one**
 

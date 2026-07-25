@@ -260,9 +260,21 @@ whether the deck's panel fits behind each one's window:
 
 *The best donors are 1998–2008 units with a big amber dot-matrix display —
 their window is already a wide letterbox of about the right size, in about the
-right place, in the right colour. ⚠️ And a VFD donor's power board makes tens
-of volts and holds them after power-off; that hazard is real and it is in the
-page.*
+right place, in the right colour.*
+
+**Thirty-one units are named**, each flagged ✅ buy it / ⚠️ read the note / ❌
+avoid. The short list to search for: **Pioneer DEH-P9000R** and **DEH-P9100R**
+(the OEL originals), their **MEH-** MiniDisc twins — same fascia, a fraction
+of the price because MiniDisc is worthless — **DEH-P6600**, **DEH-P6800MP**,
+**DEH-P6300**, **DEH-P9400MP**, **Alpine CDA-9855R** and **CDA-9887R**, and
+**Blaupunkt Bremen MP76**.
+
+❌ Avoid anything with a **motorised or dual faceplate** — DEH-P85BT,
+Clarion DXZ925, Kenwood KDC-716S. The mechanism eats depth and is one more
+thing to defeat.
+
+⚠️ And a VFD donor's power board makes tens of volts and holds them after
+power-off. That hazard is real and it is on the page.
 
 ```sh
 python3 tools/deckctl.py donor        # grade them at the bench

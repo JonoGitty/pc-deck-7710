@@ -543,6 +543,11 @@ def cmd_donor(args):
         print(f"       {C.dim}window{C.off} {win}"
               f"    {C.dim}price{C.off} {d['price']['v'].split(';')[0]}")
         if args.full:
+            for m in d.get("models") or []:
+                icon = {"good": C.ok + "  +" + C.off,
+                        "caution": C.warn + "  ~" + C.off,
+                        "avoid": C.bad + "  x" + C.off}[m["flag"]]
+                print(f"     {icon} {m['name']:<34} {C.dim}{m['years']}{C.off}")
             for it in d.get("watch_out") or []:
                 print(f"       {C.warn}!{C.off} {it}")
             for i, it in enumerate(d.get("steps") or [], 1):

@@ -157,6 +157,19 @@ def render(donors):
             w(f"| **{label}** | {mark(f)} | {f.get('why') or ''} |")
         w("")
 
+        if d.get("models"):
+            w("### Specific units to search for\n")
+            w("| | Model | Years | Its own display | Notes |")
+            w("|---|---|---|---|---|")
+            for m in d["models"]:
+                icon = {"good": "✅", "caution": "⚠️", "avoid": "❌"}[m["flag"]]
+                w(f"| {icon} | **{m['name']}** | {m['years']} "
+                  f"| {m['display']} | {m['note']} |")
+            w("")
+            w("<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this "
+              "build. Model names are ⚠️ researched, not handled — and no "
+              "window here has been measured.</sub>\n")
+
         for key, label in (("why", "Why this one"),
                            ("watch_out", "⚠️ Watch out for"),
                            ("steps", "How to gut it")):

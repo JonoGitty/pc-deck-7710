@@ -86,6 +86,19 @@ def main():
               "every family needs at least two reasons and one warning — "
               "a grade with no argument is just an assertion")
 
+        # Named models are the part somebody acts on, so each needs a
+        # verdict and a reason. A model list with no flags is a list of
+        # things to buy with no guidance about which.
+        bad_m = []
+        for m in d.get("models") or []:
+            for k in ("name", "years", "display", "note", "flag"):
+                if not m.get(k):
+                    bad_m.append(f"{m.get('name', '?')}: no {k}")
+            if m.get("flag") not in {"good", "caution", "avoid"}:
+                bad_m.append(f"{m.get('name', '?')}: flag is {m.get('flag')!r}")
+        check(f"{rel} every named model has a verdict and a reason", not bad_m,
+              "; ".join(bad_m[:3]))
+
         # Window dimensions are numbers, because the drawing scales them.
         for key in ("window_w_mm", "window_h_mm"):
             v = d.get(key, {}).get("v")

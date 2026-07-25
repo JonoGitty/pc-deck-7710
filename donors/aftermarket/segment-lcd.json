@@ -64,5 +64,47 @@
     "Decide honestly whether you are enlarging the window or replacing the face with acrylic. Both are fine; doing half of each is not.",
     "If enlarging: mark from the PANEL, not from a measurement, and cut undersize then file to the line. Acrylic behind it hides a multitude.",
     "If replacing: use the fascia only as a template for the clip positions and cut a new face from 3 mm acrylic."
+  ],
+  "models": [
+    {
+      "name": "Sony CDX-GT / MEX series, later units",
+      "years": "≈2008–2015",
+      "display": "segment LCD",
+      "note": "Enormous numbers made, worthless broken, and a perfectly good steel box with a cage. The window is the problem, not the unit.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-1000 / DEH-2000 series",
+      "years": "≈2008–2016",
+      "display": "segment LCD",
+      "note": "Pioneer's budget line. The cheapest route to a chassis and cage in this entire document.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Kenwood KDC-100 / KDC-200 series",
+      "years": "≈2010–2018",
+      "display": "segment LCD",
+      "note": "As above. Mechless variants are shallower, which helps in a tight dash.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "JVC KD-R series",
+      "years": "≈2009–2016",
+      "display": "segment LCD",
+      "note": "Common and cheap. Check the fascia is clipped rather than glued.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Any 'mechless' Bluetooth/USB 1-DIN receiver",
+      "years": "≈2012–present",
+      "display": "small segment LCD",
+      "note": "✅ The SAFEST donor of all — no CD laser, no VFD inverter, nothing charged. Shallow too. You are just going to cut the window.",
+      "flag": "good",
+      "c": "unverified"
+    }
   ]
 }
