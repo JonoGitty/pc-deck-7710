@@ -87,6 +87,114 @@ OEM route; the connector deserves half of it.
 
 ---
 
+## Can you keep the CD player?
+
+This is the first thing everybody asks, and it has two answers.
+
+### Driving the mechanism yourself: no
+
+A CD mechanism is **dumb hardware**. It is a spindle motor, a sled motor, a
+laser diode and some photodiodes, and it knows nothing. Making it play a disc
+takes four closed servo loops — disc, sled, focus and tracking — running on
+analogue electronics that are sensitive to board layout, a DSP to turn the
+pickup's wobble into bits, and a microcontroller to drive the whole thing.
+Those are the parts you are removing. Reusing a mechanism without them means
+designing the servo electronics and writing the low-level control code, which
+people who do it for a living describe as a black art.
+
+So: **❌ the ESP32 is not going to play a CD**, and no amount of wiring changes
+that.
+
+### Not gutting it at all: yes, and it is the best answer
+
+The other reading of the question is the good one. **Do not take the CD player
+apart. Leave it working, and put the deck above it.**
+
+| | |
+|---|---|
+| **The old head unit** keeps | the CD, the radio, the volume knob, the tone controls, and its 4 × 45 W amplifier |
+| **The deck** does | Bluetooth, the display, the animations — and feeds the old unit's **AUX input** |
+| **You gut** | nothing |
+| **You solder** | nothing |
+
+The deck's line out goes into the donor's aux socket and the donor becomes,
+from the deck's point of view, an amplifier that happens to also play CDs. Its
+volume knob is your volume knob. Its speaker wiring is already done.
+
+**⚠️ It needs two things.** A **2-DIN aperture** — deck in the top half, head
+unit in the bottom — which in the fitment list means a **Mazda MX-5 NC** ✅ or a
+**Toyota MR2 W20** ⚠️ (believed, measure it). And a donor **with an aux input**:
+a front 3.5 mm socket is normal after about 2005, a rear RCA aux on the better
+ones, and pre-2005 units mostly have neither.
+
+**What you give up:** the deck cannot control the CD — track skip is the old
+unit's buttons — and you have two volume controls, of which only one does
+anything. In exchange it is the least destructive build in this project, and
+the only one where the disc still spins.
+
+---
+
+## What to do with the hole
+
+Take the mechanism out of a 1-DIN unit and you are left with a letterbox across
+the front of the fascia. Everybody sees that as the problem. It is the best
+thing about the donor.
+
+![The CD slot, the deck's window, and the three things you can do with the hole](media/slot-options.svg)
+
+**The coincidence is in the dimensions.** A CD slot is about **125 × 12 mm**,
+and it is 125 because a CD is 120 across — that number cannot really vary. The
+deck's window wants **84 × 27 mm**. So the hole you already have is **41 mm
+wider than you need** and 15 mm too short.
+
+That is a filing job along two straight edges that are already there. Compare it
+with the alternative — cutting a fresh 84 × 27 rectangle into a thirty-year-old
+fascia that cannot be replaced — and the slot stops looking like damage.
+
+| What goes in it | When it is the right answer |
+|---|---|
+| **The window itself** — file it down to 27 mm tall, blank the extra width behind the bezel | ✅ Best on the **segment-LCD** family, whose own window is 52 × 18 mm and far too small. Rescues the cheapest donors in the project |
+| **A row of buttons** — six caps at ~20 mm pitch | ✅ A 125 × 12 aperture is already a button strip. **No drilling at all**, which matters on the one part you cannot replace |
+| **The aux and USB sockets** | ✅ Same argument. A blanking strip with two holes in it, made of something you can ruin freely |
+| **Nothing — leave the door shut** | ✅ **Cassette-era donors only**, and it is why that family is so good: the door is hinged, it closes flush, and the deck looks factory |
+| **A pocket** | If you would rather have somewhere to put a phone than another control |
+
+⚠️ **Several of the best donors have no slot on the face at all.** The
+late-1990s and 2000s flagships — the Pioneer DEH-P9000R generation and its
+relatives — load the disc **behind a fold-down front panel**, so the fascia is
+solid apart from its display window and its buttons. Nothing to fill, and the
+window is already 84–90 mm wide. If the panel is *motorised*, take the motor and
+gearbox out: it is depth you need and a mechanism you are not using, and then
+pin the panel shut rather than leaving it sprung.
+
+Which applies to your donor is in [DONORS.md](DONORS.md), per family, under
+**The front of it**.
+
+---
+
+## And the buttons — reuse them, they are better than new ones
+
+[TRANSPLANT.md](TRANSPLANT.md) covers the rewire: a donor's panel is a scanned
+matrix into a decoder you are binning, the deck reads one analogue pin, so you
+break the matrix, common one side of every switch and take the other leg to
+ground through its own resistor. You never have to work out the original
+scanning order, which is the part everybody assumes will be hard.
+
+What is worth adding here is **which donors have the good buttons**:
+
+| Family | Buttons | Rewiring them |
+|---|---|---|
+| **Cassette-era** | ✅ **The best in the project.** Large, mechanical, with real travel — and often on a proper PCB rather than a flexi | The easy case: cut the traces, solder to the switch legs |
+| **Dot-matrix (grade A)** | 8–14, so you can pick the six that feel best and blank the rest | ⚠️ Carbon pads on a flexi. Fine pitch, and it melts. Practise on a spare corner |
+| **Segment-LCD** | 5–8 — just enough, and this is the family where you might be one short | ⚠️ Usually flexi |
+| **Empty pocket / fold your own** | None, so you fit new tactile switches on your own PCB | ✅ No rewire at all. The easiest front panel by a distance |
+
+Nothing you can buy for 20p feels like a 1990s Blaupunkt button, which is the
+real argument for the cassette-era route and the reason it keeps coming out on
+top of every other question on this page.
+
+---
+
 ## The display, honestly
 
 This is the one everybody wants and the one that usually does not work. It is

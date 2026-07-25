@@ -76,6 +76,18 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **Knob** | ⚠️ rotary volume, usually an encoder or a pot with a detent feel | Reuse the KNOB and fit your own EC11 behind it — the original's electrical type does not matter, only its shaft and cap do. |
 | **Its own display** | ⚠️ LCD or VFD depending on model | ⚠️ If it is a VFD, its power board makes tens of volts and holds them after power-off. See the hazards. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ ⚠️ usually BEHIND a fold-down front panel, not through a slot in it | The late-1990s and 2000s flagships hide the disc behind the face: press a button, the panel drops, the slot is behind it. Confirmed in the general case for the Pioneer DEH-P9000R generation; confirm yours from the listing photographs. |
+| **What it leaves behind** | ⚠️ ✅ often NONE on the face itself — which is why this family has the best fascias | If the disc loads behind the panel, the front is solid apart from its display window and its buttons. Nothing to fill. |
+| **What to do with it** | ⚠️ pin the panel shut and use the window it already has | The window is 84–90 mm wide on these, which is what the deck wants. ⚠️ If the panel is MOTORISED, take the motor and gearbox out — it is depth you need and a mechanism you are not using. Then fix the panel closed rather than leaving it sprung. |
+| **Can you keep the CD?** | ✅ ❌ no | See REUSE.md. The mechanism is dumb hardware that needs its servo, its DSP and its microcontroller, and those are the boards you are removing. |
+| **Its buttons** | ⚠️ 8–14 on a carbon-pad flexi, plus the knob | More than the six the ladder needs, so you can pick the ones that feel best and blank the rest. ⚠️ Carbon-on-flexi is the fiddly kind — fine pitch, and it melts. Practise on a spare corner. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
 | | Model | Years | Its own display | Notes |
@@ -180,6 +192,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ✅ none — fit a new EC11 and any knob you like |  |
 | **Its own display** | ✅ none | ✅ Nothing to gut, nothing charged, no laser, no inverter. The only genuinely hazard-free entry in this document. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ✅ none — there was never a mechanism | Its intended job is to fill the hole a removed radio left. |
+| **What it leaves behind** | ✅ none. You cut exactly the aperture you want, once | Fresh ABS, no history, no laser, no inverter, nothing charged. |
+| **What to do with it** | ✅ cut 84 × 27 for the window and drill the buttons where your hand actually falls | The luxury of this route: the layout is yours rather than somebody else's from 1998. |
+| **Can you keep the CD?** | ✅ — not applicable | There is none. |
+| **Its buttons** | ✅ none — fit your own | Which means you can use proper tactile switches on a PCB and skip the flexi rewire entirely. For a first build this is the easiest front panel by a distance. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
 | | Model | Years | Its own display | Notes |
@@ -254,6 +278,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Buttons** | ⚠️ mechanical, large, satisfying, and often not on a flexi | Discrete switches are EASIER to convert to a ladder than a matrix, not harder. |
 | **Knob** | ⚠️ often twin concentric knobs — volume and tone | The best-feeling knobs of any donor here, by a wide margin. |
 | **Its own display** | ⚠️ none, or a small backlit dial | Nothing to discharge. The safest possible teardown. |
+
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ a hinged, spring-loaded cassette door across most of the face | The door IS the front. It is a flat rectangle roughly 100 × 15 mm with a proper hinge and a return spring. |
+| **What it leaves behind** | ⚠️ none, if you keep the door — it closes flush and looks factory | This is the only family where the aperture problem solves itself. Every other donor leaves you a hole to fill. |
+| **What to do with it** | ⚠️ ✅ EITHER keep the door shut and cut your window elsewhere, OR remove the door and use its aperture as the window | The cassette aperture is the best window in the project: wide, flat, square-cornered, and already the full width of the face. You are enlarging nothing — you are filing a hole DOWN to size, which is far easier than opening one up. |
+| **Can you keep the CD?** | ✅ ❌ no, and you would not want to | A tape deck needs its own head amplifier, motor control and logic — all on the board you are removing. And it is a cassette deck. |
+| **Its buttons** | ⚠️ ✅ THE BEST BUTTONS OF ANY FAMILY — large, mechanical, and often on a proper PCB rather than a carbon flexi | Period buttons have travel and a click that nothing you can buy for 20p reproduces. On a PCB they are also the easy case to rewire: cut the traces, common one side, resistor on the other. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
 
 ### Specific units to search for
 
@@ -341,6 +377,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ✅ a new EC11 encoder and any knob you like |  |
 | **Its own display** | ✅ n/a | Nothing to gut and nothing to discharge. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ✅ — not applicable | There is no donor. |
+| **What it leaves behind** | ✅ — not applicable | You are bending the box, so every aperture is deliberate. |
+| **What to do with it** | ✅ mark the window from the lit glass, not from the module outline | The one rule that survives from every other route. See TRANSPLANT.md. |
+| **Can you keep the CD?** | ✅ — not applicable | There is none. |
+| **Its buttons** | ✅ new tactile switches, exactly where you want them | See the empty-pocket route: this is the easy case. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 **Why this one**
 
 - The window is exactly right, because you cut it to the panel.
@@ -385,6 +433,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Buttons** | 📏 whatever the donor had, often on a touchscreen instead | ⚠️ A touchscreen unit may have almost NO physical buttons. Count before relying on the fascia for six. |
 | **Knob** | 📏 often a single encoder, sometimes none | Touchscreen-era units frequently have no knob at all, which is a poor start for a deck built around one. |
 | **Its own display** | ⚠️ TFT or touchscreen | ⚠️ A backlit TFT has an inverter on the older ones. LED backlights do not. Check before probing. |
+
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ varies — but on this route you may not be removing it at all | See `keep_the_mechanism`. This is the one family where the question 'can I keep the CD?' has a yes in it. |
+| **What it leaves behind** | ✅ none — you are building the 1-DIN face yourself | The donor supplies the cage and the surround, not the face. |
+| **What to do with it** | ⚠️ the bottom half is the answer: amplifier, or the whole original unit left working | A 2-DIN aperture is two problems solved at once — where the amplifier goes, and what to do about the CD. |
+| **Can you keep the CD?** | ⚠️ ✅ YES — the only route in this project where you can. Do not split it: leave the donor whole in the bottom half and put the deck above it | The old unit keeps doing what it is good at — CD, radio, volume, tone, and 4 × 45 W of amplifier — and the deck feeds its AUX input and does Bluetooth and the display. Nothing is gutted, nothing is soldered, and you keep a working CD player. ⚠️ It needs a 2-DIN aperture and a donor WITH an aux input: front 3.5 mm on most units after ~2005, rear RCA on better ones. Pre-2005 units mostly have neither. See REUSE.md. |
+| **Its buttons** | ⚠️ whatever the donor had — often a touchscreen instead, which is no use to you | Buy the buttons separately, or take them from a second, cheaper donor. A dead 2-DIN and a dead cassette unit together are still under £30. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
 
 ### Specific units to search for
 
@@ -470,6 +530,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ⚠️ usually one, car-styled | The reason to do this at all: it matches the rest of the interior. |
 | **Its own display** | 📏 varies | ⚠️ Many OEM units of the right era use a VFD. Treat the power board as live. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | 📏 varies — a slot on the face, or a flip-down, or a cassette door | OEM units are all over the place. Photograph yours before you start. |
+| **What it leaves behind** | 📏 ⚠️ usually yes, and usually a slot | Factory units tend to be fixed-face with the slot on show. |
+| **What to do with it** | ⚠️ the same trick as the segment-LCD family: file the slot down to 27 mm and make it the window | OEM display windows are usually tiny — a frequency and a track number — so the slot is very often the only aperture big enough to be worth having. |
+| **Can you keep the CD?** | ⚠️ ❌ no, with one exception | The exception is the two-box route: if your car has a 2-DIN aperture, leave the factory unit whole in the bottom half and put the deck above it. You keep the CD, the factory amplifier and the factory connector, and you gut nothing. See REUSE.md. |
+| **Its buttons** | 📏 varies, and often fewer than an aftermarket unit | Count them before committing. ⚠️ Some OEM units put half their controls on the steering wheel or a stalk, and those do not come with the head unit. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Keeping more of it
 
 The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
@@ -542,6 +614,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Buttons** | ⚠️ period-styled, good quality | The reason somebody would consider this at all. |
 | **Knob** | ⚠️ period-styled, often twin concentric | Genuinely lovely, and the best-matched knobs to the aesthetic this project is chasing. |
 | **Its own display** | ⚠️ modern LCD or OLED | No inverter, nothing charged. Safe to open. |
+
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ ⚠️ usually none — most reissues are 'mechless', Bluetooth and USB only | The period look without the period mechanism. Check the listing: some carry a cassette door as pure decoration, which is ideal. |
+| **What it leaves behind** | ⚠️ usually none, and where there is a fake door it closes | A decorative door is the best of both — nothing to fill, and it looks like the deck plays tapes. |
+| **What to do with it** | ⚠️ keep the face exactly as it is and cut the window behind the existing display aperture | You are paying for the styling, so do not cut through it. |
+| **Can you keep the CD?** | ⚠️ — usually nothing to keep | Mechless by design. |
+| **Its buttons** | ⚠️ period-styled and good quality — worth keeping for the look alone | New, so the flexi is not thirty years old and brittle. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
 
 ### Specific units to search for
 
@@ -620,6 +704,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Buttons** | ⚠️ typically 5–8, plus a knob | Enough for the ladder. |
 | **Knob** | ⚠️ rotary, usually an encoder |  |
 | **Its own display** | ⚠️ segment or small dot LCD, backlit | No inverter, so this is the SAFEST category to gut. |
+
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | 📏 a visible slot across the face, typically ~125 × 12 mm | A CD is 120 mm across, so the slot cannot be narrower than about 122 mm. Height is whatever the dust lip needs — usually 10–14 mm. |
+| **What it leaves behind** | 📏 yes — a full-width letterbox, and it is the best thing about this family | Everybody sees the slot as the problem. It is the solution. |
+| **What to do with it** | ⚠️ ✅ MAKE THE SLOT THE WINDOW. File it DOWN from ~12 mm to 27 mm tall and blank the excess width behind the bezel | This is the insight that rescues the cheapest family in the project. Its own display window is ~52 × 18 mm — too small for a 256×64 panel, so you need a new aperture anyway. The slot is ALREADY 125 mm wide and dead straight; the deck needs 84 × 27. You are opening a hole downward by 15 mm in one axis instead of cutting a new rectangle in a fascia you cannot replace. Alternative if you would rather not: a row of buttons, or the aux and USB sockets, straight through the slot with no drilling. |
+| **Can you keep the CD?** | ✅ ❌ no | As every other family. |
+| **Its buttons** | ⚠️ 5–8, plus a knob — the fewest of any family, and just enough | The ladder wants six. Count them in the photograph before you buy, because this is the family where you might be one short. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
 
 ### Specific units to search for
 

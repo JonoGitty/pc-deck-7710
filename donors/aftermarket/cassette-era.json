@@ -43,6 +43,33 @@
     "c": "unverified",
     "why": "The best-feeling knobs of any donor here, by a wide margin."
   },
+  "face": {
+    "loading": {
+      "v": "a hinged, spring-loaded cassette door across most of the face",
+      "c": "unverified",
+      "why": "The door IS the front. It is a flat rectangle roughly 100 × 15 mm with a proper hinge and a return spring."
+    },
+    "hole_left": {
+      "v": "none, if you keep the door — it closes flush and looks factory",
+      "c": "unverified",
+      "why": "This is the only family where the aperture problem solves itself. Every other donor leaves you a hole to fill."
+    },
+    "best_use": {
+      "v": "✅ EITHER keep the door shut and cut your window elsewhere, OR remove the door and use its aperture as the window",
+      "c": "unverified",
+      "why": "The cassette aperture is the best window in the project: wide, flat, square-cornered, and already the full width of the face. You are enlarging nothing — you are filing a hole DOWN to size, which is far easier than opening one up."
+    },
+    "keep_the_mechanism": {
+      "v": "❌ no, and you would not want to",
+      "c": "verified",
+      "why": "A tape deck needs its own head amplifier, motor control and logic — all on the board you are removing. And it is a cassette deck."
+    },
+    "buttons": {
+      "v": "✅ THE BEST BUTTONS OF ANY FAMILY — large, mechanical, and often on a proper PCB rather than a carbon flexi",
+      "c": "unverified",
+      "why": "Period buttons have travel and a click that nothing you can buy for 20p reproduces. On a PCB they are also the easy case to rewire: cut the traces, common one side, resistor on the other."
+    }
+  },
   "display_tech": {
     "v": "none, or a small backlit dial",
     "c": "unverified",

@@ -47,6 +47,33 @@
     "c": "unverified",
     "why": "Reuse the KNOB and fit your own EC11 behind it — the original's electrical type does not matter, only its shaft and cap do."
   },
+  "face": {
+    "loading": {
+      "v": "⚠️ usually BEHIND a fold-down front panel, not through a slot in it",
+      "c": "unverified",
+      "why": "The late-1990s and 2000s flagships hide the disc behind the face: press a button, the panel drops, the slot is behind it. Confirmed in the general case for the Pioneer DEH-P9000R generation; confirm yours from the listing photographs."
+    },
+    "hole_left": {
+      "v": "✅ often NONE on the face itself — which is why this family has the best fascias",
+      "c": "unverified",
+      "why": "If the disc loads behind the panel, the front is solid apart from its display window and its buttons. Nothing to fill."
+    },
+    "best_use": {
+      "v": "pin the panel shut and use the window it already has",
+      "c": "unverified",
+      "why": "The window is 84–90 mm wide on these, which is what the deck wants. ⚠️ If the panel is MOTORISED, take the motor and gearbox out — it is depth you need and a mechanism you are not using. Then fix the panel closed rather than leaving it sprung."
+    },
+    "keep_the_mechanism": {
+      "v": "❌ no",
+      "c": "verified",
+      "why": "See REUSE.md. The mechanism is dumb hardware that needs its servo, its DSP and its microcontroller, and those are the boards you are removing."
+    },
+    "buttons": {
+      "v": "8–14 on a carbon-pad flexi, plus the knob",
+      "c": "unverified",
+      "why": "More than the six the ladder needs, so you can pick the ones that feel best and blank the rest. ⚠️ Carbon-on-flexi is the fiddly kind — fine pitch, and it melts. Practise on a spare corner."
+    }
+  },
   "display_tech": {
     "v": "LCD or VFD depending on model",
     "c": "unverified",

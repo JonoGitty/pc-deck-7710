@@ -33,6 +33,21 @@ FIELDS = [
     ("display_tech", "Its own display"),
 ]
 
+# The front of it, in the order somebody looks at it while holding the thing:
+# how did the disc go in, what is left when the mechanism comes out, what to do
+# with that, and the two parts worth keeping. Separate from FIELDS because the
+# answers differ more between families than anything else here does — the
+# cassette door closes and looks factory, the grade-A flagships have no slot on
+# the face at all, and the cheap segment-LCD units turn out to have the best
+# aperture in the project once you see what it is for.
+FACE_FIELDS = [
+    ("loading", "How the disc went in"),
+    ("hole_left", "What it leaves behind"),
+    ("best_use", "What to do with it"),
+    ("keep_the_mechanism", "Can you keep the CD?"),
+    ("buttons", "Its buttons"),
+]
+
 GRADE_NOTE = {
     "A": "Buy this if you see one.",
     "B": "Good, with one thing to think about first.",
@@ -167,6 +182,24 @@ def render(donors):
             f = d[key]
             w(f"| **{label}** | {mark(f)} | {f.get('why') or ''} |")
         w("")
+
+        if d.get("face"):
+            # The front of it gets its own section rather than more rows in the
+            # table above, because these are the questions somebody asks while
+            # holding the thing and looking at it — and because the answer
+            # differs more between families than anything else here does.
+            w("### The front of it — the slot, the buttons, and the CD\n")
+            w("| | | |")
+            w("|---|---|---|")
+            for key, label in FACE_FIELDS:
+                f = d["face"].get(key)
+                if not f:
+                    continue
+                w(f"| **{label}** | {mark(f)} | {f.get('why') or ''} |")
+            w("")
+            w("<sub>Why the CD cannot be driven by the deck, what the hole is "
+              "worth, and the one route that keeps a working CD player: "
+              "[REUSE.md](REUSE.md).</sub>\n")
 
         if d.get("models"):
             w("### Specific units to search for\n")

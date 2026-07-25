@@ -44,6 +44,33 @@
     "c": "unverified",
     "why": "Genuinely lovely, and the best-matched knobs to the aesthetic this project is chasing."
   },
+  "face": {
+    "loading": {
+      "v": "⚠️ usually none — most reissues are 'mechless', Bluetooth and USB only",
+      "c": "unverified",
+      "why": "The period look without the period mechanism. Check the listing: some carry a cassette door as pure decoration, which is ideal."
+    },
+    "hole_left": {
+      "v": "usually none, and where there is a fake door it closes",
+      "c": "unverified",
+      "why": "A decorative door is the best of both — nothing to fill, and it looks like the deck plays tapes."
+    },
+    "best_use": {
+      "v": "keep the face exactly as it is and cut the window behind the existing display aperture",
+      "c": "unverified",
+      "why": "You are paying for the styling, so do not cut through it."
+    },
+    "keep_the_mechanism": {
+      "v": "— usually nothing to keep",
+      "c": "unverified",
+      "why": "Mechless by design."
+    },
+    "buttons": {
+      "v": "period-styled and good quality — worth keeping for the look alone",
+      "c": "unverified",
+      "why": "New, so the flexi is not thirty years old and brittle."
+    }
+  },
   "display_tech": {
     "v": "modern LCD or OLED",
     "c": "unverified",

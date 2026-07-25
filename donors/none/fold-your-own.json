@@ -44,6 +44,33 @@
     "c": "verified",
     "why": ""
   },
+  "face": {
+    "loading": {
+      "v": "— not applicable",
+      "c": "verified",
+      "why": "There is no donor."
+    },
+    "hole_left": {
+      "v": "— not applicable",
+      "c": "verified",
+      "why": "You are bending the box, so every aperture is deliberate."
+    },
+    "best_use": {
+      "v": "mark the window from the lit glass, not from the module outline",
+      "c": "verified",
+      "why": "The one rule that survives from every other route. See TRANSPLANT.md."
+    },
+    "keep_the_mechanism": {
+      "v": "— not applicable",
+      "c": "verified",
+      "why": "There is none."
+    },
+    "buttons": {
+      "v": "new tactile switches, exactly where you want them",
+      "c": "verified",
+      "why": "See the empty-pocket route: this is the easy case."
+    }
+  },
   "display_tech": {
     "v": "n/a",
     "c": "verified",

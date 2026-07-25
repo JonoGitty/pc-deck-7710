@@ -75,6 +75,9 @@ python3 tools/diagrams/teardown.py "$OUT"
 # ...and the maximum-reuse pair: where to cut into the donor's own amplifier,
 # and what the back panel saves you buying.
 python3 tools/diagrams/reuse.py "$OUT"
+# ...and what to do with the hole the CD mechanism came out of, which turns on
+# a coincidence of dimensions you can only see when both are drawn to scale.
+python3 tools/diagrams/slot.py "$OUT"
 
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"
