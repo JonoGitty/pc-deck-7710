@@ -246,6 +246,70 @@ the same thing as [one exploded stack](docs/media/assembly.svg).*
 what has to clear behind it. ⚠️ Drawings of an intended build, from the
 standard and the datasheets. Nothing here has been assembled.*
 
+### Where the chassis comes from
+
+You do not fabricate a 1-DIN box — you gut a scrap head unit, and **you buy a
+broken one on purpose**. The CD mechanism, the amplifier and the tuner all go
+in the bin on the first evening, so a jammed unit at £8 is worth exactly as
+much to you as a working one at £40.
+
+**[docs/DONORS.md](docs/DONORS.md)** grades five routes and draws, to scale,
+whether the deck's panel fits behind each one's window:
+
+![Which donor: does the panel fit behind its window](docs/media/donor-dot-matrix.svg)
+
+*The best donors are 1998–2008 units with a big amber dot-matrix display —
+their window is already a wide letterbox of about the right size, in about the
+right place, in the right colour.*
+
+**Thirty-one units are named**, each flagged ✅ buy it / ⚠️ read the note / ❌
+avoid. The short list to search for: **Pioneer DEH-P9000R** and **DEH-P9100R**
+(the OEL originals), their **MEH-** MiniDisc twins — same fascia, a fraction
+of the price because MiniDisc is worthless — **DEH-P6600**, **DEH-P6800MP**,
+**DEH-P6300**, **DEH-P9400MP**, **Alpine CDA-9855R** and **CDA-9887R**, and
+**Blaupunkt Bremen MP76**.
+
+❌ Avoid anything with a **motorised or dual faceplate** — DEH-P85BT,
+Clarion DXZ925, Kenwood KDC-716S. The mechanism eats depth and is one more
+thing to defeat.
+
+⚠️ And a VFD donor's power board makes tens of volts and holds them after
+power-off. That hazard is real and it is on the page.
+
+```sh
+python3 tools/deckctl.py donor --full   # grade them, with the model numbers
+```
+
+**Or buy nothing second-hand at all.** A **new empty 1-DIN pocket** — the ABS
+tray sold to fill the hole a removed radio leaves — is £6–12, already exactly
+the right size, comes with a fascia and a bezel, and has no laser, no inverter
+and nothing charged in it. You cut your own window in fresh plastic and fit
+your own buttons. It is the closest thing that exists to a "blank" head unit,
+and it is cheaper than most broken ones.
+
+⚠️ **There is no 1-DIN head unit sold as a programmable platform.** Real ones
+run locked firmware on proprietary SoCs with no published toolchain — there is
+nothing to flash to. Android 1-DIN units and projects like PILOT Drive and
+OpenAuto exist and are worth reading, but they are different machines running
+different stacks. [TRANSPLANT.md §3](docs/TRANSPLANT.md) lays the options out.
+
+### Moving the parts across
+
+![The module, its lit area, and where the window goes](docs/media/transplant-panel.svg)
+
+*The module is bigger than the hole and **its lit area is not centred on it** —
+a 3.12" SSD1322 board is 100.5 × 33.5 mm and only 76.8 × 19.2 mm of that
+glows. Mark the window from the glass and the deck looks bought; mark it from
+the PCB and it is permanently a few millimetres out.*
+
+![Breaking the donor's matrix and rewiring it as a ladder](docs/media/transplant-buttons.svg)
+
+*A donor's panel is a scanned matrix; the deck reads one analogue pin. So the
+rewire is a **subtraction** — you never need to work out the original scanning
+order. [TRANSPLANT.md](docs/TRANSPLANT.md) has the rest: mounting the panel at
+the fascia plane rather than behind it, fitting the knob to an EC11 shaft, and
+reusing the fascia's light pipes.*
+
 ### What YOUR car needs
 
 The deck is the same object in every car. What changes is a bag of adapters —

@@ -1,0 +1,237 @@
+{
+  "family": "Aftermarket 1-DIN with a large dot-matrix display",
+  "examples": [
+    "Pioneer DEH-P / MEH-P with OEL",
+    "Alpine CDA BioLite",
+    "Sony CDX-GT with the FL dot matrix",
+    "Clarion DXZ",
+    "Kenwood KDC eXcelon",
+    "Blaupunkt Bremen"
+  ],
+  "category": "aftermarket",
+  "era": "≈1998–2008",
+  "grade": "A",
+  "one_liner": "The best donor there is, and the cheapest way to a deck that does not look home-made.",
+  "price": {
+    "v": "£8–20 spares-or-repair; £30–60 working, which you do not need",
+    "c": "unverified",
+    "why": "Search “spares or repair”, “no CD”, “display dead”, “untested”. You are buying the box and the face."
+  },
+  "window_w_mm": {
+    "v": 86,
+    "c": "unverified",
+    "why": "Varies by model. Measure with calipers."
+  },
+  "window_h_mm": {
+    "v": 26,
+    "c": "unverified",
+    "why": "Varies by model."
+  },
+  "chassis": {
+    "v": "steel, full-depth ISO 7736",
+    "c": "unverified",
+    "why": "Gives you the box, and usually the cage and trim ring too."
+  },
+  "cage_included": {
+    "v": "often — pay a little more for one that has it",
+    "c": "unverified",
+    "why": "A new cage is £8–15, so a £15 unit with one beats a £8 without."
+  },
+  "buttons": {
+    "v": "typically 8–14 on a flexi matrix, plus a rotary knob",
+    "c": "unverified",
+    "why": "More than enough for the six-button ladder, with spares."
+  },
+  "knob": {
+    "v": "rotary volume, usually an encoder or a pot with a detent feel",
+    "c": "unverified",
+    "why": "Reuse the KNOB and fit your own EC11 behind it — the original's electrical type does not matter, only its shaft and cap do."
+  },
+  "display_tech": {
+    "v": "LCD or VFD depending on model",
+    "c": "unverified",
+    "why": "⚠️ If it is a VFD, its power board makes tens of volts and holds them after power-off. See the hazards."
+  },
+  "why": [
+    "The window is already a wide letterbox of roughly the right size, in roughly the right place, and usually already amber on black — which is exactly what the deck draws.",
+    "They were made in enormous numbers and are worthless to everybody else once the CD mechanism jams, which is what makes them cheap.",
+    "The fascia has enough buttons to fill the ladder without drilling.",
+    "⚠️ One caution that applies to the whole family: several of these have a native display of 128×32, which is HALF the deck's 256×64 across. The physical window is usually close to right because our panel has a finer pitch — but 'usually close' is not 'measured', and this is the family where a few millimetres decides it."
+  ],
+  "watch_out": [
+    "Motorised or flip-out fascias. The mechanism eats depth, it is fragile, and it is one more thing to defeat. Buy a fixed face.",
+    "Models where the CD slot dominates the front — the window is small and high, and the deck's panel wants the middle.",
+    "⚠️ VFD models: the inverter board. Discharge it and bin it."
+  ],
+  "steps": [
+    "Take the fascia off FIRST, before any screws. Clips, not fasteners, and thirty years old. It is the part you cannot replace.",
+    "Unscrew the top and bottom covers and keep every screw — they are the right length for this chassis and nothing in your box will be.",
+    "Lift the whole internal assembly out before cutting anything, so you can see what holds what.",
+    "Bin the CD mechanism, the amplifier board and the main PCB. Discharge the large electrolytics first.",
+    "Keep the flexi from the button panel attached to the fascia and cut it free of the main board — you want the switches, not the matrix.",
+    "Lift the switch commons and wire each switch to its ladder resistor. Six buttons, six resistors, one wire to the deck.",
+    "Dry-fit the deck's panel behind the window before bonding anything, and check the lit area is centred in the aperture rather than in the fascia."
+  ],
+  "models": [
+    {
+      "name": "Pioneer DEH-P9000R",
+      "years": "1998–1999",
+      "display": "monochrome OEL dot matrix",
+      "note": "The first car-audio OEL display Pioneer ever shipped, and the start of the whole look this project is chasing. Sought after, so not the cheapest — but the fascia is exactly right.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer MEH-P9000R",
+      "years": "1998–1999",
+      "display": "monochrome OEL dot matrix",
+      "note": "The MiniDisc sibling of the DEH-P9000R with the same face. MiniDisc is worthless to everybody, which makes this the cheap way to that fascia.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P9100R",
+      "years": "2001–2002",
+      "display": "OEL dot matrix",
+      "note": "Second-generation OEL. Same idea, easier to find than the 9000R.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer MEH-P9100R",
+      "years": "2001–2002",
+      "display": "OEL dot matrix",
+      "note": "Again the MiniDisc twin — same fascia, a fraction of the price.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P6600",
+      "years": "≈2002",
+      "display": "OEL dot matrix, 128×32 + 24×32, blue and white",
+      "note": "⚠️ The most useful model here because its display resolution is published. 128×32 is HALF the deck's 256×64 across — the window is sized for a coarser display, so measure before assuming the panel drops in. See the note under the drawing.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P6800MP",
+      "years": "≈2003",
+      "display": "dot matrix",
+      "note": "Common, cheap, and the right shape. A good default if you see one.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P6300",
+      "years": "≈2001",
+      "display": "OEL with screensavers",
+      "note": "Screensavers on the original, which tells you the window is generous — nobody animates a two-line display.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P9400MP",
+      "years": "≈2003",
+      "display": "OEL, user-loadable animation via PC Link",
+      "note": "Pioneer let owners upload their own animations to this one. That means the window was made to be looked at, which is exactly what you want.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P7800MP",
+      "years": "≈2004",
+      "display": "full-colour 65,000-colour OEL",
+      "note": "A colour OEL. The deck's panel is monochrome, so you are buying the window and the face, not the technology — but both are excellent.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P9600MP",
+      "years": "≈2004",
+      "display": "colour OEL, dual faceplate",
+      "note": "⚠️ Dual-faceplate design. More mechanism than you need and more to defeat. Buy one only if it is cheap.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Pioneer DEH-P85BT",
+      "years": "≈2007",
+      "display": "blue OEL dot matrix",
+      "note": "⚠️ AVOID for this build. Motorised faceplate: the mechanism eats depth, it is fragile, and it is one more thing to work around.",
+      "flag": "avoid",
+      "c": "unverified"
+    },
+    {
+      "name": "Alpine CDA-9855 / CDA-9855R",
+      "years": "≈2005",
+      "display": "BioLite",
+      "note": "Alpine's BioLite is bright and wide-angle, and the fold-down face is well made. A very good donor.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Alpine CDA-9887 / CDA-9887R",
+      "years": "≈2007",
+      "display": "BioLite",
+      "note": "Top of Alpine's CD line at the time — the best-built fascia in this list. Priced accordingly even broken.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Sony CDX-GT700D",
+      "years": "≈2006",
+      "display": "fluorescent (VFD) dot matrix",
+      "note": "⚠️ VFD. Nice window, and its power board makes tens of volts and holds them after power-off. Treat it as live. See the hazards.",
+      "flag": "caution",
+      "c": "unverified"
+    },
+    {
+      "name": "Sony CDX-M9905X",
+      "years": "≈2003",
+      "display": "large display",
+      "note": "Sony's flagship of the era. Big face, big window.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Clarion DXZ935",
+      "years": "≈2003",
+      "display": "large display, two-piece front panel",
+      "note": "⚠️ The two-piece panel is more mechanism than you need.",
+      "flag": "caution",
+      "c": "unverified"
+    },
+    {
+      "name": "Clarion DXZ925",
+      "years": "≈2002",
+      "display": "large display behind a motorised face",
+      "note": "⚠️ AVOID. Dual-action motorised face that slides down to reveal a second faceplate. Impressive, and completely wrong for this.",
+      "flag": "avoid",
+      "c": "unverified"
+    },
+    {
+      "name": "Kenwood KDC-716S",
+      "years": "≈2000",
+      "display": "dot matrix, adjustable viewing angle",
+      "note": "⚠️ Motorised D-MASK+ faceplate that rotates 180°. The display itself is good; the mechanism is not what you want.",
+      "flag": "caution",
+      "c": "unverified"
+    },
+    {
+      "name": "Blaupunkt Bremen MP76",
+      "years": "≈2004",
+      "display": "DMS dot matrix",
+      "note": "European, common in the UK, and the Bremen fascia is a genuinely handsome thing to build into.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "Blaupunkt Woodstock DAB53",
+      "years": "≈2005",
+      "display": "dot matrix",
+      "note": "Same family, often cheaper than the Bremen because the name carries less weight.",
+      "flag": "good",
+      "c": "unverified"
+    }
+  ]
+}

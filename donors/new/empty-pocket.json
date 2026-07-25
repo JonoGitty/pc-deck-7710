@@ -1,0 +1,98 @@
+{
+  "family": "A brand-new empty 1-DIN pocket",
+  "examples": [
+    "Universal single-DIN storage pocket / dash tray",
+    "1-DIN blanking plate with trim bezel",
+    "Connects2 and similar universal fascia pockets"
+  ],
+  "category": "new",
+  "era": "current, in stock",
+  "grade": "A",
+  "one_liner": "A new, empty, correctly-sized 1-DIN box with a fascia and a bezel, for about the price of a pint. No gutting, no hazards, no thirty-year-old clips.",
+  "price": {
+    "v": "£6–12 new",
+    "c": "unverified",
+    "why": "Sold as a 'single DIN storage pocket', 'dash tray' or 'blanking plate'. Their intended job is to fill the hole left by a removed radio, which means they are already exactly the right size."
+  },
+  "window_w_mm": {
+    "v": 84,
+    "c": "verified",
+    "why": "You are cutting it into fresh ABS, so it is whatever you choose. 84 × 27 gives the 256×64 panel a 4 mm border."
+  },
+  "window_h_mm": {
+    "v": 27,
+    "c": "verified",
+    "why": "As above."
+  },
+  "chassis": {
+    "v": "ABS plastic, 178 × 50 mm, DIN-standard",
+    "c": "unverified",
+    "why": "⚠️ PLASTIC, not steel. Fine for a display-only deck that draws under 5 W, and it means no chassis ground — so plan the earthing deliberately rather than through the box."
+  },
+  "cage_included": {
+    "v": "no — buy an ISO 7736 cage",
+    "c": "unverified",
+    "why": "Some pockets are designed to slide into an existing cage; some are the cage. Check which you are buying."
+  },
+  "buttons": {
+    "v": "none — fit your own",
+    "c": "verified",
+    "why": "Which is the advantage: six tactile switches where YOU want them, on the ladder values in BUILD.md, rather than where Pioneer put them in 1999."
+  },
+  "knob": {
+    "v": "none — fit a new EC11 and any knob you like",
+    "c": "verified",
+    "why": ""
+  },
+  "display_tech": {
+    "v": "none",
+    "c": "verified",
+    "why": "✅ Nothing to gut, nothing charged, no laser, no inverter. The only genuinely hazard-free entry in this document."
+  },
+  "why": [
+    "It is already the right size, already has a fascia and a trim bezel, and is in stock everywhere for under £12 — which is less than most spares-or-repair head units.",
+    "Fresh ABS cuts and files far more cleanly than thirty-year-old painted plastic, so the window ends up exactly where you want it and looks deliberate.",
+    "No CD laser, no VFD inverter, no charged electrolytics, no clips that snap. It is the safest and fastest route to a fitted deck.",
+    "You choose the button layout instead of inheriting one."
+  ],
+  "watch_out": [
+    "⚠️ It is PLASTIC. No chassis ground, and less stiff than steel — support the boards properly rather than letting the panel hang off the face.",
+    "⚠️ Check whether the pocket includes a cage or expects to slide into one. The listings are not consistent and the photographs rarely settle it.",
+    "It looks like an aftermarket blanking plate, because that is what it is. If you want the deck to look factory, this is the wrong route — see the OEM entry.",
+    "Depth varies a lot between pockets, and some are very shallow trays rather than boxes. Read the dimensions, not the picture."
+  ],
+  "steps": [
+    "Buy the pocket and a separate ISO 7736 cage unless the pocket is one.",
+    "Mark the window from the PANEL's active area, not from a measurement, and not from the module's PCB outline — the lit area is usually not centred on the board.",
+    "Drill the corners, cut inside the line with a fine blade, file to the line. ABS cuts cleanly and melts if you rush it.",
+    "Back the window with 1 mm smoked acrylic bonded from behind.",
+    "Drill for six tactile switches and the encoder wherever suits your hand, then wire the ladder — the resistor values are in BUILD.md.",
+    "⚠️ Run a proper ground wire to the car's earth. A plastic box gives you no chassis return, and this is the one thing a steel donor did for free."
+  ],
+  "models": [
+    {
+      "name": "Universal single-DIN storage pocket with trim bezel",
+      "years": "current",
+      "display": "none — you cut the window",
+      "note": "The commonest form. ABS, DIN-standard, a few pounds, everywhere.",
+      "flag": "good",
+      "c": "unverified"
+    },
+    {
+      "name": "1-DIN blanking plate / dash tray",
+      "years": "current",
+      "display": "none",
+      "note": "Shallower than a pocket. ⚠️ Check the depth before buying — some are trays a few centimetres deep and will not hold the boards.",
+      "flag": "caution",
+      "c": "unverified"
+    },
+    {
+      "name": "Connects2 and similar universal fascia plates",
+      "years": "current",
+      "display": "none",
+      "note": "Sold for filling gaps around aftermarket radios; some are full pockets. Better made than the generic ones and priced accordingly.",
+      "flag": "good",
+      "c": "unverified"
+    }
+  ]
+}

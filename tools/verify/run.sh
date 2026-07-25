@@ -179,6 +179,19 @@ else
   exit 1
 fi
 
+# The donor families. Same shape as the vehicle check, plus one thing it can
+# do that the vehicle check cannot: the window-fit drawings are scaled from
+# these numbers, so a measurement that changes without the picture following
+# leaves a to-scale drawing that is confidently wrong — and a drawing is
+# believed precisely because it looks measured.
+if python3 tools/verify/test_donors.py > build/donor_test.txt 2>&1; then
+  grep -E 'donor checks passed' build/donor_test.txt
+else
+  printf 'MISMATCH — a donor file or drawing is out of date:\n\n'
+  cat build/donor_test.txt
+  exit 1
+fi
+
 # The firmware's UI layer, run on this machine. core/ is verified against the
 # JavaScript; this covers the layer above it — which screen is on, when the
 # dolphins take over, how a track change interrupts — which no amount of

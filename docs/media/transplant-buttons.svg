@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 660" width="1060" height="660" role="img" aria-label="MOVING THE BUTTONS">
+<title>MOVING THE BUTTONS</title>
+<rect width="1060" height="660" fill="#08080a"/>
+<text x="28" y="38" font-size="15" fill="#ffd978" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.14em">MOVING THE BUTTONS</text>
+<text x="28" y="58" font-size="11" fill="#8a8578" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">A donor's panel is a scanned matrix. The deck reads one analogue pin. This is the rewire.</text>
+<rect x="40.0" y="110.0" width="300.0" height="190.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="40.0" y="110.0" width="3.0" height="190.0" rx="1.5" fill="#8a8578"/>
+<text x="52.0" y="127.0" font-size="11.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">WHAT THE DONOR HAS</text>
+<text x="52.0" y="142.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">a scanned matrix on a flexi</text>
+<text x="52.0" y="155.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">rows × columns, decoded by a chip</text>
+<text x="52.0" y="168.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">you are binning the chip</text>
+<rect x="70.0" y="190.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="114.0" y="190.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="158.0" y="190.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="70.0" y="224.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="114.0" y="224.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="158.0" y="224.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="70.0" y="258.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="114.0" y="258.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<rect x="158.0" y="258.0" width="30.0" height="22.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<line x1="60.0" y1="201.0" x2="210.0" y2="201.0" stroke="#4a4854" stroke-width="1" stroke-linecap="round"/>
+<line x1="60.0" y1="235.0" x2="210.0" y2="235.0" stroke="#4a4854" stroke-width="1" stroke-linecap="round"/>
+<line x1="60.0" y1="269.0" x2="210.0" y2="269.0" stroke="#4a4854" stroke-width="1" stroke-linecap="round"/>
+<line x1="85.0" y1="180.0" x2="85.0" y2="292.0" stroke="#4a4854" stroke-width="1" stroke-linecap="round"/>
+<line x1="129.0" y1="180.0" x2="129.0" y2="292.0" stroke="#4a4854" stroke-width="1" stroke-linecap="round"/>
+<line x1="173.0" y1="180.0" x2="173.0" y2="292.0" stroke="#4a4854" stroke-width="1" stroke-linecap="round"/>
+<text x="230.0" y="205.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">3 rows</text>
+<text x="230.0" y="222.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">× 3 columns</text>
+<text x="230.0" y="246.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">= 9 switches,</text>
+<text x="230.0" y="262.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">6 wires, and a</text>
+<text x="230.0" y="278.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">decoder you do</text>
+<text x="230.0" y="294.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">not have</text>
+<path d="M 360 200 H 420" fill="none" stroke="#f3a52b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 410 193 L 420 200 L 410 207" fill="none" stroke="#f3a52b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="390.0" y="188.0" font-size="8.5" fill="#f3a52b" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">break it</text>
+<text x="470.0" y="128.0" font-size="9.5" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" letter-spacing="0.12em">WHAT THE DECK WANTS — ONE WIRE</text>
+<text x="470.0" y="148.0" font-size="9" fill="#ff4938" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">3V3</text>
+<rect x="504.0" y="140.0" width="46.0" height="12.0" rx="2" fill="#191920" stroke="#ff4938" stroke-width="1"/>
+<text x="527.0" y="149.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">10k</text>
+<line x1="550.0" y1="146.0" x2="620.0" y2="146.0" stroke="#ff4938" stroke-width="1.6" stroke-linecap="round"/>
+<circle cx="620.0" cy="146.0" r="3.4" fill="#f3a52b"/>
+<text x="630.0" y="150.0" font-size="9" fill="#f3a52b" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">GPIO 35  (ADC1_CH7)</text>
+<text x="630.0" y="163.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">this node is the old matrix's COMMON</text>
+<line x1="620.0" y1="146.0" x2="620.0" y2="418.0" stroke="#ff4938" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="620.0" y1="200.0" x2="660.0" y2="200.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="660.0" y="191.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<text x="687.0" y="204.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">SRC</text>
+<text x="720.0" y="204.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
+<rect x="738.0" y="193.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="759.0" y="203.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">0 R</text>
+<line x1="780.0" y1="200.0" x2="820.0" y2="200.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<circle cx="820.0" cy="200.0" r="2.6" fill="#4a4854"/>
+<text x="832.0" y="204.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">0 mV</text>
+<line x1="620.0" y1="240.0" x2="660.0" y2="240.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="660.0" y="231.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<text x="687.0" y="244.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">DISP</text>
+<text x="720.0" y="244.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
+<rect x="738.0" y="233.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="759.0" y="243.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">1 k</text>
+<line x1="780.0" y1="240.0" x2="820.0" y2="240.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<circle cx="820.0" cy="240.0" r="2.6" fill="#4a4854"/>
+<text x="832.0" y="244.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">300 mV</text>
+<line x1="620.0" y1="280.0" x2="660.0" y2="280.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="660.0" y="271.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<text x="687.0" y="284.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">BAND</text>
+<text x="720.0" y="284.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
+<rect x="738.0" y="273.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="759.0" y="283.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">2k2</text>
+<line x1="780.0" y1="280.0" x2="820.0" y2="280.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<circle cx="820.0" cy="280.0" r="2.6" fill="#4a4854"/>
+<text x="832.0" y="284.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">595 mV</text>
+<line x1="620.0" y1="320.0" x2="660.0" y2="320.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="660.0" y="311.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<text x="687.0" y="324.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">ART</text>
+<text x="720.0" y="324.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
+<rect x="738.0" y="313.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="759.0" y="323.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">4k7</text>
+<line x1="780.0" y1="320.0" x2="820.0" y2="320.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<circle cx="820.0" cy="320.0" r="2.6" fill="#4a4854"/>
+<text x="832.0" y="324.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">1055 mV</text>
+<line x1="620.0" y1="360.0" x2="660.0" y2="360.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="660.0" y="351.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<text x="687.0" y="364.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">LYRICS</text>
+<text x="720.0" y="364.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
+<rect x="738.0" y="353.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="759.0" y="363.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">10 k</text>
+<line x1="780.0" y1="360.0" x2="820.0" y2="360.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<circle cx="820.0" cy="360.0" r="2.6" fill="#4a4854"/>
+<text x="832.0" y="364.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">1650 mV</text>
+<line x1="620.0" y1="400.0" x2="660.0" y2="400.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="660.0" y="391.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
+<text x="687.0" y="404.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">DEMO</text>
+<text x="720.0" y="404.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
+<rect x="738.0" y="393.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="759.0" y="403.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">18 k</text>
+<line x1="780.0" y1="400.0" x2="820.0" y2="400.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
+<circle cx="820.0" cy="400.0" r="2.6" fill="#4a4854"/>
+<text x="832.0" y="404.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">2121 mV</text>
+<line x1="820.0" y1="200.0" x2="820.0" y2="400.0" stroke="#4a4854" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="806.0" y1="414.0" x2="834.0" y2="414.0" stroke="#4a4854" stroke-width="2" stroke-linecap="round"/>
+<line x1="812.0" y1="419.0" x2="828.0" y2="419.0" stroke="#4a4854" stroke-width="2" stroke-linecap="round"/>
+<text x="820.0" y="434.0" font-size="8" fill="#8a8578" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">GND</text>
+<rect x="28.0" y="484.0" width="1004.0" height="134.0" rx="5" fill="#0f0f14" stroke="#23232b" stroke-width="1"/>
+<rect x="28.0" y="484.0" width="3.0" height="134.0" rx="1.5" fill="#f3a52b"/>
+<text x="44.0" y="506.0" font-size="9" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" letter-spacing="0.12em">TWO KINDS OF DONOR PANEL, AND THEY ARE NOT THE SAME JOB</text>
+<text x="44.0" y="530.0" font-size="9.5" fill="#7fcf8f" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">Discrete tactile switches on a PCB</text>
+<text x="268.0" y="530.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">— the easy case. Cut the board free, cut the matrix traces, and wire each switch: one leg</text>
+<text x="268.0" y="544.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">to the common node, the other through its resistor to ground.</text>
+<text x="44.0" y="566.0" font-size="9.5" fill="#ffd978" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">Carbon pads on a flexi</text>
+<text x="200.0" y="566.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">— rubber caps pressing onto interdigitated traces. Same electrical job, much fiddlier:</text>
+<text x="200.0" y="580.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the traces are fine-pitch and they melt. Practise on a spare corner of the flexi first.</text>
+<text x="44.0" y="602.0" font-size="9.5" fill="#f3a52b" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Either way the resistors can live on your own board rather than on the fascia — only the switch wires have to cross.</text>
+</svg>
