@@ -111,5 +111,13 @@
       "action": "keep",
       "note": "Usually separate. Fit it last, like a fascia."
     }
+  ],
+  "reuse": [
+    {
+      "part": "nothing — there is nothing in it",
+      "value": "none",
+      "difficulty": "not worth it",
+      "note": "✅ This route has no donor to salvage from, which is the point. Everything is new and everything is bought. If maximum reuse is what you want, this is the wrong family — see the cassette-era entry."
+    }
   ]
 }

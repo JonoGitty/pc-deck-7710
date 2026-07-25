@@ -16,6 +16,7 @@ The documentation, and the project's web page.
 | [TESTING.md](TESTING.md) | Running the deck on your computer, and the bring-up checks on hardware |
 | [DIAGNOSTICS.md](DIAGNOSTICS.md) | When it does not work: the self-test, the serial line, crash dumps |
 | [TRANSPLANT.md](TRANSPLANT.md) | Moving the screen, the buttons and the knob across from a donor |
+| [REUSE.md](REUSE.md) | Keeping as much of the donor as possible — including its amplifier |
 | [DONORS.md](DONORS.md) | Which scrap head unit to buy and gut — generated from `donors/` |
 | [VEHICLES.md](VEHICLES.md) | What each car needs on top of the deck — generated from `vehicles/` |
 | [VERSIONING.md](VERSIONING.md) | How the PC deck, the core and the firmware version separately |

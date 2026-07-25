@@ -153,5 +153,37 @@
       "action": "keep",
       "note": "Usually included."
     }
+  ],
+  "reuse": [
+    {
+      "part": "the donor's own amplifier",
+      "value": "£12–20 and a part you would otherwise buy",
+      "difficulty": "medium",
+      "note": "⚠️ THE BIG ONE. Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388, TDA7850 or similar — already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is exactly the part BUILD.md tells you to go and buy. Cut the amp IC's four inputs free of the dead preamp and inject the deck's line out there instead. The IC datasheet gives the pinout; the mute/standby pin usually needs tying to its enable level, and that is the step people miss."
+    },
+    {
+      "part": "the rear ISO connectors and aerial socket",
+      "value": "£8–15 of adapters, and a tidier back panel",
+      "difficulty": "easy",
+      "note": "The donor's own ISO 10487 A and B blocks and its DIN aerial socket are already mounted in the back panel and already the standard shape. Keeping them means the deck plugs into the car's loom with no adapter and no flying leads out of a hole."
+    },
+    {
+      "part": "the heatsink",
+      "value": "hard to buy in the right shape",
+      "difficulty": "easy",
+      "note": "On most units the amplifier's heatsink IS part of the chassis casting. If you reuse the amp you get it for nothing; if you fit your own amp board, bolting it to the same casting is free cooling."
+    },
+    {
+      "part": "the 12 V input protection",
+      "value": "a pound, and some peace of mind",
+      "difficulty": "easy",
+      "note": "The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused."
+    },
+    {
+      "part": "its own display",
+      "value": "none",
+      "difficulty": "not worth it",
+      "note": "❌ A segment LCD cannot show the deck's screens at all. This is the one case where the answer is simply no."
+    }
   ]
 }

@@ -17,6 +17,8 @@ Search *spares or repair*, *faulty*, *no CD*, *display dead*, *untested*. A work
 | **The cage and trim ring** — a new ISO 7736 cage is £8–15, so a £15 unit with one beats a £8 unit without | **A working CD mechanism** — the biggest single driver of price on a listing, and the first thing you remove |
 | **An undamaged fascia** — the part you cannot replace, the part everybody sees, and the part sellers most often lose | **A working display** — you are fitting your own |
 
+> **⚠️ Before you bin the amplifier board.** Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388 or TDA7850, already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is the same part [BUILD.md](BUILD.md) tells you to go and buy. The default strip-down bins it; [REUSE.md](REUSE.md) explains how to keep it instead, and what the mute pin will do to you if you forget it.
+
 > **Already got one?** [TRANSPLANT.md](TRANSPLANT.md) covers the fiddly half — aligning the panel to its lit area rather than to its PCB, and turning the donor's scanned button matrix into the deck's one-wire ladder.
 
 ## The window is the only thing that really decides it
@@ -101,6 +103,19 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
 
+### Keeping more of it
+
+The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
+
+| Part | Worth keeping for | Difficulty | |
+|---|---|---|---|
+| **the donor's own amplifier** | £12–20 and a part you would otherwise buy | medium | ⚠️ THE BIG ONE. Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388, TDA7850 or similar — already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is exactly the part BUILD.md tells you to go and buy. Cut the amp IC's four inputs free of the dead preamp and inject the deck's line out there instead. The IC datasheet gives the pinout; the mute/standby pin usually needs tying to its enable level, and that is the step people miss. |
+| **the rear ISO connectors and aerial socket** | £8–15 of adapters, and a tidier back panel | easy | The donor's own ISO 10487 A and B blocks and its DIN aerial socket are already mounted in the back panel and already the standard shape. Keeping them means the deck plugs into the car's loom with no adapter and no flying leads out of a hole. |
+| **the heatsink** | hard to buy in the right shape | easy | On most units the amplifier's heatsink IS part of the chassis casting. If you reuse the amp you get it for nothing; if you fit your own amp board, bolting it to the same casting is free cooling. |
+| **the 12 V input protection** | a pound, and some peace of mind | easy | The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused. |
+| **its own display** | the most authentic result possible | hard | ⚠️ Usually NO, and it is worth understanding why before you try. Most head-unit displays are SEGMENT or character devices — fixed shapes and a few 5×7 cells — and they physically cannot show a 256×64 graphic screen. A genuine graphic dot-matrix panel can, but its controller is usually undocumented and its resolution is often 128×32, which is half the deck's width and would need a new layout tier in core/. ✅ The exception that IS supported: if the donor's panel turns out to be a Futaba GP1294AI, the firmware already has a driver — those are commonly sold as pulls from car radios. |
+| **the IR receiver** | £1, and the remote option | easy | If the donor had a remote, its TSOP-style receiver is already mounted behind the fascia with a clear line of sight. See HARDWARE.md §5c for the pin cost. |
+
 ### Stripping it down
 
 ![Strip-down order for Aftermarket 1-DIN with a large dot-matrix display](media/teardown-dot-matrix.svg)
@@ -175,6 +190,14 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
 
+### Keeping more of it
+
+The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
+
+| Part | Worth keeping for | Difficulty | |
+|---|---|---|---|
+| **nothing — there is nothing in it** | none | not worth it | ✅ This route has no donor to salvage from, which is the point. Everything is new and everything is bought. If maximum reuse is what you want, this is the wrong family — see the cassette-era entry. |
+
 ### Stripping it down
 
 ![Strip-down order for A brand-new empty 1-DIN pocket](media/teardown-empty-pocket.svg)
@@ -244,6 +267,19 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | ✅ | **Any OEM cassette head unit from a scrapyard** | ≈1985–1998 | varies | ✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with. |
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Keeping more of it
+
+The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
+
+| Part | Worth keeping for | Difficulty | |
+|---|---|---|---|
+| **the donor's own amplifier** | £12–20, and it is the easiest amp to reuse of any donor here | easy | ✅ The best case in this document. Cassette-era amplifiers are discrete or single-IC, generously laid out, and their inputs are easy to find because there is no digital preamp in the way — the tape head fed them almost directly. If you want maximum reuse, this is the family to choose. |
+| **the rear ISO connectors and aerial socket** | £8–15 of adapters, and a tidier back panel | easy | The donor's own ISO 10487 A and B blocks and its DIN aerial socket are already mounted in the back panel and already the standard shape. Keeping them means the deck plugs into the car's loom with no adapter and no flying leads out of a hole. |
+| **the heatsink** | hard to buy in the right shape | easy | On most units the amplifier's heatsink IS part of the chassis casting. If you reuse the amp you get it for nothing; if you fit your own amp board, bolting it to the same casting is free cooling. |
+| **the 12 V input protection** | a pound, and some peace of mind | easy | The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused. |
+| **the illumination bulbs and light pipes** | the period look | easy | Filament bulbs behind the dial. Replace the bulbs with amber LEDs and keep the pipes — the diffusers are the hard part and you already have them. |
+| **its own display** | none | not worth it | ❌ A backlit dial, not a display. Nothing to drive. |
 
 ### Stripping it down
 
@@ -362,6 +398,17 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
 
+### Keeping more of it
+
+The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
+
+| Part | Worth keeping for | Difficulty | |
+|---|---|---|---|
+| **the donor's own amplifier** | £12–20 and a part you would otherwise buy | medium | ⚠️ THE BIG ONE. Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388, TDA7850 or similar — already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is exactly the part BUILD.md tells you to go and buy. Cut the amp IC's four inputs free of the dead preamp and inject the deck's line out there instead. The IC datasheet gives the pinout; the mute/standby pin usually needs tying to its enable level, and that is the step people miss. |
+| **the rear ISO connectors and aerial socket** | £8–15 of adapters, and a tidier back panel | easy | The donor's own ISO 10487 A and B blocks and its DIN aerial socket are already mounted in the back panel and already the standard shape. Keeping them means the deck plugs into the car's loom with no adapter and no flying leads out of a hole. |
+| **the heatsink and chassis** | none — you are not keeping this box | not worth it | ⚠️ Remember this is the one route where the donor's chassis is the wrong height and gets binned. Salvage the amp and the connectors OUT of it before it goes. |
+| **the 12 V input protection** | a pound, and some peace of mind | easy | The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused. |
+
 ### Stripping it down
 
 ![Strip-down order for A 2-DIN unit, split down to 1-DIN plus a pocket](media/teardown-two-din-split.svg)
@@ -422,6 +469,18 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **Buttons** | 📏 varies; often fewer than an aftermarket unit | Count them before choosing this route — you want six. |
 | **Knob** | ⚠️ usually one, car-styled | The reason to do this at all: it matches the rest of the interior. |
 | **Its own display** | 📏 varies | ⚠️ Many OEM units of the right era use a VFD. Treat the power board as live. |
+
+### Keeping more of it
+
+The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
+
+| Part | Worth keeping for | Difficulty | |
+|---|---|---|---|
+| **the donor's own amplifier** | £12–20 and a part you would otherwise buy | medium | ⚠️ THE BIG ONE. Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388, TDA7850 or similar — already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is exactly the part BUILD.md tells you to go and buy. Cut the amp IC's four inputs free of the dead preamp and inject the deck's line out there instead. The IC datasheet gives the pinout; the mute/standby pin usually needs tying to its enable level, and that is the step people miss. |
+| **the heatsink** | hard to buy in the right shape | easy | On most units the amplifier's heatsink IS part of the chassis casting. If you reuse the amp you get it for nothing; if you fit your own amp board, bolting it to the same casting is free cooling. |
+| **the 12 V input protection** | a pound, and some peace of mind | easy | The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused. |
+| **the car-specific connector** | an adapter you would otherwise buy | easy | ✅ Better than an ISO block: the donor already has YOUR car's exact connector on it, so keeping the back panel means no harness adapter at all. This is a real advantage of the OEM route that the fascia usually gets all the credit for. |
+| **its own display** | the factory look, completely | hard | ⚠️ Same problem as any donor and usually worse — OEM displays are small, segment-based and custom. Measure and identify before hoping. |
 
 ### Stripping it down
 
@@ -494,6 +553,17 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
 
+### Keeping more of it
+
+The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
+
+| Part | Worth keeping for | Difficulty | |
+|---|---|---|---|
+| **the whole unit, working** | £150–400 — by not gutting it | easy | ⚠️ The honest first answer for this family. A modern reissue already does Bluetooth, DAB and USB. Ask whether you want the deck's screens or whether you wanted a nice-looking radio, because if it is the second one you have already bought it. |
+| **the donor's own amplifier** | £12–20 and a part you would otherwise buy | medium | ⚠️ THE BIG ONE. Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388, TDA7850 or similar — already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is exactly the part BUILD.md tells you to go and buy. Cut the amp IC's four inputs free of the dead preamp and inject the deck's line out there instead. The IC datasheet gives the pinout; the mute/standby pin usually needs tying to its enable level, and that is the step people miss. |
+| **the rear ISO connectors and aerial socket** | £8–15 of adapters, and a tidier back panel | easy | The donor's own ISO 10487 A and B blocks and its DIN aerial socket are already mounted in the back panel and already the standard shape. Keeping them means the deck plugs into the car's loom with no adapter and no flying leads out of a hole. |
+| **the 12 V input protection** | a pound, and some peace of mind | easy | The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused. |
+
 ### Stripping it down
 
 ![Strip-down order for A modern retro-styled reissue](media/teardown-retro-reissue.svg)
@@ -562,6 +632,18 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | ✅ | **Any 'mechless' Bluetooth/USB 1-DIN receiver** | ≈2012–present | small segment LCD | ✅ The SAFEST donor of all — no CD laser, no VFD inverter, nothing charged. Shallow too. You are just going to cut the window. |
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Keeping more of it
+
+The strip-down above is the *simple* build. If you would rather keep as much as possible — and one of these is a part [BUILD.md](BUILD.md) otherwise tells you to buy — see [REUSE.md](REUSE.md).
+
+| Part | Worth keeping for | Difficulty | |
+|---|---|---|---|
+| **the donor's own amplifier** | £12–20 and a part you would otherwise buy | medium | ⚠️ THE BIG ONE. Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388, TDA7850 or similar — already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is exactly the part BUILD.md tells you to go and buy. Cut the amp IC's four inputs free of the dead preamp and inject the deck's line out there instead. The IC datasheet gives the pinout; the mute/standby pin usually needs tying to its enable level, and that is the step people miss. |
+| **the rear ISO connectors and aerial socket** | £8–15 of adapters, and a tidier back panel | easy | The donor's own ISO 10487 A and B blocks and its DIN aerial socket are already mounted in the back panel and already the standard shape. Keeping them means the deck plugs into the car's loom with no adapter and no flying leads out of a hole. |
+| **the heatsink** | hard to buy in the right shape | easy | On most units the amplifier's heatsink IS part of the chassis casting. If you reuse the amp you get it for nothing; if you fit your own amp board, bolting it to the same casting is free cooling. |
+| **the 12 V input protection** | a pound, and some peace of mind | easy | The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused. |
+| **its own display** | none | not worth it | ❌ A segment LCD cannot show the deck's screens at all. This is the one case where the answer is simply no. |
 
 ### Stripping it down
 

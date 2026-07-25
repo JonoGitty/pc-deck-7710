@@ -143,6 +143,7 @@ You need one of these three, and which depends on your car:
 | **a** | **Nothing — use the car's existing amp** | £0 | Only if your car has a factory amplifier that the head unit fed at line level. Many do not: on most cars the head unit IS the amplifier |
 | **b** | **A TDA7850 or TDA7388 4-channel board** ✅ | £12–20 | **The usual answer.** These are the exact ICs real head units use: 4 × 45–50 W, runs straight off the car's 12 V, thermal and short-circuit protection built in. The XH-M180 is a common ready-made TDA7850 board |
 | **c** | **A separate under-seat 4-channel amplifier** | £40–90 | If you want more than 50 W a channel, or want the deck's box to stay cool and small |
+| **d** | **⚠️ Reuse the donor's own amplifier** ✅ | **£0** | **Read this before binning anything.** Every CD-era head unit already contains one of these exact ICs, bolted to the chassis as its heatsink and wired to the ISO speaker connector. Cut its inputs free of the dead preamp and feed it the deck's line out. [REUSE.md](REUSE.md) — and mind the mute pin |
 
 ⚠️ **Option (b) is not a 5 V device.** It runs from the car's 12 V rail
 directly, NOT through the buck converter that feeds the ESP32 — four channels

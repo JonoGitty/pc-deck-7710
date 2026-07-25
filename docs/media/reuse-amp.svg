@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" width="1100" height="700" role="img" aria-label="REUSING THE DONOR'S AMPLIFIER">
+<title>REUSING THE DONOR'S AMPLIFIER</title>
+<rect width="1100" height="700" fill="#08080a"/>
+<text x="28" y="38" font-size="15" fill="#ffd978" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.14em">REUSING THE DONOR'S AMPLIFIER</text>
+<text x="28" y="58" font-size="11" fill="#8a8578" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">The last two boxes in the donor's signal chain are the part BUILD.md tells you to go and buy.</text>
+<rect x="34.0" y="150.0" width="176.0" height="92.0" rx="4" fill="#0e0e12" stroke="#23232b" stroke-width="1" opacity="0.55"/>
+<rect x="34.0" y="150.0" width="3.0" height="92.0" rx="1.5" fill="#ff4938"/>
+<text x="47.0" y="172.0" font-size="10.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">CD / TAPE</text>
+<text x="47.0" y="186.0" font-size="10.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">MECHANISM</text>
+<text x="47.0" y="208.0" font-size="9" fill="#5c5a63" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the source you are</text>
+<text x="47.0" y="221.0" font-size="9" fill="#5c5a63" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">replacing</text>
+<rect x="44.0" y="134.0" width="28.7" height="15.0" rx="7.5" fill="#ff4938"/>
+<text x="58.4" y="146.0" font-size="9" fill="#1a0805" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">bin</text>
+<rect x="232.0" y="150.0" width="176.0" height="92.0" rx="4" fill="#0e0e12" stroke="#23232b" stroke-width="1" opacity="0.55"/>
+<rect x="232.0" y="150.0" width="3.0" height="92.0" rx="1.5" fill="#ff4938"/>
+<text x="245.0" y="172.0" font-size="10.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">PREAMP &amp;</text>
+<text x="245.0" y="186.0" font-size="10.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">TONE STAGE</text>
+<text x="245.0" y="208.0" font-size="9" fill="#5c5a63" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">volume, bass, treble —</text>
+<text x="245.0" y="221.0" font-size="9" fill="#5c5a63" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the deck does this now</text>
+<rect x="242.0" y="134.0" width="28.7" height="15.0" rx="7.5" fill="#ff4938"/>
+<text x="256.4" y="146.0" font-size="9" fill="#1a0805" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">bin</text>
+<line x1="210.0" y1="196.0" x2="232.0" y2="196.0" stroke="#3a3844" stroke-width="1.8" stroke-linecap="round"/>
+<rect x="430.0" y="150.0" width="176.0" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="430.0" y="150.0" width="3.0" height="92.0" rx="1.5" fill="#f3a52b"/>
+<text x="443.0" y="172.0" font-size="10.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">COUPLING</text>
+<text x="443.0" y="186.0" font-size="10.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">CAPS  ×4</text>
+<text x="443.0" y="208.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the cut point.</text>
+<text x="443.0" y="221.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">One per channel</text>
+<rect x="440.0" y="134.0" width="28.7" height="15.0" rx="7.5" fill="#f3a52b"/>
+<text x="454.4" y="146.0" font-size="9" fill="#17110a" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">cut</text>
+<line x1="408.0" y1="196.0" x2="430.0" y2="196.0" stroke="#3a3844" stroke-width="1.8" stroke-linecap="round"/>
+<rect x="628.0" y="150.0" width="176.0" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="628.0" y="150.0" width="3.0" height="92.0" rx="1.5" fill="#7fcf8f"/>
+<text x="641.0" y="172.0" font-size="10.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">POWER AMP IC</text>
+<text x="641.0" y="186.0" font-size="10.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">TDA7388 / 7850</text>
+<text x="641.0" y="208.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">4 × 40 W, on the chassis</text>
+<text x="641.0" y="221.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">as its heatsink</text>
+<rect x="638.0" y="134.0" width="34.3" height="15.0" rx="7.5" fill="#7fcf8f"/>
+<text x="655.2" y="146.0" font-size="9" fill="#17110a" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">KEEP</text>
+<line x1="606.0" y1="196.0" x2="628.0" y2="196.0" stroke="#7fcf8f" stroke-width="1.8" stroke-linecap="round"/>
+<rect x="826.0" y="150.0" width="176.0" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="826.0" y="150.0" width="3.0" height="92.0" rx="1.5" fill="#7fcf8f"/>
+<text x="839.0" y="172.0" font-size="10.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">ISO SPEAKER</text>
+<text x="839.0" y="186.0" font-size="10.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">CONNECTOR</text>
+<text x="839.0" y="208.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">already wired,</text>
+<text x="839.0" y="221.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">already fused</text>
+<rect x="836.0" y="134.0" width="34.3" height="15.0" rx="7.5" fill="#7fcf8f"/>
+<text x="853.2" y="146.0" font-size="9" fill="#17110a" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">KEEP</text>
+<line x1="804.0" y1="196.0" x2="826.0" y2="196.0" stroke="#7fcf8f" stroke-width="1.8" stroke-linecap="round"/>
+<line x1="410.0" y1="185.0" x2="428.0" y2="207.0" stroke="#ff4938" stroke-width="2.2" stroke-linecap="round"/>
+<line x1="410.0" y1="207.0" x2="428.0" y2="185.0" stroke="#ff4938" stroke-width="2.2" stroke-linecap="round"/>
+<text x="419.0" y="108.0" font-size="9" fill="#ff4938" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.1em">CUT HERE</text>
+<text x="419.0" y="122.0" font-size="8.5" fill="#ff4938" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">on the preamp side of the caps</text>
+<rect x="312.0" y="320.0" width="250.0" height="56.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="312.0" y="320.0" width="3.0" height="56.0" rx="1.5" fill="#f3a52b"/>
+<text x="324.0" y="337.0" font-size="11.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">THE DECK'S LINE OUT</text>
+<text x="324.0" y="352.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">PCM5102A, or the PT2313's fader outputs</text>
+<path d="M 437 320 V 256" fill="none" stroke="#f3a52b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 430 266 L 437 254 L 444 266" fill="none" stroke="#f3a52b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="452.0" y="282.0" font-size="9" fill="#f3a52b" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">inject here — 4 wires</text>
+<text x="452.0" y="296.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">front L/R from the deck; rear from the same pair unless a PT2313 is fitted</text>
+<rect x="34.0" y="400.0" width="520.0" height="250.0" rx="5" fill="#0f0f14" stroke="#ff4938" stroke-width="1.2"/>
+<text x="50.0" y="424.0" font-size="9.5" fill="#ff4938" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.12em">⚠️  THE STEP EVERYBODY MISSES</text>
+<text x="50.0" y="446.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">The old microcontroller drove ST-BY and MUTE. With it gone they float, the amplifier stays</text>
+<text x="50.0" y="460.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">muted, and you conclude the chip is dead and buy a board. Tie them to their enable level.</text>
+<rect x="78.0" y="492.0" width="150.0" height="118.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="78.0" y="492.0" width="3.0" height="118.0" rx="1.5" fill="#7fcf8f"/>
+<text x="153.0" y="558.0" font-size="11" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">TDA7388</text>
+<line x1="228.0" y1="528.0" x2="290.0" y2="528.0" stroke="#d8d4cc" stroke-width="1.4" stroke-linecap="round"/>
+<text x="218.0" y="532.0" font-size="8.5" fill="#8a8578" text-anchor="end" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">ST-BY</text>
+<rect x="290.0" y="520.0" width="46.0" height="16.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="313.0" y="532.0" font-size="8.5" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">R</text>
+<line x1="336.0" y1="528.0" x2="378.0" y2="528.0" stroke="#d8d4cc" stroke-width="1.4" stroke-linecap="round"/>
+<circle cx="378.0" cy="528.0" r="3.0" fill="#ff4938"/>
+<text x="388.0" y="532.0" font-size="8.5" fill="#ff4938" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">enable — brings it out of standby</text>
+<text x="388.0" y="545.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">value from the datasheet</text>
+<line x1="228.0" y1="574.0" x2="290.0" y2="574.0" stroke="#d8d4cc" stroke-width="1.4" stroke-linecap="round"/>
+<text x="218.0" y="578.0" font-size="8.5" fill="#8a8578" text-anchor="end" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">MUTE</text>
+<rect x="290.0" y="566.0" width="46.0" height="16.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
+<text x="313.0" y="578.0" font-size="8.5" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">R</text>
+<line x1="336.0" y1="574.0" x2="378.0" y2="574.0" stroke="#d8d4cc" stroke-width="1.4" stroke-linecap="round"/>
+<circle cx="378.0" cy="574.0" r="3.0" fill="#ff4938"/>
+<text x="388.0" y="578.0" font-size="8.5" fill="#ff4938" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">enable — un-mutes it</text>
+<text x="388.0" y="591.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">value from the datasheet</text>
+<text x="50.0" y="632.0" font-size="9" fill="#f3a52b" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Both pins, both resistors, before you conclude anything. The datasheet gives the value.</text>
+<rect x="574.0" y="400.0" width="492.0" height="250.0" rx="5" fill="#0f0f14" stroke="#23232b" stroke-width="1"/>
+<rect x="574.0" y="400.0" width="3.0" height="250.0" rx="1.5" fill="#7fcf8f"/>
+<text x="590.0" y="424.0" font-size="9.5" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" letter-spacing="0.12em">WHAT THE REUSE ROUTE IS WORTH</text>
+<text x="590.0" y="456.0" font-size="9.5" fill="#7fcf8f" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">Saves</text>
+<text x="680.0" y="456.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">£12–20, plus a heatsink and mounting you would</text>
+<text x="680.0" y="469.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">otherwise have to arrange</text>
+<text x="590.0" y="494.0" font-size="9.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">Costs</text>
+<text x="680.0" y="494.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">an evening with a datasheet and a scalpel</text>
+<text x="590.0" y="532.0" font-size="9.5" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">Risk</text>
+<text x="680.0" y="532.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">low — worst case it does not work and you buy the</text>
+<text x="680.0" y="545.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">board you were going to buy</text>
+<text x="590.0" y="570.0" font-size="9.5" fill="#7fcf8f" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">Easiest on</text>
+<text x="680.0" y="570.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">cassette-era donors: single-IC amps, generous</text>
+<text x="680.0" y="583.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">layouts, no digital preamp in the way</text>
+<text x="590.0" y="608.0" font-size="9.5" fill="#f3a52b" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">Hardest on</text>
+<text x="680.0" y="608.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">late CD units where the tone stage is inside the</text>
+<text x="680.0" y="621.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">same package as the DAC</text>
+<text x="34.0" y="684.0" font-size="9.5" fill="#ff4938" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">⚠️  Described from the datasheets of these ICs and from how these units are built — not from having cut one open. docs/REUSE.md</text>
+</svg>
