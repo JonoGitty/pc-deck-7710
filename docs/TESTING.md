@@ -14,6 +14,7 @@ a phone and a car. Nothing on this page pretends the first replaces the second.
 | The renderer | `sh tools/verify/run.sh` | `core/` renders identically to the JavaScript it was ported from — fonts, screens, text, metadata, the ocean, every `.dmv` | ✅ |
 | The container | (same script) | A packed movie blob unpacks to the bytes that went in, read by an independent reader | ✅ |
 | The deck's behaviour | `sh tools/sim/run.sh` + `test_behaviour.py` | The firmware's own UI layer: which screen is on, when the dolphins take over, how a track change interrupts | ✅ |
+| The hardware drivers | `sh tools/sim/drivers.sh --check` | The real `deck_tuner.c`, `deck_audioproc.c` and `deck_hfp.c` against a fake SDK and models of the parts: command order, register encodings, AN332's timing rules, call-state derivation | ✅ |
 | The firmware compiles | `idf.py build`, both panels | It builds for SSD1322 *and* GP1294AI, and fits the app slot | ✅ |
 | The hardware | This page, §3 | Everything that only fails on hardware | ❌ — it cannot |
 
@@ -196,17 +197,70 @@ model:
 - DMA, PSRAM bandwidth, or the frame rate you really get
 - heat, in a dashboard, in summer
 - the resistance ladder in your steering wheel
-- **HFP**: whether a real phone's indicator events arrive in an order the
-  derivation in `deck_hfp.c` handles, and whether the voice-over-HCI callbacks
-  keep up with a live SCO link. The simulator drives `deck_call_t` directly; it
-  never touches the Bluetooth side that fills it in
-- **the Si4735**: I²C at all, the 120 ms wait after `POWER_UP`, whether the
-  band limits are right for your region, or whether RDS decodes off air
 - **the source mux**: that the 4052 actually passes audio, and that GPIO 2 and
   12 really do read low at boot on *your* board
 
 Every one of those fails on hardware and only on hardware. A simulator that
 claimed otherwise would be worse than none, because it would be believed.
+
+---
+
+## 2b. The three drivers that touch hardware
+
+```sh
+sh tools/sim/drivers.sh              # print the trace
+sh tools/sim/drivers.sh --check      # ...and assert on it
+sh tools/sim/drivers.sh --only tuner-rds
+```
+
+`deck_tuner.c`, `deck_audioproc.c` and `deck_hfp.c` are the newest code here
+and were, until this existed, the least tested: **"it compiles for the ESP32"
+was the entire guarantee.** They are also the three files whose bugs are
+hardest to find on hardware, because each fails as something else:
+
+| Driver | The bug you would not find | What it looks like instead |
+|---|---|---|
+| `deck_tuner.c` | a command inside AN332's 110 ms post-`POWER_UP` window | works on the bench, "no radio" one boot in five — reads as a wiring fault |
+| `deck_audioproc.c` | tone written as two's complement instead of magnitude-plus-direction | bass wrong on one side of zero only — sounds like taste |
+| `deck_audioproc.c` | two of the four speaker attenuators transposed | fader moves the balance — the datasheet's own most-likely mistake |
+| `deck_hfp.c` | call state tracked through event order rather than derived from the (`call`, `call_setup`) pair | works on your phone, breaks on somebody else's |
+
+So the drivers are compiled **unmodified** against a fake ESP-IDF in
+`tools/sim/idf/` and models of the parts in `tools/sim/fake_hw.c`. What is under
+test is the file the ESP32 runs, not a description of it.
+See [`tools/sim/idf/README.md`](../tools/sim/idf/README.md) for where the line
+between real and fake is drawn.
+
+**Time is virtual.** `vTaskDelay()` does not sleep — it advances a clock that
+`esp_timer_get_time()` reads. So AN332's settle rule becomes an assertion rather
+than a stopwatch, and a call that clears itself 2.5 s after hanging up is tested
+by advancing the clock 2.5 s. The whole suite runs in milliseconds.
+
+**A reboot is a new process.** The drivers keep their state in file statics and
+nothing in the firmware resets them, because on the deck a reboot does that. So
+the harness runs one scenario per process, and NVS is a file — which makes "set
+the region, reboot, is it still American?" a real question rather than a
+restatement of the setter. The first draft ran everything in one process and
+cheerfully reported a working tuner in the scenario where no tuner is fitted.
+
+**It has teeth, and that was checked rather than assumed.** Each of these
+mutations to the firmware was applied and the suite caught it:
+
+| Mutation | Checks that failed |
+|---|---|
+| settle wait 120 ms → 5 ms | 2 |
+| HFP state made to depend on event order | 3 |
+| bass sign dropped | 2 |
+| front and rear attenuators transposed | 2 |
+| FM tuned in 1 kHz units instead of 10 | 1 |
+
+**What it still cannot tell you**, and this is the honest part: it proves
+*logic* — command order, encodings, timing rules the drivers are supposed to
+honour, and state derivation from the indicator pair. It does not model I²C
+arbitration, clock stretching, real timeouts, SCO packet timing or any audio.
+Whether a real phone's events arrive in an order the derivation handles is now
+*likely* rather than unknown — the awkward orders are in the scenarios — but a
+real phone is still the only proof. **The firmware has never run on hardware.**
 
 ---
 

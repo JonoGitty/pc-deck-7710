@@ -19,4 +19,10 @@ void sim_out_frame(const uint8_t *dev, const uint8_t *levels, int w, int h);
 void sim_out_end(void);
 void sim_ascii(const uint8_t *levels, int w, int h);
 
+/* The clock the shared diagnostics stub stamps its lines with. Each harness
+ * defines it from whatever clock it has: seconds-since-start here, the virtual
+ * clock in the driver harness. */
+double sim_stub_now_ms(void);
+void   sim_set_now(double seconds);
+
 #endif /* SIM_STUBS_H */
