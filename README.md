@@ -277,8 +277,38 @@ thing to defeat.
 power-off. That hazard is real and it is on the page.
 
 ```sh
-python3 tools/deckctl.py donor        # grade them at the bench
+python3 tools/deckctl.py donor --full   # grade them, with the model numbers
 ```
+
+**Or buy nothing second-hand at all.** A **new empty 1-DIN pocket** — the ABS
+tray sold to fill the hole a removed radio leaves — is £6–12, already exactly
+the right size, comes with a fascia and a bezel, and has no laser, no inverter
+and nothing charged in it. You cut your own window in fresh plastic and fit
+your own buttons. It is the closest thing that exists to a "blank" head unit,
+and it is cheaper than most broken ones.
+
+⚠️ **There is no 1-DIN head unit sold as a programmable platform.** Real ones
+run locked firmware on proprietary SoCs with no published toolchain — there is
+nothing to flash to. Android 1-DIN units and projects like PILOT Drive and
+OpenAuto exist and are worth reading, but they are different machines running
+different stacks. [TRANSPLANT.md §3](docs/TRANSPLANT.md) lays the options out.
+
+### Moving the parts across
+
+![The module, its lit area, and where the window goes](docs/media/transplant-panel.svg)
+
+*The module is bigger than the hole and **its lit area is not centred on it** —
+a 3.12" SSD1322 board is 100.5 × 33.5 mm and only 76.8 × 19.2 mm of that
+glows. Mark the window from the glass and the deck looks bought; mark it from
+the PCB and it is permanently a few millimetres out.*
+
+![Breaking the donor's matrix and rewiring it as a ladder](docs/media/transplant-buttons.svg)
+
+*A donor's panel is a scanned matrix; the deck reads one analogue pin. So the
+rewire is a **subtraction** — you never need to work out the original scanning
+order. [TRANSPLANT.md](docs/TRANSPLANT.md) has the rest: mounting the panel at
+the fascia plane rather than behind it, fitting the knob to an EC11 shaft, and
+reusing the fascia's light pipes.*
 
 ### What YOUR car needs
 

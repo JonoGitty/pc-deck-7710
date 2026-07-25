@@ -17,6 +17,8 @@ Search *spares or repair*, *faulty*, *no CD*, *display dead*, *untested*. A work
 | **The cage and trim ring** — a new ISO 7736 cage is £8–15, so a £15 unit with one beats a £8 unit without | **A working CD mechanism** — the biggest single driver of price on a listing, and the first thing you remove |
 | **An undamaged fascia** — the part you cannot replace, the part everybody sees, and the part sellers most often lose | **A working display** — you are fitting your own |
 
+> **Already got one?** [TRANSPLANT.md](TRANSPLANT.md) covers the fiddly half — aligning the panel to its lit area rather than to its PCB, and turning the donor's scanned button matrix into the deck's one-wire ladder.
+
 ## The window is the only thing that really decides it
 
 The deck's lit area is about **76 × 19 mm** (SSD1322) or **76 × 14 mm** (GP1294AI). Everything else about a donor is recoverable — the chassis can be shimmed, the buttons rewired, the knob swapped. The window cannot: it is a hole in the one part you chose the donor for, and enlarging it is the difference between a deck that looks bought and one that looks made in a shed.
@@ -40,6 +42,7 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | Grade | Family | Era | ~Price | Window | Verdict |
 |---|---|---|---|---|---|
 | **A** | [Aftermarket 1-DIN with a large dot-matrix display](#dot-matrix) | ≈1998–2008 | £8–20 spares-or-repair | 86 × 26 mm | The best donor there is, and the cheapest way to a deck that does not look home-made. |
+| **A** | [A brand-new empty 1-DIN pocket](#empty-pocket) | current, in stock | £6–12 new | 84 × 27 mm | A new, empty, correctly-sized 1-DIN box with a fascia and a bezel, for about the price of a pint. No gutting, no hazards, no thirty-year-old clips. |
 | **B** | [Cassette-era 1-DIN](#cassette-era) | ≈1985–1998 | £5–15, often free from a scrapyard | none / you cut it | A wide flat face where the cassette door was, and nothing inside that can hurt you. |
 | **B** | [No donor — build the chassis yourself](#fold-your-own) | n/a | £12–20 in materials plus £8–15 for a cage | 84 × 27 mm | Cheapest in money, most expensive in evenings, and the only route that gives you exactly the window you want. |
 | **B** | [Your own car's factory unit — the sleeper build](#your-own-car) | whatever your car is | £15–60 for a used unit for your model | none / you cut it | The only route to a deck that looks like it left the factory. |
@@ -118,6 +121,63 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 5. Keep the flexi from the button panel attached to the fascia and cut it free of the main board — you want the switches, not the matrix.
 6. Lift the switch commons and wire each switch to its ladder resistor. Six buttons, six resistors, one wire to the deck.
 7. Dry-fit the deck's panel behind the window before bonding anything, and check the lit area is centred in the aperture rather than in the fascia.
+
+---
+
+## A brand-new empty 1-DIN pocket
+
+<a id="empty-pocket"></a>
+**Grade A** — Buy this if you see one. · current, in stock
+
+<sub>`donors/new/empty-pocket.json`</sub>
+
+*For example: Universal single-DIN storage pocket / dash tray, 1-DIN blanking plate with trim bezel, Connects2 and similar universal fascia pockets.*
+
+![Window fit for A brand-new empty 1-DIN pocket](media/donor-empty-pocket.svg)
+
+| | | |
+|---|---|---|
+| **What to pay** | ⚠️ £6–12 new | Sold as a 'single DIN storage pocket', 'dash tray' or 'blanking plate'. Their intended job is to fill the hole left by a removed radio, which means they are already exactly the right size. |
+| **Window width** | ✅ 84 mm | You are cutting it into fresh ABS, so it is whatever you choose. 84 × 27 gives the 256×64 panel a 4 mm border. |
+| **Window height** | ✅ 27 mm | As above. |
+| **Chassis** | ⚠️ ABS plastic, 178 × 50 mm, DIN-standard | ⚠️ PLASTIC, not steel. Fine for a display-only deck that draws under 5 W, and it means no chassis ground — so plan the earthing deliberately rather than through the box. |
+| **Cage** | ⚠️ no — buy an ISO 7736 cage | Some pockets are designed to slide into an existing cage; some are the cage. Check which you are buying. |
+| **Buttons** | ✅ none — fit your own | Which is the advantage: six tactile switches where YOU want them, on the ladder values in BUILD.md, rather than where Pioneer put them in 1999. |
+| **Knob** | ✅ none — fit a new EC11 and any knob you like |  |
+| **Its own display** | ✅ none | ✅ Nothing to gut, nothing charged, no laser, no inverter. The only genuinely hazard-free entry in this document. |
+
+### Specific units to search for
+
+| | Model | Years | Its own display | Notes |
+|---|---|---|---|---|
+| ✅ | **Universal single-DIN storage pocket with trim bezel** | current | none — you cut the window | The commonest form. ABS, DIN-standard, a few pounds, everywhere. |
+| ⚠️ | **1-DIN blanking plate / dash tray** | current | none | Shallower than a pocket. ⚠️ Check the depth before buying — some are trays a few centimetres deep and will not hold the boards. |
+| ✅ | **Connects2 and similar universal fascia plates** | current | none | Sold for filling gaps around aftermarket radios; some are full pockets. Better made than the generic ones and priced accordingly. |
+
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+**Why this one**
+
+- It is already the right size, already has a fascia and a trim bezel, and is in stock everywhere for under £12 — which is less than most spares-or-repair head units.
+- Fresh ABS cuts and files far more cleanly than thirty-year-old painted plastic, so the window ends up exactly where you want it and looks deliberate.
+- No CD laser, no VFD inverter, no charged electrolytics, no clips that snap. It is the safest and fastest route to a fitted deck.
+- You choose the button layout instead of inheriting one.
+
+**⚠️ Watch out for**
+
+- ⚠️ It is PLASTIC. No chassis ground, and less stiff than steel — support the boards properly rather than letting the panel hang off the face.
+- ⚠️ Check whether the pocket includes a cage or expects to slide into one. The listings are not consistent and the photographs rarely settle it.
+- It looks like an aftermarket blanking plate, because that is what it is. If you want the deck to look factory, this is the wrong route — see the OEM entry.
+- Depth varies a lot between pockets, and some are very shallow trays rather than boxes. Read the dimensions, not the picture.
+
+**How to gut it**
+
+1. Buy the pocket and a separate ISO 7736 cage unless the pocket is one.
+2. Mark the window from the PANEL's active area, not from a measurement, and not from the module's PCB outline — the lit area is usually not centred on the board.
+3. Drill the corners, cut inside the line with a fine blade, file to the line. ABS cuts cleanly and melts if you rush it.
+4. Back the window with 1 mm smoked acrylic bonded from behind.
+5. Drill for six tactile switches and the encoder wherever suits your hand, then wire the ladder — the resistor values are in BUILD.md.
+6. ⚠️ Run a proper ground wire to the car's earth. A plastic box gives you no chassis return, and this is the one thing a steel donor did for free.
 
 ---
 

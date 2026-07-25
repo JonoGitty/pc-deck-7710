@@ -127,6 +127,26 @@ def main():
                         tmp], capture_output=True, text=True)
     check("the drawing generator runs", r.returncode == 0,
           (r.stderr or r.stdout)[-400:])
+
+    # The transplant drawings carry the module's real dimensions, so they go
+    # stale the same way and for the same reason.
+    r2 = subprocess.run([sys.executable,
+                         os.path.join(ROOT, "tools", "diagrams",
+                                      "transplant.py"), tmp],
+                        capture_output=True, text=True)
+    check("the transplant generator runs", r2.returncode == 0,
+          (r2.stderr or r2.stdout)[-400:])
+    if r2.returncode == 0:
+        for name in ("transplant-panel.svg", "transplant-buttons.svg"):
+            b = os.path.join(ROOT, "docs", "media", name)
+            if not os.path.exists(b):
+                check(f"{name} is committed", False,
+                      "run: python3 tools/diagrams/transplant.py")
+                continue
+            check(f"{name} is up to date",
+                  open(os.path.join(tmp, name), encoding="utf-8").read() ==
+                  open(b, encoding="utf-8").read(),
+                  "run: python3 tools/diagrams/transplant.py")
     if r.returncode == 0:
         for path in files:
             slug = os.path.splitext(os.path.basename(path))[0]

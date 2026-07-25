@@ -664,11 +664,16 @@ you cut anything.**
 
 ### 7.1 Gut the donor
 
-**Which donor?** [DONORS.md](DONORS.md) grades five routes and draws, to
+**Which donor?** [DONORS.md](DONORS.md) grades six routes and draws, to
 scale, whether the deck's panel fits behind each one's window — which is the
 only thing that really decides it. Short version: **buy a broken one**. You
 are keeping the box, the face, the cage and the buttons, and binning
 everything that makes a working unit cost four times as much.
+
+**And how do the parts actually move across?**
+[TRANSPLANT.md](TRANSPLANT.md) — aligning the panel to its lit area rather
+than to its PCB, and rewiring the donor's scanned button matrix as the deck's
+one-wire ladder. Both hide a day of work behind a one-line instruction.
 
 1. **Take the fascia off first**, gently. Clips, not screws, and they are
    thirty years old. It is the part you cannot replace.

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 560" width="1060" height="560" role="img" aria-label="MOVING THE SCREEN">
+<title>MOVING THE SCREEN</title>
+<rect width="1060" height="560" fill="#08080a"/>
+<text x="28" y="38" font-size="15" fill="#ffd978" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.14em">MOVING THE SCREEN</text>
+<text x="28" y="58" font-size="11" fill="#8a8578" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">The module is bigger than the hole, and its lit area is not centred on it. Mark from the glass.</text>
+<rect x="258.6" y="132.0" width="542.7" height="180.9" rx="3" fill="#14321f" stroke="#2f6b46" stroke-width="1.5"/>
+<text x="258.6" y="120.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the SSD1322 module — PCB 100.5 × 33.5 mm</text>
+<rect x="301.0" y="170.6" width="414.7" height="103.7" fill="#000" stroke="#f3a52b" stroke-width="2"/>
+<text x="508.4" y="226.5" font-size="11" fill="#f3a52b" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">lit area  76.8 × 19.2</text>
+<rect x="725.8" y="148.2" width="59.4" height="145.8" rx="2" fill="#0f2417" stroke="#2f6b46" stroke-width="1"/>
+<text x="755.5" y="223.8" font-size="8" fill="#8a8578" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">FFC</text>
+<line x1="530.0" y1="128.0" x2="530.0" y2="342.9" stroke="#ff4938" stroke-width="1" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text x="530.0" y="356.9" font-size="8.5" fill="#ff4938" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">centre of the PCB</text>
+<line x1="508.4" y1="110.0" x2="508.4" y2="316.9" stroke="#f3a52b" stroke-width="1" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text x="508.4" y="102.0" font-size="8.5" fill="#f3a52b" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">centre of the GLASS — mark from this</text>
+<line x1="508.4" y1="328.9" x2="530.0" y2="328.9" stroke="#ffd978" stroke-width="1.6" stroke-linecap="round"/>
+<text x="519.2" y="324.9" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">this offset ⚠️ measure yours</text>
+<rect x="281.6" y="149.6" width="453.6" height="145.8" fill="none" stroke="#d8d4cc" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="508.4" y="139.6" font-size="9" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">window 84 × 27 — a 4 mm border all round the glass</text>
+<rect x="28.0" y="348.0" width="1004.0" height="150.0" rx="5" fill="#0f0f14" stroke="#23232b" stroke-width="1"/>
+<rect x="28.0" y="348.0" width="3.0" height="150.0" rx="1.5" fill="#f3a52b"/>
+<text x="44.0" y="370.0" font-size="9" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" letter-spacing="0.14em">THE FOUR THINGS THAT DECIDE THIS</text>
+<text x="44.0" y="394.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">1.  Mark the window from the LIT AREA, never from the PCB outline and never from a measurement. Hold the module against the fascia, power it, and scribe round what glows.</text>
+<text x="44.0" y="420.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">2.  The panel sits AT the fascia plane, not behind it. Recess a dot-matrix display and you are looking down a tunnel — contrast and viewing angle both go.</text>
+<text x="44.0" y="446.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">3.  The PCB is 100.5 mm wide against a 182 mm fascia, so it clears easily side to side. It is the 33.5 mm height against a 53 mm face that gets tight once the bezel is on.</text>
+<text x="44.0" y="472.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">4.  Note which end the FFC leaves from and orient the module so it exits towards the main board, with a service loop. A ribbon pulled taut tears at the connector, not in the middle.</text>
+<text x="28.0" y="538.0" font-size="9.5" fill="#ff4938" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">⚠️  Module dimensions are from the listings this project recommends; the lit area's offset within the PCB varies by supplier. Measure the one you bought.</text>
+</svg>

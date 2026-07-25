@@ -66,6 +66,9 @@ python3 tools/diagrams/steps.py "$OUT"
 # ...and one window-fit drawing per donor family, scaled from the measured
 # window in donors/*.json.
 python3 tools/diagrams/donors.py "$OUT"
+# ...and the two transplant drawings: aligning the panel to its lit area,
+# and turning a donor's scanned matrix into the deck's one-wire ladder.
+python3 tools/diagrams/transplant.py "$OUT"
 
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"

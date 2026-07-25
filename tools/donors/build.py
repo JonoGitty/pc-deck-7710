@@ -97,6 +97,10 @@ def render(donors):
       "display** — you are fitting your own |")
     w("")
 
+    w("> **Already got one?** [TRANSPLANT.md](TRANSPLANT.md) covers the "
+      "fiddly half — aligning the panel to its lit area rather than to its "
+      "PCB, and turning the donor's scanned button matrix into the deck's "
+      "one-wire ladder.\n")
     w("## The window is the only thing that really decides it\n")
     w("The deck's lit area is about **76 × 19 mm** (SSD1322) or **76 × 14 "
       "mm** (GP1294AI). Everything else about a donor is recoverable — the "
