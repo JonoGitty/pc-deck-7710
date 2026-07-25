@@ -664,7 +664,7 @@ you cut anything.**
 
 ### 7.1 Gut the donor
 
-**Which donor?** [DONORS.md](DONORS.md) grades six routes and draws, to
+**Which donor?** [DONORS.md](DONORS.md) grades eight routes and draws, to
 scale, whether the deck's panel fits behind each one's window — which is the
 only thing that really decides it. Short version: **buy a broken one**. You
 are keeping the box, the face, the cage and the buttons, and binning

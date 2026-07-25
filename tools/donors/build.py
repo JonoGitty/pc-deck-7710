@@ -174,6 +174,19 @@ def render(donors):
               "build. Model names are ⚠️ researched, not handled — and no "
               "window here has been measured.</sub>\n")
 
+        if d.get("teardown"):
+            w("### Stripping it down\n")
+            w(f"![Strip-down order for {d['family']}]"
+              f"(media/teardown-{d['_slug']}.svg)\n")
+            w("| | Part | | What happens to it |")
+            w("|---|---|---|---|")
+            ic = {"keep": "🟩 **KEEP**", "bin": "🟥 BIN",
+                  "hazard": "🟧 **HAZARD**"}
+            for i, t in enumerate(d["teardown"], 1):
+                w(f"| {i} | **{t['part']}** | {ic[t['action']]} "
+                  f"| {t['note'] or ''} |")
+            w("")
+
         for key, label in (("why", "Why this one"),
                            ("watch_out", "⚠️ Watch out for"),
                            ("steps", "How to gut it")):

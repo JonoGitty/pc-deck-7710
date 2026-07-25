@@ -253,7 +253,7 @@ broken one on purpose**. The CD mechanism, the amplifier and the tuner all go
 in the bin on the first evening, so a jammed unit at £8 is worth exactly as
 much to you as a working one at £40.
 
-**[docs/DONORS.md](docs/DONORS.md)** grades five routes and draws, to scale,
+**[docs/DONORS.md](docs/DONORS.md)** grades eight routes and draws, to scale,
 whether the deck's panel fits behind each one's window:
 
 ![Which donor: does the panel fit behind its window](docs/media/donor-dot-matrix.svg)
@@ -262,7 +262,7 @@ whether the deck's panel fits behind each one's window:
 their window is already a wide letterbox of about the right size, in about the
 right place, in the right colour.*
 
-**Thirty-one units are named**, each flagged ✅ buy it / ⚠️ read the note / ❌
+**Forty-two units are named**, each flagged ✅ buy it / ⚠️ read the note / ❌
 avoid. The short list to search for: **Pioneer DEH-P9000R** and **DEH-P9100R**
 (the OEL originals), their **MEH-** MiniDisc twins — same fascia, a fraction
 of the price because MiniDisc is worthless — **DEH-P6600**, **DEH-P6800MP**,
@@ -275,6 +275,14 @@ thing to defeat.
 
 ⚠️ And a VFD donor's power board makes tens of volts and holds them after
 power-off. That hazard is real and it is on the page.
+
+![Strip-down: what you keep, what you bin, what you discharge first](docs/media/teardown-dot-matrix.svg)
+
+*Every family gets a **strip-down drawing** in the order it comes apart, with
+only three colours: green you keep, red goes in the bin, amber gets discharged
+before you touch it. A teardown list tells you the order; this tells you the
+thing that actually matters with a screwdriver in your hand — which of these
+am I about to throw away.*
 
 ```sh
 python3 tools/deckctl.py donor --full   # grade them, with the model numbers

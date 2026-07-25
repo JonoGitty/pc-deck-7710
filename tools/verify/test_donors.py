@@ -99,6 +99,25 @@ def main():
         check(f"{rel} every named model has a verdict and a reason", not bad_m,
               "; ".join(bad_m[:3]))
 
+        # A teardown that omits the hazards is worse than none, because it
+        # reads as a complete list. Every part needs a verdict.
+        bad_t = []
+        for t in d.get("teardown") or []:
+            if t.get("action") not in {"keep", "bin", "hazard"}:
+                bad_t.append(f"{t.get('part', '?')}: action is "
+                             f"{t.get('action')!r}")
+            if not t.get("part"):
+                bad_t.append("a step with no part named")
+        check(f"{rel} every teardown step says what happens to the part",
+              not bad_t, "; ".join(bad_t[:3]))
+        if d.get("teardown"):
+            check(f"{rel} the teardown starts with the fascia",
+                  "fascia" in d["teardown"][0]["part"].lower()
+                  or d["teardown"][0]["part"] == "nothing",
+                  "the fascia comes off before any screw on every unit here — "
+                  "a teardown that starts elsewhere is either wrong or is a "
+                  "family that needs explaining")
+
         # Window dimensions are numbers, because the drawing scales them.
         for key in ("window_w_mm", "window_h_mm"):
             v = d.get(key, {}).get("v")
@@ -130,6 +149,28 @@ def main():
 
     # The transplant drawings carry the module's real dimensions, so they go
     # stale the same way and for the same reason.
+    r3 = subprocess.run([sys.executable,
+                         os.path.join(ROOT, "tools", "diagrams",
+                                      "teardown.py"), tmp],
+                        capture_output=True, text=True)
+    check("the teardown generator runs", r3.returncode == 0,
+          (r3.stderr or r3.stdout)[-400:])
+    if r3.returncode == 0:
+        for path in files:
+            slug = os.path.splitext(os.path.basename(path))[0]
+            name = f"teardown-{slug}.svg"
+            b = os.path.join(ROOT, "docs", "media", name)
+            if not os.path.exists(os.path.join(tmp, name)):
+                continue                      # family with no teardown yet
+            if not os.path.exists(b):
+                check(f"{name} is committed", False,
+                      "run: python3 tools/diagrams/teardown.py")
+                continue
+            check(f"{name} is up to date",
+                  open(os.path.join(tmp, name), encoding="utf-8").read() ==
+                  open(b, encoding="utf-8").read(),
+                  "run: python3 tools/diagrams/teardown.py")
+
     r2 = subprocess.run([sys.executable,
                          os.path.join(ROOT, "tools", "diagrams",
                                       "transplant.py"), tmp],

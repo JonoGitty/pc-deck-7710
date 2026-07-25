@@ -233,5 +233,57 @@
       "flag": "good",
       "c": "unverified"
     }
+  ],
+  "teardown": [
+    {
+      "part": "fascia",
+      "action": "keep",
+      "note": "Clips, thirty years old. FIRST off, before any screw — it is the part you cannot replace."
+    },
+    {
+      "part": "button panel + flexi",
+      "action": "keep",
+      "note": "Stays with the fascia. Cut it free of the main board, not off the fascia."
+    },
+    {
+      "part": "trim ring / bezel",
+      "action": "keep",
+      "note": "Usually slides off the front once the fascia is away."
+    },
+    {
+      "part": "top + bottom covers",
+      "action": "keep",
+      "note": "Keep every screw. They are the right length for this chassis and nothing in your box will be."
+    },
+    {
+      "part": "its own display module",
+      "action": "bin",
+      "note": "⚠️ If it is a VFD, the board behind it holds tens of volts. Discharge before handling."
+    },
+    {
+      "part": "CD mechanism",
+      "action": "bin",
+      "note": "One sub-assembly on four screws, comes out whole. Do not power it to test the laser."
+    },
+    {
+      "part": "amplifier board",
+      "action": "hazard",
+      "note": "Discharge the large electrolytics, then bin. This is the stored energy in the unit."
+    },
+    {
+      "part": "main PCB + tuner",
+      "action": "bin",
+      "note": "The decoder your buttons were wired to. Cut the flexi at the board, not at the fascia."
+    },
+    {
+      "part": "chassis",
+      "action": "keep",
+      "note": "The box. What you came for."
+    },
+    {
+      "part": "cage + rear strap",
+      "action": "keep",
+      "note": "If it came with them. Worth £8–15 on their own."
+    }
   ]
 }

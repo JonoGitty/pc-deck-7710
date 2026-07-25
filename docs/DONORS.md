@@ -45,7 +45,9 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **A** | [A brand-new empty 1-DIN pocket](#empty-pocket) | current, in stock | £6–12 new | 84 × 27 mm | A new, empty, correctly-sized 1-DIN box with a fascia and a bezel, for about the price of a pint. No gutting, no hazards, no thirty-year-old clips. |
 | **B** | [Cassette-era 1-DIN](#cassette-era) | ≈1985–1998 | £5–15, often free from a scrapyard | none / you cut it | A wide flat face where the cassette door was, and nothing inside that can hurt you. |
 | **B** | [No donor — build the chassis yourself](#fold-your-own) | n/a | £12–20 in materials plus £8–15 for a cage | 84 × 27 mm | Cheapest in money, most expensive in evenings, and the only route that gives you exactly the window you want. |
+| **B** | [A 2-DIN unit, split down to 1-DIN plus a pocket](#two-din-split) | ≈2000–present | £10–25 spares-or-repair, or £12–20 for a cage and pocket new | 84 × 27 mm | For cars with a double-height hole. The deck fills the top half and a pocket fills the bottom, which is how every 1-DIN radio has gone into a 2-DIN dash for thirty years. |
 | **B** | [Your own car's factory unit — the sleeper build](#your-own-car) | whatever your car is | £15–60 for a used unit for your model | none / you cut it | The only route to a deck that looks like it left the factory. |
+| **C** | [A modern retro-styled reissue](#retro-reissue) | current | £150–400 new | none / you cut it | The right look, brand new, at four times the price of a scrap unit — and you are gutting something that works. |
 | **C** | [Aftermarket 1-DIN with a small segment LCD](#segment-lcd) | ≈2005–present | £5–15 spares-or-repair | 52 × 18 mm | A perfectly good box and cage behind a window that is the wrong shape and too small. |
 
 ---
@@ -98,6 +100,23 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | ✅ | **Blaupunkt Woodstock DAB53** | ≈2005 | dot matrix | Same family, often cheaper than the Bremen because the name carries less weight. |
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Stripping it down
+
+![Strip-down order for Aftermarket 1-DIN with a large dot-matrix display](media/teardown-dot-matrix.svg)
+
+| | Part | | What happens to it |
+|---|---|---|---|
+| 1 | **fascia** | 🟩 **KEEP** | Clips, thirty years old. FIRST off, before any screw — it is the part you cannot replace. |
+| 2 | **button panel + flexi** | 🟩 **KEEP** | Stays with the fascia. Cut it free of the main board, not off the fascia. |
+| 3 | **trim ring / bezel** | 🟩 **KEEP** | Usually slides off the front once the fascia is away. |
+| 4 | **top + bottom covers** | 🟩 **KEEP** | Keep every screw. They are the right length for this chassis and nothing in your box will be. |
+| 5 | **its own display module** | 🟥 BIN | ⚠️ If it is a VFD, the board behind it holds tens of volts. Discharge before handling. |
+| 6 | **CD mechanism** | 🟥 BIN | One sub-assembly on four screws, comes out whole. Do not power it to test the laser. |
+| 7 | **amplifier board** | 🟧 **HAZARD** | Discharge the large electrolytics, then bin. This is the stored energy in the unit. |
+| 8 | **main PCB + tuner** | 🟥 BIN | The decoder your buttons were wired to. Cut the flexi at the board, not at the fascia. |
+| 9 | **chassis** | 🟩 **KEEP** | The box. What you came for. |
+| 10 | **cage + rear strap** | 🟩 **KEEP** | If it came with them. Worth £8–15 on their own. |
 
 **Why this one**
 
@@ -155,6 +174,16 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | ✅ | **Connects2 and similar universal fascia plates** | current | none | Sold for filling gaps around aftermarket radios; some are full pockets. Better made than the generic ones and priced accordingly. |
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Stripping it down
+
+![Strip-down order for A brand-new empty 1-DIN pocket](media/teardown-empty-pocket.svg)
+
+| | Part | | What happens to it |
+|---|---|---|---|
+| 1 | **nothing** | 🟩 **KEEP** | ✅ There is no teardown. It arrives empty, which is the entire point of this route. |
+| 2 | **the pocket's own tray/liner** | 🟥 BIN | Some have a moulded tray inside; cut or remove it to make room for the boards. |
+| 3 | **trim bezel** | 🟩 **KEEP** | Usually separate. Fit it last, like a fascia. |
 
 **Why this one**
 
@@ -215,6 +244,22 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | ✅ | **Any OEM cassette head unit from a scrapyard** | ≈1985–1998 | varies | ✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with. |
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Stripping it down
+
+![Strip-down order for Cassette-era 1-DIN](media/teardown-cassette-era.svg)
+
+| | Part | | What happens to it |
+|---|---|---|---|
+| 1 | **fascia** | 🟩 **KEEP** | ⚠️ Often PAINTED rather than moulded, and paint from 1988 does not survive being worked on. |
+| 2 | **knobs** | 🟩 **KEEP** | Twin concentric knobs on many. The nicest to use of any donor here. |
+| 3 | **buttons** | 🟩 **KEEP** | Discrete switches, not a matrix — which makes the ladder rewire EASIER, not harder. |
+| 4 | **top + bottom covers** | 🟩 **KEEP** | Keep the screws. |
+| 5 | **cassette mechanism** | 🟥 BIN | One sub-assembly on four screws. Its aperture becomes your window. |
+| 6 | **amplifier board** | 🟧 **HAZARD** | Discharge the electrolytics. Older units have bigger ones. |
+| 7 | **tuner + main PCB** | 🟥 BIN | No microcontroller worth the name in the oldest units. |
+| 8 | **chassis** | 🟩 **KEEP** | Steel, deep, heavy. Built like furniture. |
+| 9 | **mounting brackets** | 🟩 **KEEP** | ⚠️ Pre-ISO on the older ones — check before assuming a modern cage fits. |
 
 **Why this one**
 
@@ -283,6 +328,79 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 
 ---
 
+## A 2-DIN unit, split down to 1-DIN plus a pocket
+
+<a id="two-din-split"></a>
+**Grade B** — Good, with one thing to think about first. · ≈2000–present
+
+<sub>`donors/aftermarket/two-din-split.json`</sub>
+
+*For example: Any double-DIN CD/DVD receiver, spares-or-repair, 2-DIN cage + trim ring bought separately, 1-DIN + pocket fascia kits.*
+
+![Window fit for A 2-DIN unit, split down to 1-DIN plus a pocket](media/donor-two-din-split.svg)
+
+| | | |
+|---|---|---|
+| **What to pay** | ⚠️ £10–25 spares-or-repair, or £12–20 for a cage and pocket new | Broken 2-DIN units are cheap because a cracked touchscreen makes them worthless — and you were binning the screen anyway. |
+| **Window width** | ✅ 84 mm | You are building the top half yourself, so the window is whatever you cut. The donor supplies the cage and the surround, not the face. |
+| **Window height** | ✅ 27 mm | As above. |
+| **Chassis** | ⚠️ steel, 2-DIN cage; you build a 1-DIN box inside it | The useful part is the CAGE and the trim ring, which are car-aperture-sized and hard to fabricate. |
+| **Cage** | ⚠️ yes, and it is the reason to buy one | A 2-DIN cage plus a 1-DIN-and-pocket adapter is the whole point of this route. |
+| **Buttons** | 📏 whatever the donor had, often on a touchscreen instead | ⚠️ A touchscreen unit may have almost NO physical buttons. Count before relying on the fascia for six. |
+| **Knob** | 📏 often a single encoder, sometimes none | Touchscreen-era units frequently have no knob at all, which is a poor start for a deck built around one. |
+| **Its own display** | ⚠️ TFT or touchscreen | ⚠️ A backlit TFT has an inverter on the older ones. LED backlights do not. Check before probing. |
+
+### Specific units to search for
+
+| | Model | Years | Its own display | Notes |
+|---|---|---|---|---|
+| ✅ | **Any 2-DIN CD/DVD receiver with a cracked screen** | ≈2005–2018 | TFT, usually broken | The cheapest source of a 2-DIN cage there is. The fault that makes it worthless is in the part you are removing. |
+| ✅ | **Pioneer AVH- series** | ≈2006–present | TFT touchscreen | Common, and the cages and trim rings are well made. |
+| ✅ | **Kenwood DDX / DNX series** | ≈2006–present | TFT touchscreen | As above. DNX are navigation units and go cheaper still once the maps are obsolete. |
+| ✅ | **Sony XAV- series** | ≈2008–present | TFT touchscreen | Widely available broken. |
+| ✅ | **A 2-DIN cage and 1-DIN+pocket fascia, bought new** | current | none | ✅ Skip the donor entirely. Under £20 for both, no teardown, no hazards — the same logic as the empty-pocket route one size up. |
+
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Stripping it down
+
+![Strip-down order for A 2-DIN unit, split down to 1-DIN plus a pocket](media/teardown-two-din-split.svg)
+
+| | Part | | What happens to it |
+|---|---|---|---|
+| 1 | **fascia / screen assembly** | 🟥 BIN | Off first, as on any unit. ⚠️ Older TFT backlights run from an inverter — do not probe it blind. |
+| 2 | **trim ring / surround** | 🟩 **KEEP** | Comes off the front once the fascia is away. Sized to the car's aperture and one of the two reasons for this route. |
+| 3 | **covers** | 🟥 BIN | You are not keeping this chassis, so the screws matter less than usual — but keep a few anyway. |
+| 4 | **optical drive / mechanism** | 🟥 BIN | Same caution as any disc unit: do not power it to test the laser. |
+| 5 | **main board + amplifier** | 🟧 **HAZARD** | Discharge the large electrolytics before binning. |
+| 6 | **chassis** | 🟥 BIN | ⚠️ Unusual — on this route you do NOT keep the donor's box. It is the wrong height. You build a 1-DIN one. |
+| 7 | **2-DIN cage** | 🟩 **KEEP** | The other reason for this route, and the part that is genuinely awkward to fabricate. It stays in the car. |
+
+**Why this one**
+
+- It is the only sensible answer for a car with a 2-DIN aperture, and two cars in this project's vehicle list have one.
+- Cracked-screen 2-DIN units are worth nothing to anybody, and the screen is the part you were throwing away.
+- You get a 2-DIN cage and trim ring, which are the parts that are genuinely awkward to make and are sized to the car's hole.
+- The bottom half becomes real storage, which every owner of a small car wants anyway.
+
+**⚠️ Watch out for**
+
+- ⚠️ You are building the 1-DIN box yourself — this route gives you the cage and the surround, not a ready-made chassis. Combine it with the fold-your-own or empty-pocket entries.
+- ⚠️ Touchscreen units often have no usable buttons and no knob. Establish what physical controls exist before buying.
+- The 1-DIN half must sit at the TOP of the aperture, not the bottom, or the display ends up below the driver's sight line.
+- Older TFT backlights use an inverter. Not as lively as a VFD supply, still not something to probe blind.
+
+**How to gut it**
+
+1. Confirm your car's aperture is actually 2-DIN — VEHICLES.md, then measure.
+2. Buy the broken 2-DIN unit for its cage and trim ring, or buy those new.
+3. Strip it: the screen, the mechanism and all the boards go.
+4. Build or buy the 1-DIN box for the top half — see the fold-your-own and empty-pocket entries, which are the same job from here on.
+5. Fit a 1-DIN storage pocket in the bottom half so the result looks intentional rather than gap-toothed.
+6. ⚠️ Mount the deck in the TOP half. A display below the centre console's midline is one you have to look down at.
+
+---
+
 ## Your own car's factory unit — the sleeper build
 
 <a id="your-own-car"></a>
@@ -305,6 +423,22 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **Knob** | ⚠️ usually one, car-styled | The reason to do this at all: it matches the rest of the interior. |
 | **Its own display** | 📏 varies | ⚠️ Many OEM units of the right era use a VFD. Treat the power board as live. |
 
+### Stripping it down
+
+![Strip-down order for Your own car's factory unit — the sleeper build](media/teardown-your-own-car.svg)
+
+| | Part | | What happens to it |
+|---|---|---|---|
+| 1 | **fascia / surround** | 🟩 **KEEP** | The reason you chose this route. Car-specific and single-source — break it and there is no generic replacement. |
+| 2 | **buttons** | 🟩 **KEEP** | Often fewer than an aftermarket unit. Count before committing. |
+| 3 | **car-specific brackets** | 🟩 **KEEP** | ⚠️ OEM units usually bolt to these rather than sliding into a cage. They ARE your mounting. |
+| 4 | **covers** | 🟩 **KEEP** | Keep the screws. |
+| 5 | **its own display** | 🟥 BIN | ⚠️ Many OEM units of the right era use a VFD. Treat the power board as live. |
+| 6 | **CD / cassette mechanism** | 🟥 BIN |  |
+| 7 | **amplifier board** | 🟧 **HAZARD** | Discharge. OEM amps are often integrated into the main board — cut carefully. |
+| 8 | **main PCB** | 🟥 BIN | ⚠️ On some cars this also handles chimes or the clock. Losing it may be more than losing a radio. |
+| 9 | **chassis** | 🟩 **KEEP** | Varies entirely by manufacturer — some are a standard box in a car-specific surround, some are not. |
+
 **Why this one**
 
 - The fascia already fits your dashboard exactly, because it was made for it. No adapter, no gap, no aftermarket look.
@@ -325,6 +459,73 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 3. Measure the window before any disassembly. If it will not take 76 × 19 mm, decide now whether you are cutting it or choosing a different route.
 4. Note how it mounts — brackets or cage — because that decides the chassis you build.
 5. Then the standard teardown: fascia first, keep every screw.
+
+---
+
+## A modern retro-styled reissue
+
+<a id="retro-reissue"></a>
+**Grade C** — Usable. You will be cutting the fascia. · current
+
+<sub>`donors/new/retro-reissue.json`</sub>
+
+*For example: Blaupunkt Bremen SQR 46 DAB, RetroSound and similar, Other 'classic look, modern internals' 1-DIN units.*
+
+![Window fit for A modern retro-styled reissue](media/donor-retro-reissue.svg)
+
+| | | |
+|---|---|---|
+| **What to pay** | ⚠️ £150–400 new | ⚠️ By far the most expensive entry here, and the only one where you destroy a working product to do it. |
+| **Window width** | 📏 — | Reissues generally have a small modern display in a period-looking face. Measure before assuming. |
+| **Window height** | 📏 — | As above. |
+| **Chassis** | ⚠️ steel, modern, DIN-standard | Well made, as you would expect at the price. |
+| **Cage** | ⚠️ yes | New units ship with one. |
+| **Buttons** | ⚠️ period-styled, good quality | The reason somebody would consider this at all. |
+| **Knob** | ⚠️ period-styled, often twin concentric | Genuinely lovely, and the best-matched knobs to the aesthetic this project is chasing. |
+| **Its own display** | ⚠️ modern LCD or OLED | No inverter, nothing charged. Safe to open. |
+
+### Specific units to search for
+
+| | Model | Years | Its own display | Notes |
+|---|---|---|---|---|
+| ⚠️ | **Blaupunkt Bremen SQR 46 DAB** | 2019–present | modern display in the 1986 face | The reissue of the cult classic, with Bluetooth, DAB and USB built in. ⚠️ Consider buying it and stopping — it may already be the thing you wanted. |
+| ⚠️ | **RetroSound Model One / Two and similar** | current | small modern display | American, aimed at classic-car restorations, with swappable knobs and faces. ⚠️ Small window in a large face. |
+| ⚠️ | **Other 'retro' 1-DIN Bluetooth receivers** | current | varies | A crowded and inconsistent market. Measure the window from the listing photographs before ordering. |
+
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Stripping it down
+
+![Strip-down order for A modern retro-styled reissue](media/teardown-retro-reissue.svg)
+
+| | Part | | What happens to it |
+|---|---|---|---|
+| 1 | **fascia + knobs** | 🟩 **KEEP** | New, undamaged, period-styled. The only reason for this route. |
+| 2 | **trim bezel** | 🟩 **KEEP** |  |
+| 3 | **covers** | 🟩 **KEEP** | Modern screws, all the same length. A pleasant change. |
+| 4 | **its own display + main board** | 🟥 BIN | ⚠️ You are binning a working radio. Be at peace with that before you start. |
+| 5 | **chassis** | 🟩 **KEEP** | Modern steel, DIN-standard, straight. |
+| 6 | **cage** | 🟩 **KEEP** | Supplied new with the unit. |
+
+**Why this one**
+
+- The fascia and knobs are period-correct by design rather than by accident, which is the whole aesthetic this project is after.
+- Brand new, so no broken clips, no faded paint and no missing trim.
+- Nothing inside is hazardous — modern backlighting, no laser on the mechless ones.
+
+**⚠️ Watch out for**
+
+- ⚠️ You are gutting a working £150–400 product to fit a £30 board. If the look is worth that to you, fine — but be honest that it is a want, not a route to a cheaper deck.
+- ⚠️ Many reissues have a SMALL display in a large face. Measure the window before buying; this is the entry most likely to disappoint on that number.
+- A reissue that already does Bluetooth, DAB and USB may simply be the product you wanted, without any of this.
+
+**How to gut it**
+
+1. Ask honestly whether the unit as sold already does what you want. For several people the correct answer to this entry is 'buy it and stop'.
+2. If not: measure the window before opening anything.
+3. Standard teardown — fascia first, keep every screw.
+4. Nothing inside is charged, so this is a calm strip-down.
+5. Keep the knobs. They are the reason you are here.
 
 ---
 
@@ -361,6 +562,22 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | ✅ | **Any 'mechless' Bluetooth/USB 1-DIN receiver** | ≈2012–present | small segment LCD | ✅ The SAFEST donor of all — no CD laser, no VFD inverter, nothing charged. Shallow too. You are just going to cut the window. |
 
 <sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+
+### Stripping it down
+
+![Strip-down order for Aftermarket 1-DIN with a small segment LCD](media/teardown-segment-lcd.svg)
+
+| | Part | | What happens to it |
+|---|---|---|---|
+| 1 | **fascia** | 🟩 **KEEP** | Often clipped; ⚠️ at the bottom of the market they are glued and will not come off intact. |
+| 2 | **button panel** | 🟩 **KEEP** | Fewer switches than the dot-matrix units. Count them before you rely on six. |
+| 3 | **top + bottom covers** | 🟩 **KEEP** | Keep the screws. |
+| 4 | **its own display** | 🟥 BIN | Segment LCD — backlit, no inverter. Nothing charged. |
+| 5 | **CD mechanism, if fitted** | 🟥 BIN | A mechless unit has none, which is why it is the safest thing here. |
+| 6 | **amplifier board** | 🟧 **HAZARD** | Discharge the electrolytics. |
+| 7 | **main PCB** | 🟥 BIN |  |
+| 8 | **chassis** | 🟩 **KEEP** | ⚠️ Check it is steel. The very cheapest units are plastic. |
+| 9 | **cage** | 🟩 **KEEP** | Usually included. |
 
 **Why this one**
 

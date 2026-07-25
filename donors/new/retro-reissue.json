@@ -1,0 +1,127 @@
+{
+  "family": "A modern retro-styled reissue",
+  "examples": [
+    "Blaupunkt Bremen SQR 46 DAB",
+    "RetroSound and similar",
+    "Other 'classic look, modern internals' 1-DIN units"
+  ],
+  "category": "new",
+  "era": "current",
+  "grade": "C",
+  "one_liner": "The right look, brand new, at four times the price of a scrap unit — and you are gutting something that works.",
+  "price": {
+    "v": "£150–400 new",
+    "c": "unverified",
+    "why": "⚠️ By far the most expensive entry here, and the only one where you destroy a working product to do it."
+  },
+  "window_w_mm": {
+    "v": 0,
+    "c": "measure",
+    "why": "Reissues generally have a small modern display in a period-looking face. Measure before assuming."
+  },
+  "window_h_mm": {
+    "v": 0,
+    "c": "measure",
+    "why": "As above."
+  },
+  "chassis": {
+    "v": "steel, modern, DIN-standard",
+    "c": "unverified",
+    "why": "Well made, as you would expect at the price."
+  },
+  "cage_included": {
+    "v": "yes",
+    "c": "unverified",
+    "why": "New units ship with one."
+  },
+  "buttons": {
+    "v": "period-styled, good quality",
+    "c": "unverified",
+    "why": "The reason somebody would consider this at all."
+  },
+  "knob": {
+    "v": "period-styled, often twin concentric",
+    "c": "unverified",
+    "why": "Genuinely lovely, and the best-matched knobs to the aesthetic this project is chasing."
+  },
+  "display_tech": {
+    "v": "modern LCD or OLED",
+    "c": "unverified",
+    "why": "No inverter, nothing charged. Safe to open."
+  },
+  "why": [
+    "The fascia and knobs are period-correct by design rather than by accident, which is the whole aesthetic this project is after.",
+    "Brand new, so no broken clips, no faded paint and no missing trim.",
+    "Nothing inside is hazardous — modern backlighting, no laser on the mechless ones."
+  ],
+  "watch_out": [
+    "⚠️ You are gutting a working £150–400 product to fit a £30 board. If the look is worth that to you, fine — but be honest that it is a want, not a route to a cheaper deck.",
+    "⚠️ Many reissues have a SMALL display in a large face. Measure the window before buying; this is the entry most likely to disappoint on that number.",
+    "A reissue that already does Bluetooth, DAB and USB may simply be the product you wanted, without any of this."
+  ],
+  "steps": [
+    "Ask honestly whether the unit as sold already does what you want. For several people the correct answer to this entry is 'buy it and stop'.",
+    "If not: measure the window before opening anything.",
+    "Standard teardown — fascia first, keep every screw.",
+    "Nothing inside is charged, so this is a calm strip-down.",
+    "Keep the knobs. They are the reason you are here."
+  ],
+  "models": [
+    {
+      "name": "Blaupunkt Bremen SQR 46 DAB",
+      "years": "2019–present",
+      "display": "modern display in the 1986 face",
+      "note": "The reissue of the cult classic, with Bluetooth, DAB and USB built in. ⚠️ Consider buying it and stopping — it may already be the thing you wanted.",
+      "flag": "caution",
+      "c": "unverified"
+    },
+    {
+      "name": "RetroSound Model One / Two and similar",
+      "years": "current",
+      "display": "small modern display",
+      "note": "American, aimed at classic-car restorations, with swappable knobs and faces. ⚠️ Small window in a large face.",
+      "flag": "caution",
+      "c": "unverified"
+    },
+    {
+      "name": "Other 'retro' 1-DIN Bluetooth receivers",
+      "years": "current",
+      "display": "varies",
+      "note": "A crowded and inconsistent market. Measure the window from the listing photographs before ordering.",
+      "flag": "caution",
+      "c": "unverified"
+    }
+  ],
+  "teardown": [
+    {
+      "part": "fascia + knobs",
+      "action": "keep",
+      "note": "New, undamaged, period-styled. The only reason for this route."
+    },
+    {
+      "part": "trim bezel",
+      "action": "keep",
+      "note": ""
+    },
+    {
+      "part": "covers",
+      "action": "keep",
+      "note": "Modern screws, all the same length. A pleasant change."
+    },
+    {
+      "part": "its own display + main board",
+      "action": "bin",
+      "note": "⚠️ You are binning a working radio. Be at peace with that before you start."
+    },
+    {
+      "part": "chassis",
+      "action": "keep",
+      "note": "Modern steel, DIN-standard, straight."
+    },
+    {
+      "part": "cage",
+      "action": "keep",
+      "note": "Supplied new with the unit."
+    }
+  ]
+}

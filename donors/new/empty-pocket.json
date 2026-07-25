@@ -94,5 +94,22 @@
       "flag": "good",
       "c": "unverified"
     }
+  ],
+  "teardown": [
+    {
+      "part": "nothing",
+      "action": "keep",
+      "note": "✅ There is no teardown. It arrives empty, which is the entire point of this route."
+    },
+    {
+      "part": "the pocket's own tray/liner",
+      "action": "bin",
+      "note": "Some have a moulded tray inside; cut or remove it to make room for the boards."
+    },
+    {
+      "part": "trim bezel",
+      "action": "keep",
+      "note": "Usually separate. Fit it last, like a fascia."
+    }
   ]
 }
