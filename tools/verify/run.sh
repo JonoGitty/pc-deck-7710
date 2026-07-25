@@ -153,6 +153,19 @@ else
   printf 'GIF container check SKIPPED (needs Pillow)\n'
 fi
 
+# The wiring and pin diagrams, which are generated FROM the firmware rather
+# than drawn alongside it. Regenerating them here and diffing against what is
+# committed means a pin cannot move in deck_*.c without the picture following
+# it — and an accidental collision between two drivers stops the build with a
+# name and a GPIO number instead of being found with a multimeter.
+if python3 tools/verify/test_diagrams.py > build/diagram_test.txt 2>&1; then
+  grep -E 'diagram checks passed' build/diagram_test.txt
+else
+  printf 'MISMATCH — the diagrams no longer describe the firmware:\n\n'
+  cat build/diagram_test.txt
+  exit 1
+fi
+
 # The firmware's UI layer, run on this machine. core/ is verified against the
 # JavaScript; this covers the layer above it — which screen is on, when the
 # dolphins take over, how a track change interrupts — which no amount of

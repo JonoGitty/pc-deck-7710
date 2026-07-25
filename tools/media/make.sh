@@ -55,6 +55,15 @@ for spec in "$@"; do
   python3 tools/movies/preview_gif.py "$src" "$OUT/$m.gif" 3 $opt
 done
 
+printf '\n== diagrams (pin map read out of the firmware) ==\n'
+# SVG rather than PNG: it is text, so a pin moving shows up as a diff you can
+# read. The pin map is parsed from the deck_*.c defines and refuses to draw a
+# GPIO twice, so it cannot quietly stop describing the firmware.
+python3 tools/diagrams/make.py "$OUT"
+# ...and the step-by-step build manual, drawn isometrically from the same
+# millimetre dimensions the overview drawings use.
+python3 tools/diagrams/steps.py "$OUT"
+
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"
 if [ -x "$CHROMIUM" ] && node -e "require('playwright-core')" 2>/dev/null; then

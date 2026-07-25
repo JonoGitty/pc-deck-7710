@@ -81,7 +81,21 @@ sh tools/media/make.sh
   actual thing.
 - **Movie previews** are the shipped `.dmv` files decoded, trimmed to excerpts
   because a preview GIF costs about 3 KB a frame.
+- **Diagrams** come from `tools/diagrams/`, as SVG rather than PNG so that a
+  change is a diff you can read. `pinmap.svg` is the important one: it is
+  parsed out of the firmware's own `#define PIN_...` lines rather than drawn
+  alongside them, it refuses to draw a GPIO that two drivers both claim, and
+  `tools/verify/test_diagrams.py` fails if the committed picture and the code
+  have diverged. `wiring.svg`, `assembly.svg`, `dimensions.svg` and
+  `finished.svg` are laid out by hand in code but regenerate from the same
+  command.
 
 That is the point of the pipeline rather than a folder of screenshots: a README
 full of stale mockups is worse than one with no pictures, because it is
 convincing.
+
+The wiring diagram is the case that justifies the effort. A hand-drawn one is
+correct on the day it is drawn and silently wrong afterwards, and the person it
+misleads is holding a soldering iron over a £30 module. Deriving it from the
+firmware turns "somebody must remember to update the picture" into "the build
+stops".
