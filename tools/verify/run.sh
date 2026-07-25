@@ -192,6 +192,19 @@ else
   exit 1
 fi
 
+# The site. Same staleness rule as the pictures — docs/*.html is generated, so
+# a hand-edit there is discarded the next time anybody runs the generator. Plus
+# the one check a screenshot can never do: every relative link resolves. A
+# broken media path 404s for the reader and not for the author, and the page you
+# looked at was, by definition, one that worked.
+if python3 tools/verify/test_site.py > build/site_test.txt 2>&1; then
+  grep -E 'site checks passed' build/site_test.txt
+else
+  printf 'MISMATCH — the site is stale or a link goes nowhere:\n\n'
+  cat build/site_test.txt
+  exit 1
+fi
+
 # The firmware's UI layer, run on this machine. core/ is verified against the
 # JavaScript; this covers the layer above it — which screen is on, when the
 # dolphins take over, how a track change interrupts — which no amount of

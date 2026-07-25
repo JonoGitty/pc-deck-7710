@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your car</title>
+<meta name="description" content="Whether the deck fits, what adapters it needs, and where the amplifier is going to live.">
+<meta property="og:title" content="Your car">
+<meta property="og:description" content="Whether the deck fits, what adapters it needs, and where the amplifier is going to live.">
+<meta property="og:image" content="../media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="../deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="../index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="../index.html">Home</a><a class="" href="../screens.html">Screens</a><a class="" href="../calls.html">Calls &amp; radio</a><a class="" href="../movies.html">Animations</a><a class="" href="../run.html">Try it</a><a class="" href="../architecture.html">Architecture</a><a class="" href="../status.html">Status</a><a class="guide on" href="../guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<div class="rail"><div class="wrap"><span class="of">Build guide · 2 of 24</span><div class="dots"><a class="done" href="../guide/plan.html" title="Plan the build"></a><a class="now" href="../guide/car.html" title="Your car"></a><a class="" href="../guide/donor.html" title="Choose a donor"></a><a class="" href="../guide/strip.html" title="Strip it down"></a><a class="" href="../guide/reuse.html" title="Keep what you can"></a><a class="" href="../guide/parts.html" title="Buy the parts"></a><a class="" href="../guide/wire.html" title="Wire the boards"></a><a class="" href="../guide/flash.html" title="Flash it, and first light"></a><a class="" href="../guide/transplant.html" title="Move the screen and the buttons"></a><a class="" href="../guide/assemble.html" title="Assemble it — eleven steps"></a><a class="" href="../guide/step-01.html" title="Step 1 — The chassis, empty"></a><a class="" href="../guide/step-02.html" title="Step 2 — Four nylon standoffs"></a><a class="" href="../guide/step-03.html" title="Step 3 — The main board, components up"></a><a class="" href="../guide/step-04.html" title="Step 4 — Four nuts, finger tight plus a quarter"></a><a class="" href="../guide/step-05.html" title="Step 5 — The panel, glass forward"></a><a class="" href="../guide/step-06.html" title="Step 6 — The ribbon, with a service loop"></a><a class="" href="../guide/step-07.html" title="Step 7 — The window, smoked side out"></a><a class="" href="../guide/step-08.html" title="Step 8 — The encoder, through the fascia"></a><a class="" href="../guide/step-09.html" title="Step 9 — The fascia"></a><a class="" href="../guide/step-10.html" title="Step 10 — The cage, in the car"></a><a class="" href="../guide/step-11.html" title="Step 11 — Slide it home"></a><a class="" href="../guide/install.html" title="Into the car"></a><a class="" href="../guide/tune.html" title="Pair it, tune it, load it"></a><a class="" href="../guide/fix.html" title="When it does not work"></a></div><span class="pct">8%</span></div></div><section>
+  <div class="wrap">
+    <h2>Chapter 2</h2>
+    <p class="lede">Your car. The deck is the same object in every car — what changes is a bag of adapters, and where the amplifier goes.</p>
+    <p>Fitting is standard: an <b>ISO 7736</b> cage and an <b>ISO 10487</b>
+      harness, which is the entire reason a home-built head unit drops into
+      anything. Answer three questions before you buy: does it fit, what does it
+      need on top, and where is the amplifier going to live.</p>
+
+<div class="note">
+      <p><b>⚠️ The deck has no amplifier, and you need one.</b> Its output is
+        <b>line level</b> — what an amplifier expects and what a speaker does nothing
+        useful with. On most cars the head unit <em>is</em> the amplifier, so there is
+        nothing already in the dash to feed. A <b>TDA7850</b> or <b>TDA7388</b>
+        4-channel board is £12–20 and is the same IC a real head unit contains.
+        It needs its <b>own fused 12 V feed</b>, not the deck's 5 V buck, and it must
+        share <b>one ground point</b> with the ESP32 or you get alternator whine.</p>
+      <p><b>Or don't buy one at all:</b> the donor you gutted already contains that
+        amplifier, bolted to its own heatsink and wired to the ISO connector —
+        <a href="#fit">the reuse route</a>, and it is £0.</p>
+      <p><b>And a bare mux has no volume control.</b> Fit a <b>PT2313 / TDA7313</b>
+        audio processor (£2–4) instead and you get source selection <em>plus</em>
+        volume, bass, treble, balance and fader over the I²C bus the tuner already
+        uses — no extra pins, and it gives two back.</p>
+    </div>
+
+    <h3>Where the amplifier lives is car-specific</h3>
+    <p class="muted">In a small roadster it is genuinely hard, and the answer for a
+      mid-engined MR2 is not the answer for an MX-5. <b>A 2-DIN aperture is the way
+      out</b>: deck in the top half, amplifier board in the bottom half — front end
+      and amp in one box, which is exactly what a factory head unit is.</p>
+
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Car</th><th>Aperture</th><th>Wheel controls</th><th>Amp in the dash?</th></tr></thead>
+      <tbody>
+        <tr><td>Honda S2000 <b>AP1 / AP2</b></td><td>single DIN</td><td class="ok">none fitted, any market</td><td>no — 1-DIN only</td></tr>
+        <tr><td>Mazda MX-5 <b>NA / NB</b></td><td>single DIN</td><td>none known</td><td>no — 1-DIN only</td></tr>
+        <tr><td>Mazda MX-5 <b>NC</b></td><td>double DIN</td><td>⚠️ some trims — check yours</td><td class="ok">yes — 2-DIN</td></tr>
+        <tr><td>Mazda MX-5 <b>ND</b></td><td class="warn">no DIN slot at all — the deck cannot be the head unit</td><td>present</td><td>—</td></tr>
+        <tr><td>Toyota MR2 <b>W10 / W30</b></td><td>single DIN</td><td>none known</td><td>no — 1-DIN only</td></tr>
+        <tr><td>Toyota MR2 <b>W20</b></td><td>⚠️ double DIN, believed — measure it</td><td>none known</td><td class="ok">yes — 2-DIN</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="muted small">Nine entries in full, with harness and aerial adapters, depth
+      and per-market notes:
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">VEHICLES.md</a>,
+      or <code>python3 tools/deckctl.py fit s2000 ap1</code>.
+      <b>The S2000 has no steering-wheel controls at all</b> — no interface box, no
+      learning step. Adding your car is one JSON file.</p>
+
+    <div class="note">
+      <p><b>⚠️ The radio region follows where you drive, not where the car was built.</b>
+        A JDM import in Britain receives British stations. Japan's FM band is
+        76–95 MHz against Europe's 87.5–108, and the Americas use 10 kHz AM spacing
+        against 9 kHz — get it wrong and most of the band is missing or mistuned.
+        Five regions, stored in NVS, set once.</p>
+    </div>
+    <p class="muted small">Adding your car is one JSON file in <code>vehicles/</code>
+      and a pull request. If a field does not apply — many cars have no
+      steering-wheel controls at all — say so explicitly: “none fitted” is
+      information, a missing key is not.</p>
+  </div>
+</section>
+<nav class="prevnext"><div class="wrap"><a class="prev" href="../guide/plan.html"><span>← Previous</span><b>Plan the build</b></a><a class="next" href="../guide/donor.html"><span>Next →</span><b>Choose a donor</b></a></div></nav>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../index.html">Home</a>
+      <a href="../guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

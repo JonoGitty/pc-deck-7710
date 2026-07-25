@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The screens</title>
+<meta name="description" content="Ten display modes, every dot drawn by the portable C renderer.">
+<meta property="og:title" content="The screens">
+<meta property="og:description" content="Ten display modes, every dot drawn by the portable C renderer.">
+<meta property="og:image" content="media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="index.html">Home</a><a class="on" href="screens.html">Screens</a><a class="" href="calls.html">Calls &amp; radio</a><a class="" href="movies.html">Animations</a><a class="" href="run.html">Try it</a><a class="" href="architecture.html">Architecture</a><a class="" href="status.html">Status</a><a class="guide" href="guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<section>
+  <div class="wrap">
+    <h2>The screens</h2>
+    <p class="lede">Ten display modes, every dot drawn by <code>core/</code>.</p>
+    <div class="grid">
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/spectrum.gif" alt="Thirteen segmented bars rising and falling with peak-hold dots above them">
+        <h3>Spectrum analyser</h3><p>13 bands, 63 Hz–16 kHz, peak-hold dots that fall back slowly.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/mirror.gif" alt="Bars growing left and right from the centre of the panel">
+        <h3>Mirror spectrum</h3><p>Left and right channels split, growing outward from centre.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/vu.gif" alt="Two analogue-style needles swinging across arc scales">
+        <h3>VU meter</h3><p>Twin needles with overshoot and recoil. Without the overshoot it is a bar chart with a line on it.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/scope.gif" alt="A waveform trace with fading persistence trails behind it">
+        <h3>Oscilloscope</h3><p>Dot-matrix scope with phosphor persistence trailing the live trace.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/city.gif" alt="Wide tower blocks of varying height with a scan line rising through them">
+        <h3>Cityscape EQ</h3><p>Coarse tower blocks, bass gets the broad ones, with a rising scan sweep.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/waterfall.gif" alt="A scrolling grid of blocks showing spectral history climbing upward">
+        <h3>Waterfall</h3><p>A 32×12 spectral memory climbing up the panel.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/3d.gif" alt="A perspective landscape of analyser rows receding into the distance">
+        <h3>3D spectrum</h3><p>A receding analyser landscape with hidden-line removal.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/ocean.gif" alt="Dolphins swimming below a dotted waterline with bubbles rising">
+        <h3>Ocean cruise</h3><p>The dolphins. Procedural, so bass makes the pod breach and treble drives the bubbles.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/cover.gif" alt="Album sleeve dithered to four levels beside track text and a progress time">
+        <h3>Album art</h3><p>The sleeve, ordered-dithered to four levels, with a slim analyser along the bottom.</p></figure>
+      <figure class="card" style="margin:0"><img loading="lazy" src="media/lyrics.gif" alt="Lyric lines with the current line brighter than its neighbours">
+        <h3>Lyrics</h3><p>Synced from LRCLIB. Current line hot, neighbours dim, long lines wrapped.</p></figure>
+    </div>
+
+    <h3 style="margin:2.5rem 0 1rem">On the whole faceplate</h3>
+    <figure class="film"><img loading="lazy" src="media/faceplate-cover.png" alt="The full deck showing the album art screen"></figure>
+    <figure class="film"><img loading="lazy" src="media/faceplate-lyrics.png" alt="The full deck showing the lyrics screen"></figure>
+    <figure class="film"><img loading="lazy" src="media/faceplate-vu.png" alt="The full deck showing the VU meter"></figure>
+    <figure class="film"><img loading="lazy" src="media/faceplate-waterfall.png" alt="The full deck showing the waterfall display"></figure>
+    <figure class="film" style="margin-bottom:0"><img loading="lazy" src="media/faceplate-ocean.png" alt="The full deck showing dolphins under a waterline">
+      <figcaption>Idle behaviour, faithful to the era: music stops, three seconds
+        to the clock, twelve to the dolphins, and a hard horizontal wipe back to
+        the analyser when it returns.</figcaption></figure>
+  </div>
+
+</section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

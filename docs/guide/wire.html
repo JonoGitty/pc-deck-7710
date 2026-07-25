@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wire the boards</title>
+<meta name="description" content="The pin map, the audio path, and the two traps that each cost an evening.">
+<meta property="og:title" content="Wire the boards">
+<meta property="og:description" content="The pin map, the audio path, and the two traps that each cost an evening.">
+<meta property="og:image" content="../media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="../deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="../index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="../index.html">Home</a><a class="" href="../screens.html">Screens</a><a class="" href="../calls.html">Calls &amp; radio</a><a class="" href="../movies.html">Animations</a><a class="" href="../run.html">Try it</a><a class="" href="../architecture.html">Architecture</a><a class="" href="../status.html">Status</a><a class="guide on" href="../guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<div class="rail"><div class="wrap"><span class="of">Build guide · 7 of 24</span><div class="dots"><a class="done" href="../guide/plan.html" title="Plan the build"></a><a class="done" href="../guide/car.html" title="Your car"></a><a class="done" href="../guide/donor.html" title="Choose a donor"></a><a class="done" href="../guide/strip.html" title="Strip it down"></a><a class="done" href="../guide/reuse.html" title="Keep what you can"></a><a class="done" href="../guide/parts.html" title="Buy the parts"></a><a class="now" href="../guide/wire.html" title="Wire the boards"></a><a class="" href="../guide/flash.html" title="Flash it, and first light"></a><a class="" href="../guide/transplant.html" title="Move the screen and the buttons"></a><a class="" href="../guide/assemble.html" title="Assemble it — eleven steps"></a><a class="" href="../guide/step-01.html" title="Step 1 — The chassis, empty"></a><a class="" href="../guide/step-02.html" title="Step 2 — Four nylon standoffs"></a><a class="" href="../guide/step-03.html" title="Step 3 — The main board, components up"></a><a class="" href="../guide/step-04.html" title="Step 4 — Four nuts, finger tight plus a quarter"></a><a class="" href="../guide/step-05.html" title="Step 5 — The panel, glass forward"></a><a class="" href="../guide/step-06.html" title="Step 6 — The ribbon, with a service loop"></a><a class="" href="../guide/step-07.html" title="Step 7 — The window, smoked side out"></a><a class="" href="../guide/step-08.html" title="Step 8 — The encoder, through the fascia"></a><a class="" href="../guide/step-09.html" title="Step 9 — The fascia"></a><a class="" href="../guide/step-10.html" title="Step 10 — The cage, in the car"></a><a class="" href="../guide/step-11.html" title="Step 11 — Slide it home"></a><a class="" href="../guide/install.html" title="Into the car"></a><a class="" href="../guide/tune.html" title="Pair it, tune it, load it"></a><a class="" href="../guide/fix.html" title="When it does not work"></a></div><span class="pct">29%</span></div></div><section>
+  <div class="wrap">
+    <h2>Chapter 7</h2>
+    <p class="lede">Wire the boards. Seven wires for the panel, three for the DAC, one wire for all the buttons.</p>
+
+    <figure class="film"><img loading="lazy" src="../media/pinmap.svg" alt="Pin map of the ESP32-WROVER-E showing every GPIO and what the firmware does with it">
+      <figcaption><b>The pin map is generated from the firmware</b>, not drawn beside
+        it. It is parsed out of the <code>#define PIN_…</code> lines, it refuses to
+        draw a GPIO that two drivers both claim, and CI fails if the picture and the
+        code disagree — because whoever is reading a wiring diagram is holding a
+        soldering iron. Red pins belong to the module: flash, PSRAM, console.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="../media/wiring.svg" alt="Block diagram of the whole deck, showing the analogue audio path bypassing the ESP32">
+      <figcaption><b>The audio never enters the ESP32.</b> The tuner's analogue output
+        and the aux socket both go to the mux, and the chip only selects which stereo
+        pair reaches the amplifier. Nothing is resampled and nothing is re-encoded, so
+        the radio sounds like a radio rather than like a codec.</figcaption></figure>
+
+    <div class="note danger">
+      <p><b>Two traps that each cost an evening.</b></p>
+      <p><b>GPIO 34–39 are input-only and have no internal pull-ups.</b> A button on
+        one floats and reads as random presses, which looks exactly like a firmware
+        bug and is not one.</p>
+      <p><b>ISO 10487 standardises the connector but not the pinout.</b> A4 and A7 —
+        permanent live and ignition — get swapped by manufacturers. Meter the harness
+        before you connect anything to it.</p>
+    </div>
+
+    <h3 style="margin-top:2rem">The buttons are one wire, not one wire each</h3>
+    <p class="muted">Every front-panel button hangs off a single ADC pin as a resistor
+      ladder: one side of every switch commoned to a pulled-up node, the other leg to
+      ground through its own resistor, so each button lands on its own voltage. Six
+      buttons, one GPIO. The firmware probes the ladder at boot and, if it does not
+      find one, falls back to discrete buttons — which is also how it decides whether
+      the tuner's pins are free.</p>
+
+    <h3 style="margin-top:2rem">Grounding, which is the part that bites later</h3>
+    <p class="muted">The amplifier takes its <b>own fused 12 V feed</b>, not the deck's
+      5 V buck — a buck regulator sized for a microcontroller will brown out on bass.
+      But the amplifier and the ESP32 must share <b>one ground point</b>. Two grounds
+      at slightly different potentials is what alternator whine <em>is</em>, and it
+      appears the day you fit it to the car, not on the bench.</p>
+
+    <p style="margin-top:1.5rem">Pin-by-pin tables, including the tuner, the mux and
+      the steering-wheel input, are in <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      and <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CONTROL.md">CONTROL.md</a>.</p>
+  </div>
+</section>
+<nav class="prevnext"><div class="wrap"><a class="prev" href="../guide/parts.html"><span>← Previous</span><b>Buy the parts</b></a><a class="next" href="../guide/flash.html"><span>Next →</span><b>Flash it, and first light</b></a></div></nav>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../index.html">Home</a>
+      <a href="../guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

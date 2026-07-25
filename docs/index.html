@@ -4,137 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DECK·7710 — build your own 1-DIN car head unit</title>
-<meta name="description" content="An open-source 1-DIN car head unit. One portable C renderer drives real glass, a browser preview and a PC music visualiser — the same code on all three.">
-<meta property="og:title" content="DECK·7710">
-<meta property="og:description" content="Build your own 1-DIN car head unit. One portable C renderer, real glass, a browser preview, and animations you can make yourself.">
+<meta name="description" content="An open-source 1-DIN car head unit. One portable C renderer drives real glass, a browser preview and a PC music visualiser.">
+<meta property="og:title" content="DECK·7710 — build your own 1-DIN car head unit">
+<meta property="og:description" content="An open-source 1-DIN car head unit. One portable C renderer drives real glass, a browser preview and a PC music visualiser.">
 <meta property="og:image" content="media/faceplate.png">
 <meta name="theme-color" content="#0a0a0c">
-<style>
-/* A head unit at night: near-black, one amber hue, and nothing else. The
-   restraint is the point — this is a site about a display that has four
-   brightness levels and no colour at all. */
-:root {
-  --bg:      #08080a;
-  --panel:   #101014;
-  --edge:    #23232b;
-  --ink:     #d8d4cc;
-  --dim:     #8a8578;
-  --amber:   #f3a52b;
-  --hot:     #ffd978;
-  --clip:    #ff4938;
-  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0; background: var(--bg); color: var(--ink);
-  font-family: var(--sans); font-size: 17px; line-height: 1.65;
-  overflow-x: hidden;
-}
-img { max-width: 100%; height: auto; display: block; }
-a { color: var(--amber); text-decoration: none; border-bottom: 1px solid #f3a52b44; }
-a:hover { color: var(--hot); border-bottom-color: currentColor; }
-code, kbd {
-  font-family: var(--mono); font-size: 0.88em;
-  background: #ffffff0d; padding: 0.12em 0.4em; border-radius: 3px;
-}
-kbd { border: 1px solid var(--edge); box-shadow: 0 1px 0 #000; }
-pre {
-  font-family: var(--mono); font-size: 0.82rem; line-height: 1.55;
-  background: var(--panel); border: 1px solid var(--edge); border-radius: 8px;
-  padding: 1rem 1.1rem; overflow-x: auto;      /* wide content scrolls itself */
-}
-pre code { background: none; padding: 0; }
-
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
-section { padding: 3.5rem 0; border-top: 1px solid var(--edge); }
-section:first-of-type { border-top: 0; }
-h1, h2, h3 { line-height: 1.2; letter-spacing: -0.01em; }
-h2 {
-  font-family: var(--mono); font-size: 0.86rem; font-weight: 600;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber);
-  margin: 0 0 0.4rem;
-}
-h2 + .lede { font-size: 1.5rem; line-height: 1.3; margin: 0 0 1.75rem; color: #fff; letter-spacing: -0.02em; }
-h3 { font-size: 1.05rem; margin: 0 0 0.3rem; }
-p { margin: 0 0 1rem; }
-.muted { color: var(--dim); }
-.small { font-size: 0.92rem; }
-
-/* ---------------------------------------------------------------- hero */
-header { padding: 4rem 0 3rem; text-align: center; position: relative; }
-header::after {                       /* the panel's own glow, not a gradient */
-  content: ""; position: absolute; inset: auto 0 0 0; height: 60%;
-  background: radial-gradient(60% 100% at 50% 100%, #f3a52b14, transparent 70%);
-  pointer-events: none;
-}
-.brand {
-  font-family: var(--mono); font-size: clamp(2.4rem, 8vw, 4.4rem);
-  font-weight: 700; letter-spacing: 0.02em; margin: 0; color: #fff;
-}
-.brand b { color: var(--amber); font-weight: 700; }
-.tag { font-size: clamp(1.05rem, 2.6vw, 1.35rem); color: var(--ink); margin: 0.6rem auto 0; max-width: 34ch; }
-.sub { color: var(--dim); max-width: 56ch; margin: 0.9rem auto 0; }
-.shot { margin: 2.5rem 0 0; border: 1px solid var(--edge); border-radius: 10px; overflow: hidden; background: #000; }
-.reel-lede { color: var(--dim); font-size: 0.95rem; margin: 2.25rem 0 0.9rem; }
-.reel { display: grid; gap: 0.9rem; grid-template-columns: repeat(3, 1fr); }
-.reel figure { margin: 0; }
-.reel img { border: 1px solid var(--edge); border-radius: 7px; background: #000; width: 100%; }
-.reel figcaption { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
-                   color: var(--amber); margin-top: 0.45rem; }
-@media (max-width: 720px) { .reel { grid-template-columns: 1fr; } }
-
-.cta { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; margin-top: 1.6rem; }
-.btn {
-  font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.08em;
-  text-transform: uppercase; padding: 0.62rem 1.1rem; border-radius: 6px;
-  border: 1px solid var(--edge); background: var(--panel); color: var(--ink);
-}
-.btn:hover { border-color: var(--amber); color: var(--hot); }
-.btn.primary { background: var(--amber); border-color: var(--amber); color: #17110a; font-weight: 600; }
-.btn.primary:hover { background: var(--hot); border-color: var(--hot); color: #17110a; }
-
-/* ---------------------------------------------------------------- grids */
-.grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--edge); border-radius: 10px; padding: 1rem; }
-.card img { border-radius: 5px; background: #000; width: 100%; }
-.card h3 { margin-top: 0.85rem; }
-.card p { margin: 0; color: var(--dim); font-size: 0.92rem; }
-
-.film { margin: 0 0 2.25rem; }
-.film img { border: 1px solid var(--edge); border-radius: 8px; background: #000; width: 100%; }
-.film figcaption { color: var(--dim); font-size: 0.92rem; margin-top: 0.6rem; }
-.film figcaption b { color: var(--ink); font-family: var(--mono); font-weight: 600; }
-
-/* ---------------------------------------------------------------- table */
-.tbl-scroll { overflow-x: auto; }             /* the page body never scrolls sideways */
-table { border-collapse: collapse; width: 100%; font-size: 0.94rem; min-width: 520px; }
-th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--edge); vertical-align: top; }
-th { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
-tbody tr:last-child td { border-bottom: 0; }
-.ok   { color: var(--hot); }
-.warn { color: var(--clip); }
-
-.note {
-  border-left: 2px solid var(--amber); background: #f3a52b0a;
-  padding: 0.9rem 1.1rem; border-radius: 0 6px 6px 0; margin: 1.5rem 0;
-}
-.note p:last-child { margin-bottom: 0; }
-
-footer { padding: 3rem 0 4rem; border-top: 1px solid var(--edge); color: var(--dim); font-size: 0.92rem; }
-footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-bottom: 1.2rem; }
-
-@media (max-width: 640px) {
-  body { font-size: 16px; }
-  section { padding: 2.75rem 0; }
-  .grid { grid-template-columns: 1fr; }
-}
-/* Someone will open this on a phone at 2am to show a friend. Respect it. */
-@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
-</style>
+<link rel="stylesheet" href="deck.css">
 </head>
 <body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="on" href="index.html">Home</a><a class="" href="screens.html">Screens</a><a class="" href="calls.html">Calls &amp; radio</a><a class="" href="movies.html">Animations</a><a class="" href="run.html">Try it</a><a class="" href="architecture.html">Architecture</a><a class="" href="status.html">Status</a><a class="guide" href="guide/plan.html">Build guide</a></div>
+</div></nav>
 
 <header>
   <div class="wrap">
@@ -143,12 +25,10 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
     <p class="sub">One portable C renderer drives real glass, a browser preview and a PC
       music visualiser — the same code, the same dots, on all three.</p>
     <div class="cta">
-      <a class="btn primary" href="https://github.com/JonoGitty/pc-deck-7710">Source on GitHub</a>
-      <a class="btn" href="#phone">Calls &amp; radio</a>
-      <a class="btn" href="#movies">The animations</a>
-      <a class="btn" href="#build">Build one</a>
-      <a class="btn" href="#fit">Your car &amp; donor</a>
-      <a class="btn" href="#diagnose">When it breaks</a>
+      <a class="btn primary" href="guide/plan.html">Start the build guide</a>
+      <a class="btn" href="https://github.com/JonoGitty/pc-deck-7710">Source on GitHub</a>
+      <a class="btn" href="screens.html">The screens</a>
+      <a class="btn" href="run.html">Try it without hardware</a>
     </div>
     <div class="shot"><img src="media/faceplate.png" alt="The deck playing, showing a 13-band spectrum analyser on an amber dot-matrix panel"></div>
 
@@ -182,602 +62,99 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
       </div>
     </div>
     <div class="note">
-      <p><b>Everything on this page was rendered by the code in the repository.</b>
+      <p><b>Everything on this site was rendered by the code in the repository.</b>
         The screen animations come out of the same C the firmware links; the
         faceplate photographs are the real page in a real browser with the
-        WebSocket stubbed. There are no mockups here, and one command regenerates
-        the lot — which is the only way a page like this stays true a year from now.</p>
+        WebSocket stubbed; the drawings are generated from the firmware's own pin
+        definitions and from measurements in JSON. There are no mockups here, and
+        one command regenerates the lot — which is the only way a site like this
+        stays true a year from now.</p>
     </div>
   </div>
 </section>
 
-<section id="screens">
+<section id="guide">
   <div class="wrap">
-    <h2>The screens</h2>
-    <p class="lede">Ten display modes, every dot drawn by <code>core/</code>.</p>
-    <div class="grid">
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/spectrum.gif" alt="Thirteen segmented bars rising and falling with peak-hold dots above them">
-        <h3>Spectrum analyser</h3><p>13 bands, 63 Hz–16 kHz, peak-hold dots that fall back slowly.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/mirror.gif" alt="Bars growing left and right from the centre of the panel">
-        <h3>Mirror spectrum</h3><p>Left and right channels split, growing outward from centre.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/vu.gif" alt="Two analogue-style needles swinging across arc scales">
-        <h3>VU meter</h3><p>Twin needles with overshoot and recoil. Without the overshoot it is a bar chart with a line on it.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/scope.gif" alt="A waveform trace with fading persistence trails behind it">
-        <h3>Oscilloscope</h3><p>Dot-matrix scope with phosphor persistence trailing the live trace.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/city.gif" alt="Wide tower blocks of varying height with a scan line rising through them">
-        <h3>Cityscape EQ</h3><p>Coarse tower blocks, bass gets the broad ones, with a rising scan sweep.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/waterfall.gif" alt="A scrolling grid of blocks showing spectral history climbing upward">
-        <h3>Waterfall</h3><p>A 32×12 spectral memory climbing up the panel.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/3d.gif" alt="A perspective landscape of analyser rows receding into the distance">
-        <h3>3D spectrum</h3><p>A receding analyser landscape with hidden-line removal.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/ocean.gif" alt="Dolphins swimming below a dotted waterline with bubbles rising">
-        <h3>Ocean cruise</h3><p>The dolphins. Procedural, so bass makes the pod breach and treble drives the bubbles.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/cover.gif" alt="Album sleeve dithered to four levels beside track text and a progress time">
-        <h3>Album art</h3><p>The sleeve, ordered-dithered to four levels, with a slim analyser along the bottom.</p></figure>
-      <figure class="card" style="margin:0"><img loading="lazy" src="media/lyrics.gif" alt="Lyric lines with the current line brighter than its neighbours">
-        <h3>Lyrics</h3><p>Synced from LRCLIB. Current line hot, neighbours dim, long lines wrapped.</p></figure>
-    </div>
-
-    <h3 style="margin:2.5rem 0 1rem">On the whole faceplate</h3>
-    <figure class="film"><img loading="lazy" src="media/faceplate-cover.png" alt="The full deck showing the album art screen"></figure>
-    <figure class="film"><img loading="lazy" src="media/faceplate-lyrics.png" alt="The full deck showing the lyrics screen"></figure>
-    <figure class="film"><img loading="lazy" src="media/faceplate-vu.png" alt="The full deck showing the VU meter"></figure>
-    <figure class="film"><img loading="lazy" src="media/faceplate-waterfall.png" alt="The full deck showing the waterfall display"></figure>
-    <figure class="film" style="margin-bottom:0"><img loading="lazy" src="media/faceplate-ocean.png" alt="The full deck showing dolphins under a waterline">
-      <figcaption>Idle behaviour, faithful to the era: music stops, three seconds
-        to the clock, twelve to the dolphins, and a hard horizontal wipe back to
-        the analyser when it returns.</figcaption></figure>
+    <h2>The build guide</h2>
+    <p class="lede">Thirteen chapters, in the order you do them. Each one has a next.</p>
+    <p class="muted">This used to be one long page and it was the wrong shape: somebody
+      standing at a bench had to scroll past dolphins to find step 6, with no way to
+      tell how much was left. So it is a sequence now — <b>the eleven mechanical steps
+      are a page each</b>, with the drawing for that step and nothing else on it, and
+      every page says where you are in the whole.</p>
+    <div class="chapters"><a href="guide/plan.html"><span class="n">01</span><span class="t">Plan the build</span><span class="d">Decide what you are building and which display it has, because that fixes the grid everything else is laid out on.</span></a><a href="guide/car.html"><span class="n">02</span><span class="t">Your car</span><span class="d">Whether the deck fits, what adapters it needs, and where the amplifier is going to live.</span></a><a href="guide/donor.html"><span class="n">03</span><span class="t">Choose a donor</span><span class="d">Which scrap head unit to buy, and the one measurement that decides it.</span></a><a href="guide/strip.html"><span class="n">04</span><span class="t">Strip it down</span><span class="d">The order it comes apart in, and the hazard that is not the one people expect.</span></a><a href="guide/reuse.html"><span class="n">05</span><span class="t">Keep what you can</span><span class="d">The donor already contains the amplifier the shopping list tells you to buy.</span></a><a href="guide/parts.html"><span class="n">06</span><span class="t">Buy the parts</span><span class="d">The shopping list, the tools, and what each tier actually costs.</span></a><a href="guide/wire.html"><span class="n">07</span><span class="t">Wire the boards</span><span class="d">The pin map, the audio path, and the two traps that each cost an evening.</span></a><a href="guide/flash.html"><span class="n">08</span><span class="t">Flash it, and first light</span><span class="d">Build the firmware, flash it, and read the four-stage self-test.</span></a><a href="guide/transplant.html"><span class="n">09</span><span class="t">Move the screen and the buttons</span><span class="d">Aligning the panel to its lit area, and turning a scanned matrix into the deck&#x27;s one-wire ladder.</span></a><a href="guide/assemble.html"><span class="n">10</span><span class="t">Assemble it — eleven steps</span><span class="d">One action per step, drawn to scale. Start at step 1 and flick through. Eleven steps, a page each.</span></a><a href="guide/install.html"><span class="n">11</span><span class="t">Into the car</span><span class="d">The cage, the harness, the aerial, and the part where consequences change.</span></a><a href="guide/tune.html"><span class="n">12</span><span class="t">Pair it, tune it, load it</span><span class="d">Pairing, the radio region, the volume control, and choosing what it plays.</span></a><a href="guide/fix.html"><span class="n">13</span><span class="t">When it does not work</span><span class="d">A blank panel has six causes and one symptom, so the deck reports on itself.</span></a></div>
+    <p class="muted small" style="margin-top:1.2rem">⚠️ <b>Nothing here has been
+      built.</b> The drawings are derived from ISO 7736, the part datasheets and
+      measured windows — they are an <em>intended</em> assembly, not a photograph of
+      a working deck. Read <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">SAFETY.md</a> before the
+      chapter with a car in it.</p>
   </div>
 </section>
 
-<section id="phone">
+<section id="more">
   <div class="wrap">
-    <h2>Calls, and the radio</h2>
-    <p class="lede">A head unit is a radio and a telephone. Both get proper screens.</p>
-
-    <figure class="film"><img loading="lazy" src="media/call-incoming.gif" alt="An incoming call: the caller's name filling the panel, a pulsing red border, ANSWER and REJECT in the corners">
-      <figcaption>The ESP32 does hands-free calling alongside music — it is Bluetooth
-        Classic, the same side of the chip question as A2DP, so adding calls does not
-        change the hardware. One £4 I²S microphone and one spare pin. The border is the
-        indicator: a phone ringing has to be caught in peripheral vision by somebody
-        watching a road, and the biggest thing a panel has is its own edge.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/call-active.gif" alt="In a call: duration on the left, caller name above, a live microphone level meter on the right">
-      <figcaption>In a call: duration, who, and a <b>live microphone level</b>. That meter
-        is the only feedback anywhere in the system that the mic is plugged in and being
-        heard — without it, a working call and a dead microphone look identical.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/radio-fm.gif" alt="FM radio: station name from RDS, frequency below, a band scale with preset marks, signal bars and a stereo indicator">
-      <figcaption>And a tuner worth having. RDS station name first, frequency under it, and
-        a band scale with your presets marked — because a radio without one feels broken
-        when you seek: the number jumps and nothing says whether you moved a little or
-        crossed the band. Signal is a <em>count</em> of segments and stereo is a glyph that
-        is there or is not, never a brightness, which vanishes on a 1-bit panel.</figcaption></figure>
-
-    <p class="muted small">Both screens are written and rendered from the real
-      <code>core/</code>. <b>Neither driver is.</b>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CALLING.md">CALLING.md</a>
-      and
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/RADIO.md">RADIO.md</a>
-      say exactly what exists, what is designed, and what each costs to build.</p>
-  </div>
-</section>
-
-<section id="movies">
-  <div class="wrap">
-    <h2>The movies</h2>
-    <p class="lede">Animations you make yourself, in pure Python — no GPU, no Blender.</p>
-    <p class="muted">They play on the PC deck and on the hardware. Same file, same decoder,
-      same dots. Each of these solves a different version of one problem: four
-      brightness levels is not many.</p>
-
-    <figure class="film"><img loading="lazy" src="media/solar.gif" alt="A camera flying past planets in sequence, each labelled">
-      <figcaption><b>SOLAR</b> — thirteen stops from the Sun to Pluto, labels drawn from
-        the deck's own character ROM so the text belongs to the same panel as
-        everything else. <code>tools/movies/scene_solar.py</code></figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/touge.gif" alt="A car silhouette drifting down a night mountain road lit by its own headlights">
-      <figcaption><b>TOUGE</b> — a night run where the headlights are the only light
-        source in the scene, so the road fades to black by itself and the subject is
-        the <em>hole</em> in the light. <code>tools/movies/scene_touge.py</code></figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/vtec.gif" alt="A bar tachometer climbing through the VTEC crossover, with speed, revs and gear around it">
-      <figcaption><b>VTEC</b> — a bar tachometer, because the car this is drawn from uses
-        a bar rather than a dial, and a bar <em>is</em> a 4:1 strip. The revs are a crude
-        engine with load and a limiter rather than a waveform: the hesitation at the top
-        of a gear is what makes it read as driving.
-        <code>tools/movies/scene_vtec.py</code></figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/dolphins.gif" alt="Dolphins arcing out of a shimmering sea against a low sun">
-      <figcaption><b>DOLPHINS</b> — the classic screensaver rebuilt with a real mesh and
-        a real sea surface. The sea is shaded on a steep curve so only crests glint
-        and the animals own the bright end. <code>tools/movies/scene_dolphins.py</code></figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/reef.gif" alt="Fish and a starfish picked out in bright dots against black">
-      <figcaption><b>Already have a GIF?</b> <code>import_gif.py</code> converts it.
-        Footage needs <code>--keep</code>: a camera uses the whole tonal range and the
-        deck has four levels, so a mid-grey background becomes a checkerboard louder
-        than the subject. <code>--cover --keep=25</code> drops the water out and hands
-        all four levels to the fish.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/ae86.gif" alt="A white coupé on a mountain pass at night, seen along its flank and then from above">
-      <figcaption><b>AE86</b> — a white car on a dark road is the ideal subject, for the
-        same reason <b>TOUGE</b> works. But this clip ends by pulling back to a wide,
-        where the car shrinks to a few dots and the road it is on becomes the brightest
-        thing in frame — so <code>--trim=0:62</code> throws that part away.
-        <code>import_gif.py ae86.gif --cover --keep=30 --gamma=1.4 --trim=0:62</code>.
-        Look at the source before assuming all of it belongs on a 4:1 panel.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/spin.gif" alt="A simple solid rotating on the panel">
-      <figcaption><b>SPIN</b> — the minimal template, deliberately small. Copy it and
-        change the scene. <code>tools/movies/scene_spin.py</code></figcaption></figure>
-
-    <div class="note">
-      <p><b>Making one is a conversation, not a tutorial.</b> The repository carries a
-        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/CLAUDE.md">CLAUDE.md</a>
-        that tells Claude the constraints — the right grid for your panel, the level
-        budget, why thin bright details dither into noise on 1-bit glass, why large
-        areas must sit on a level centre. Describe the animation you want and which
-        display you have; it picks the format.</p>
-    </div>
-  </div>
-</section>
-
-<section id="run">
-  <div class="wrap">
-    <h2>Try it now</h2>
-    <p class="lede">Two ways in, neither needs hardware.</p>
+    <h2>And the rest of it</h2>
+    <p class="lede">The parts of the project that are not a build.</p>
     <div class="grid">
       <div class="card">
-        <h3>The PC deck</h3>
-        <pre><code>python legacy/server.py</code></pre>
-        <p>Opens <code>127.0.0.1:7710</code>. Play music anywhere — Spotify, YouTube, a
-          game — and it lights up on its own. Windows, because it captures WASAPI
-          loopback and Windows media metadata.</p>
+        <h3><a href="screens.html">The screens</a></h3>
+        <p>Ten display modes — analyser, VU, scope, waterfall, album art, synced
+          lyrics, and the dolphins — every dot drawn by the same C.</p>
       </div>
       <div class="card">
-        <h3>Preview a panel you have not bought</h3>
-        <pre><code>sh tools/serve.sh</code></pre>
-        <p>Compiles <code>core/</code> to WASM and emulates any panel: grid size, level
-          count, dot shape, illumination colour. Same C the firmware runs, so it is
-          what the glass does rather than an impression of it.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="build">
-  <div class="wrap">
-    <h2>Build one</h2>
-    <p class="lede">Pick a display first — it fixes the grid everything else is laid out on.</p>
-    <div class="tbl-scroll">
-    <table>
-      <thead><tr><th>Tier</th><th>Display</th><th>Brain</th><th>Rough cost</th></tr></thead>
-      <tbody>
-        <tr><td>Bench</td><td>SSD1322 OLED, 256×64, 16 grey</td><td>ESP32-WROVER-E</td><td>~£32</td></tr>
-        <tr><td>Car — greyscale</td><td>SSD1322</td><td>ESP32-WROVER-E</td><td>~£82</td></tr>
-        <tr><td>Car — authentic VFD</td><td>Futaba GP1294AI, 1-bit</td><td>ESP32-WROVER-E</td><td>~£92</td></tr>
-        <tr><td>Car — colour <span class="warn">⚠</span></td><td>4.58″ bar IPS, 960×320</td><td>ESP32 <b>+ ESP32-S3</b></td><td>~£90</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <div class="note">
-      <p><b>Two corrections already made the hard way.</b></p>
-      <p>It must be the <b>original ESP32, not the S3</b> — the S3 has no Bluetooth
-        Classic, so no A2DP, so no audio from a phone. Espressif closed that request
-        “Won't Do”.</p>
-      <p>The <b>8.8″ bar LCD does not fit a 1-DIN slot</b>: about 217 mm wide against
-        a 180 mm fascia. There <em>is</em> a colour panel that fits — a 4.58″ bar IPS
-        at 118.8 × 41.57 mm, which maps onto the grid exactly at 192 × 64 logical dots
-        times five — but it needs a parallel RGB bus the original ESP32 does not have,
-        so colour is a two-chip build.</p>
-    </div>
-    <h3 style="margin:2.5rem 0 0.8rem">What it takes, start to finish</h3>
-    <div class="tbl-scroll">
-    <table>
-      <thead><tr><th>Step</th><th>What happens</th><th>Risk</th></tr></thead>
-      <tbody>
-        <tr><td>1. Buy</td><td>An ESP32-WROVER-E with 16 MB flash, an SSD1322 panel, a DAC, and a handful of buttons. About £35 for a working deck on a desk</td><td>None</td></tr>
-        <tr><td>2. Tools</td><td><code>deckctl doctor</code> tells you what is missing and how to get it — and reads the chip ID, which catches buying an S3 by mistake</td><td>None</td></tr>
-        <tr><td>3. Wire</td><td>Seven wires for the panel, three for the DAC, one per button. Pin-by-pin table in the guide</td><td>None</td></tr>
-        <tr><td>4. Flash</td><td><code>deckctl build</code> then <code>deckctl flash</code>, or just <code>deckctl</code> for the guided version</td><td>None</td></tr>
-        <tr><td>5. Watch</td><td><code>deckctl logs</code>. Four self-test stages prove the glass, the levels, the font, then the subsystems</td><td>None</td></tr>
-        <tr><td>6. Pair</td><td>Your phone's Bluetooth menu. No app, no code. Play something</td><td>None</td></tr>
-        <tr><td>7. Fit</td><td>DIN cage, ISO harness, ignition sense through an opto-isolator</td><td><span class="warn">Real. Read SAFETY.md</span></td></tr>
-      </tbody>
-    </table>
-    </div>
-
-    <p>Steps 1–6 happen on a desk from USB and risk nothing but your time.
-      Step 7 is where a car is involved and where the consequences change.</p>
-
-    <pre><code># the whole thing, guided
-python3 tools/deckctl.py
-
-# or step by step
-python3 tools/deckctl.py doctor
-python3 tools/deckctl.py build   --display ssd1322
-python3 tools/deckctl.py flash
-python3 tools/deckctl.py movies          # choose what it plays
-python3 tools/deckctl.py pictures *.jpg  # your own photographs
-python3 tools/deckctl.py logs</code></pre>
-
-    <figure class="film"><img loading="lazy" src="media/pinmap.svg" alt="Pin map of the ESP32-WROVER-E showing every GPIO and what the firmware does with it">
-      <figcaption><b>The pin map is generated from the firmware</b>, not drawn beside it.
-        It is parsed out of the <code>#define PIN_…</code> lines, it refuses to draw a
-        GPIO that two drivers both claim, and CI fails if the picture and the code
-        disagree — because whoever is reading a wiring diagram is holding a soldering
-        iron. Red pins belong to the module: flash, PSRAM, console.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/wiring.svg" alt="Block diagram of the whole deck, showing the analogue audio path bypassing the ESP32">
-      <figcaption><b>The audio never enters the ESP32.</b> The tuner's analogue output
-        and the aux socket both go to a 74HC4052, and the chip only selects which
-        stereo pair reaches the amplifier. Nothing is resampled and nothing is
-        re-encoded, so the radio sounds like a radio rather than like a codec.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/assembly-sheet1.svg" alt="Build manual sheet 1: the chassis, the standoffs, the main board and the nuts, drawn isometrically">
-      <figcaption><b>The mechanical build is eleven drawn steps</b> — one action each,
-        the parts for that step boxed in the corner with quantities, and the new part
-        ghosted where it is going. Isometric and to scale in millimetres, so you can
-        measure the drawing. Sheets <a href="media/assembly-sheet1.svg">1</a>,
-        <a href="media/assembly-sheet2.svg">2</a> and
-        <a href="media/assembly-sheet3.svg">3</a>.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/assembly.svg" alt="Exploded assembly view: ISO cage, chassis, main board, panel, window, fascia">
-      <figcaption><b>The same eleven steps as one exploded stack</b> — the cage goes into
-        the car first and stays there, the fascia goes on last. Reverse them to take it
-        apart, which you will do more times than you expect. Also:
-        <a href="media/dimensions.svg">the dimensions</a>, where depth is the number
-        that catches people rather than width.</figcaption></figure>
-
-    <p class="muted small">⚠️ These are drawings of an <b>intended</b> build, from the
-      standard and the datasheets. No deck has been assembled.</p>
-
-    <p><b>The full guide is <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a></b>
-      — shopping list with part numbers, wiring table, pairing, and the car
-      install. The component survey is
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">HARDWARE.md</a>,
-      where every claim is marked ✅ verified against a datasheet or listing, or ⚠️ not.
-      Fitting is standard: an <b>ISO 7736</b> cage and an <b>ISO 10487</b> harness, so a
-      home-built deck drops into any car that takes a normal head unit.</p>
-
-    <div class="note">
-      <p><b>Two traps that each cost an evening.</b> GPIO 34–39 on this chip are
-        input-only and have <em>no internal pull-ups</em> — a button on one floats
-        and reads as random presses, which looks exactly like a firmware bug.
-        And ISO 10487 standardises the connector but not the pinout: A4 and A7
-        get swapped by manufacturers, so meter the harness before connecting
-        anything.</p>
-    </div>
-  </div>
-</section>
-
-<section id="fit">
-  <div class="wrap">
-    <h2>Your car, and your donor</h2>
-    <p class="lede">The deck is the same object in every car. What changes is a bag
-      of adapters — and where the amplifier goes.</p>
-
-    <div class="note">
-      <p><b>⚠️ The deck has no amplifier, and you need one.</b> Its output is
-        <b>line level</b> — what an amplifier expects and what a speaker does nothing
-        useful with. On most cars the head unit <em>is</em> the amplifier, so there is
-        nothing already in the dash to feed. A <b>TDA7850</b> or <b>TDA7388</b>
-        4-channel board is £12–20 and is the same IC a real head unit contains.
-        It needs its <b>own fused 12 V feed</b>, not the deck's 5 V buck, and it must
-        share <b>one ground point</b> with the ESP32 or you get alternator whine.</p>
-      <p><b>Or don't buy one at all:</b> the donor you gutted already contains that
-        amplifier, bolted to its own heatsink and wired to the ISO connector —
-        <a href="#fit">the reuse route</a>, and it is £0.</p>
-      <p><b>And a bare mux has no volume control.</b> Fit a <b>PT2313 / TDA7313</b>
-        audio processor (£2–4) instead and you get source selection <em>plus</em>
-        volume, bass, treble, balance and fader over the I²C bus the tuner already
-        uses — no extra pins, and it gives two back.</p>
-    </div>
-
-    <h3>Where the amplifier lives is car-specific</h3>
-    <p class="muted">In a small roadster it is genuinely hard, and the answer for a
-      mid-engined MR2 is not the answer for an MX-5. <b>A 2-DIN aperture is the way
-      out</b>: deck in the top half, amplifier board in the bottom half — front end
-      and amp in one box, which is exactly what a factory head unit is.</p>
-
-    <div class="tbl-scroll">
-    <table>
-      <thead><tr><th>Car</th><th>Aperture</th><th>Wheel controls</th><th>Amp in the dash?</th></tr></thead>
-      <tbody>
-        <tr><td>Honda S2000 <b>AP1 / AP2</b></td><td>single DIN</td><td class="ok">none fitted, any market</td><td>no — 1-DIN only</td></tr>
-        <tr><td>Mazda MX-5 <b>NA / NB</b></td><td>single DIN</td><td>none known</td><td>no — 1-DIN only</td></tr>
-        <tr><td>Mazda MX-5 <b>NC</b></td><td>double DIN</td><td>⚠️ some trims — check yours</td><td class="ok">yes — 2-DIN</td></tr>
-        <tr><td>Mazda MX-5 <b>ND</b></td><td class="warn">no DIN slot at all — the deck cannot be the head unit</td><td>present</td><td>—</td></tr>
-        <tr><td>Toyota MR2 <b>W10 / W30</b></td><td>single DIN</td><td>none known</td><td>no — 1-DIN only</td></tr>
-        <tr><td>Toyota MR2 <b>W20</b></td><td>⚠️ double DIN, believed — measure it</td><td>none known</td><td class="ok">yes — 2-DIN</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p class="muted small">Nine entries in full, with harness and aerial adapters, depth
-      and per-market notes:
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">VEHICLES.md</a>,
-      or <code>python3 tools/deckctl.py fit s2000 ap1</code>.
-      <b>The S2000 has no steering-wheel controls at all</b> — no interface box, no
-      learning step. Adding your car is one JSON file.</p>
-
-    <div class="note">
-      <p><b>⚠️ The radio region follows where you drive, not where the car was built.</b>
-        A JDM import in Britain receives British stations. Japan's FM band is
-        76–95 MHz against Europe's 87.5–108, and the Americas use 10 kHz AM spacing
-        against 9 kHz — get it wrong and most of the band is missing or mistuned.
-        Five regions, stored in NVS, set once.</p>
-    </div>
-
-    <h3 style="margin-top:2rem">The chassis comes from a scrap head unit — buy a broken one</h3>
-    <p class="muted">You are buying <b>a box, a face, a cage and a bag of buttons</b>.
-      The CD mechanism, the amplifier, the tuner and the microcontroller all go in the
-      bin on the first evening — so a jammed unit at £8 is worth as much to you as a
-      working one at £40. A working CD mechanism is the biggest driver of price on a
-      listing and the first thing you remove.</p>
-
-    <figure class="film"><img loading="lazy" src="media/donor-dot-matrix.svg" alt="To-scale drawing of a donor fascia, its window, and the deck's lit area">
-      <figcaption><b>The window decides it, and nothing else comes close.</b> Everything
-        else about a donor is recoverable — shim the chassis, rewire the buttons, swap
-        the knob. The window cannot be: it is a hole in the one part you chose the
-        donor for. So each family gets this drawing, to scale, and a verdict reporting
-        the shortfall in <em>millimetres</em> — “needs 3 mm” is a filing job, “needs
-        24 mm” is a different donor.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/teardown-dot-matrix.svg" alt="Colour-coded strip-down order for a donor head unit">
-      <figcaption><b>And a strip-down per family</b>, in the order it comes apart, in
-        three colours: green you keep, red goes in the bin, amber gets discharged first.
-        A list gives you the order; this answers the question you actually have with a
-        screwdriver in your hand — <em>which of these am I about to throw away.</em></figcaption></figure>
-
-    <div class="note">
-      <p><b>⚠️ The hazard is not the one people expect.</b> The CD laser is class 1 with
-        the lid shut. The real one is a <b>VFD donor's inverter</b>: it makes its own
-        filament and anode supplies — tens of volts, held on a capacitor after
-        power-off. Treat any VFD power board as live until proved otherwise. The safest
-        donors to gut are the LCD ones, even though the VFD ones are prettier.</p>
-    </div>
-
-    <p class="muted small"><b>Eight routes, 42 named models</b>, each flagged ✅ buy it /
-      ⚠️ read the note / ❌ avoid — including a <b>brand-new empty 1-DIN pocket</b> at
-      £6–12, which is the closest thing that exists to a blank head unit and has no
-      laser, no inverter and nothing charged in it.
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">DONORS.md</a>.
-      ❌ Avoid motorised or dual faceplates — DEH-P85BT, Clarion DXZ925, Kenwood
-      KDC-716S — the mechanism eats the depth this build has least of.</p>
-
-    <h3 style="margin-top:2rem">Moving the parts across</h3>
-    <figure class="film"><img loading="lazy" src="media/transplant-panel.svg" alt="The display module, its lit area, and where the fascia window goes">
-      <figcaption><b>The module is bigger than the hole and its lit area is not centred
-        on it.</b> A 3.12" SSD1322 board is 100.5 × 33.5 mm and only 76.8 × 19.2 mm
-        glows. Mark the window from the glass and the deck looks bought; mark it from
-        the PCB and it is permanently a few millimetres out. Also: the panel sits
-        <em>at</em> the fascia plane, not behind it, or you are looking down a tunnel.
-        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/TRANSPLANT.md">TRANSPLANT.md</a></figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/transplant-buttons.svg" alt="Converting a donor's scanned button matrix into the deck's one-wire resistor ladder">
-      <figcaption><b>The button rewire is a subtraction.</b> A donor's panel is a scanned
-        matrix into a decoder you are binning; the deck reads one analogue pin. Break the
-        matrix, common one side of every switch, other leg to ground through its own
-        resistor — and you never have to work out the original scanning order, which is
-        the part everybody assumes will be hard.</figcaption></figure>
-
-    <h3 style="margin-top:2rem">Or keep as much of it as you can — including its amplifier</h3>
-    <p class="muted">The strip-down above is the <em>default</em>, and it is the right
-      default. But it bins a part the shopping list then tells you to go and buy.
-      <b>Every CD-era head unit contains a 4-channel amplifier</b> — a TDA7388, a
-      TDA7850 or something from the same family — already bolted to the chassis as its
-      heatsink, already wired to the ISO speaker connector, already fused. That is
-      exactly the board <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
-      costs at £12–20.</p>
-
-    <figure class="film"><img loading="lazy" src="media/reuse-amp.svg" alt="Where to cut into the donor's signal chain, and the mute and standby pins">
-      <figcaption><b>The amplifier is the last two boxes of a chain you are deleting.</b>
-        Cut on the preamp side of the coupling capacitors, inject the deck's line out
-        there, and leave the speaker outputs alone — they already go where they should.
-        ⚠️ <b>The step everybody misses</b> is the one drawn in the inset: the old
-        microcontroller drove <code>ST-BY</code> and <code>MUTE</code>, and with it gone
-        they float, so the amplifier stays muted and you conclude the chip is dead.</figcaption></figure>
-
-    <figure class="film"><img loading="lazy" src="media/reuse-rear.svg" alt="The donor's back panel: ISO A, ISO B, aerial socket, fuse">
-      <figcaption><b>The back panel is free, and keeping it is not a job</b> — nothing to
-        unbolt. It removes £8–15 of ISO tails, and on an <b>OEM donor from your own
-        car</b> it removes the harness adapter entirely, because the car's exact
-        connector is already on it. Reuse the amplifier and the connectors and the “to
-        make a sound” list drops to <b>£0</b>, which makes a <b>cassette-era donor</b>
-        the cheapest complete route in this project.
-        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">REUSE.md</a></figcaption></figure>
-
-    <p class="muted small">The display is the one everybody asks about and usually the
-      answer is no: most head-unit panels are segment or character devices with no
-      pixels to address, and a genuine dot-matrix one is usually 128×32 behind an
-      undocumented controller. <b>✅ The exception is a Futaba GP1294AI</b> — the
-      firmware already drives it, and those panels are commonly sold as car-radio pulls.
-      Check the part number on the glass before assuming either way.</p>
-
-    <h3 style="margin-top:2rem">Eleven steps, drawn</h3>
-    <figure class="film"><img loading="lazy" src="media/assembly-sheet1.svg" alt="Build manual sheet 1: chassis, standoffs, main board, nuts">
-      <figcaption>One action per step, the parts for it boxed in the corner with
-        quantities, the new part ghosted where it is going. Isometric and to scale in
-        millimetres. Sheets <a href="media/assembly-sheet1.svg">1</a>,
-        <a href="media/assembly-sheet2.svg">2</a>,
-        <a href="media/assembly-sheet3.svg">3</a> — or the same thing as
-        <a href="media/assembly.svg">one exploded stack</a>.</figcaption></figure>
-
-    <p class="muted small">⚠️ Every drawing on this page describes an <b>intended</b>
-      build, from the standards and the datasheets. No deck has been assembled and no
-      window here has been measured with calipers.</p>
-  </div>
-</section>
-
-<section id="diagnose">
-  <div class="wrap">
-    <h2>When it does not work</h2>
-    <p class="lede">A blank panel has six causes and one symptom. So the deck reports on itself.</p>
-    <p class="muted">This is the part hobby firmware usually skips, and skipping
-      it is why people give up. There are three layers, each usable when the one
-      above it is not.</p>
-
-    <div class="grid">
-      <div class="card">
-        <h3>1 — the panel</h3>
-        <p>A four-stage boot self-test. Stage 1 is a pattern straight from the
-          driver, before <code>core/</code> is involved at all; stage 2 adds the
-          output stage; stage 3 the font; stage 4 the subsystem table.
-          <b>Blank at stage 1 is hardware. Blank after stage 1 is software.</b>
-          That distinction is the whole reason it is staged.</p>
+        <h3><a href="calls.html">Calls, and the radio</a></h3>
+        <p>Hands-free over HFP with the call state derived rather than tracked, and
+          an FM/AM tuner whose audio never enters the microcontroller.</p>
       </div>
       <div class="card">
-        <h3>2 — the serial line</h3>
-        <p>One structured line per event, so a tool can parse it rather than
-          needing a regexp per message. Health is four states, not a boolean:
-          <code>unknown</code> means not tried yet, which is <em>not</em>
-          <code>failed</code> — conflating them sends people hunting a Bluetooth
-          bug on a deck nobody paired.</p>
+        <h3><a href="movies.html">The animations</a></h3>
+        <p>Baked movies at 10 fps, made from a Python scene, a GIF or a video — and
+          why importing footage of another head unit never works.</p>
       </div>
       <div class="card">
-        <h3>3 — the crash</h3>
-        <p>A core dump written to flash survives the reboot, because the crash
-          you care about happens in a car and not on the bench. <code>deckctl
-          coredump</code> gives you the faulting task and a backtrace. A brownout
-          reset says so plainly — in a vehicle that is cranking, not software.</p>
+        <h3><a href="run.html">Try it now</a></h3>
+        <p>Run the PC deck, or compile the renderer to WASM and preview a panel you
+          have not bought yet.</p>
+      </div>
+      <div class="card">
+        <h3><a href="architecture.html">How it holds together</a></h3>
+        <p>One renderer compiled twice, and the differential test that keeps the C
+          honest against the JavaScript it was ported from.</p>
+      </div>
+      <div class="card">
+        <h3><a href="status.html">Status, honestly</a></h3>
+        <p>What works, what is written but unproven, and what has never met the
+          hardware it is written for.</p>
       </div>
     </div>
-
-    <p style="margin-top:1.5rem">Symptom-by-symptom table in
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">DIAGNOSTICS.md</a>,
-      along with what to include in a bug report. On a dot-matrix display a
-      photograph of the fault is worth more than any description of it.</p>
   </div>
 </section>
 
-<section id="how">
-  <div class="wrap">
-    <h2>How it holds together</h2>
-    <p class="lede">One renderer, compiled twice. That is the whole architecture.</p>
-    <pre><code>                     ┌── WASM ─────► browser preview (emulates any panel)
-   core/  (C99) ─────┼── ESP32 ────► car firmware
-                     └── Linux/Pi ─► firmware
-   legacy/ (JS)  ───────────────────► the PC deck</code></pre>
-    <p>A preview is only worth having if it is <em>the same code</em> as the firmware.
-      If the preview were JavaScript and the firmware C, they would drift, and the
-      preview would start lying about the hardware — at which point it is worse than
-      useless, because you trust it.</p>
-    <p>So <code>core/</code> is C99 with no libc, no libm, no allocation and no
-      floating-point surprises. It ships its own trigonometry, because V8, glibc and
-      an ESP32 do not agree to the last bit, and a dolphin should breach on the same
-      frame everywhere. Screens write intensity levels 0–4; a per-target output stage
-      decides what a panel shows — 16 greys, a 1-bit Bayer dither, or an RGB palette.</p>
-
-    <h3 style="margin-top:2rem">The one rule</h3>
-    <p><code>core/</code> is verified against the JavaScript it was ported from.</p>
-    <pre><code>sh tools/verify/run.sh</code></pre>
-    <p>Both implementations render the same input and the framebuffers are diffed:
-      fonts, every screen, text handling, metadata screens, the ocean, and every
-      bundled movie decoded three separate ways. Change a screen's output on purpose
-      and the diff fails — you update the expectation, you never delete the case.</p>
-    <p class="muted small">This is not ceremony. It has caught a dolphin breaching one
-      frame early, waterfall thresholds landing differently at double precision, and
-      text dithering into mush on 1-bit panels — none of which was visible by eye.</p>
-
-    <h3 style="margin-top:2rem">And the deck runs on your computer</h3>
-    <pre><code>sh tools/sim/run.sh --gif deck.gif
-python3 tools/sim/test_behaviour.py</code></pre>
-    <p>The rule above covers the renderer. The layer above it — which screen is on,
-      when the deck gives up and shows the clock, how a track change interrupts — is
-      firmware, and it is the part most likely to be quietly wrong. So it compiles
-      against stub drivers and runs here: the real <code>deck_ui.c</code>, in about a
-      second, with twenty assertions about what it does. Checking “dolphins after
-      twelve seconds of silence” on a bench costs fifteen seconds of standing in
-      silence, per attempt.</p>
-    <p class="muted small">It is not a simulation of the hardware, and
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/TESTING.md">TESTING.md</a>
-      says so explicitly: SPI timing, the Bluetooth stack and a supply that sags on
-      crank fail on hardware and only on hardware. The bring-up checklist for those
-      is on the same page.</p>
-  </div>
-</section>
-
-<section id="repo">
-  <div class="wrap">
-    <h2>What is in the repository</h2>
-    <p class="lede">Eight directories, and it is worth knowing which one you are in.</p>
-    <div class="tbl-scroll">
-    <table>
-      <thead><tr><th>Path</th><th>What it is</th></tr></thead>
-      <tbody>
-        <tr><td><code>legacy/</code></td><td>The PC deck — a Python server that captures audio and metadata, and a JS faceplate that draws it. Moves slowly and deliberately, because it is what most people actually run</td></tr>
-        <tr><td><code>core/</code></td><td>The portable renderer. C99, no libc, no libm, no allocation, its own trigonometry. Every screen lives here</td></tr>
-        <tr><td><code>preview/</code></td><td><code>core/</code> compiled to WASM, with a harness that emulates any panel — grid, levels, dot shape, illumination</td></tr>
-        <tr><td><code>firmware/esp32/</code></td><td>The car deck. A2DP audio, the analyser, both panel drivers, movies from flash, the self-test and the wheel-control learner. Compiles for both panels. <span class="warn">Never flashed</span></td></tr>
-        <tr><td><code>tools/movies/</code></td><td>The animation maker: a pure-Python 3D renderer, a GIF importer, the <code>.dmv</code> exporter and the flash packer</td></tr>
-        <tr><td><code>tools/verify/</code></td><td>The differential suite. The reason anything here can be trusted</td></tr>
-        <tr><td><code>tools/sim/</code></td><td>The firmware's own UI layer, compiled against stub drivers so the deck runs on a laptop — with twenty assertions about how it behaves over time</td></tr>
-        <tr><td><code>tools/media/</code></td><td>Regenerates every picture on this page and in the README</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p class="muted small">Two files are worth opening before anything else:
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/UI-SPEC.md">UI-SPEC.md</a>,
-      which explains why brightness alone must never carry meaning, and
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/CLAUDE.md">CLAUDE.md</a>,
-      which is the short version of everything the project learned the hard way.</p>
-  </div>
-</section>
-
-<section id="status">
-  <div class="wrap">
-    <h2>Status, honestly</h2>
-    <p class="lede">The firmware has never run on hardware. It says so everywhere it should.</p>
-    <div class="tbl-scroll">
-    <table>
-      <thead><tr><th>Part</th><th>State</th></tr></thead>
-      <tbody>
-        <tr><td>PC deck</td><td class="ok">Working, in daily use</td></tr>
-        <tr><td><code>core/</code> renderer</td><td class="ok">Complete — all ten screens, verified against the JS</td></tr>
-        <tr><td>Browser preview</td><td class="ok">Working</td></tr>
-        <tr><td>Movie tooling</td><td class="ok">Working — 3D scenes, GIF import, flash packing</td></tr>
-        <tr><td>ESP32 firmware</td><td class="warn">Written and <b>compiles</b> — A2DP, AVRCP, hands-free calling, Si4735 radio, source switching, FFT, two panel drivers, movies, diagnostics. 1.75 MB image, 8 MB and 16 MB flash. <b>Never run on hardware</b></td></tr>
-        <tr><td>Flash tooling</td><td class="ok">deckctl: doctor, build, flash, movies, pictures, logs, coredump</td></tr>
-        <tr><td>Calling</td><td class="ok">Screens rendered, HFP client written — <span class="warn">never met a phone</span></td></tr>
-        <tr><td>Radio</td><td class="ok">Screen rendered, Si4735 driver written with RDS and presets — <span class="warn">never met a tuner</span></td></tr>
-        <tr><td>Sources</td><td class="ok">Bluetooth / radio / aux through a 74HC4052, written — <span class="warn">never wired</span></td></tr>
-        <tr><td>Colour panel</td><td class="warn">Researched, part identified, nothing bought or wired</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
-</section>
 
 <footer>
   <div class="wrap">
     <div class="links">
+      <a href="index.html">Home</a>
+      <a href="guide/plan.html">Build guide</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HANDBOOK.md">Handbook</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/ARCHITECTURE.md">Architecture</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/UI-SPEC.md">UI spec</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/MOVIE-RENDERING.md">Making animations</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CONTROL.md">Control</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CALLING.md">Calling</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/RADIO.md">Radio</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/TESTING.md">Testing</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VERSIONING.md">Versioning</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/CLAUDE.md">For Claude</a>
     </div>
-    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics and the
-      album-art dither idea came out of that consult.</p>
-    <p><b>This is an unfinished hobby project published as source, not a product.</b>
-      Nothing here has been tested in a vehicle or certified by anybody, and the
-      firmware has never run on hardware. If you build one you are the
-      manufacturer, and every consequence is yours — including fire, battery
-      drain, airbag circuits, driver distraction, insurance and type approval.
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a>
-      before wiring anything to a car.</p>
-    <p>MIT licensed. Build one.</p>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
   </div>
 </footer>
 

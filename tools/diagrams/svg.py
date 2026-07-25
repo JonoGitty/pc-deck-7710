@@ -42,11 +42,17 @@ def esc(s):
 
 
 class Svg:
-    def __init__(self, w, h, title, subtitle=""):
+    def __init__(self, w, h, title, subtitle="", chrome=True):
+        """`chrome=False` keeps the <title> for screen readers but draws no
+        visible heading. For a drawing embedded in a page that already has a
+        heading, a caption and a parts table in real HTML — the site's
+        single-step pages — the burnt-in version is the same words twice and
+        half the drawing area."""
         self.w, self.h = w, h
         self.parts = []
         self.title = title
         self.subtitle = subtitle
+        self.chrome = chrome
 
     # --- primitives ------------------------------------------------------
     def rect(self, x, y, w, h, fill="none", stroke=None, sw=1, rx=0,
@@ -127,12 +133,13 @@ class Svg:
             f"<title>{esc(self.title)}</title>",
             f'<rect width="{self.w}" height="{self.h}" fill="{BG}"/>',
         ]
-        t = [
-            f'<text x="28" y="38" font-size="15" fill="{HOT}" '
-            f'font-family="{MONO}" font-weight="700" letter-spacing="0.14em">'
-            f"{esc(self.title)}</text>"
-        ]
-        if self.subtitle:
+        t = []
+        if self.chrome:
+            t.append(
+                f'<text x="28" y="38" font-size="15" fill="{HOT}" '
+                f'font-family="{MONO}" font-weight="700" letter-spacing="0.14em">'
+                f"{esc(self.title)}</text>")
+        if self.subtitle and self.chrome:
             t.append(f'<text x="28" y="58" font-size="11" fill="{DIM}" '
                      f'font-family="{SANS}">{esc(self.subtitle)}</text>')
         return "\n".join(head + t + self.parts + ["</svg>"]) + "\n"

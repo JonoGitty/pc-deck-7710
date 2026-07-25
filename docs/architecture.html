@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it holds together</title>
+<meta name="description" content="One renderer compiled twice, verified against the JavaScript it was ported from.">
+<meta property="og:title" content="How it holds together">
+<meta property="og:description" content="One renderer compiled twice, verified against the JavaScript it was ported from.">
+<meta property="og:image" content="media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="index.html">Home</a><a class="" href="screens.html">Screens</a><a class="" href="calls.html">Calls &amp; radio</a><a class="" href="movies.html">Animations</a><a class="" href="run.html">Try it</a><a class="on" href="architecture.html">Architecture</a><a class="" href="status.html">Status</a><a class="guide" href="guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<section>
+  <div class="wrap">
+    <h2>How it holds together</h2>
+    <p class="lede">One renderer, compiled twice. That is the whole architecture.</p>
+    <pre><code>                     ┌── WASM ─────► browser preview (emulates any panel)
+   core/  (C99) ─────┼── ESP32 ────► car firmware
+                     └── Linux/Pi ─► firmware
+   legacy/ (JS)  ───────────────────► the PC deck</code></pre>
+    <p>A preview is only worth having if it is <em>the same code</em> as the firmware.
+      If the preview were JavaScript and the firmware C, they would drift, and the
+      preview would start lying about the hardware — at which point it is worse than
+      useless, because you trust it.</p>
+    <p>So <code>core/</code> is C99 with no libc, no libm, no allocation and no
+      floating-point surprises. It ships its own trigonometry, because V8, glibc and
+      an ESP32 do not agree to the last bit, and a dolphin should breach on the same
+      frame everywhere. Screens write intensity levels 0–4; a per-target output stage
+      decides what a panel shows — 16 greys, a 1-bit Bayer dither, or an RGB palette.</p>
+
+    <h3 style="margin-top:2rem">The one rule</h3>
+    <p><code>core/</code> is verified against the JavaScript it was ported from.</p>
+    <pre><code>sh tools/verify/run.sh</code></pre>
+    <p>Both implementations render the same input and the framebuffers are diffed:
+      fonts, every screen, text handling, metadata screens, the ocean, and every
+      bundled movie decoded three separate ways. Change a screen's output on purpose
+      and the diff fails — you update the expectation, you never delete the case.</p>
+    <p class="muted small">This is not ceremony. It has caught a dolphin breaching one
+      frame early, waterfall thresholds landing differently at double precision, and
+      text dithering into mush on 1-bit panels — none of which was visible by eye.</p>
+
+    <h3 style="margin-top:2rem">And the deck runs on your computer</h3>
+    <pre><code>sh tools/sim/run.sh --gif deck.gif
+python3 tools/sim/test_behaviour.py</code></pre>
+    <p>The rule above covers the renderer. The layer above it — which screen is on,
+      when the deck gives up and shows the clock, how a track change interrupts — is
+      firmware, and it is the part most likely to be quietly wrong. So it compiles
+      against stub drivers and runs here: the real <code>deck_ui.c</code>, in about a
+      second, with twenty assertions about what it does. Checking “dolphins after
+      twelve seconds of silence” on a bench costs fifteen seconds of standing in
+      silence, per attempt.</p>
+    <p class="muted small">It is not a simulation of the hardware, and
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/TESTING.md">TESTING.md</a>
+      says so explicitly: SPI timing, the Bluetooth stack and a supply that sags on
+      crank fail on hardware and only on hardware. The bring-up checklist for those
+      is on the same page.</p>
+  </div>
+
+</section>
+<section>
+  <div class="wrap">
+    <h2>What is in the repository</h2>
+    <p class="lede">Eight directories, and it is worth knowing which one you are in.</p>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Path</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td><code>legacy/</code></td><td>The PC deck — a Python server that captures audio and metadata, and a JS faceplate that draws it. Moves slowly and deliberately, because it is what most people actually run</td></tr>
+        <tr><td><code>core/</code></td><td>The portable renderer. C99, no libc, no libm, no allocation, its own trigonometry. Every screen lives here</td></tr>
+        <tr><td><code>preview/</code></td><td><code>core/</code> compiled to WASM, with a harness that emulates any panel — grid, levels, dot shape, illumination</td></tr>
+        <tr><td><code>firmware/esp32/</code></td><td>The car deck. A2DP audio, the analyser, both panel drivers, movies from flash, the self-test and the wheel-control learner. Compiles for both panels. <span class="warn">Never flashed</span></td></tr>
+        <tr><td><code>tools/movies/</code></td><td>The animation maker: a pure-Python 3D renderer, a GIF importer, the <code>.dmv</code> exporter and the flash packer</td></tr>
+        <tr><td><code>tools/verify/</code></td><td>The differential suite. The reason anything here can be trusted</td></tr>
+        <tr><td><code>tools/sim/</code></td><td>The firmware's own UI layer, compiled against stub drivers so the deck runs on a laptop — with twenty assertions about how it behaves over time</td></tr>
+        <tr><td><code>tools/media/</code></td><td>Regenerates every picture on this page and in the README</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="muted small">Two files are worth opening before anything else:
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/UI-SPEC.md">UI-SPEC.md</a>,
+      which explains why brightness alone must never carry meaning, and
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/CLAUDE.md">CLAUDE.md</a>,
+      which is the short version of everything the project learned the hard way.</p>
+  </div>
+
+</section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

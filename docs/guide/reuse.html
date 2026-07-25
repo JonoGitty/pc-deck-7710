@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep what you can</title>
+<meta name="description" content="The donor already contains the amplifier the shopping list tells you to buy.">
+<meta property="og:title" content="Keep what you can">
+<meta property="og:description" content="The donor already contains the amplifier the shopping list tells you to buy.">
+<meta property="og:image" content="../media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="../deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="../index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="../index.html">Home</a><a class="" href="../screens.html">Screens</a><a class="" href="../calls.html">Calls &amp; radio</a><a class="" href="../movies.html">Animations</a><a class="" href="../run.html">Try it</a><a class="" href="../architecture.html">Architecture</a><a class="" href="../status.html">Status</a><a class="guide on" href="../guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<div class="rail"><div class="wrap"><span class="of">Build guide · 5 of 24</span><div class="dots"><a class="done" href="../guide/plan.html" title="Plan the build"></a><a class="done" href="../guide/car.html" title="Your car"></a><a class="done" href="../guide/donor.html" title="Choose a donor"></a><a class="done" href="../guide/strip.html" title="Strip it down"></a><a class="now" href="../guide/reuse.html" title="Keep what you can"></a><a class="" href="../guide/parts.html" title="Buy the parts"></a><a class="" href="../guide/wire.html" title="Wire the boards"></a><a class="" href="../guide/flash.html" title="Flash it, and first light"></a><a class="" href="../guide/transplant.html" title="Move the screen and the buttons"></a><a class="" href="../guide/assemble.html" title="Assemble it — eleven steps"></a><a class="" href="../guide/step-01.html" title="Step 1 — The chassis, empty"></a><a class="" href="../guide/step-02.html" title="Step 2 — Four nylon standoffs"></a><a class="" href="../guide/step-03.html" title="Step 3 — The main board, components up"></a><a class="" href="../guide/step-04.html" title="Step 4 — Four nuts, finger tight plus a quarter"></a><a class="" href="../guide/step-05.html" title="Step 5 — The panel, glass forward"></a><a class="" href="../guide/step-06.html" title="Step 6 — The ribbon, with a service loop"></a><a class="" href="../guide/step-07.html" title="Step 7 — The window, smoked side out"></a><a class="" href="../guide/step-08.html" title="Step 8 — The encoder, through the fascia"></a><a class="" href="../guide/step-09.html" title="Step 9 — The fascia"></a><a class="" href="../guide/step-10.html" title="Step 10 — The cage, in the car"></a><a class="" href="../guide/step-11.html" title="Step 11 — Slide it home"></a><a class="" href="../guide/install.html" title="Into the car"></a><a class="" href="../guide/tune.html" title="Pair it, tune it, load it"></a><a class="" href="../guide/fix.html" title="When it does not work"></a></div><span class="pct">21%</span></div></div><section>
+  <div class="wrap">
+    <h2>Chapter 5</h2>
+    <p class="lede">Keep what you can. The donor already contains the amplifier the shopping list is about to tell you to buy.</p>
+
+<h3 style="margin-top:2rem">Or keep as much of it as you can — including its amplifier</h3>
+    <p class="muted">The strip-down above is the <em>default</em>, and it is the right
+      default. But it bins a part the shopping list then tells you to go and buy.
+      <b>Every CD-era head unit contains a 4-channel amplifier</b> — a TDA7388, a
+      TDA7850 or something from the same family — already bolted to the chassis as its
+      heatsink, already wired to the ISO speaker connector, already fused. That is
+      exactly the board <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      costs at £12–20.</p>
+
+    <figure class="film"><img loading="lazy" src="../media/reuse-amp.svg" alt="Where to cut into the donor's signal chain, and the mute and standby pins">
+      <figcaption><b>The amplifier is the last two boxes of a chain you are deleting.</b>
+        Cut on the preamp side of the coupling capacitors, inject the deck's line out
+        there, and leave the speaker outputs alone — they already go where they should.
+        ⚠️ <b>The step everybody misses</b> is the one drawn in the inset: the old
+        microcontroller drove <code>ST-BY</code> and <code>MUTE</code>, and with it gone
+        they float, so the amplifier stays muted and you conclude the chip is dead.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="../media/reuse-rear.svg" alt="The donor's back panel: ISO A, ISO B, aerial socket, fuse">
+      <figcaption><b>The back panel is free, and keeping it is not a job</b> — nothing to
+        unbolt. It removes £8–15 of ISO tails, and on an <b>OEM donor from your own
+        car</b> it removes the harness adapter entirely, because the car's exact
+        connector is already on it. Reuse the amplifier and the connectors and the “to
+        make a sound” list drops to <b>£0</b>, which makes a <b>cassette-era donor</b>
+        the cheapest complete route in this project.
+        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">REUSE.md</a></figcaption></figure>
+
+    <p class="muted small">The display is the one everybody asks about and usually the
+      answer is no: most head-unit panels are segment or character devices with no
+      pixels to address, and a genuine dot-matrix one is usually 128×32 behind an
+      undocumented controller. <b>✅ The exception is a Futaba GP1294AI</b> — the
+      firmware already drives it, and those panels are commonly sold as car-radio pulls.
+      Check the part number on the glass before assuming either way.</p>
+
+  </div>
+</section>
+<nav class="prevnext"><div class="wrap"><a class="prev" href="../guide/strip.html"><span>← Previous</span><b>Strip it down</b></a><a class="next" href="../guide/parts.html"><span>Next →</span><b>Buy the parts</b></a></div></nav>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../index.html">Home</a>
+      <a href="../guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

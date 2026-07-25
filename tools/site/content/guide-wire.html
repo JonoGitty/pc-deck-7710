@@ -1,0 +1,48 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Wire the boards. Seven wires for the panel, three for the DAC, one wire for all the buttons.</p>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/pinmap.svg" alt="Pin map of the ESP32-WROVER-E showing every GPIO and what the firmware does with it">
+      <figcaption><b>The pin map is generated from the firmware</b>, not drawn beside
+        it. It is parsed out of the <code>#define PIN_…</code> lines, it refuses to
+        draw a GPIO that two drivers both claim, and CI fails if the picture and the
+        code disagree — because whoever is reading a wiring diagram is holding a
+        soldering iron. Red pins belong to the module: flash, PSRAM, console.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/wiring.svg" alt="Block diagram of the whole deck, showing the analogue audio path bypassing the ESP32">
+      <figcaption><b>The audio never enters the ESP32.</b> The tuner's analogue output
+        and the aux socket both go to the mux, and the chip only selects which stereo
+        pair reaches the amplifier. Nothing is resampled and nothing is re-encoded, so
+        the radio sounds like a radio rather than like a codec.</figcaption></figure>
+
+    <div class="note danger">
+      <p><b>Two traps that each cost an evening.</b></p>
+      <p><b>GPIO 34–39 are input-only and have no internal pull-ups.</b> A button on
+        one floats and reads as random presses, which looks exactly like a firmware
+        bug and is not one.</p>
+      <p><b>ISO 10487 standardises the connector but not the pinout.</b> A4 and A7 —
+        permanent live and ignition — get swapped by manufacturers. Meter the harness
+        before you connect anything to it.</p>
+    </div>
+
+    <h3 style="margin-top:2rem">The buttons are one wire, not one wire each</h3>
+    <p class="muted">Every front-panel button hangs off a single ADC pin as a resistor
+      ladder: one side of every switch commoned to a pulled-up node, the other leg to
+      ground through its own resistor, so each button lands on its own voltage. Six
+      buttons, one GPIO. The firmware probes the ladder at boot and, if it does not
+      find one, falls back to discrete buttons — which is also how it decides whether
+      the tuner's pins are free.</p>
+
+    <h3 style="margin-top:2rem">Grounding, which is the part that bites later</h3>
+    <p class="muted">The amplifier takes its <b>own fused 12 V feed</b>, not the deck's
+      5 V buck — a buck regulator sized for a microcontroller will brown out on bass.
+      But the amplifier and the ESP32 must share <b>one ground point</b>. Two grounds
+      at slightly different potentials is what alternator whine <em>is</em>, and it
+      appears the day you fit it to the car, not on the bench.</p>
+
+    <p style="margin-top:1.5rem">Pin-by-pin tables, including the tuner, the mux and
+      the steering-wheel input, are in <a href="{{BLOB}}/docs/BUILD.md">BUILD.md</a>
+      and <a href="{{BLOB}}/docs/CONTROL.md">CONTROL.md</a>.</p>
+  </div>
+</section>

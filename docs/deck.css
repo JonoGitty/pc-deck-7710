@@ -1,0 +1,238 @@
+/* A head unit at night: near-black, one amber hue, and nothing else. The
+   restraint is the point — this is a site about a display that has four
+   brightness levels and no colour at all. */
+:root {
+  --bg:      #08080a;
+  --panel:   #101014;
+  --edge:    #23232b;
+  --ink:     #d8d4cc;
+  --dim:     #8a8578;
+  --amber:   #f3a52b;
+  --hot:     #ffd978;
+  --clip:    #ff4938;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 17px; line-height: 1.65;
+  overflow-x: hidden;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--amber); text-decoration: none; border-bottom: 1px solid #f3a52b44; }
+a:hover { color: var(--hot); border-bottom-color: currentColor; }
+code, kbd {
+  font-family: var(--mono); font-size: 0.88em;
+  background: #ffffff0d; padding: 0.12em 0.4em; border-radius: 3px;
+}
+kbd { border: 1px solid var(--edge); box-shadow: 0 1px 0 #000; }
+pre {
+  font-family: var(--mono); font-size: 0.82rem; line-height: 1.55;
+  background: var(--panel); border: 1px solid var(--edge); border-radius: 8px;
+  padding: 1rem 1.1rem; overflow-x: auto;      /* wide content scrolls itself */
+}
+pre code { background: none; padding: 0; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
+section { padding: 3.5rem 0; border-top: 1px solid var(--edge); }
+section:first-of-type { border-top: 0; }
+h1, h2, h3 { line-height: 1.2; letter-spacing: -0.01em; }
+h2 {
+  font-family: var(--mono); font-size: 0.86rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber);
+  margin: 0 0 0.4rem;
+}
+h2 + .lede { font-size: 1.5rem; line-height: 1.3; margin: 0 0 1.75rem; color: #fff; letter-spacing: -0.02em; }
+h3 { font-size: 1.05rem; margin: 0 0 0.3rem; }
+p { margin: 0 0 1rem; }
+.muted { color: var(--dim); }
+.small { font-size: 0.92rem; }
+
+/* ---------------------------------------------------------------- hero */
+header { padding: 4rem 0 3rem; text-align: center; position: relative; }
+header::after {                       /* the panel's own glow, not a gradient */
+  content: ""; position: absolute; inset: auto 0 0 0; height: 60%;
+  background: radial-gradient(60% 100% at 50% 100%, #f3a52b14, transparent 70%);
+  pointer-events: none;
+}
+.brand {
+  font-family: var(--mono); font-size: clamp(2.4rem, 8vw, 4.4rem);
+  font-weight: 700; letter-spacing: 0.02em; margin: 0; color: #fff;
+}
+.brand b { color: var(--amber); font-weight: 700; }
+.tag { font-size: clamp(1.05rem, 2.6vw, 1.35rem); color: var(--ink); margin: 0.6rem auto 0; max-width: 34ch; }
+.sub { color: var(--dim); max-width: 56ch; margin: 0.9rem auto 0; }
+.shot { margin: 2.5rem 0 0; border: 1px solid var(--edge); border-radius: 10px; overflow: hidden; background: #000; }
+.reel-lede { color: var(--dim); font-size: 0.95rem; margin: 2.25rem 0 0.9rem; }
+.reel { display: grid; gap: 0.9rem; grid-template-columns: repeat(3, 1fr); }
+.reel figure { margin: 0; }
+.reel img { border: 1px solid var(--edge); border-radius: 7px; background: #000; width: 100%; }
+.reel figcaption { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
+                   color: var(--amber); margin-top: 0.45rem; }
+@media (max-width: 720px) { .reel { grid-template-columns: 1fr; } }
+
+.cta { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; margin-top: 1.6rem; }
+.btn {
+  font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.62rem 1.1rem; border-radius: 6px;
+  border: 1px solid var(--edge); background: var(--panel); color: var(--ink);
+}
+.btn:hover { border-color: var(--amber); color: var(--hot); }
+.btn.primary { background: var(--amber); border-color: var(--amber); color: #17110a; font-weight: 600; }
+.btn.primary:hover { background: var(--hot); border-color: var(--hot); color: #17110a; }
+
+/* ---------------------------------------------------------------- grids */
+.grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.card { background: var(--panel); border: 1px solid var(--edge); border-radius: 10px; padding: 1rem; }
+.card img { border-radius: 5px; background: #000; width: 100%; }
+.card h3 { margin-top: 0.85rem; }
+.card p { margin: 0; color: var(--dim); font-size: 0.92rem; }
+
+.film { margin: 0 0 2.25rem; }
+.film img { border: 1px solid var(--edge); border-radius: 8px; background: #000; width: 100%; }
+.film figcaption { color: var(--dim); font-size: 0.92rem; margin-top: 0.6rem; }
+.film figcaption b { color: var(--ink); font-family: var(--mono); font-weight: 600; }
+
+/* ---------------------------------------------------------------- table */
+.tbl-scroll { overflow-x: auto; }             /* the page body never scrolls sideways */
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; min-width: 520px; }
+th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--edge); vertical-align: top; }
+th { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
+tbody tr:last-child td { border-bottom: 0; }
+.ok   { color: var(--hot); }
+.warn { color: var(--clip); }
+
+.note {
+  border-left: 2px solid var(--amber); background: #f3a52b0a;
+  padding: 0.9rem 1.1rem; border-radius: 0 6px 6px 0; margin: 1.5rem 0;
+}
+.note p:last-child { margin-bottom: 0; }
+
+footer { padding: 3rem 0 4rem; border-top: 1px solid var(--edge); color: var(--dim); font-size: 0.92rem; }
+footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-bottom: 1.2rem; }
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  section { padding: 2.75rem 0; }
+  .grid { grid-template-columns: 1fr; }
+}
+/* Someone will open this on a phone at 2am to show a friend. Respect it. */
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ============================================================ site chrome
+   Added when the single page became many. Everything above this line came
+   from the one-page version and still describes the same deck-at-night
+   palette; everything below is navigation, which the one-page version did
+   not need because there was nowhere to go. */
+
+.topnav {
+  position: sticky; top: 0; z-index: 20;
+  background: #08080ae8; backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--edge);
+}
+.topnav .wrap { display: flex; align-items: center; gap: 1rem; min-height: 52px; flex-wrap: wrap; }
+.topnav .mark {
+  font-family: var(--mono); font-weight: 700; letter-spacing: 0.04em;
+  color: #fff; border: 0; font-size: 0.95rem; white-space: nowrap;
+}
+.topnav .mark b { color: var(--amber); }
+.topnav .links { display: flex; gap: 0.15rem 0.9rem; flex-wrap: wrap; margin-left: auto; }
+.topnav .links a {
+  font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--dim); border: 0; padding: 0.35rem 0;
+}
+.topnav .links a:hover { color: var(--hot); }
+.topnav .links a.on { color: var(--ink); }
+.topnav .links a.guide {
+  color: #17110a; background: var(--amber); border-radius: 5px;
+  padding: 0.3rem 0.7rem; font-weight: 700;
+}
+.topnav .links a.guide:hover { background: var(--hot); color: #17110a; }
+.topnav .links a.guide.on { box-shadow: 0 0 0 2px #f3a52b40; }
+
+/* ---- where you are in the guide */
+.rail { border-bottom: 1px solid var(--edge); background: #0b0b0f; }
+.rail .wrap { display: flex; align-items: center; gap: 0.9rem; padding-top: 0.6rem; padding-bottom: 0.6rem; }
+.rail .of, .rail .pct {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--dim); white-space: nowrap;
+}
+.rail .pct { margin-left: auto; color: var(--amber); }
+.rail .dots { display: flex; gap: 4px; flex: 1; min-width: 0; }
+.rail .dots a {
+  height: 4px; flex: 1; min-width: 4px; border-radius: 2px;
+  background: var(--edge); border: 0; transition: background 0.15s;
+}
+.rail .dots a.done { background: #f3a52b66; }
+.rail .dots a.now  { background: var(--amber); box-shadow: 0 0 8px #f3a52b80; }
+.rail .dots a:hover { background: var(--hot); }
+@media (max-width: 560px) { .rail .of { display: none; } }
+
+/* ---- flicking through */
+.prevnext { border-top: 1px solid var(--edge); background: #0b0b0f; }
+.prevnext .wrap { display: flex; gap: 0.9rem; padding-top: 1.5rem; padding-bottom: 2.5rem; }
+.prevnext a {
+  flex: 1; border: 1px solid var(--edge); border-radius: 10px;
+  padding: 0.9rem 1.1rem; background: var(--panel); display: block;
+  min-height: 76px;                 /* a thumb target, not a link in a line */
+}
+.prevnext a:hover { border-color: var(--amber); background: #14140f; }
+.prevnext a span {
+  display: block; font-family: var(--mono); font-size: 0.7rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber);
+  margin-bottom: 0.25rem;
+}
+.prevnext a b { color: var(--ink); font-weight: 600; font-size: 1.02rem; }
+.prevnext .next { text-align: right; }
+@media (max-width: 620px) { .prevnext .wrap { flex-direction: column; } }
+
+/* ---- the eleven steps */
+.step .steptabs { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 1.4rem; }
+.step .steptabs a {
+  font-family: var(--mono); font-size: 0.78rem; width: 30px; height: 30px;
+  display: grid; place-items: center; border-radius: 6px;
+  border: 1px solid var(--edge); background: var(--panel); color: var(--dim);
+}
+.step .steptabs a:hover { border-color: var(--amber); color: var(--hot); }
+.step .steptabs a.on { background: var(--amber); color: #17110a; border-color: var(--amber); font-weight: 700; }
+.stepcols { display: grid; gap: 1.5rem; grid-template-columns: 2fr 1fr; margin-top: 1.5rem; }
+@media (max-width: 720px) { .stepcols { grid-template-columns: 1fr; } }
+table.parts { min-width: 0; }
+table.parts td { padding: 0.4rem 0.6rem; font-size: 0.92rem; }
+table.parts td:first-child { width: 3rem; color: var(--hot); font-family: var(--mono); }
+
+.note.danger { border-left-color: var(--clip); background: #ff49380f; }
+
+/* ---- the chapter cards on the front page */
+.chapters { display: grid; gap: 0.8rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.chapters a {
+  border: 1px solid var(--edge); border-radius: 9px; background: var(--panel);
+  padding: 0.85rem 1rem; display: block;
+}
+.chapters a:hover { border-color: var(--amber); background: #14140f; }
+.chapters .n {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em;
+  color: var(--amber); display: block;
+}
+.chapters .t { color: var(--ink); font-weight: 600; display: block; margin: 0.15rem 0 0.2rem; }
+.chapters .d { color: var(--dim); font-size: 0.87rem; }
+
+/* On a phone the nav wrapped to three rows and, being sticky, pinned a third
+   of the screen — on the one page somebody reads with a screwdriver in their
+   other hand. One row that scrolls sideways instead; the guide button stays
+   put, because that is the one people are reaching for. */
+@media (max-width: 760px) {
+  .topnav .wrap { gap: 0.6rem; min-height: 46px; flex-wrap: nowrap; }
+  .topnav .links {
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    gap: 0.85rem; margin-left: 0.4rem; padding-right: 0.2rem;
+  }
+  .topnav .links::-webkit-scrollbar { display: none; }
+  .topnav .links a { white-space: nowrap; }
+  /* First in the row, not pinned to the right: pinned, it floated over the
+     links scrolling underneath it and read as a rendering bug. */
+  .topnav .links a.guide { order: -1; }
+  .step .steptabs a { width: 34px; height: 34px; }   /* thumbs, not cursors */
+}

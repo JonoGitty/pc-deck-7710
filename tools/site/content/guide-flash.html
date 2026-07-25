@@ -1,0 +1,65 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Flash it, and read the four-stage self-test. Everything here happens on a desk, from USB, and risks nothing but your time.</p>
+
+    <pre><code># the whole thing, guided
+python3 tools/deckctl.py
+
+# or step by step
+python3 tools/deckctl.py doctor
+python3 tools/deckctl.py build   --display ssd1322
+python3 tools/deckctl.py flash
+python3 tools/deckctl.py logs</code></pre>
+
+    <p><code>doctor</code> first, always: it says what is missing from your toolchain
+      and how to get it, and it reads the chip ID over USB — which is where an
+      ESP32-S3 bought by mistake gets caught, before any of it is your fault.</p>
+
+    <h3 style="margin-top:2rem">First light: the self-test is staged for a reason</h3>
+    <p class="muted">A blank panel has six causes and one symptom, so the boot
+      self-test walks up the stack and each stage tells you something the previous
+      one could not.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Stage 1 — the driver</h3>
+        <p>A pattern written straight from the panel driver, before
+          <code>core/</code> is involved at all. <b>Blank here is hardware</b>:
+          wiring, power, or the wrong controller.</p>
+      </div>
+      <div class="card">
+        <h3>Stage 2 — the output stage</h3>
+        <p>The intensity levels through the quantiser. If stage 1 drew and this does
+          not, the panel is fine and the level mapping is not.</p>
+      </div>
+      <div class="card">
+        <h3>Stage 3 — the font</h3>
+        <p>Text from the ROM. Proves the generated font header made it into the
+          image and reads correctly.</p>
+      </div>
+      <div class="card">
+        <h3>Stage 4 — the subsystems</h3>
+        <p>The table of what came up: Bluetooth, tuner, mux, buttons. Health is four
+          states — <code>unknown</code> means <em>not tried yet</em>, which is not
+          <code>failed</code>.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem"><b>Blank at stage 1 is hardware. Blank after stage 1
+      is software.</b> That single distinction is the whole reason it is staged, and
+      it is the difference between an evening with a multimeter and an evening with a
+      debugger.</p>
+
+    <div class="note">
+      <p><b>Then pair it.</b> Your phone's own Bluetooth menu — no app, no pairing
+        code, nothing to install. Play something and the analyser moves. If the deck
+        does not appear, <code>deckctl logs</code> says whether Bluetooth came up at
+        all, which is a different problem from it coming up and not being found.</p>
+    </div>
+
+    <p class="muted small">⚠️ The firmware compiles and has never run on hardware. The
+      self-test is written and its stages are simulated on the host by
+      <code>tools/sim/</code>, which is not the same as having lit a panel with it.</p>
+  </div>
+</section>

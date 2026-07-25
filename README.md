@@ -13,6 +13,15 @@ for a PC and turned into a kit for building the real thing: pick a display,
 preview it in a browser before spending money, flash the firmware for your
 setup, and slide it into the dash.
 
+> ### 📖 [Start the build guide →](https://jonogitty.github.io/pc-deck-7710/guide/plan.html)
+>
+> Thirteen chapters in the order you do them, each with a next and a previous —
+> plan, your car, the donor, stripping it, reusing its amplifier, the parts, the
+> wiring, flashing, moving the screen across, **eleven assembly steps with a page
+> and a drawing each**, into the car, tuning, and what to do when it does not
+> work. Or read it as Markdown starting at
+> [docs/HANDBOOK.md](docs/HANDBOOK.md).
+
 Two things live here and both are supported:
 
 |  | What it is | Status |

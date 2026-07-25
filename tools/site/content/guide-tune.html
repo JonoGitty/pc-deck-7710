@@ -1,0 +1,48 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Pair it, tune it, load it. The last hour, and the settings that are set once and then forgotten.</p>
+
+    <h3>Pair the phone</h3>
+    <p class="muted">The phone's own Bluetooth menu. No app and no pairing code. Once
+      paired it reconnects on ignition, and metadata — title, artist, album, and the
+      album art if the phone sends it — arrives over AVRCP without anything else being
+      configured.</p>
+
+    <h3 style="margin-top:2rem">Set the radio region — once</h3>
+    <div class="note">
+      <p><b>⚠️ The region follows where you drive, not where the car was built.</b>
+        A JDM import in Britain receives British stations, so it wants the European
+        band plan. It is not a subtle failure: Japan's FM band is 76–95 MHz against
+        Europe's 87.5–108, so a European deck driven in Japan can tune about a tenth
+        of the band, and the Americas use 10 kHz AM spacing against 9 kHz elsewhere —
+        on the wrong step every station lands between channels.</p>
+      <p>Five plans — EU, UK, US, JP, AU — stored in NVS. Changing it re-clamps the
+        saved frequencies <em>and</em> every preset into the new plan, so a preset
+        cannot survive as a frequency the region cannot reach.</p>
+    </div>
+
+    <h3 style="margin-top:2rem">Volume, and where it comes from</h3>
+    <p class="muted">If you fitted a <b>PT2313</b>, the encoder is your volume control
+      and the chip does bass, treble, balance and fader as well — all over the I²C bus
+      the tuner already uses. If you fitted a bare <b>74HC4052</b> mux instead, there
+      is no volume control anywhere in the deck: the mux only selects a source. In
+      that case the encoder falls back to panel brightness and the volume lives on
+      your phone. It is worth £2–4 not to have that be true.</p>
+
+    <h3 style="margin-top:2rem">Load what it plays</h3>
+    <pre><code>python3 tools/deckctl.py movies          # choose what it plays
+python3 tools/deckctl.py pictures *.jpg  # your own photographs</code></pre>
+    <p class="muted">Movies are baked animations at 10 fps, packed into flash — the
+      bundled ones are the ocean, the touge run, the solar system and the AE86. Making
+      your own is <a href="{{ROOT}}movies.html">its own page</a>, and the short version is:
+      procedural if it must react to the music, baked if it just has to look good.</p>
+
+    <h3 style="margin-top:2rem">Steering-wheel controls, if the car has them</h3>
+    <p class="muted">A resistor-ladder input on its own pin, with a learning mode: hold
+      each wheel button in turn and the deck records the voltage. Many cars in the
+      fitment list have none at all — the S2000 has no wheel controls in any market,
+      which means no interface box and no learning step. That is one of the things
+      worth knowing <em>before</em> buying an adapter for it.</p>
+  </div>
+</section>

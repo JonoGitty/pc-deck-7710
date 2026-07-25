@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calls, and the radio</title>
+<meta name="description" content="Hands-free calling over HFP, and an FM/AM tuner whose audio never enters the microcontroller.">
+<meta property="og:title" content="Calls, and the radio">
+<meta property="og:description" content="Hands-free calling over HFP, and an FM/AM tuner whose audio never enters the microcontroller.">
+<meta property="og:image" content="media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="index.html">Home</a><a class="" href="screens.html">Screens</a><a class="on" href="calls.html">Calls &amp; radio</a><a class="" href="movies.html">Animations</a><a class="" href="run.html">Try it</a><a class="" href="architecture.html">Architecture</a><a class="" href="status.html">Status</a><a class="guide" href="guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<section>
+  <div class="wrap">
+    <h2>Calls, and the radio</h2>
+    <p class="lede">A head unit is a radio and a telephone. Both get proper screens.</p>
+
+    <figure class="film"><img loading="lazy" src="media/call-incoming.gif" alt="An incoming call: the caller's name filling the panel, a pulsing red border, ANSWER and REJECT in the corners">
+      <figcaption>The ESP32 does hands-free calling alongside music — it is Bluetooth
+        Classic, the same side of the chip question as A2DP, so adding calls does not
+        change the hardware. One £4 I²S microphone and one spare pin. The border is the
+        indicator: a phone ringing has to be caught in peripheral vision by somebody
+        watching a road, and the biggest thing a panel has is its own edge.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/call-active.gif" alt="In a call: duration on the left, caller name above, a live microphone level meter on the right">
+      <figcaption>In a call: duration, who, and a <b>live microphone level</b>. That meter
+        is the only feedback anywhere in the system that the mic is plugged in and being
+        heard — without it, a working call and a dead microphone look identical.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/radio-fm.gif" alt="FM radio: station name from RDS, frequency below, a band scale with preset marks, signal bars and a stereo indicator">
+      <figcaption>And a tuner worth having. RDS station name first, frequency under it, and
+        a band scale with your presets marked — because a radio without one feels broken
+        when you seek: the number jumps and nothing says whether you moved a little or
+        crossed the band. Signal is a <em>count</em> of segments and stereo is a glyph that
+        is there or is not, never a brightness, which vanishes on a 1-bit panel.</figcaption></figure>
+
+    <p class="muted small">Both screens are written and rendered from the real
+      <code>core/</code>. <b>Neither driver is.</b>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CALLING.md">CALLING.md</a>
+      and
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/RADIO.md">RADIO.md</a>
+      say exactly what exists, what is designed, and what each costs to build.</p>
+  </div>
+
+</section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

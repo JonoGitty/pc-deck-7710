@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan the build</title>
+<meta name="description" content="Decide what you are building and which display it has, because that fixes the grid everything else is laid out on.">
+<meta property="og:title" content="Plan the build">
+<meta property="og:description" content="Decide what you are building and which display it has, because that fixes the grid everything else is laid out on.">
+<meta property="og:image" content="../media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="../deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="../index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="../index.html">Home</a><a class="" href="../screens.html">Screens</a><a class="" href="../calls.html">Calls &amp; radio</a><a class="" href="../movies.html">Animations</a><a class="" href="../run.html">Try it</a><a class="" href="../architecture.html">Architecture</a><a class="" href="../status.html">Status</a><a class="guide on" href="../guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<div class="rail"><div class="wrap"><span class="of">Build guide · 1 of 24</span><div class="dots"><a class="now" href="../guide/plan.html" title="Plan the build"></a><a class="" href="../guide/car.html" title="Your car"></a><a class="" href="../guide/donor.html" title="Choose a donor"></a><a class="" href="../guide/strip.html" title="Strip it down"></a><a class="" href="../guide/reuse.html" title="Keep what you can"></a><a class="" href="../guide/parts.html" title="Buy the parts"></a><a class="" href="../guide/wire.html" title="Wire the boards"></a><a class="" href="../guide/flash.html" title="Flash it, and first light"></a><a class="" href="../guide/transplant.html" title="Move the screen and the buttons"></a><a class="" href="../guide/assemble.html" title="Assemble it — eleven steps"></a><a class="" href="../guide/step-01.html" title="Step 1 — The chassis, empty"></a><a class="" href="../guide/step-02.html" title="Step 2 — Four nylon standoffs"></a><a class="" href="../guide/step-03.html" title="Step 3 — The main board, components up"></a><a class="" href="../guide/step-04.html" title="Step 4 — Four nuts, finger tight plus a quarter"></a><a class="" href="../guide/step-05.html" title="Step 5 — The panel, glass forward"></a><a class="" href="../guide/step-06.html" title="Step 6 — The ribbon, with a service loop"></a><a class="" href="../guide/step-07.html" title="Step 7 — The window, smoked side out"></a><a class="" href="../guide/step-08.html" title="Step 8 — The encoder, through the fascia"></a><a class="" href="../guide/step-09.html" title="Step 9 — The fascia"></a><a class="" href="../guide/step-10.html" title="Step 10 — The cage, in the car"></a><a class="" href="../guide/step-11.html" title="Step 11 — Slide it home"></a><a class="" href="../guide/install.html" title="Into the car"></a><a class="" href="../guide/tune.html" title="Pair it, tune it, load it"></a><a class="" href="../guide/fix.html" title="When it does not work"></a></div><span class="pct">4%</span></div></div><section>
+  <div class="wrap">
+    <h2>Chapter 1</h2>
+    <p class="lede">Plan the build. Pick a display first — it fixes the grid everything else is laid out on.</p>
+
+    <p>There are two decisions here and everything downstream follows from them:
+      <b>which panel</b>, and <b>whether this deck is going in a car</b>. Take the
+      first one seriously: the panel decides the logical grid, the number of
+      brightness levels, and whether thin bright detail survives at all.</p>
+
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Tier</th><th>Display</th><th>Brain</th><th>Rough cost</th></tr></thead>
+      <tbody>
+        <tr><td>Bench</td><td>SSD1322 OLED, 256×64, 16 grey</td><td>ESP32-WROVER-E</td><td>~£32</td></tr>
+        <tr><td>Car — greyscale</td><td>SSD1322</td><td>ESP32-WROVER-E</td><td>~£82</td></tr>
+        <tr><td>Car — authentic VFD</td><td>Futaba GP1294AI, 1-bit</td><td>ESP32-WROVER-E</td><td>~£92</td></tr>
+        <tr><td>Car — colour <span class="warn">⚠</span></td><td>4.58″ bar IPS, 960×320</td><td>ESP32 <b>+ ESP32-S3</b></td><td>~£90</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="note">
+      <p><b>Two corrections already made the hard way.</b></p>
+      <p>It must be the <b>original ESP32, not the S3</b> — the S3 has no Bluetooth
+        Classic, so no A2DP, so no audio from a phone. Espressif closed that request
+        “Won't Do”.</p>
+      <p>The <b>8.8″ bar LCD does not fit a 1-DIN slot</b>: about 217 mm wide against
+        a 180 mm fascia. There <em>is</em> a colour panel that fits — a 4.58″ bar IPS
+        at 118.8 × 41.57 mm, which maps onto the grid exactly at 192 × 64 logical dots
+        times five — but it needs a parallel RGB bus the original ESP32 does not have,
+        so colour is a two-chip build.</p>
+    </div>
+
+    <h3 style="margin-top:2.5rem">Build the bench tier first, whatever you are aiming at</h3>
+    <p class="muted">A panel, an ESP32 and a USB cable on a desk is about £32 and it
+      plays music from your phone. Every chapter up to <b>Flash it</b> applies to it
+      unchanged, and it turns the car build from one long project with a single
+      moment of truth into two short ones. If something is wrong with your soldering
+      or your wiring you would much rather find out on a desk than upside down under
+      a dashboard.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Which grid you get</h3>
+        <p>SSD1322 → 256×64 with four usable levels. GP1294AI → 256×48, 1-bit.
+          The legacy PC deck → 192×48. The renderer lays out for each of them; you
+          do not have to.</p>
+      </div>
+      <div class="card">
+        <h3>The level-centre rule</h3>
+        <p>Level <i>n</i> renders at shade (<i>n</i>+0.5)/4, so 0.375, 0.625 and
+          0.875 are solid fields and 0.25 or 0.5 are 50/50 checkerboards. A
+          checkerboard over a third of the panel beats everything else for
+          attention.</p>
+      </div>
+      <div class="card">
+        <h3>Level 4 is spoken for</h3>
+        <p>It is the clipping indicator and renders red. Movies and animations use
+          0–3 only, which is why the deck has five levels and four of them are
+          yours.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem">The full component survey is
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">HARDWARE.md</a>, where every claim is
+      marked ✅ verified against a datasheet or a listing, or ⚠️ not — and the
+      unverified ones are unverified for a reason.</p>
+  </div>
+</section>
+<nav class="prevnext"><div class="wrap"><a class="prev" href="../index.html"><span>←</span><b>Back to the front page</b></a><a class="next" href="../guide/car.html"><span>Next →</span><b>Your car</b></a></div></nav>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../index.html">Home</a>
+      <a href="../guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

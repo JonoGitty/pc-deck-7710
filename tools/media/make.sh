@@ -114,5 +114,16 @@ else
   printf '  SKIPPED (needs playwright-core + Chromium)\n'
 fi
 
+printf '\n== the site (pages, not one long scroll) ==\n'
+# Last, because the pages reference the pictures above by name. Only rebuild
+# the real site when the pictures went to the real place — a media run aimed at
+# a scratch directory must not rewrite docs/*.html to match pictures that are
+# not there.
+if [ "$OUT" = "docs/media" ] || [ "$OUT" = "./docs/media" ]; then
+  python3 tools/site/build.py
+else
+  printf '  SKIPPED (media went to %s, not docs/media)\n' "$OUT"
+fi
+
 printf '\n== total ==\n'
 du -sh "$OUT"
