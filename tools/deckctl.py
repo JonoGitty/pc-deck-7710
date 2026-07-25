@@ -420,6 +420,81 @@ def cmd_coredump(args):
 
 
 # ------------------------------------------------------------------ setup
+# ------------------------------------------------------------------- fit
+def cmd_fit(args):
+    """What your specific car needs, on top of the deck everyone builds.
+
+    Reads vehicles/*.json — the same files docs/VEHICLES.md is generated from,
+    so this cannot drift from the page. Kept in deckctl rather than left as a
+    document because the moment you actually want it is with the dash apart
+    and a laptop on the passenger seat, not in a browser.
+    """
+    import glob
+    import json
+
+    files = sorted(glob.glob(os.path.join(ROOT, "vehicles", "**", "*.json"),
+                             recursive=True))
+    cars = []
+    for p in files:
+        with open(p, encoding="utf-8") as f:
+            c = json.load(f)
+        c["_path"] = os.path.relpath(p, ROOT)
+        cars.append(c)
+
+    q = " ".join(args.car).lower().strip()
+    if not q:
+        say("which car? for example:  deckctl.py fit s2000", "warn")
+        for c in cars:
+            print(f"        {c['brand']} {c['model']} {c['generation']}"
+                  f"   ({c['years']})")
+        return 1
+
+    def hay(c):
+        return " ".join([c["brand"], c["model"], c["generation"],
+                         " ".join(c.get("also_known_as") or [])]).lower()
+
+    hits = [c for c in cars if all(t in hay(c) for t in q.split())]
+    if not hits:
+        say(f"no vehicle matches {q!r}", "bad")
+        say("known cars:", "info")
+        for c in cars:
+            print(f"        {c['brand']} {c['model']} {c['generation']}")
+        say("adding one is a JSON file — see vehicles/README.md", "info")
+        return 1
+    if len(hits) > 1 and not args.all:
+        say(f"{len(hits)} cars match {q!r} — narrowing helps:", "warn")
+        for c in hits:
+            print(f"        {c['brand']} {c['model']} {c['generation']}"
+                  f"   ({c['years']})")
+        return 1
+
+    MARK = {"verified": ("  ok  ", C.ok), "unverified": (" check", C.warn),
+            "measure": (" meas.", C.warn)}
+    for c in hits:
+        print()
+        print(f"{C.bold}{c['brand']} {c['model']} {c['generation']}{C.off}"
+              f"  {C.dim}{c['years']}{C.off}")
+        print(f"{C.dim}{c['_path']}{C.off}\n")
+        for key, label in (("fits", "fits"), ("aperture", "aperture"),
+                           ("depth_mm", "depth"),
+                           ("fascia_adapter", "fascia"),
+                           ("harness", "harness"), ("aerial", "aerial"),
+                           ("swc", "wheel ctl"), ("illumination", "dimmer"),
+                           ("ignition", "ign. live")):
+            f = c[key]
+            tag, col = MARK[f["c"]]
+            print(f"{col}{tag}{C.off}  {label:<10} {f['v']}")
+        if c.get("gotchas"):
+            print(f"\n{C.warn}  watch{C.off}  gotchas")
+            for g in c["gotchas"]:
+                print(f"         · {g}")
+        print(f"\n{C.dim}       The deck itself is the same for every car — "
+              f"see docs/BUILD.md.{C.off}")
+        print(f"{C.dim}       The radio region follows where you DRIVE, not "
+              f"where the car was built.{C.off}")
+    return 0
+
+
 def cmd_setup(args):
     """The whole thing, in order, for someone who has just cloned this."""
     print(f"""
@@ -487,14 +562,21 @@ def main():
     lg = sub.add_parser("logs", help="watch the deck's serial output")
     lg.add_argument("--all", action="store_true", help="include ESP-IDF info lines")
 
+    ft = sub.add_parser("fit", help="what YOUR car needs, on top of the deck")
+    ft.add_argument("car", nargs="*", help="e.g. s2000, mx-5 nb, mr2")
+    ft.add_argument("--all", action="store_true",
+                    help="print every match instead of asking you to narrow")
+
     sub.add_parser("coredump", help="decode the crash stored in flash")
     sub.add_parser("setup", help="guided end-to-end setup")
 
     args = ap.parse_args()
     fn = {"doctor": cmd_doctor, "build": cmd_build, "flash": cmd_flash,
           "movies": cmd_movies, "pictures": cmd_pictures, "logs": cmd_logs,
+          "fit": cmd_fit,
           "coredump": cmd_coredump, "setup": cmd_setup}.get(args.cmd, cmd_setup)
-    for k, v in (("movie", []), ("all", False), ("no_write", False)):
+    for k, v in (("movie", []), ("all", False), ("no_write", False),
+                 ("car", [])):
         if not hasattr(args, k):
             setattr(args, k, v)
     return fn(args)

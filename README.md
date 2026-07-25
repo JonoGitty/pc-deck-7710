@@ -246,6 +246,26 @@ the same thing as [one exploded stack](docs/media/assembly.svg).*
 what has to clear behind it. ⚠️ Drawings of an intended build, from the
 standard and the datasheets. Nothing here has been assembled.*
 
+### What YOUR car needs
+
+The deck is the same object in every car. What changes is a bag of adapters —
+something to fill the hole, something to reach the car's connector, something
+to reach its aerial — and how much room is behind the dash.
+
+**[docs/VEHICLES.md](docs/VEHICLES.md)** covers the Honda S2000 (AP1, AP2), the
+Mazda MX-5 (NA, NB, NC, ND) and the Toyota MR2 (W10, W20, W30), and
+`vehicles/` is a JSON file per car so adding one is a pull request rather than
+a rewrite.
+
+```sh
+python3 tools/deckctl.py fit s2000 ap1    # your car's kit, at the bench
+```
+
+⚠️ **The radio region follows where you drive, not where the car was built.** A
+JDM import in Britain receives British stations. Japan's FM band is 76–95 MHz
+against Europe's 87.5–108, and the Americas use 10 kHz AM spacing against 9 kHz
+elsewhere — get it wrong and most of the band is missing or mistuned.
+
 One tool does the whole loop:
 
 ```sh
@@ -360,7 +380,8 @@ dithering into mush on 1-bit panels.
 [Safety](SAFETY.md) · [Handbook](docs/HANDBOOK.md) · [Hardware](docs/HARDWARE.md) ·
 [Architecture](docs/ARCHITECTURE.md) · [UI spec](docs/UI-SPEC.md) ·
 [Making animations](docs/MOVIE-RENDERING.md) · [Control](docs/CONTROL.md) ·
-[Buying guide](docs/BUYING.md) · [Calling](docs/CALLING.md) · [Radio](docs/RADIO.md) ·
+[Buying guide](docs/BUYING.md) · [Your car](docs/VEHICLES.md) ·
+[Calling](docs/CALLING.md) · [Radio](docs/RADIO.md) ·
 [Testing](docs/TESTING.md) · [Versioning](docs/VERSIONING.md) ·
 [For Claude](CLAUDE.md)
 

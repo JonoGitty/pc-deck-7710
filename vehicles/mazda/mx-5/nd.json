@@ -1,0 +1,73 @@
+{
+  "brand": "Mazda",
+  "model": "MX-5",
+  "generation": "ND",
+  "years": "2015–",
+  "also_known_as": [
+    "Miata ND (US)",
+    "ND2 / ND3 facelifts"
+  ],
+  "markets": [
+    "UK",
+    "EU",
+    "US",
+    "JP",
+    "AU"
+  ],
+  "fits": {
+    "v": "no — not as a head unit",
+    "c": "unverified",
+    "why": "The ND has an integrated infotainment system (MZD Connect) on a screen that is part of the dash design, not a DIN slot. There is no 182 × 53 mm aperture to put this in, and the car's audio, reversing camera and vehicle settings live in the same unit."
+  },
+  "aperture": {
+    "v": "none — integrated infotainment, no DIN slot",
+    "c": "unverified",
+    "why": "This is a design fact about the car, not a missing adapter."
+  },
+  "depth_mm": {
+    "v": "not applicable",
+    "c": "unverified",
+    "why": "There is no aperture to measure."
+  },
+  "fascia_adapter": {
+    "v": "not applicable",
+    "c": "unverified",
+    "why": "Nothing to adapt to."
+  },
+  "harness": {
+    "v": "not applicable as a head-unit replacement",
+    "c": "unverified",
+    "why": "Removing MZD Connect takes vehicle settings and the reversing camera with it. That is a different and much larger project."
+  },
+  "aerial": {
+    "v": "not applicable",
+    "c": "unverified",
+    "why": ""
+  },
+  "swc": {
+    "v": "present",
+    "c": "unverified",
+    "why": "The ND has steering-wheel controls, which is moot while the deck cannot be the head unit."
+  },
+  "illumination": {
+    "v": "not applicable",
+    "c": "unverified",
+    "why": ""
+  },
+  "ignition": {
+    "v": "not applicable",
+    "c": "unverified",
+    "why": ""
+  },
+  "same_as_other_generations": [
+    "Nothing. The ND is the break in the MX-5 line for this project: NA, NB and NC take a DIN head unit and the ND does not."
+  ],
+  "market_notes": [
+    "The same everywhere — this is a limitation of the car, not of a market.",
+    "If you want the deck in an ND, the honest answer is that it becomes a second display fed over Bluetooth or aux, not a replacement head unit. That works and it is not what the rest of this repository describes."
+  ],
+  "gotchas": [
+    "⚠️ Do not buy parts for this on the assumption an adapter exists. It is not an adapter problem.",
+    "The deck still runs perfectly well on a desk, and the PC deck needs no car at all."
+  ]
+}

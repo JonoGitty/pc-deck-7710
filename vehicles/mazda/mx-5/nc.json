@@ -1,0 +1,76 @@
+{
+  "brand": "Mazda",
+  "model": "MX-5",
+  "generation": "NC",
+  "years": "2005–2015",
+  "also_known_as": [
+    "Miata NC (US)",
+    "MX-5 RC / PRHT (folding hard top)"
+  ],
+  "markets": [
+    "UK",
+    "EU",
+    "US",
+    "JP",
+    "AU"
+  ],
+  "fits": {
+    "v": "yes, but the aperture is bigger than the deck",
+    "c": "unverified",
+    "why": "The NC dash is believed to take a double-DIN unit. A single-DIN deck fits with a double-DIN cage and a half-height pocket or blanking plate — the standard way any 1-DIN radio goes into a 2-DIN hole."
+  },
+  "aperture": {
+    "v": "double DIN (2 × ISO 7736)",
+    "c": "unverified",
+    "why": "Confirm on your car. If it is double-DIN you need the pocket; if single, you do not."
+  },
+  "depth_mm": {
+    "v": "more generous than the NA/NB",
+    "c": "measure",
+    "why": "This is the number that decides whether the build fits, and it is the one no listing tells you. Measure from the back of the aperture to the nearest obstruction before you commit to a chassis depth."
+  },
+  "fascia_adapter": {
+    "v": "search: “Mazda MX-5 NC double DIN fascia with 1-DIN pocket”",
+    "c": "unverified",
+    "why": "The pocket is the part that makes a 1-DIN deck look deliberate in a 2-DIN hole rather than lost in it."
+  },
+  "harness": {
+    "v": "search: “Mazda to ISO 10487 harness adapter”",
+    "c": "unverified",
+    "why": "⚠️ Cars with the Bose system are wired differently from the base system. Establish which you have before ordering."
+  },
+  "aerial": {
+    "v": "search: “Mazda aerial adapter to DIN (Motorola)”",
+    "c": "unverified",
+    "why": "The NC generally uses a fixed aerial rather than a powered mast."
+  },
+  "swc": {
+    "v": "⚠️ present on some trims — unlike the NA and NB",
+    "c": "unverified",
+    "why": "This is the one car in this directory where the steering-wheel controls are worth checking for. If yours has them, they work through the same universal interface box and the deck's learning wizard; see docs/CONTROL.md. If not, skip it."
+  },
+  "illumination": {
+    "v": "dash dimmer at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A6."
+  },
+  "ignition": {
+    "v": "switched live at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A7. Meter it."
+  },
+  "same_as_other_generations": [
+    "ISO 7736 and ISO 10487 via an adapter, as everywhere else",
+    "⚠️ NOT the same on steering-wheel controls: the NC may have them and the NA/NB do not"
+  ],
+  "market_notes": [
+    "Trim level matters more than market on the NC, because of the Bose option and the steering-wheel controls.",
+    "⚠️ The radio band plan follows where the car is driven, not where it was built. An import wants the plan of the country it is in now."
+  ],
+  "gotchas": [
+    "The Bose system is an amplified system and does not behave like plain speakers on an ISO block. Establish what you have before cutting anything.",
+    "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
+    "The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
+    "A 1-DIN deck in a 2-DIN hole needs the pocket to look intentional."
+  ]
+}

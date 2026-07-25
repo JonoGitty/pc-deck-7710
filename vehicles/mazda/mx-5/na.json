@@ -1,0 +1,76 @@
+{
+  "brand": "Mazda",
+  "model": "MX-5",
+  "generation": "NA",
+  "years": "1989–1997",
+  "also_known_as": [
+    "Miata (US)",
+    "Eunos Roadster (JP)"
+  ],
+  "markets": [
+    "UK",
+    "EU",
+    "US",
+    "JP",
+    "AU"
+  ],
+  "fits": {
+    "v": "yes — the deck goes in as built",
+    "c": "unverified",
+    "why": "Single-DIN dash. The oldest and simplest case in this directory."
+  },
+  "aperture": {
+    "v": "single DIN (ISO 7736)",
+    "c": "unverified",
+    "why": "Confirm on your own car; the console was revised during the run."
+  },
+  "depth_mm": {
+    "v": "shallow — the NA console is small and the tunnel is close behind it",
+    "c": "measure",
+    "why": "This is the number that decides whether the build fits, and it is the one no listing tells you. Measure from the back of the aperture to the nearest obstruction before you commit to a chassis depth."
+  },
+  "fascia_adapter": {
+    "v": "search: “Mazda MX-5 NA single DIN fascia”",
+    "c": "unverified",
+    "why": "Often not needed: the original surround usually suits a single-DIN unit directly."
+  },
+  "harness": {
+    "v": "search: “Mazda to ISO 10487 harness adapter”",
+    "c": "unverified",
+    "why": "⚠️ Eunos Roadster imports may carry the JDM harness rather than the European one. Check which connector is actually behind your dash rather than ordering by model year."
+  },
+  "aerial": {
+    "v": "search: “Mazda aerial adapter to DIN (Motorola)”",
+    "c": "unverified",
+    "why": "Many NAs have a powered mast aerial — see the gotchas."
+  },
+  "swc": {
+    "v": "none — no factory steering-wheel audio controls",
+    "c": "unverified",
+    "why": "None known on any NA trim. Skip the interface box and the learning step."
+  },
+  "illumination": {
+    "v": "dash dimmer at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A6. Meter it."
+  },
+  "ignition": {
+    "v": "switched live at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A7, commonly swapped with A4. Meter before connecting."
+  },
+  "same_as_other_generations": [
+    "ISO 7736 aperture and an ISO 10487 harness via an adapter, like every car here",
+    "No factory steering-wheel audio controls on NA or NB, so no interface box"
+  ],
+  "market_notes": [
+    "UK / EU / US / AU / JP share the single-DIN aperture; the harness connector is the thing most likely to differ on a Japanese import.",
+    "⚠️ The radio band plan follows where the car is driven, not where it was built. An import wants the plan of the country it is in now."
+  ],
+  "gotchas": [
+    "A powered mast aerial is common on the NA and it will not rise on its own. The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
+    "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
+    "It is a convertible with a thirty-year-old hood. Water in the centre console is a known NA trait, not a hypothetical one — think about where the boards sit.",
+    "Depth. The NA console is the smallest in this directory; measure before building."
+  ]
+}

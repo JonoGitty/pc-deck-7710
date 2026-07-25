@@ -162,6 +162,7 @@ invented.
 | The radio screen, in portable C | ✅ **Written**, rendered, in the media pipeline |
 | `deck_radio_t`, the state it reads | ✅ Written |
 | Chip choice, wiring, aerial | ✅ Researched with part numbers, ⚠️ nothing bought |
+| Region: band plan, step, de-emphasis, RDS/RBDS | ✅ **Written** — five plans, stored in NVS, set once. See below |
 | Si4735 driver in the firmware | ✅ **Written** — `main/deck_tuner.c`. I²C init, address probe, band/tune/seek, RSSI, RDS decode |
 | Presets, kept across a power cycle | ✅ Written — six per band, in NVS |
 | Source switching | ✅ Written — `main/deck_source.c`, a 74HC4052 on GPIO 2 and 12 |
@@ -176,6 +177,41 @@ The command sequences came from the datasheet and AN332. The PU2CLR library is
 Arduino C++ and the deck is C99 freestanding, so it was a reference for
 sanity-checking sequences rather than a dependency — nothing is vendored from
 it and the deck does not link against it.
+
+### Region — and it follows the postcode, not the badge
+
+The band plan is not universal, and the deck now carries five: **EU, UK, US,
+JP and AU**. It is stored in NVS and set once (`deck_tuner_region_set()`).
+
+| | FM | AM step | De-emphasis |
+|---|---|---|---|
+| EU / UK | 87.5–108, 100 kHz | 9 kHz | 50 µs |
+| US | 87.9–107.9, **200 kHz** | **10 kHz** | **75 µs** |
+| JP | **76–95**, 100 kHz | 9 kHz | 50 µs |
+| AU | 87.5–108, 100 kHz | 9 kHz | 50 µs |
+
+⚠️ **It follows where the deck is DRIVEN, not where the car was built.** A JDM
+import in Britain receives British stations, so it wants the European plan.
+Everything *else* about fitting a deck to an import — fascia, harness, aerial
+plug — follows the car's market. This is the one people get backwards; see
+[VEHICLES.md](VEHICLES.md).
+
+Wrong, and it fails in ways that do not look like a settings mistake:
+
+- **Japan's FM band does not overlap Europe's below 87.5 MHz.** A European deck
+  driven in Japan can tune roughly a tenth of the band and finds almost nothing
+  — which looks exactly like a dead aerial.
+- **The Americas use 10 kHz AM spacing against 9 kHz elsewhere.** On the wrong
+  step every station lands between channels and the whole band sounds
+  mistuned, because it is.
+- **US FM sits on odd tenths on a 200 kHz raster**, so a 100 kHz step offers
+  twice as many channels as exist and half of them are empty.
+- **De-emphasis is 75 µs in the Americas and 50 µs elsewhere.** Wrong, and the
+  radio still works — just dull or hissy. Nobody ever suspects it.
+
+Changing region drags the saved frequencies and every preset into the new
+plan. Skipping that leaves a deck showing 88.1 in Japan: a frequency the chip
+accepts, tunes to, and receives nothing on.
 
 Three implementation notes that will save someone an afternoon:
 

@@ -1,0 +1,74 @@
+{
+  "brand": "Toyota",
+  "model": "MR2",
+  "generation": "W20",
+  "years": "1989–1999",
+  "also_known_as": [
+    "SW20",
+    "MR2 Mk2",
+    "Turbo / GT (JP)"
+  ],
+  "markets": [
+    "UK",
+    "EU",
+    "US",
+    "JP"
+  ],
+  "fits": {
+    "v": "yes, though the aperture may be larger than the deck",
+    "c": "unverified",
+    "why": "⚠️ The SW20 is believed to use a double-height radio aperture. If so, the deck fits with a 2-DIN cage and a 1-DIN pocket, exactly as the MX-5 NC does. Verify before buying a fascia."
+  },
+  "aperture": {
+    "v": "double DIN, or single DIN with a pocket",
+    "c": "unverified",
+    "why": "⚠️ Genuinely unconfirmed and it changes which fascia you buy. Measure the hole."
+  },
+  "depth_mm": {
+    "v": "unknown",
+    "c": "measure",
+    "why": "This is the number that decides whether the build fits, and it is the one no listing tells you. Measure from the back of the aperture to the nearest obstruction before you commit to a chassis depth."
+  },
+  "fascia_adapter": {
+    "v": "search: “Toyota MR2 SW20 radio fascia”",
+    "c": "unverified",
+    "why": "Buy after measuring, not before."
+  },
+  "harness": {
+    "v": "search: “Toyota to ISO 10487 harness adapter”",
+    "c": "unverified",
+    "why": "⚠️ UK cars and JDM imports may differ. Check the connector."
+  },
+  "aerial": {
+    "v": "search: “Toyota aerial adapter to DIN (Motorola)”",
+    "c": "unverified",
+    "why": "Check whether the aerial is powered."
+  },
+  "swc": {
+    "v": "none",
+    "c": "unverified",
+    "why": "No factory steering-wheel audio controls known."
+  },
+  "illumination": {
+    "v": "dash dimmer at the radio connector",
+    "c": "unverified",
+    "why": "Meter it."
+  },
+  "ignition": {
+    "v": "switched live at the radio connector",
+    "c": "unverified",
+    "why": "Meter it."
+  },
+  "same_as_other_generations": [
+    "Nothing can be assumed across MR2 generations."
+  ],
+  "market_notes": [
+    "JDM imports are very common for the SW20 in Britain, and the Japanese cars differ in trim and equipment. The loom is the thing to check.",
+    "⚠️ The radio band plan follows where the car is driven, not where it was built. An import wants the plan of the country it is in now."
+  ],
+  "gotchas": [
+    "⚠️ Establish whether the aperture is single or double DIN before spending anything. It decides the fascia and whether you need a pocket.",
+    "The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
+    "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet."
+  ]
+}
