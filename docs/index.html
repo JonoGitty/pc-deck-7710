@@ -255,9 +255,9 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
 
     <p class="muted small">Both screens are written and rendered from the real
       <code>core/</code>. <b>Neither driver is.</b>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/CALLING.md">CALLING.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CALLING.md">CALLING.md</a>
       and
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/RADIO.md">RADIO.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/RADIO.md">RADIO.md</a>
       say exactly what exists, what is designed, and what each costs to build.</p>
   </div>
 </section>
@@ -299,13 +299,21 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
         than the subject. <code>--cover --keep=25</code> drops the water out and hands
         all four levels to the fish.</figcaption></figure>
 
+    <figure class="film"><img loading="lazy" src="media/ae86.gif" alt="A white coupé on a mountain pass at night, seen along its flank and then from above">
+      <figcaption><b>AE86</b> — a white car on a dark road is the ideal subject, for the
+        same reason <b>TOUGE</b> works. But this clip ends by pulling back to a wide,
+        where the car shrinks to a few dots and the road it is on becomes the brightest
+        thing in frame — so <code>--trim=0:62</code> throws that part away.
+        <code>import_gif.py ae86.gif --cover --keep=30 --gamma=1.4 --trim=0:62</code>.
+        Look at the source before assuming all of it belongs on a 4:1 panel.</figcaption></figure>
+
     <figure class="film"><img loading="lazy" src="media/spin.gif" alt="A simple solid rotating on the panel">
       <figcaption><b>SPIN</b> — the minimal template, deliberately small. Copy it and
         change the scene. <code>tools/movies/scene_spin.py</code></figcaption></figure>
 
     <div class="note">
       <p><b>Making one is a conversation, not a tutorial.</b> The repository carries a
-        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/CLAUDE.md">CLAUDE.md</a>
+        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/CLAUDE.md">CLAUDE.md</a>
         that tells Claude the constraints — the right grid for your panel, the level
         budget, why thin bright details dither into noise on 1-bit glass, why large
         areas must sit on a level centre. Describe the animation you want and which
@@ -393,10 +401,10 @@ python3 tools/deckctl.py movies          # choose what it plays
 python3 tools/deckctl.py pictures *.jpg  # your own photographs
 python3 tools/deckctl.py logs</code></pre>
 
-    <p><b>The full guide is <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/BUILD.md">BUILD.md</a></b>
+    <p><b>The full guide is <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a></b>
       — shopping list with part numbers, wiring table, pairing, and the car
       install. The component survey is
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HARDWARE.md">HARDWARE.md</a>,
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">HARDWARE.md</a>,
       where every claim is marked ✅ verified against a datasheet or listing, or ⚠️ not.
       Fitting is standard: an <b>ISO 7736</b> cage and an <b>ISO 10487</b> harness, so a
       home-built deck drops into any car that takes a normal head unit.</p>
@@ -447,7 +455,7 @@ python3 tools/deckctl.py logs</code></pre>
     </div>
 
     <p style="margin-top:1.5rem">Symptom-by-symptom table in
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/DIAGNOSTICS.md">DIAGNOSTICS.md</a>,
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">DIAGNOSTICS.md</a>,
       along with what to include in a bug report. On a dot-matrix display a
       photograph of the fault is worth more than any description of it.</p>
   </div>
@@ -493,7 +501,7 @@ python3 tools/sim/test_behaviour.py</code></pre>
       twelve seconds of silence” on a bench costs fifteen seconds of standing in
       silence, per attempt.</p>
     <p class="muted small">It is not a simulation of the hardware, and
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/TESTING.md">TESTING.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/TESTING.md">TESTING.md</a>
       says so explicitly: SPI timing, the Bluetooth stack and a supply that sags on
       crank fail on hardware and only on hardware. The bring-up checklist for those
       is on the same page.</p>
@@ -520,9 +528,9 @@ python3 tools/sim/test_behaviour.py</code></pre>
     </table>
     </div>
     <p class="muted small">Two files are worth opening before anything else:
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/UI-SPEC.md">UI-SPEC.md</a>,
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/UI-SPEC.md">UI-SPEC.md</a>,
       which explains why brightness alone must never carry meaning, and
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/CLAUDE.md">CLAUDE.md</a>,
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/CLAUDE.md">CLAUDE.md</a>,
       which is the short version of everything the project learned the hard way.</p>
   </div>
 </section>
@@ -539,10 +547,11 @@ python3 tools/sim/test_behaviour.py</code></pre>
         <tr><td><code>core/</code> renderer</td><td class="ok">Complete — all ten screens, verified against the JS</td></tr>
         <tr><td>Browser preview</td><td class="ok">Working</td></tr>
         <tr><td>Movie tooling</td><td class="ok">Working — 3D scenes, GIF import, flash packing</td></tr>
-        <tr><td>ESP32 firmware</td><td class="warn">Written and <b>compiles</b> — A2DP, AVRCP, FFT, two panel drivers, movies, diagnostics, 1.74 MB image. <b>Never run on hardware</b></td></tr>
+        <tr><td>ESP32 firmware</td><td class="warn">Written and <b>compiles</b> — A2DP, AVRCP, hands-free calling, Si4735 radio, source switching, FFT, two panel drivers, movies, diagnostics. 1.75 MB image, 8 MB and 16 MB flash. <b>Never run on hardware</b></td></tr>
         <tr><td>Flash tooling</td><td class="ok">deckctl: doctor, build, flash, movies, pictures, logs, coredump</td></tr>
-        <tr><td>Call screens</td><td class="ok">Written and rendered — <span class="warn">HFP driver not written</span></td></tr>
-        <tr><td>Radio screen</td><td class="ok">Written and rendered — <span class="warn">Si4735 driver not written</span></td></tr>
+        <tr><td>Calling</td><td class="ok">Screens rendered, HFP client written — <span class="warn">never met a phone</span></td></tr>
+        <tr><td>Radio</td><td class="ok">Screen rendered, Si4735 driver written with RDS and presets — <span class="warn">never met a tuner</span></td></tr>
+        <tr><td>Sources</td><td class="ok">Bluetooth / radio / aux through a 74HC4052, written — <span class="warn">never wired</span></td></tr>
         <tr><td>Colour panel</td><td class="warn">Researched, part identified, nothing bought or wired</td></tr>
       </tbody>
     </table>
@@ -554,20 +563,20 @@ python3 tools/sim/test_behaviour.py</code></pre>
   <div class="wrap">
     <div class="links">
       <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/BUILD.md">Build guide</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/DIAGNOSTICS.md">Diagnostics</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/SAFETY.md">Safety</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HANDBOOK.md">Handbook</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/HARDWARE.md">Hardware</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/ARCHITECTURE.md">Architecture</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/UI-SPEC.md">UI spec</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/MOVIE-RENDERING.md">Making animations</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/CONTROL.md">Control</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/CALLING.md">Calling</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/RADIO.md">Radio</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/TESTING.md">Testing</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/VERSIONING.md">Versioning</a>
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/CLAUDE.md">For Claude</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HANDBOOK.md">Handbook</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/ARCHITECTURE.md">Architecture</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/UI-SPEC.md">UI spec</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/MOVIE-RENDERING.md">Making animations</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CONTROL.md">Control</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/CALLING.md">Calling</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/RADIO.md">Radio</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/TESTING.md">Testing</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VERSIONING.md">Versioning</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/CLAUDE.md">For Claude</a>
     </div>
     <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics and the
       album-art dither idea came out of that consult.</p>
@@ -576,7 +585,7 @@ python3 tools/sim/test_behaviour.py</code></pre>
       firmware has never run on hardware. If you build one you are the
       manufacturer, and every consequence is yours — including fire, battery
       drain, airbag circuits, driver distraction, insurance and type approval.
-      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/SAFETY.md">Read SAFETY.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a>
       before wiring anything to a car.</p>
     <p>MIT licensed. Build one.</p>
   </div>

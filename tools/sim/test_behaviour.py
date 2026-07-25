@@ -36,9 +36,10 @@ def run(args, script=None, secs=30):
     rows = []
     for line in out.splitlines():
         if line.startswith("T "):
-            _, t, mode, state, lit, wipe = line.split()
-            rows.append({"t": float(t), "mode": int(mode), "state": int(state),
-                         "lit": int(lit), "wipe": int(wipe)})
+            f = line.split()
+            rows.append({"t": float(f[1]), "mode": int(f[2]), "state": int(f[3]),
+                         "lit": int(f[4]), "wipe": int(f[5]),
+                         "call": int(f[6]), "source": int(f[7])})
     return rows
 
 
@@ -106,6 +107,30 @@ def main():
         # line of text, so the floor is low on purpose. Zero is the bug worth
         # catching: a screen that renders nothing at all.
         check(f"mode {m} lights dots", best > 20, f"best {best}")
+
+    print("\nthe telephone outranks everything")
+    rows6 = run([], script="phone.txt", secs=28)
+    # 2 s incoming, 6 s answered, 14 s ended, 17 s idle, 19 s radio, 26 s back.
+    check("incoming call takes the panel", at(rows6, 4.0)["call"] == 1,
+          f'call={at(rows6, 4.0)["call"]}')
+    check("and it is drawing something", at(rows6, 4.0)["lit"] > 50)
+    check("answered goes to in-call", at(rows6, 9.0)["call"] == 3,
+          f'call={at(rows6, 9.0)["call"]}')
+    check("ended is its own state", at(rows6, 15.0)["call"] == 4,
+          f'call={at(rows6, 15.0)["call"]}')
+    check("then the panel goes back", at(rows6, 18.0)["call"] == 0,
+          f'call={at(rows6, 18.0)["call"]}')
+
+    print("\nradio is a source, not a mode")
+    check("selecting radio shows the tuner", at(rows6, 22.0)["source"] == 1,
+          f'source={at(rows6, 22.0)["source"]}')
+    check("the tuner screen draws", at(rows6, 22.0)["lit"] > 100,
+          f'lit={at(rows6, 22.0)["lit"]}')
+    # The mode underneath is untouched, which is why leaving the radio returns
+    # you to the screen you were on rather than to a default.
+    check("leaving radio restores the source",
+          at(rows6, 27.0)["source"] == 0 and
+          at(rows6, 27.0)["mode"] == at(rows6, 1.0)["mode"])
 
     print("\nmovie playback")
     dmv = os.path.join(ROOT, "movies", "vtec_256x64.dmv")

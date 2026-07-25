@@ -60,7 +60,24 @@
  *
  * Both paths are compiled in and the ladder is detected at boot, so a bench
  * build with three buttons and a car build with a full fascia run the same
- * binary. */
+ * binary.
+ *
+ * AND THE LADDER IS WHAT PAYS FOR THE RADIO
+ *
+ * Those same three pins — 13, 32, 33 — are the only ones left for the Si4735's
+ * I2C bus and its reset line. There is no third option: on this module the
+ * tuner and the discrete buttons want the same three holes.
+ *
+ * So it is one or the other, decided by whether a ladder is fitted, which is
+ * why the probe below happens BEFORE anything is configured rather than after.
+ * With a ladder, the six-button fascia is on GPIO 35 and 13/32/33 are left
+ * alone for deck_tuner.c to claim. Without one, the three buttons are wired
+ * there and the radio cannot be, and deck_main.c does not start the tuner.
+ *
+ * Getting this wrong is not subtle-but-survivable. deck_tuner drives GPIO 13
+ * as an output to reset the chip; configuring it here as a pulled-up input
+ * means the reset pulse goes nowhere, the tuner probe fails, and the deck
+ * reports no radio fitted while one is sitting on the bus. */
 #define PIN_ENC_A    21
 #define PIN_ENC_B    27
 #define PIN_ENC_SW   14
@@ -85,12 +102,20 @@ typedef struct {
   int64_t  down_at;         /* for long-press; 0 when up */
 } btn_t;
 
+/* The encoder's own switch is first and always present — it is on GPIO 14,
+ * which nothing else wants. The three after it share their pins with the
+ * tuner, and s_nbtn drops to 1 when a ladder is fitted so they are never
+ * configured, never polled, and never fire on I2C traffic. */
 static btn_t s_btn[] = {
     {PIN_ENC_SW,   DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
     {PIN_BTN_SRC,  DECK_ACT_SRC,       1, 0, 1, 0},
     {PIN_BTN_DISP, DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
     {PIN_BTN_ART,  DECK_ACT_ART,       1, 0, 1, 0},
 };
+#define NBTN_ALL  (sizeof s_btn / sizeof *s_btn)
+#define NBTN_ENC  1                  /* just the encoder push, when shared */
+
+static size_t s_nbtn = NBTN_ALL;
 
 /* --- the button ladder --------------------------------------------------
  *
@@ -150,7 +175,6 @@ static int ladder_lookup(int mv) {
  * something different when held is one nobody can use without the manual;
  * these two are setup actions you perform once. */
 #define LONG_PRESS_US (5 * 1000000LL)
-#define NBTN (sizeof s_btn / sizeof *s_btn)
 
 static QueueHandle_t s_q;
 static uint8_t s_enc_state;
@@ -181,7 +205,7 @@ static void poll_task(void *arg) {
       if (s_enc_accum <= -4) { deck_input_post(DECK_ACT_ENC_CCW, 1); s_enc_accum += 4; }
     }
 
-    for (size_t i = 0; i < NBTN; i++) {
+    for (size_t i = 0; i < s_nbtn; i++) {
       const uint8_t lv = gpio_get_level(s_btn[i].pin);
       if (lv == s_btn[i].level) { s_btn[i].count = 0; continue; }
       /* 25 consecutive contrary samples at 1 kHz = 25 ms of quiet. Longer than
@@ -223,7 +247,7 @@ static void poll_task(void *arg) {
     /* Long-press: SRC opens the steering-wheel learning wizard, DISP the
      * self-test screen. Fired once, by zeroing the timestamp, so holding does
      * not re-enter the wizard every second. */
-    for (size_t i = 0; i < NBTN; i++) {
+    for (size_t i = 0; i < s_nbtn; i++) {
       if (!s_btn[i].down_at) continue;
       if (esp_timer_get_time() - s_btn[i].down_at < LONG_PRESS_US) continue;
       s_btn[i].down_at = 0;
@@ -260,8 +284,31 @@ int deck_input_start(void) {
   s_q = xQueueCreate(16, sizeof(deck_event_t));
   if (!s_q) return -1;
 
+  /* Is a ladder fitted? With no divider on the pin the 10k pull-up is absent
+   * too, so the input floats and reads as anything at all. With one fitted and
+   * nothing pressed it sits at the top of the range. So: sample a few times,
+   * and only believe in a ladder if every reading agrees it is idle. A
+   * floating pin will not do that twice in a row, which is exactly the
+   * property being tested for.
+   *
+   * Detecting rather than configuring, because the alternative is a build flag
+   * that half the people who need it will not know exists, and whose symptom
+   * when wrong is a deck with dead buttons.
+   *
+   * FIRST, before a single pin is configured. The answer decides whether the
+   * three shared pins belong to this file or to deck_tuner.c, and touching
+   * them and then changing our mind would leave GPIO 13 pulled up underneath
+   * the tuner's reset line. */
+  if (deck_adc1_channel(LADDER_ADC_CHAN) == 0) {
+    int idle = 1;
+    for (int i = 0; i < 8; i++)
+      if (ladder_mv() < LADDER_IDLE_MV) idle = 0;
+    s_have_ladder = idle;
+  }
+  s_nbtn = s_have_ladder ? NBTN_ENC : NBTN_ALL;
+
   uint64_t mask = 0;
-  for (size_t i = 0; i < NBTN; i++) mask |= 1ULL << s_btn[i].pin;
+  for (size_t i = 0; i < s_nbtn; i++) mask |= 1ULL << s_btn[i].pin;
   mask |= (1ULL << PIN_ENC_A) | (1ULL << PIN_ENC_B) |
           (1ULL << PIN_IGNITION) | (1ULL << PIN_DIMMER);
 
@@ -278,32 +325,21 @@ int deck_input_start(void) {
 
   s_enc_state = (uint8_t)((gpio_get_level(PIN_ENC_A) << 1) | gpio_get_level(PIN_ENC_B));
 
-  /* Is a ladder fitted? With no divider on the pin the 10k pull-up is absent
-   * too, so the input floats and reads as anything at all. With one fitted and
-   * nothing pressed it sits at the top of the range. So: sample a few times,
-   * and only believe in a ladder if every reading agrees it is idle. A
-   * floating pin will not do that twice in a row, which is exactly the
-   * property being tested for.
-   *
-   * Detecting rather than configuring, because the alternative is a build flag
-   * that half the people who need it will not know exists, and whose symptom
-   * when wrong is a deck with dead buttons. */
-  if (deck_adc1_channel(LADDER_ADC_CHAN) == 0) {
-    int idle = 1;
-    for (int i = 0; i < 8; i++)
-      if (ladder_mv() < LADDER_IDLE_MV) idle = 0;
-    s_have_ladder = idle;
-  }
-
   if (xTaskCreate(poll_task, "deck_in", 2560, NULL, 6, NULL) != pdPASS) {
     deck_diag_set(DECK_SUB_INPUT, DECK_HEALTH_FAILED, "task create");
     return -1;
   }
-  deck_diag_set(DECK_SUB_INPUT, DECK_HEALTH_OK, "encoder + %u buttons%s",
-                (unsigned)NBTN, s_have_ladder ? " + ladder" : "");
-  deck_diag_event(DECK_SUB_INPUT, "ladder", "fitted=%d", s_have_ladder);
+  deck_diag_set(DECK_SUB_INPUT, DECK_HEALTH_OK, "encoder + %u button%s%s",
+                (unsigned)s_nbtn, s_nbtn == 1 ? "" : "s",
+                s_have_ladder ? " + 6-way ladder" : "");
+  deck_diag_event(DECK_SUB_INPUT, "ladder", "fitted=%d buttons=%u",
+                  s_have_ladder, (unsigned)s_nbtn);
   return 0;
 }
+
+/* deck_main.c asks this before starting the tuner: a ladder means GPIO 13, 32
+ * and 33 were left alone and the Si4735 may have them. */
+int deck_input_has_ladder(void) { return s_have_ladder; }
 
 void deck_input_post(deck_action_t a, int repeat) {
   const deck_event_t e = {a, repeat};

@@ -130,7 +130,15 @@ A test is a file rather than a recompile:
 ```
 
 Commands: `key <mode|art|lyrics|ocean|movie|demo|src|up|down>`, `track "T" "A"`,
-`silence`, `audio`.
+`silence`, `audio`, `call <idle|incoming|outgoing|active|ended> ["name"]`,
+`source <bt|radio|aux>`.
+
+`tools/sim/scripts/phone.txt` drives a whole call — ring, answer, talk, hang
+up — and checks the deck goes back to the music afterwards. It is the only way
+to exercise the call screens without a phone, and it runs the same
+`deck_ui_draw` the firmware runs, so the precedence rule (a call outranks
+everything; the radio screen outranks the music screens) is genuinely tested
+rather than merely written down.
 
 ### The assertions
 
@@ -188,6 +196,14 @@ model:
 - DMA, PSRAM bandwidth, or the frame rate you really get
 - heat, in a dashboard, in summer
 - the resistance ladder in your steering wheel
+- **HFP**: whether a real phone's indicator events arrive in an order the
+  derivation in `deck_hfp.c` handles, and whether the voice-over-HCI callbacks
+  keep up with a live SCO link. The simulator drives `deck_call_t` directly; it
+  never touches the Bluetooth side that fills it in
+- **the Si4735**: I²C at all, the 120 ms wait after `POWER_UP`, whether the
+  band limits are right for your region, or whether RDS decodes off air
+- **the source mux**: that the 4052 actually passes audio, and that GPIO 2 and
+  12 really do read low at boot on *your* board
 
 Every one of those fails on hardware and only on hardware. A simulator that
 claimed otherwise would be worse than none, because it would be believed.

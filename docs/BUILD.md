@@ -271,6 +271,13 @@ That is enough to drive everything: the encoder push and DISP both cycle
 screens, so every mode is reachable. **Hold SRC** for the wheel-control
 learner, **hold DISP** for the self-test.
 
+⚠️ **These three buttons and the radio are mutually exclusive.** GPIO 13, 32
+and 33 are the last three pins on the module, and the Si4735 needs all three
+for its I²C bus and reset line. Wire buttons there and you cannot fit a tuner;
+fit a tuner and the buttons must move to the ladder below. The firmware decides
+which at boot by probing for a ladder, so there is nothing to configure — but
+there is also nothing it can do to give you both.
+
 ### Controls: the full six, on one pin
 
 Six buttons, six resistors, one wire into **GPIO 35**:
@@ -307,6 +314,13 @@ sits at the top of the range, an unfitted pin floats and does not read
 consistently idle. It logs `DECK|…|input|ladder|fitted=1` either way, so you
 can tell.
 
+That one measurement also decides the radio. With a ladder, GPIO 13, 32 and 33
+are left unconfigured and the tuner is started on them; without one they are
+the three discrete buttons and the tuner is not started at all. So **if you
+fit a Si4735 and the deck reports no radio, check `fitted=` first** — a tuner
+whose reset line is being held as a pulled-up input never comes out of reset,
+and the symptom is indistinguishable from a dead module.
+
 Two presses become long-presses here too, so a fascia with no discrete buttons
 can still reach the setup screens: **hold SRC** for the wheel-control learner,
 **hold DISP** for the self-test.
@@ -321,6 +335,97 @@ lift the switch commons, wire each switch to a resistor, and it becomes this.
 > ladder) are all driven by something external, so none of them floats. Put a
 > bare button on one and it will read as random presses and look exactly like
 > a firmware bug.
+
+### The microphone, for calls — one wire
+
+The INMP441 is an I²S microphone, and the ESP32's I²S runs **full duplex on one
+controller**: transmit and receive share the bit clock and the word select. So
+the mic hangs off the clocks the DAC is already using and costs exactly one new
+pin, its data line.
+
+| Mic pin | ESP32 | Note |
+|---|---|---|
+| SCK | **GPIO 26** | the DAC's BCK — same wire, both devices |
+| WS | **GPIO 25** | the DAC's LRCK — same wire |
+| SD | **GPIO 15** | the only new pin |
+| L/R | GND | left channel; the deck reads mono |
+| VDD / GND | 3V3 / GND | |
+
+Nothing needs enabling. The firmware declares the pin at boot and the RX half
+of the channel is only built when a call actually arrives — `deck_i2s_mode()`
+rebuilds the pair at the call's rate and tears it back down afterwards, which
+is why the music is not permanently running at 16 kHz.
+
+⚠️ **Mount it facing the driver and away from the speakers.** A MEMS mic in a
+metal box behind a dashboard, pointing at nothing, is the difference between
+hands-free that works and hands-free that people ask you to stop using.
+
+### The tuner — I²C and a reset line
+
+Three pins, and they are the three the button ladder freed. Read the warning in
+[the bench-build section](#controls-the-bench-build) first: if you have
+discrete buttons on these, you cannot have a radio.
+
+| Si4735 | ESP32 | Note |
+|---|---|---|
+| SDA | **GPIO 32** | 4.7 kΩ pull-up to 3V3 |
+| SCL | **GPIO 33** | 4.7 kΩ pull-up to 3V3 |
+| RST | **GPIO 13** | driven low then high at boot |
+| VDD / GND | 3V3 / GND | |
+| Audio L/R out | → the mux, input 1 | **not** to the ESP32 |
+
+The module's address is either **0x11 or 0x63** depending on how the board
+strapped its `SEN` pin, and vendors disagree. There is nothing to configure —
+the driver probes both and logs which answered, with the part number it read
+back:
+
+```
+DECK|…|audio|tuner|addr=0x11 part=Si4735
+```
+
+If it finds neither, the deck logs `no tuner`, drops the radio out of the
+source cycle, and carries on with Bluetooth and aux.
+
+⚠️ **Aerial.** A car aerial's coax centre goes to the module's aerial pad and
+the screen to its ground. Do **not** connect a powered/amplified aerial's 12 V
+feed to it — see [RADIO.md](RADIO.md).
+
+### Sources: Bluetooth, radio and aux — the mux
+
+**The audio never enters the ESP32.** A 74HC4052 is a dual 4-channel analogue
+switch: two select lines pick one stereo pair out of four and pass it through
+to the amplifier. Nothing is resampled, nothing is re-encoded, and the radio
+sounds like a radio rather than like a radio that has been through a codec.
+
+```
+   Bluetooth DAC  L/R ──▶ 0Y / 0X ─┐
+   Si4735 audio   L/R ──▶ 1Y / 1X ─┤
+   Aux 3.5 mm     L/R ──▶ 2Y / 2X ─┼──▶ Y / X ──▶ amplifier
+   (spare)             ──▶ 3Y / 3X ─┘
+                                   ▲
+                       GPIO 2 ── A ┤
+                       GPIO 12 ─ B ┘
+```
+
+| Select | GPIO 2 (A) | GPIO 12 (B) | Source |
+|---|---|---|---|
+| 0 | 0 | 0 | Bluetooth |
+| 1 | 1 | 0 | Radio |
+| 2 | 0 | 1 | Aux |
+| 3 | 1 | 1 | spare |
+
+⚠️ **GPIO 2 and 12 are strapping pins, and this is the one job they are safe
+for** — outputs, driven only after boot. Both must read low or float while the
+chip is starting, which the 4052's own inputs do not fight. Do not add pull-ups
+to them, and do not put a switch on them.
+
+Note the useful accident in the table: channel 0 is Bluetooth, so a deck whose
+select lines were never wired still passes the DAC straight through. The
+commonest build works with the mux fitted and no control wires at all.
+
+**Aux in** is a panel-mount 3.5 mm socket wired to inputs 2Y/2X, with its
+sleeve to ground. It is a passive path — the deck shows a static AUX screen
+because it has no idea what is playing, which is the honest thing for it to do.
 
 ### Steering wheel controls
 

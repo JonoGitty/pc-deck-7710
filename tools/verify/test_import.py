@@ -105,6 +105,41 @@ def main():
     check("and its frames are identical, as they should be",
           len({bytes(f) for f in frames2}) == 1)
 
+    print("\n--trim keeps the frames it says it keeps")
+    # Six source frames at 100 ms: the block creeps along the left for three,
+    # then jumps to the right for three. Trimming to the first three must give
+    # a movie that stays on the left — a stronger assertion than a frame count,
+    # because an off-by-one in the timeline re-basing would still produce the
+    # right *number* of frames while playing the wrong ones.
+    #
+    # Each frame differs slightly on purpose: PIL collapses a run of identical
+    # frames into one with a longer delay, so `[(0,2)] * 3` is not three source
+    # frames and a test written that way silently tests nothing.
+    src3 = os.path.join(tmp, "halves.gif")
+    make_gif(src3, [(0, 2), (2, 2), (4, 2), (70, 2), (72, 2), (74, 2)])
+    left, n3, ms3 = import_gif.convert(src3, W, H, 10, trim=(0, 3))
+    check("trimming to the first half keeps half the frames",
+          n3 == 3, f"got {n3}")
+    check("and 300 ms of source", abs(ms3 - 300) < 1, f"got {ms3}")
+    lxs = [x for x in (centroid(f, W, H) for f in left) if x is not None]
+    check("the trimmed half is the LEFT half",
+          lxs and max(lxs) < W / 2, f"centroids {lxs}")
+
+    right, n4, _ = import_gif.convert(src3, W, H, 10, trim=(3, 6))
+    rxs = [x for x in (centroid(f, W, H) for f in right) if x is not None]
+    check("trimming to the second half gets the other one",
+          n4 == 3 and rxs and min(rxs) > W / 2, f"n={n4} centroids {rxs}")
+
+    # An open end means "to the end", and an empty range is an error rather
+    # than a zero-frame .dmv that fails somewhere further downstream.
+    _, n5, _ = import_gif.convert(src3, W, H, 10, trim=(3, 1 << 30))
+    check("an open end runs to the end of the source", n5 == 3, f"got {n5}")
+    try:
+        import_gif.convert(src3, W, H, 10, trim=(4, 2))
+        check("an empty trim is refused", False, "it was accepted")
+    except SystemExit:
+        check("an empty trim is refused", True)
+
     print("\nthe whole tool, end to end")
     r = subprocess.run([sys.executable,
                         os.path.join(ROOT, "tools", "movies", "import_gif.py"),
