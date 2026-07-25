@@ -166,6 +166,19 @@ else
   exit 1
 fi
 
+# The per-car fitment data. A schema check, not a fact check: it cannot know
+# whether a Honda harness really is 20-pin, but it can stop a car file that
+# leaves a question unanswered, states a claim with no confidence marker, or
+# quietly starts specifying deck parts — which would mean the deck had stopped
+# being the same in every car, the one thing that directory exists to assert.
+if python3 tools/verify/test_vehicles.py > build/vehicle_test.txt 2>&1; then
+  grep -E 'vehicle checks passed' build/vehicle_test.txt
+else
+  printf 'MISMATCH — a vehicle file is incomplete:\n\n'
+  cat build/vehicle_test.txt
+  exit 1
+fi
+
 # The firmware's UI layer, run on this machine. core/ is verified against the
 # JavaScript; this covers the layer above it — which screen is on, when the
 # dolphins take over, how a track change interrupts — which no amount of

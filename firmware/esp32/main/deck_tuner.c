@@ -68,16 +68,49 @@
 #define NVS_NS  "deck"
 #define NVS_KEY "tuner"
 
-/* Band limits in kHz, and the channel step. Europe: FM 87.5-108 on 100 kHz,
- * MW 522-1710 on 9 kHz. The 9 kHz step is not a detail — on the 10 kHz plan
- * used in the Americas every station lands between channels. */
+/* Band limits in kHz, the channel step, and the de-emphasis time constant.
+ *
+ * THIS IS SET BY WHERE YOU DRIVE, NOT BY WHERE THE CAR CAME FROM
+ *
+ * Worth stating because it is the one thing people get backwards. A JDM import
+ * sitting in Britain receives British stations, so it wants the European plan
+ * — the fact that the car was built for Japan is irrelevant to its aerial.
+ * Everything *else* about fitting a deck to an imported car follows the car's
+ * market; the tuner follows the postcode. See docs/VEHICLES.md.
+ *
+ * Getting it wrong is not subtle:
+ *
+ *   · Japan's FM band is 76-95 MHz and does not overlap Europe's 87.5-108 at
+ *     all below 87.5. A deck built for Europe and driven in Japan can tune
+ *     roughly a tenth of the band and finds almost nothing.
+ *   · The Americas use 10 kHz AM spacing against 9 kHz everywhere else. On the
+ *     wrong step every station lands between channels and the whole band
+ *     sounds like it is mistuned, which it is.
+ *   · US FM sits on odd tenths (87.9, 88.1 ...) on a 200 kHz raster, so a
+ *     100 kHz step offers 200 channels of which half are empty.
+ *   · De-emphasis is 75 us in the Americas and 50 us elsewhere. Wrong, and the
+ *     radio is simply dull or hissy — it still works, so nobody suspects it. */
 typedef struct { int lo, hi, step; } band_t;
-static const band_t BANDS[2] = {
-    {87500, 108000, 100},      /* DECK_BAND_FM */
-    {  522,   1710,   9},      /* DECK_BAND_AM */
-};
 
 typedef struct {
+  const char *name;
+  band_t      fm, am;
+  int         deemph_us;      /* 50 or 75 */
+  int         rbds;           /* 1 in North America, 0 = RDS elsewhere */
+} region_t;
+
+static const region_t REGIONS[] = {
+    /*  name          FM lo    hi     step     AM lo  hi   step  deemph rbds */
+    {"EU",   {87500, 108000, 100}, {  522, 1710,  9}, 50, 0},
+    {"UK",   {87500, 108000, 100}, {  522, 1710,  9}, 50, 0},
+    {"US",   {87900, 107900, 200}, {  530, 1710, 10}, 75, 1},
+    {"JP",   {76000,  95000, 100}, {  522, 1710,  9}, 50, 0},
+    {"AU",   {87500, 108000, 100}, {  531, 1710,  9}, 50, 0},
+};
+#define N_REGIONS ((int)(sizeof REGIONS / sizeof *REGIONS))
+
+typedef struct {
+  uint8_t region;                   /* index into REGIONS; survives a reflash */
   uint8_t band;
   int     freq_khz[2];              /* last frequency per band */
   int     preset[DECK_PRESETS];
@@ -94,7 +127,26 @@ static char      s_ps[9];              /* RDS programme service, 8 + NUL */
 static char      s_rt[65];             /* RDS radio text, 64 + NUL */
 static char      s_ps_build[9];
 
-static const band_t *band(void) { return &BANDS[s_nv.band & 1]; }
+static const region_t *region(void) {
+  return &REGIONS[s_nv.region < N_REGIONS ? s_nv.region : 0];
+}
+
+static const band_t *band(void) {
+  const region_t *r = region();
+  return (s_nv.band & 1) == DECK_BAND_FM ? &r->fm : &r->am;
+}
+
+/* Clamp a frequency into the current region's band. Called after a region
+ * change, because the frequency saved before it may not exist any more — the
+ * 88.1 a car was left on in Britain is below the bottom of the Japanese band,
+ * and a tuner asked for a frequency outside its plan does not fail, it simply
+ * sits there receiving nothing. */
+static int clamp_to_band(int khz) {
+  const band_t *bd = band();
+  if (khz < bd->lo) return bd->lo;
+  if (khz > bd->hi) return bd->hi;
+  return khz;
+}
 
 /* --- the bus ------------------------------------------------------------ */
 static int wait_cts(int ms) {
@@ -141,7 +193,9 @@ static int power_up(deck_band_t b) {
   vTaskDelay(pdMS_TO_TICKS(120));
 
   if (b == DECK_BAND_FM) {
-    set_prop(PROP_FM_DEEMPHASIS, 1);      /* 50 us — Europe. 2 is 75 us, US */
+    /* 1 = 50 us, 2 = 75 us. Wrong and the radio still works, just dull or
+     * hissy, which is why it goes unnoticed for years. */
+    set_prop(PROP_FM_DEEMPHASIS, region()->deemph_us == 75 ? 2 : 1);
     set_prop(PROP_RDS_CONFIG, 0xFF01);    /* RDS on, all error levels */
     set_prop(PROP_RDS_INT_SOURCE, 0x0001);
   }
@@ -172,9 +226,10 @@ static void apply_tune(int khz) {
 /* --- persistence -------------------------------------------------------- */
 static void nv_load(void) {
   memset(&s_nv, 0, sizeof s_nv);
+  s_nv.region = DECK_REGION_DEFAULT;
   s_nv.band = DECK_BAND_FM;
-  s_nv.freq_khz[0] = BANDS[0].lo;
-  s_nv.freq_khz[1] = BANDS[1].lo;
+  s_nv.freq_khz[0] = REGIONS[s_nv.region].fm.lo;
+  s_nv.freq_khz[1] = REGIONS[s_nv.region].am.lo;
   nvs_handle_t h;
   if (nvs_open(NVS_NS, NVS_READONLY, &h) != ESP_OK) return;
   size_t n = sizeof s_nv;
@@ -295,6 +350,40 @@ int deck_tuner_start(void) {
 }
 
 int deck_tuner_present(void) { return s_present; }
+
+int deck_tuner_region_count(void) { return N_REGIONS; }
+
+const char *deck_tuner_region_name(int i) {
+  return (i >= 0 && i < N_REGIONS) ? REGIONS[i].name : "?";
+}
+
+int deck_tuner_region_get(void) { return s_nv.region; }
+
+void deck_tuner_region_set(int i) {
+  if (i < 0 || i >= N_REGIONS || i == s_nv.region) return;
+  s_nv.region = (uint8_t)i;
+
+  /* Both saved frequencies and every preset are dragged into the new plan.
+   * Skipping this leaves a deck that changed region and still shows 88.1 in
+   * Japan — a frequency the chip will accept, tune to, and receive nothing
+   * on, which looks like a dead aerial rather than a settings mistake. */
+  for (int b = 0; b < 2; b++) {
+    const band_t *bd = b == DECK_BAND_FM ? &region()->fm : &region()->am;
+    if (s_nv.freq_khz[b] < bd->lo || s_nv.freq_khz[b] > bd->hi)
+      s_nv.freq_khz[b] = bd->lo;
+  }
+  for (int p = 0; p < s_nv.n_presets; p++)
+    s_nv.preset[p] = clamp_to_band(s_nv.preset[p]);
+
+  if (s_present) {
+    power_up((deck_band_t)(s_nv.band & 1));
+    apply_tune(s_nv.freq_khz[s_nv.band & 1]);
+  }
+  nv_save();
+  deck_diag_event(DECK_SUB_AUDIO, "region", "name=%s fm=%d-%d step=%d",
+                  region()->name, region()->fm.lo, region()->fm.hi,
+                  region()->fm.step);
+}
 
 void deck_tuner_band(deck_band_t b) {
   if (!s_present || (s_nv.band & 1) == (b & 1)) return;

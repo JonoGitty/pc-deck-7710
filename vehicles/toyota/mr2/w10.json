@@ -1,0 +1,74 @@
+{
+  "brand": "Toyota",
+  "model": "MR2",
+  "generation": "W10",
+  "years": "1984–1989",
+  "also_known_as": [
+    "AW11",
+    "MR2 Mk1"
+  ],
+  "markets": [
+    "UK",
+    "EU",
+    "US",
+    "JP"
+  ],
+  "fits": {
+    "v": "yes — believed to take a single-DIN unit",
+    "c": "unverified",
+    "why": "A mid-eighties Toyota dash. Verify on the car; forty-year-old interiors have often been changed already."
+  },
+  "aperture": {
+    "v": "single DIN (ISO 7736)",
+    "c": "unverified",
+    "why": "⚠️ Genuinely unconfirmed. Measure yours."
+  },
+  "depth_mm": {
+    "v": "unknown",
+    "c": "measure",
+    "why": "This is the number that decides whether the build fits, and it is the one no listing tells you. Measure from the back of the aperture to the nearest obstruction before you commit to a chassis depth."
+  },
+  "fascia_adapter": {
+    "v": "search: “Toyota MR2 AW11 radio fascia”",
+    "c": "unverified",
+    "why": "Availability for a car of this age is limited; expect to adapt the original surround."
+  },
+  "harness": {
+    "v": "search: “Toyota to ISO 10487 harness adapter”",
+    "c": "unverified",
+    "why": "⚠️ On a car this old the loom may already have been cut by a previous owner's radio. Inspect before ordering anything."
+  },
+  "aerial": {
+    "v": "search: “Toyota aerial adapter to DIN (Motorola)”",
+    "c": "unverified",
+    "why": "Powered mast aerials were common in this era."
+  },
+  "swc": {
+    "v": "none",
+    "c": "unverified",
+    "why": "No factory steering-wheel audio controls known."
+  },
+  "illumination": {
+    "v": "dash dimmer, if the original loom is intact",
+    "c": "unverified",
+    "why": "Meter it. On a car this age, assume nothing about what is still connected."
+  },
+  "ignition": {
+    "v": "switched live at the radio connector",
+    "c": "unverified",
+    "why": "Meter it."
+  },
+  "same_as_other_generations": [
+    "Nothing can be assumed across MR2 generations — the three are different cars with different dashes, which is why they have separate files."
+  ],
+  "market_notes": [
+    "JDM imports are common and may carry the Japanese loom.",
+    "⚠️ The radio band plan follows where the car is driven, not where it was built. An import wants the plan of the country it is in now."
+  ],
+  "gotchas": [
+    "⚠️ The most likely problem on this car is not fitment, it is what a previous owner did to the loom in 1997.",
+    "The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
+    "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
+    "Depth is unknown and unlisted. Measure before building anything."
+  ]
+}

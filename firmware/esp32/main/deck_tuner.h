@@ -31,6 +31,24 @@
 int deck_tuner_start(void);
 int deck_tuner_present(void);
 
+/* --- region ------------------------------------------------------------
+ *
+ * The band plan, channel step, de-emphasis and RDS/RBDS mode, as one choice.
+ *
+ * ⚠️ It follows WHERE THE DECK IS DRIVEN, not where the car was built. An
+ * imported car receives the stations of the country it is now in. Everything
+ * else about fitting a deck to an import — fascia, harness, aerial plug —
+ * follows the car's market; this one follows the postcode. docs/VEHICLES.md
+ * spells the distinction out because it is the one people get backwards.
+ *
+ * Stored in NVS, so it survives a reflash and is set once. */
+#define DECK_REGION_DEFAULT 1        /* UK — this project's home market */
+
+int         deck_tuner_region_count(void);
+const char *deck_tuner_region_name(int i);
+int         deck_tuner_region_get(void);
+void        deck_tuner_region_set(int i);
+
 void deck_tuner_band(deck_band_t b);
 void deck_tuner_tune(int khz);
 void deck_tuner_step(int up);        /* one channel spacing */

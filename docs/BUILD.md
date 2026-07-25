@@ -36,6 +36,19 @@ working unit.
 
 ---
 
+## Before the shopping list: your car
+
+Everything in this guide is the same for every vehicle. What your particular
+car adds is a fascia, a harness adapter, an aerial adapter and a depth
+constraint — **[VEHICLES.md](VEHICLES.md)**, or `python3 tools/deckctl.py fit
+<your car>`.
+
+If your car is not listed, the deck still fits: it is an ISO 7736 aperture and
+an ISO 10487 harness like every other head unit. Adding your car to
+`vehicles/` is one JSON file.
+
+---
+
 ## 0. What you are building
 
 An ESP32 that pretends to be a pair of Bluetooth speakers. Your phone connects

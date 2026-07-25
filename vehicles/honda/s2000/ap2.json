@@ -1,0 +1,80 @@
+{
+  "brand": "Honda",
+  "model": "S2000",
+  "generation": "AP2",
+  "years": "2004–2009",
+  "also_known_as": [
+    "AP2 2.2 F22C1 (2.0 F20C in Japan)"
+  ],
+  "markets": [
+    "UK",
+    "EU",
+    "US",
+    "JP",
+    "AU"
+  ],
+  "fits": {
+    "v": "yes — the deck goes in as built",
+    "c": "unverified",
+    "why": "The dash takes a single-DIN unit in a surround. Nothing about the deck needs changing; it is the standard 182 × 53 mm face."
+  },
+  "aperture": {
+    "v": "single DIN (ISO 7736), one slot",
+    "c": "unverified",
+    "why": "Confirm against your own car before ordering a fascia — the surround differs between the early and late dash."
+  },
+  "depth_mm": {
+    "v": "tight. The S2000 centre stack is shallow and sits against the transmission tunnel",
+    "c": "measure",
+    "why": "This is the number that decides whether the build fits, and it is the one no listing tells you. Measure from the back of the aperture to the nearest obstruction before you commit to a chassis depth."
+  },
+  "fascia_adapter": {
+    "v": "search: “Honda S2000 single DIN fascia adapter”",
+    "c": "unverified",
+    "why": "Only needed if you are not reusing the car's own surround. Reusing it looks far better and costs nothing."
+  },
+  "harness": {
+    "v": "search: “Honda 20-pin to ISO 10487 harness adapter”",
+    "c": "unverified",
+    "why": "Honda used their own multi-pin connector, not a bare ISO block. The adapter is the standard fit-any-aftermarket-radio part and is cheap and widely stocked."
+  },
+  "aerial": {
+    "v": "search: “Honda aerial adapter to DIN (Motorola)”",
+    "c": "unverified",
+    "why": "Check whether your car's aerial is powered. If it is, the deck has no aerial-power output — see the gotcha below."
+  },
+  "swc": {
+    "v": "none — no factory steering-wheel audio controls, any market, any trim",
+    "c": "verified",
+    "why": "The S2000 has no steering-wheel controls at all — not audio, not cruise. This is the single biggest simplification of the whole build for this car: no interface box to buy, no wire to run to the column, and no learning step during bring-up."
+  },
+  "illumination": {
+    "v": "dash dimmer available at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A6. Meter it — ISO fixes the connector, not the pinout."
+  },
+  "ignition": {
+    "v": "switched live available at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A7. Commonly swapped with A4 permanent live by manufacturers; meter before connecting."
+  },
+  "same_as_other_generations": [
+    "No steering-wheel controls, so no SWC interface and no learning step",
+    "Single-DIN aperture, so the same deck and the same fascia strategy",
+    "Same Honda harness family, so the same adapter search term"
+  ],
+  "market_notes": [
+    "UK / EU / US / AU cars got the 2.2; Japan kept the 2.0. Neither affects the head unit.",
+    "⚠️ The radio band plan follows where the car is driven, not where it was built. A JDM AP2 in Britain wants the UK plan."
+  ],
+  "gotchas": [
+    "Depth, not width. Measure the space behind the aperture before building the chassis — the S2000's centre stack is shallow and this build is ~160 mm plus another 30–40 mm for plugs.",
+    "The deck has no aerial-power output. If the car has a powered or amplified aerial, it needs its 12 V from a switched source of your own; the deck will not supply it.",
+    "The deck is line-out only and has no amplifier. The S2000's speakers expect to be driven — plan for an amplifier, or accept that it will be quiet.",
+    "It is a convertible. Water gets into a centre stack far more readily than in a coupé; think about where the boards sit before the first wet week."
+  ],
+  "differs_from_ap1": [
+    "Nothing that affects this build has been identified. The AP2 changed engine (2.2 F22C1 outside Japan), gearbox ratios, suspension geometry and the wheels; the head-unit aperture, the harness family and the aerial are believed unchanged.",
+    "⚠️ Japanese-market AP2 cars kept the 2.0 F20C. That is an engine difference and does not reach the centre stack."
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "brand": "Mazda",
+  "model": "MX-5",
+  "generation": "NB",
+  "years": "1998–2005",
+  "also_known_as": [
+    "Miata NB (US)",
+    "Roadster (JP)"
+  ],
+  "markets": [
+    "UK",
+    "EU",
+    "US",
+    "JP",
+    "AU"
+  ],
+  "fits": {
+    "v": "yes — the deck goes in as built",
+    "c": "unverified",
+    "why": "Single-DIN dash, same approach as the NA."
+  },
+  "aperture": {
+    "v": "single DIN (ISO 7736)",
+    "c": "unverified",
+    "why": "The NB and the facelift NB2 are believed to share it. Confirm on yours."
+  },
+  "depth_mm": {
+    "v": "shallow, similar to the NA",
+    "c": "measure",
+    "why": "This is the number that decides whether the build fits, and it is the one no listing tells you. Measure from the back of the aperture to the nearest obstruction before you commit to a chassis depth."
+  },
+  "fascia_adapter": {
+    "v": "search: “Mazda MX-5 NB single DIN fascia”",
+    "c": "unverified",
+    "why": "Reusing the car's own surround is usually neater and free."
+  },
+  "harness": {
+    "v": "search: “Mazda to ISO 10487 harness adapter”",
+    "c": "unverified",
+    "why": "⚠️ Japanese-market Roadster imports may carry the JDM connector. Check what is behind the dash, not the model year."
+  },
+  "aerial": {
+    "v": "search: “Mazda aerial adapter to DIN (Motorola)”",
+    "c": "unverified",
+    "why": "Check whether yours is powered."
+  },
+  "swc": {
+    "v": "none — no factory steering-wheel audio controls",
+    "c": "unverified",
+    "why": "None known on any NB trim."
+  },
+  "illumination": {
+    "v": "dash dimmer at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A6."
+  },
+  "ignition": {
+    "v": "switched live at the ISO A connector",
+    "c": "unverified",
+    "why": "Standard ISO A7, commonly swapped with A4. Meter it."
+  },
+  "same_as_other_generations": [
+    "ISO 7736 aperture and an ISO 10487 harness via an adapter, like every car here",
+    "No factory steering-wheel audio controls on NA or NB, so no interface box"
+  ],
+  "differs_from_na": [
+    "Nothing identified that affects this build. The NB changed the lights, the engine and the interior trim; the head-unit aperture is believed unchanged."
+  ],
+  "market_notes": [
+    "As the NA: the aperture is common, the harness connector is what varies on imports.",
+    "⚠️ The radio band plan follows where the car is driven, not where it was built. An import wants the plan of the country it is in now."
+  ],
+  "gotchas": [
+    "The deck has no aerial-power output. If the car has a powered or amplified aerial it needs 12 V from a switched source of your own.",
+    "The deck is line-out only and has no amplifier. Plan for one, or accept that it will be quiet.",
+    "Convertible. Same water caution as the NA.",
+    "Depth. Measure before building."
+  ]
+}
