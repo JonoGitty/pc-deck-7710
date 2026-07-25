@@ -24,35 +24,42 @@ build step, no framework and no external requests — every image it uses is in
 `media/`, which is why it renders the same whether it is served by GitHub Pages
 or opened off a disk.
 
-**To publish it**, one setting, once:
+**To publish it:** repository *Settings → Pages → Build and deployment*, source
+*Deploy from a branch*, then **all three** of these:
 
-> repository *Settings → Pages → Build and deployment* → **Source: GitHub
-> Actions**
-
-That is all. `.github/workflows/pages.yml` does the rest on every push to
-`master` that touches `docs/`, and can be run by hand from the Actions tab the
-first time. The page appears at `https://jonogitty.github.io/pc-deck-7710/`.
-
-`.nojekyll` is already here, so the HTML is served as written rather than fed
-through Jekyll — the workflow checks for it and fails rather than publishing a
-site Jekyll has eaten.
-
-⚠️ **That setting cannot be changed from inside the repository.** No workflow,
-token or API call here can turn Pages on or pick its source; it is a repository
-setting and a human has to click it. If the URL 404s, that is the first thing
-to check, and the *only* thing to check before the workflow has ever run.
-
-### If it still 404s
-
-Work down this list — the symptom is identical for all of them, which is why
-the deploy moved to a workflow that leaves a log behind.
-
-| Check | Where |
+| Field | Must be |
 |---|---|
-| Is the source set to **GitHub Actions**? | Settings → Pages |
-| Has the `pages` workflow ever run, and did it go green? | Actions tab |
-| Was it *"Deploy from a branch"* pointed at **`main`**? | There is no `main` here. The default branch is **`master`** |
-| Is `docs/index.html` on `master`? | Not on a feature branch — Pages serves the default branch |
+| Branch | **`master`** — this repository's default branch, **not `main`**, which does not exist here |
+| Folder | **`/docs`** — *not* `/ (root)`, which is the default |
+| Source | *Deploy from a branch* |
+
+The page then appears at `https://jonogitty.github.io/pc-deck-7710/`.
+
+⚠️ **The folder is the one that gets missed**, because `/ (root)` is what the
+dropdown offers first and it *appears to work*: Pages goes green, the URL
+returns 200, and you get a Jekyll rendering of the top-level `README.md` with
+the repository description as its title. It is a real page, so nothing looks
+broken — it is simply the wrong one. The giveaway is that images 404 while
+`…/pc-deck-7710/docs/` serves the actual site.
+
+`.nojekyll` lives in this folder, so with `/docs` selected the HTML is served
+exactly as written. Under `/ (root)` it has no effect, which is why the root
+deploy goes through Jekyll at all.
+
+### If the URL is wrong or missing
+
+| Symptom | Cause |
+|---|---|
+| 404, GitHub's "no site here" page | Pages is off — nobody has set the source |
+| 200, but the title is the repo description and images 404 | Folder is `/ (root)`; set it to `/docs` |
+| 404 after setting a branch | It was pointed at `main`; the default branch is `master` |
+| 404 and everything above is right | `docs/` is not on the default branch yet — merge first |
+
+None of this can be set from inside the repository: no workflow, token or API
+call here can turn Pages on or choose its source, branch or folder. A human has
+to click it, in a browser — **the GitHub mobile app has no repository settings
+at all**. The direct link is
+`https://github.com/JonoGitty/pc-deck-7710/settings/pages`.
 
 Links from the page into the documentation point at GitHub rather than at
 Pages, because with Jekyll disabled a `.md` file served over Pages arrives as
