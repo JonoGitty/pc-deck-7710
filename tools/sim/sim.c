@@ -287,6 +287,7 @@ int main(int argc, char **argv) {
       }
     }
 
+    sim_set_now(now);          /* so diagnostics lines carry a real time */
     meta.position += dt;
     if (ui.call.state == DECK_CALL_ACTIVE) ui.call.secs = (int)(now - call_t0);
     deck_ui_step(&ui, audio_live, now, dt);

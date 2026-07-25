@@ -27,7 +27,7 @@ gcc -std=gnu99 -Wall -Wextra -O2 -o build/sim \
     core/fb.c core/font.c core/text.c core/art.c core/out.c core/trig.c \
     core/movie.c core/screens/*.c \
     firmware/esp32/main/deck_ui.c \
-    tools/sim/sim.c tools/sim/sim_stubs.c \
+    tools/sim/sim.c tools/sim/sim_stubs.c tools/sim/stub_diag.c \
     -Icore -Ifirmware/esp32/main -Itools/sim -lm
 
 # shellcheck disable=SC2086

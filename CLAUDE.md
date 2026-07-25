@@ -18,7 +18,8 @@ several now, and its own badge is correct.
 - `core/` — the portable renderer. C99, no libc, no libm, no allocation.
 - `preview/` — `core/` as WASM, emulating any panel.
 - `firmware/` — ESP32. Complete and compiling. **Never run on hardware.**
-- `tools/sim/` — the firmware's own UI layer, running on a host.
+- `tools/sim/` — the firmware on a host: its UI layer, and the three
+  hardware drivers against a fake ESP-IDF (`tools/sim/idf/`).
 - `tools/movies/` — the animation maker.
 - `tools/media/` — regenerates every picture in the README and on the site.
 - `tools/site/` — the **source** of the GitHub Pages site: one stylesheet, one
@@ -47,11 +48,21 @@ This is not ceremony. It has caught bugs invisible by eye: a dolphin breach
 starting one frame early, waterfall thresholds landing differently at double
 precision, text dithering into mush on 1-bit panels.
 
-The same script then runs the firmware's UI layer on the host — `tools/sim/`
-compiles the real `deck_ui.c` against stub drivers — and asserts on what the
-deck *does* over time, which no amount of framebuffer diffing reaches. When
-someone asks whether a change works, run `sh tools/sim/run.sh --gif out.gif`
-rather than reasoning about it. Scope and limits: [docs/TESTING.md](docs/TESTING.md).
+The same script then runs the firmware on the host, at two levels. `tools/sim/`
+compiles the real `deck_ui.c` against stub drivers and asserts on what the deck
+*does* over time, which no amount of framebuffer diffing reaches. Below that,
+`tools/sim/drivers.sh` compiles the real `deck_tuner.c`, `deck_audioproc.c` and
+`deck_hfp.c` against a fake ESP-IDF and models of the parts — so AN332's 110 ms
+settle rule, the PT2313's magnitude-plus-direction tone encoding and the HFP
+call derivation are asserted rather than hoped for. **Time is virtual there:
+`vTaskDelay()` advances a clock instead of sleeping**, which is what makes a
+timing rule testable at all.
+
+When someone asks whether a change works, run `sh tools/sim/run.sh --gif out.gif`
+or `sh tools/sim/drivers.sh --check` rather than reasoning about it. Scope and
+limits: [docs/TESTING.md](docs/TESTING.md). Do not add reset hooks to the
+firmware to suit a test — the harness runs one scenario per process because a
+reboot is what resets a driver's statics on the real deck.
 
 ## Helping someone make an animation
 

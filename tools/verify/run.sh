@@ -213,12 +213,36 @@ fi
 # Piping to tail would swallow the exit status and turn a failing suite into a
 # passing one, which is the worst possible outcome for a test runner.
 if command -v gcc > /dev/null; then
-  sh tools/sim/run.sh --secs 1 > /dev/null 2>&1
+  # Loudly, not silently. With `set -e` a bare failing command here exits the
+  # whole suite with no output at all — which is exactly what happened when the
+  # diagnostics stub moved to its own file and this compile line did not learn
+  # about it: every check above still passed and the last two simply vanished.
+  if ! sh tools/sim/run.sh --secs 1 > build/sim_build.txt 2>&1; then
+    printf 'BROKEN — the UI simulator no longer builds or runs:\n\n'
+    tail -25 build/sim_build.txt
+    exit 1
+  fi
   if python3 tools/sim/test_behaviour.py > build/sim_test.txt 2>&1; then
     grep -E 'behaviour checks' build/sim_test.txt
   else
     printf 'MISMATCH — the deck behaves differently than expected:\n\n'
     cat build/sim_test.txt
+    exit 1
+  fi
+
+  # And the layer BELOW deck_ui.c: the three drivers that touch hardware, run
+  # against a fake SDK and models of the parts. Until this existed, "compiles
+  # for the ESP32" was the entire guarantee on the newest code in the
+  # repository — and each of those three fails in a way that looks like
+  # something else. A tuner command inside AN332's settle window is a deck that
+  # works on the bench and fails one boot in five; two's-complement tone on the
+  # PT2313 sounds like taste; a call state machine that follows event order
+  # instead of the indicator pair breaks on somebody else's phone.
+  if sh tools/sim/drivers.sh --check > build/driver_test.txt 2>&1; then
+    grep -E 'driver checks passed' build/driver_test.txt
+  else
+    printf 'MISMATCH — a hardware driver behaves differently than expected:\n\n'
+    cat build/driver_test.txt
     exit 1
   fi
 fi
