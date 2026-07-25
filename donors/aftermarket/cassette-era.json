@@ -141,6 +141,21 @@
       "c": "unverified"
     },
     {
+      "name": "Sony XR-C5120R",
+      "years": "≈1999–2001",
+      "display": "small segment LCD, low and centre-right — too small for the deck's panel",
+      "face": "detachable (RELEASE catch), cassette aperture ON the face",
+      "note": "Seen on a real listing at **£45, which is three times what this family should cost** — the seller is pricing a working retro stereo, and a working mechanism is the first thing you remove. ✅ 40 W × 4 on the face (the seller's description says 4 × 45; the face is authoritative), and **15+ buttons** — SOURCE rotary, MODE, SOUND, SEEK/AMS, SHIFT, SET UP, PLAY MODE, DSPL, PTY, AF/TA, PRESET ±, DISC ±, six presets — against the six the ladder needs. ⚠️ Unlike most of this family the **cassette aperture is on the face**, not behind a door that closes flush, so the hole does not solve itself: it is ~105 mm wide, which makes it the window. ⚠️ Detachable face, so it needs pinning shut. ⚠️ The face in that listing is visibly scuffed, and it is the one part you are keeping on show.",
+      "flag": "caution",
+      "c": "unverified",
+      "window": {
+        "w_mm": 0,
+        "h_mm": 0,
+        "c": "measure",
+        "why": "Neither listing photograph was square-on — one angled, one cut off at the edge — so no measurement was taken. That is the foreshortening tools/donors/fit.py warns about, not a shortcut worth taking."
+      }
+    },
+    {
       "name": "Becker Mexico / Grand Prix",
       "years": "≈1985–1998",
       "display": "small dial",
