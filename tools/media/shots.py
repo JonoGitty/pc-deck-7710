@@ -68,8 +68,17 @@ def render(frames, w, h, scale):
                     continue
                 cx, cy = x * scale + scale / 2, y * scale + scale / 2
                 d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=LEVEL[v])
-        out.append(base.convert("P", palette=Image.ADAPTIVE, colors=COLORS))
+        out.append(base)
     return out
+
+
+def to_palette(imgs):
+    """One colour table for the whole animation. See tools/movies/preview_gif.py
+    — a per-frame local palette is legal, plays in a browser, and is shown as a
+    single still by a great many other viewers."""
+    base = imgs[len(imgs) // 2].convert("P", palette=Image.ADAPTIVE,
+                                        colors=COLORS)
+    return [im.quantize(palette=base, dither=Image.NONE) for im in imgs]
 
 
 def main():
@@ -84,10 +93,11 @@ def main():
         if not name.endswith(".raw"):
             continue
         w, h, frames = read_raw(os.path.join(src, name))
-        imgs = render(frames, w, h, scale)
+        imgs = to_palette(render(frames, w, h, scale))
         out = os.path.join(dst, name[:-4] + ".gif")
         imgs[0].save(out, save_all=True, append_images=imgs[1:],
-                     duration=int(1000 / fps), loop=0, optimize=True)
+                     duration=int(1000 / fps), loop=0, optimize=False,
+                     disposal=1, palette=imgs[0].getpalette())
         size = os.path.getsize(out)
         total += size
         print(f"  {out:32s} {len(frames):3d} frames  {size / 1024:6.0f} KB")

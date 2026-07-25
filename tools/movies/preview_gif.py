@@ -13,6 +13,7 @@ dot-matrix display actually reads.
 56-second SOLAR is a megabyte and a half — fine to play on a deck, not fine to
 put at the top of a README that someone opens on a phone.
 """
+import os
 import struct
 import sys
 
@@ -84,8 +85,27 @@ def render(frames, w, h, scale):
                     continue
                 cx, cy = x * scale + scale / 2, y * scale + scale / 2
                 d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=LEVEL.get(v, LEVEL[3]))
-        imgs.append(base.convert("P", palette=Image.ADAPTIVE, colors=COLORS))
+        imgs.append(base)
     return imgs
+
+
+def to_palette(imgs):
+    """One palette for the whole animation, not one per frame.
+
+    `convert("P", palette=ADAPTIVE)` per frame gives every frame its own local
+    colour table. That is a legal GIF and it plays correctly in a browser — and
+    it is shown as a single still by a great many other things: chat clients,
+    file managers, image previews, anything that renders the first frame and
+    stops. The animation was there the whole time and nobody could see it.
+
+    So the palette is computed once, from a frame sampled out of the middle
+    where the picture is busiest, and every frame is mapped onto it. The panel
+    is one hue over a black field, so a shared palette costs nothing visually
+    and makes the file smaller as well.
+    """
+    base = imgs[len(imgs) // 2].convert("P", palette=Image.ADAPTIVE,
+                                        colors=COLORS)
+    return [im.quantize(palette=base, dither=Image.NONE) for im in imgs]
 
 
 def main():
@@ -106,10 +126,16 @@ def main():
     frames = frames[start: None if limit is None else start + limit]
     cut = "" if len(frames) == total else f"  (excerpt of {total})"
     print(f"{name}  {w}x{h}  {len(frames)} frames @ {fps}fps{cut} -> {dst}")
-    imgs = render(frames, w, h, scale)
+    imgs = to_palette(render(frames, w, h, scale))
+    # `palette=` is what actually forces one global colour table. Mapping every
+    # frame onto the same palette is not enough on its own — Pillow still emits
+    # a local table per frame, and it is that per-frame table which some
+    # viewers take as licence to render the first frame and stop.
     imgs[0].save(dst, save_all=True, append_images=imgs[1:],
-                 duration=int(1000 / fps), loop=0, optimize=True)
-    print("wrote", dst)
+                 duration=int(1000 / fps), loop=0, optimize=False,
+                 disposal=1, palette=imgs[0].getpalette())
+    print(f"wrote {dst}  {len(imgs)} frames, "
+          f"{os.path.getsize(dst) / 1024:.0f} KB")
 
 
 if __name__ == "__main__":
