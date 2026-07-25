@@ -216,9 +216,15 @@ def cmd_build(args):
     if not idf_env():
         return 1
     panel = args.display
-    say(f"building for {panel} — {PANELS[panel]['desc']}")
-    bdir = os.path.join(FW, "build" if panel == "ssd1322" else f"build-{panel}")
-    r = run(["idf.py", "-B", bdir, f"-DDECK_DISPLAY={panel}", "build"], cwd=FW)
+    flash = getattr(args, "flash", "16")
+    say(f"building for {panel} — {PANELS[panel]['desc']}, {flash} MB flash")
+    # The build directory carries the flash size too, so switching between an
+    # 8 MB and a 16 MB board does not silently reuse the other one's partition
+    # table — which produces an image that flashes and then will not boot.
+    suffix = ("" if panel == "ssd1322" else f"-{panel}") + ("" if flash == "16" else "-8mb")
+    bdir = os.path.join(FW, "build" + suffix)
+    r = run(["idf.py", "-B", bdir, f"-DDECK_DISPLAY={panel}",
+             f"-DDECK_FLASH={flash}", "build"], cwd=FW)
     if r.returncode:
         say("build failed — the compiler output above says why", "bad")
         return r.returncode
@@ -452,6 +458,10 @@ def main():
         description="Build, flash and diagnose a DECK-7710.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Run with no command for guided setup.")
+    ap.add_argument("--flash", choices=["16", "8"], default="16",
+                    help="flash size in MB. 16 is recommended; 8 is what most "
+                         "assembled WROVER boards actually have — see "
+                         "firmware/esp32/partitions-8mb.csv for what it costs")
     ap.add_argument("--display", "-d", choices=list(PANELS), default="ssd1322",
                     help="which panel the firmware is for (default: ssd1322)")
     ap.add_argument("--port", "-p", help="serial port (autodetected if omitted)")

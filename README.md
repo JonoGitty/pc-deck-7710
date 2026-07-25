@@ -324,7 +324,7 @@ dithering into mush on 1-bit panels.
 [Safety](SAFETY.md) · [Handbook](docs/HANDBOOK.md) · [Hardware](docs/HARDWARE.md) ·
 [Architecture](docs/ARCHITECTURE.md) · [UI spec](docs/UI-SPEC.md) ·
 [Making animations](docs/MOVIE-RENDERING.md) · [Control](docs/CONTROL.md) ·
-[Calling](docs/CALLING.md) · [Radio](docs/RADIO.md) ·
+[Buying guide](docs/BUYING.md) · [Calling](docs/CALLING.md) · [Radio](docs/RADIO.md) ·
 [Testing](docs/TESTING.md) · [Versioning](docs/VERSIONING.md) ·
 [For Claude](CLAUDE.md)
 

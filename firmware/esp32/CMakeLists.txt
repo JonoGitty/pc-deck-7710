@@ -19,5 +19,18 @@ if(NOT DEFINED DECK_DISPLAY)
 endif()
 add_compile_definitions(DECK_DISPLAY_$<UPPER_CASE:${DECK_DISPLAY}>=1)
 
+# Flash size, and therefore which partition table. 16 MB is the recommended
+# build; 8 MB exists because a 16 MB WROVER is easy to buy as a bare module and
+# hard to buy as a board with pins on it. partitions-8mb.csv spells out what
+# the smaller layout costs.
+if(NOT DEFINED DECK_FLASH)
+  set(DECK_FLASH "16" CACHE STRING "flash size in MB: 16 | 8")
+endif()
+if(DECK_FLASH STREQUAL "8")
+  set(SDKCONFIG_DEFAULTS "sdkconfig.defaults;sdkconfig.8mb")
+elseif(NOT DECK_FLASH STREQUAL "16")
+  message(FATAL_ERROR "DECK_FLASH must be 16 or 8, not '${DECK_FLASH}'")
+endif()
+
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(deck7710)

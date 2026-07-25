@@ -33,7 +33,13 @@ on a dot-matrix panel — then passes the audio out to an amplifier.
 
 Prices are ⚠️ approximate and move; part numbers are ✅ checked against a
 datasheet or a live listing. Full survey and alternatives in
-[HARDWARE.md](HARDWARE.md).
+[HARDWARE.md](HARDWARE.md); **where to actually buy each thing, and in what
+order, is [BUYING.md](BUYING.md)**.
+
+⚠️ **Check the flash size before you buy a board.** A 16 MB WROVER is easy to
+get as a bare module and hard to get as a board with pins on it, and most
+assembled boards are 8 MB. That is fine — build with `--flash 8` — but it is
+the one decision that is annoying to change later. [BUYING.md §0](BUYING.md#0-the-one-decision-that-affects-what-you-order).
 
 ### First decide the panel, because everything else follows from it
 
@@ -52,7 +58,7 @@ to look.
 
 | # | Part | Why this one | ~Cost |
 |---|---|---|---|
-| 1 | **ESP32-WROVER-E** dev board, **16 MB flash**, PSRAM ✅ | The *original* ESP32. Nothing else has Bluetooth Classic, so nothing else can receive audio. WROVER-E for the PSRAM the framebuffers need. 16 MB because movies get 7.6 MB of their own | £8–14 |
+| 1 | **ESP32-WROVER** dev board, PSRAM, **8 or 16 MB flash** ✅ | The *original* ESP32. Nothing else has Bluetooth Classic, so nothing else can receive audio, and WROVER is for the PSRAM the framebuffers need. 16 MB is the recommended layout; 8 MB builds with `--flash 8` and is what most assembled boards actually are | £8–14 |
 | 2 | **SSD1322 OLED, 256×64**, SPI, module ~100.5 × 33.5 mm ✅ | The only panel that keeps all four intensity levels. Yellow variant reads as amber | £16–23 |
 | 3 | Jumper wires, breadboard | | £3 |
 | 4 | USB data cable | Charge-only cables look identical and waste an hour | — |

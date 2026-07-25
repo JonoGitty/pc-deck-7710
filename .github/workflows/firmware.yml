@@ -30,18 +30,23 @@ jobs:
       fail-fast: false
       matrix:
         display: [ssd1322, gp1294ai]
+        # Both flash layouts, because the 8 MB one exists for a sourcing
+        # reason — a 16 MB WROVER is hard to buy assembled — and a build
+        # nobody compiles is a build that stops compiling.
+        flash: ["16", "8"]
     steps:
       - uses: actions/checkout@v4
 
-      - name: build ${{ matrix.display }}
+      - name: build ${{ matrix.display }}, ${{ matrix.flash }} MB
         shell: bash
         run: |
           . $IDF_PATH/export.sh
           cd firmware/esp32
+          B=build-${{ matrix.display }}-${{ matrix.flash }}
           idf.py -DDECK_DISPLAY=${{ matrix.display }} \
-                 -B build-${{ matrix.display }} set-target esp32
+                 -DDECK_FLASH=${{ matrix.flash }} -B $B set-target esp32
           idf.py -DDECK_DISPLAY=${{ matrix.display }} \
-                 -B build-${{ matrix.display }} build
+                 -DDECK_FLASH=${{ matrix.flash }} -B $B build
 
       # The image has to fit the app slot in partitions.csv, and the margin is
       # worth printing: the OTA path is not written yet and will need some of
@@ -52,13 +57,13 @@ jobs:
         run: |
           . $IDF_PATH/export.sh
           cd firmware/esp32
-          idf.py -B build-${{ matrix.display }} size | tail -20
+          idf.py -B build-${{ matrix.display }}-${{ matrix.flash }} size | tail -20
 
       - uses: actions/upload-artifact@v4
         with:
-          name: deck7710-${{ matrix.display }}
+          name: deck7710-${{ matrix.display }}-${{ matrix.flash }}mb
           path: |
-            firmware/esp32/build-${{ matrix.display }}/deck7710.bin
-            firmware/esp32/build-${{ matrix.display }}/bootloader/bootloader.bin
-            firmware/esp32/build-${{ matrix.display }}/partition_table/partition-table.bin
+            firmware/esp32/build-${{ matrix.display }}-${{ matrix.flash }}/deck7710.bin
+            firmware/esp32/build-${{ matrix.display }}-${{ matrix.flash }}/bootloader/bootloader.bin
+            firmware/esp32/build-${{ matrix.display }}-${{ matrix.flash }}/partition_table/partition-table.bin
           if-no-files-found: error

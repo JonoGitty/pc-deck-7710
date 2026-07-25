@@ -5,6 +5,7 @@ The documentation, and the project's web page.
 | | |
 |---|---|
 | [HANDBOOK.md](HANDBOOK.md) | Build one. Tiers, parts, bring-up order, what to do first |
+| [BUYING.md](BUYING.md) | Where to actually buy it, in the order to order it |
 | [HARDWARE.md](HARDWARE.md) | The component survey and BOM. Every claim marked ✅ verified or ⚠️ not |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Why there is one renderer compiled twice, and what that cost |
 | [UI-SPEC.md](UI-SPEC.md) | Layout tiers, the intensity model, the thin-feature rule |
@@ -24,10 +25,17 @@ build step, no framework and no external requests — every image it uses is in
 or opened off a disk.
 
 **To publish it:** repository *Settings → Pages → Build and deployment*, source
-*Deploy from a branch*, branch `main`, folder `/docs`. That is the whole setup;
-`.nojekyll` is already here so the HTML is served as written rather than fed
+*Deploy from a branch*, branch **`master`** — that is this repository's default
+branch, not `main` — folder `/docs`.
+
+`.nojekyll` is already here, so the HTML is served as written rather than fed
 through Jekyll. The page then appears at
 `https://jonogitty.github.io/pc-deck-7710/`.
+
+⚠️ **`docs/` has to be on `master` first.** All of this currently lives on a
+feature branch, and `master` is still the original PC-deck-only repository —
+so until the branch is merged there is nothing for Pages to serve and that URL
+will 404.
 
 Links from the page into the documentation point at GitHub rather than at
 Pages, because with Jekyll disabled a `.md` file served over Pages arrives as
