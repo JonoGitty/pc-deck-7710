@@ -401,6 +401,29 @@ python3 tools/deckctl.py movies          # choose what it plays
 python3 tools/deckctl.py pictures *.jpg  # your own photographs
 python3 tools/deckctl.py logs</code></pre>
 
+    <figure class="film"><img loading="lazy" src="media/pinmap.svg" alt="Pin map of the ESP32-WROVER-E showing every GPIO and what the firmware does with it">
+      <figcaption><b>The pin map is generated from the firmware</b>, not drawn beside it.
+        It is parsed out of the <code>#define PIN_…</code> lines, it refuses to draw a
+        GPIO that two drivers both claim, and CI fails if the picture and the code
+        disagree — because whoever is reading a wiring diagram is holding a soldering
+        iron. Red pins belong to the module: flash, PSRAM, console.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/wiring.svg" alt="Block diagram of the whole deck, showing the analogue audio path bypassing the ESP32">
+      <figcaption><b>The audio never enters the ESP32.</b> The tuner's analogue output
+        and the aux socket both go to a 74HC4052, and the chip only selects which
+        stereo pair reaches the amplifier. Nothing is resampled and nothing is
+        re-encoded, so the radio sounds like a radio rather than like a codec.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/assembly.svg" alt="Exploded assembly view: ISO cage, chassis, main board, panel, window, fascia">
+      <figcaption><b>Six layers, numbered in build order</b> — the cage goes into the car
+        first and stays there, the fascia goes on last. Reverse them to take it apart,
+        which you will do more times than you expect. Also:
+        <a href="media/dimensions.svg">the dimensions</a>, where depth is the number
+        that catches people rather than width.</figcaption></figure>
+
+    <p class="muted small">⚠️ These are drawings of an <b>intended</b> build, from the
+      standard and the datasheets. No deck has been assembled.</p>
+
     <p><b>The full guide is <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a></b>
       — shopping list with part numbers, wiring table, pairing, and the car
       install. The component survey is

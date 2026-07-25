@@ -10,6 +10,29 @@ From nothing to a head unit playing music off your phone.
 Work through it in order. Each stage can only fail for reasons the previous
 stages have ruled out, which is what makes it debuggable.
 
+![What you are aiming at: the deck in a dashboard slot, lit, playing](media/finished.svg)
+
+---
+
+## The five drawings
+
+Everything below is also drawn. **These are generated, not sketched** — the pin
+map is parsed straight out of the firmware's own `#define PIN_...` lines, so it
+cannot quietly stop describing the code. If a pin moves in `deck_input.c`, it
+moves here or `sh tools/verify/run.sh` fails.
+
+| Drawing | Answers |
+|---|---|
+| [Pin map](media/pinmap.svg) | which hole this wire goes in |
+| [Wiring](media/wiring.svg) | what connects to what, and what never touches the ESP32 |
+| [Assembly](media/assembly.svg) | what order it goes together in |
+| [Dimensions](media/dimensions.svg) | will it fit, and what am I cutting |
+| [Finished](media/finished.svg) | what I am aiming at |
+
+⚠️ They describe an **intended** build. No deck has been assembled, so these
+are drawings from the datasheets and the standard, not photographs of a
+working unit.
+
 ---
 
 ## 0. What you are building
@@ -210,9 +233,31 @@ looks identical in a listing.
 
 ## 3. Wire it
 
-Pin numbers are GPIO numbers, and they match the firmware. If you change one,
-change it in `firmware/esp32/components/deck_display/ssd1322.c` and here
-together.
+Pin numbers are GPIO numbers, and they match the firmware — not by discipline
+but by construction: the pin map below is generated from the `#define PIN_...`
+lines in `firmware/esp32/main/` and `components/deck_display/`, and CI fails if
+the picture and the code disagree.
+
+![The whole deck: what connects to what, and what never touches the ESP32](media/wiring.svg)
+
+**The one thing to take from that drawing:** the audio does not go through the
+ESP32. The tuner's analogue output and the aux socket both go to the 74HC4052,
+and the chip only picks which pair reaches the amplifier. Nothing is resampled
+and nothing is re-encoded.
+
+### The pin map
+
+![Every GPIO on the WROVER-E and what this firmware does with it](media/pinmap.svg)
+
+Three things on it are worth reading twice:
+
+- **Red pins are the module's, not yours.** Flash, PSRAM, and the console.
+- **GPIO 13, 32 and 33 carry two labels.** The tuner and the three discrete
+  buttons want the same three holes; you fit one or the other, and the
+  firmware works out which at boot.
+- **`strapping` is not the same as `free`.** Those pins are sampled during
+  reset, so the requirement is about what they read at power-on, not what they
+  do afterwards. Each one's note says which.
 
 ### First, why the pins are where they are
 
@@ -563,6 +608,31 @@ screen works with the radio off, which is the point.
 
 Only after §5 and §6 work on the bench. Putting a deck that does not yet boot
 into a chassis means taking it out again.
+
+![Exploded view: cage, chassis, main board, panel, window, fascia](media/assembly.svg)
+
+Six layers, numbered in the order they go together. The numbering matters in
+both directions — reverse it to take the thing apart, which you will do more
+times than you expect.
+
+Two of them carry a rule that is easy to get wrong:
+
+- **The panel goes in before the main board** (4 before 3 in position, but
+  after it in the sequence): everything else is positioned relative to the
+  glass, because the glass is the only part whose position the user can see.
+- **Earth to one point on the chassis**, not board-to-board. A car is an
+  electrically filthy place and a ground loop through the audio path is
+  audible.
+
+### The envelope
+
+![1-DIN dimensions: 182 × 53 mm at the face, and what has to clear behind it](media/dimensions.svg)
+
+⚠️ **Depth is what catches people, not width.** The aperture is a standard
+182 × 53 mm and every car has it. What varies is how much room is behind it,
+and some cars give you 120 mm total against this build's ~160 mm plus another
+30–40 mm for the ISO plugs and the loom's bend radius. **Measure the car before
+you cut anything.**
 
 ### 7.1 Gut the donor
 

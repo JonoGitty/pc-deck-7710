@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 760" width="1180" height="760" role="img" aria-label="ASSEMBLY  ·  THE ORDER IT GOES TOGETHER">
+<title>ASSEMBLY  ·  THE ORDER IT GOES TOGETHER</title>
+<rect width="1180" height="760" fill="#08080a"/>
+<text x="28" y="38" font-size="15" fill="#ffd978" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.14em">ASSEMBLY  ·  THE ORDER IT GOES TOGETHER</text>
+<text x="28" y="58" font-size="11" fill="#8a8578" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Exploded, front-left. Each layer drops into the one behind it.</text>
+<path d="M 74 488 L 354 488 L 306 576 L 26 576 Z" fill="#101014" stroke="#7fb4e8" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 74 488 L 354 488" fill="none" stroke="#7fb4e8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="330.0" y="514.0" font-size="22" fill="#7fb4e8" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" opacity="0.4">1</text>
+<path d="M 360 490 L 624 502 H 638" fill="none" stroke="#7fb4e8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<circle cx="638.0" cy="502.0" r="2.4" fill="#7fb4e8"/>
+<text x="648.0" y="506.0" font-size="11" fill="#7fb4e8" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">1.</text>
+<text x="674.0" y="506.0" font-size="12" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.06em">ISO CAGE</text>
+<text x="674.0" y="523.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">ISO 7736, 182 × 53 mm</text>
+<text x="674.0" y="542.0" font-size="9.5" fill="#8f8b80" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Goes in the car first and stays there. Tabs bent, not screwed.</text>
+<path d="M 122 414 L 402 414 L 354 502 L 74 502 Z" fill="#101014" stroke="#d8d4cc" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 122 414 L 402 414" fill="none" stroke="#d8d4cc" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="378.0" y="440.0" font-size="22" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" opacity="0.4">2</text>
+<path d="M 408 416 L 624 428 H 638" fill="none" stroke="#d8d4cc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<circle cx="638.0" cy="428.0" r="2.4" fill="#d8d4cc"/>
+<text x="648.0" y="432.0" font-size="11" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">2.</text>
+<text x="674.0" y="432.0" font-size="12" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.06em">CHASSIS</text>
+<text x="674.0" y="449.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">the gutted donor, or 1 mm folded aluminium</text>
+<text x="674.0" y="468.0" font-size="9.5" fill="#8f8b80" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Earth everything to one point on this, not to each other.</text>
+<path d="M 170 340 L 450 340 L 402 428 L 122 428 Z" fill="#101014" stroke="#7fcf8f" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 170 340 L 450 340" fill="none" stroke="#7fcf8f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="426.0" y="366.0" font-size="22" fill="#7fcf8f" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" opacity="0.4">3</text>
+<path d="M 456 342 L 624 354 H 638" fill="none" stroke="#7fcf8f" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<circle cx="638.0" cy="354.0" r="2.4" fill="#7fcf8f"/>
+<text x="648.0" y="358.0" font-size="11" fill="#7fcf8f" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">3.</text>
+<text x="674.0" y="358.0" font-size="12" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.06em">MAIN BOARD</text>
+<text x="674.0" y="375.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">ESP32, DAC, mux, tuner</text>
+<text x="674.0" y="394.0" font-size="9.5" fill="#8f8b80" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Standoffs, not tape. It has to survive a dashboard in August.</text>
+<path d="M 218 266 L 498 266 L 450 354 L 170 354 Z" fill="#101014" stroke="#f3a52b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 218 266 L 498 266" fill="none" stroke="#f3a52b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="474.0" y="292.0" font-size="22" fill="#f3a52b" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" opacity="0.4">4</text>
+<path d="M 504 268 L 624 280 H 638" fill="none" stroke="#f3a52b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<circle cx="638.0" cy="280.0" r="2.4" fill="#f3a52b"/>
+<text x="648.0" y="284.0" font-size="11" fill="#f3a52b" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">4.</text>
+<text x="674.0" y="284.0" font-size="12" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.06em">PANEL + CONTROL BOARD</text>
+<text x="674.0" y="301.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">OLED/VFD, encoder, buttons</text>
+<text x="674.0" y="320.0" font-size="9.5" fill="#8f8b80" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Panel first: everything else is positioned relative to the glass.</text>
+<path d="M 266 192 L 546 192 L 498 280 L 218 280 Z" fill="#101014" stroke="#ffd978" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 266 192 L 546 192" fill="none" stroke="#ffd978" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="522.0" y="218.0" font-size="22" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" opacity="0.4">5</text>
+<path d="M 552 194 L 624 206 H 638" fill="none" stroke="#ffd978" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<circle cx="638.0" cy="206.0" r="2.4" fill="#ffd978"/>
+<text x="648.0" y="210.0" font-size="11" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">5.</text>
+<text x="674.0" y="210.0" font-size="12" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.06em">DISPLAY WINDOW</text>
+<text x="674.0" y="227.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">1 mm smoked acrylic, bonded</text>
+<text x="674.0" y="246.0" font-size="9.5" fill="#8f8b80" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Smoked, not clear — an unlit dot should look dead, not grey.</text>
+<path d="M 314 118 L 594 118 L 546 206 L 266 206 Z" fill="#101014" stroke="#f3a52b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 314 118 L 594 118" fill="none" stroke="#f3a52b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="570.0" y="144.0" font-size="22" fill="#f3a52b" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" opacity="0.4">6</text>
+<path d="M 600 120 L 624 132 H 638" fill="none" stroke="#f3a52b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<circle cx="638.0" cy="132.0" r="2.4" fill="#f3a52b"/>
+<text x="648.0" y="136.0" font-size="11" fill="#f3a52b" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">6.</text>
+<text x="674.0" y="136.0" font-size="12" fill="#d8d4cc" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.06em">FASCIA</text>
+<text x="674.0" y="153.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">the donor's own face, or 3 mm acrylic</text>
+<text x="674.0" y="172.0" font-size="9.5" fill="#8f8b80" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Last on, first off. Nothing behind it should need it removed.</text>
+<text x="28.0" y="644.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Numbered in build order: the cage goes into the car first and stays there, the fascia goes on last.</text>
+<text x="28.0" y="662.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Reverse the numbers to take it apart, which you will do several times.</text>
+<rect x="28.0" y="682.0" width="1124.0" height="52.0" rx="5" fill="#1a1208" stroke="#f3a52b" stroke-width="1"/>
+<rect x="28.0" y="682.0" width="3.0" height="52.0" rx="1.5" fill="#f3a52b"/>
+<text x="44.0" y="702.0" font-size="9.5" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">THE TWO THAT BITE</text>
+<text x="190.0" y="702.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Depth, not width — a 1-DIN slot is 182 × 53 mm at the face and can be as little as 120 mm deep behind it. Measure the car, not the cage.</text>
+<text x="190.0" y="720.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">The 8.8" bar LCD does not fit a 1-DIN fascia: ~217 mm against 180 mm. Desk use or a custom face only.</text>
+<text x="44.0" y="720.0" font-size="9.5" fill="#ff4938" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">⚠️  Never built.</text>
+</svg>

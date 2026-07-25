@@ -219,6 +219,26 @@ The shopping list covers **the mechanical half too** — donor chassis, cage,
 rear support strap, nylon standoffs, nyloc nuts, panel-mount sockets, wire,
 crimps, anti-rattle foam and the tools — with quantities. That is the half
 nobody lists and the half a build stalls on.
+
+![Every GPIO on the WROVER-E and what this firmware does with it](docs/media/pinmap.svg)
+
+*The pin map is **generated from the firmware**, not drawn next to it. It is
+parsed out of the `#define PIN_...` lines, it refuses to draw a GPIO claimed by
+two drivers, and CI fails if the picture and the code disagree — because the
+person reading a wiring diagram is holding a soldering iron.*
+
+![The whole deck: what connects to what, and what never touches the ESP32](docs/media/wiring.svg)
+
+*The audio never enters the ESP32. The tuner's analogue output and the aux
+socket go to a 74HC4052, and the chip only selects which pair reaches the
+amplifier — nothing is resampled and nothing is re-encoded.*
+
+![Exploded view: cage, chassis, main board, panel, window, fascia](docs/media/assembly.svg)
+
+*Also [dimensions](docs/media/dimensions.svg) — 182 × 53 mm at the face, and
+what has to clear behind it. ⚠️ Drawings of an intended build, from the
+standard and the datasheets. Nothing here has been assembled.*
+
 One tool does the whole loop:
 
 ```sh
