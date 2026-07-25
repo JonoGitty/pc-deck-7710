@@ -71,6 +71,14 @@ revs are a crude engine with load and a limiter, not a sine wave: the
 hesitation at the top of a gear is what makes it look like driving.
 `tools/movies/scene_vtec.py`.*
 
+![PIONEER — dark dolphin silhouettes arcing over a lit sea](docs/media/pioneer.gif)
+
+*`PIONEER` — the same screensaver as a real head unit drew it, and it is the
+other way round: the panel lights the **sea**, and the dolphins are where the
+light is not. A VFD's resting state is on, so a big lit field is what the glass
+is good at. Pinned to level 2 rather than mid-grey, or the whole sea would be a
+checkerboard. `tools/movies/scene_pioneer.py`.*
+
 ![DOLPHINS — the classic head-unit screensaver in 3D](docs/media/dolphins.gif)
 
 *`DOLPHINS` — the classic screensaver, rebuilt with a real mesh and a real sea.

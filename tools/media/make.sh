@@ -30,7 +30,7 @@ printf '\n== movie previews ==\n'
 # through the crossover, which is the whole point of the animation. From zero
 # it opens on a car idling.
 set -- "spin 0 0" "solar 0 190" "dolphins 24 170" "touge 60 190" "reef 0 0" \
-       "vtec 40 190"
+       "vtec 40 190" "pioneer 10 170"
 for spec in "$@"; do
   set -- $spec
   m=$1; from=$2; max=$3

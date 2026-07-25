@@ -22,5 +22,9 @@
  {
   "name": "VTEC",
   "url": "/web/movies/vtec_192x48.dmv"
+ },
+ {
+  "name": "PIONEER",
+  "url": "/web/movies/pioneer_192x48.dmv"
  }
 ]
