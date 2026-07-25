@@ -1,0 +1,60 @@
+<section>
+  <div class="wrap">
+    <h2>The movies</h2>
+    <p class="lede">Animations you make yourself, in pure Python — no GPU, no Blender.</p>
+    <p class="muted">They play on the PC deck and on the hardware. Same file, same decoder,
+      same dots. Each of these solves a different version of one problem: four
+      brightness levels is not many.</p>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/solar.gif" alt="A camera flying past planets in sequence, each labelled">
+      <figcaption><b>SOLAR</b> — thirteen stops from the Sun to Pluto, labels drawn from
+        the deck's own character ROM so the text belongs to the same panel as
+        everything else. <code>tools/movies/scene_solar.py</code></figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/touge.gif" alt="A car silhouette drifting down a night mountain road lit by its own headlights">
+      <figcaption><b>TOUGE</b> — a night run where the headlights are the only light
+        source in the scene, so the road fades to black by itself and the subject is
+        the <em>hole</em> in the light. <code>tools/movies/scene_touge.py</code></figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/vtec.gif" alt="A bar tachometer climbing through the VTEC crossover, with speed, revs and gear around it">
+      <figcaption><b>VTEC</b> — a bar tachometer, because the car this is drawn from uses
+        a bar rather than a dial, and a bar <em>is</em> a 4:1 strip. The revs are a crude
+        engine with load and a limiter rather than a waveform: the hesitation at the top
+        of a gear is what makes it read as driving.
+        <code>tools/movies/scene_vtec.py</code></figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/dolphins.gif" alt="Dolphins arcing out of a shimmering sea against a low sun">
+      <figcaption><b>DOLPHINS</b> — the classic screensaver rebuilt with a real mesh and
+        a real sea surface. The sea is shaded on a steep curve so only crests glint
+        and the animals own the bright end. <code>tools/movies/scene_dolphins.py</code></figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/reef.gif" alt="Fish and a starfish picked out in bright dots against black">
+      <figcaption><b>Already have a GIF?</b> <code>import_gif.py</code> converts it.
+        Footage needs <code>--keep</code>: a camera uses the whole tonal range and the
+        deck has four levels, so a mid-grey background becomes a checkerboard louder
+        than the subject. <code>--cover --keep=25</code> drops the water out and hands
+        all four levels to the fish.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/ae86.gif" alt="A white coupé on a mountain pass at night, seen along its flank and then from above">
+      <figcaption><b>AE86</b> — a white car on a dark road is the ideal subject, for the
+        same reason <b>TOUGE</b> works. But this clip ends by pulling back to a wide,
+        where the car shrinks to a few dots and the road it is on becomes the brightest
+        thing in frame — so <code>--trim=0:62</code> throws that part away.
+        <code>import_gif.py ae86.gif --cover --keep=30 --gamma=1.4 --trim=0:62</code>.
+        Look at the source before assuming all of it belongs on a 4:1 panel.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/spin.gif" alt="A simple solid rotating on the panel">
+      <figcaption><b>SPIN</b> — the minimal template, deliberately small. Copy it and
+        change the scene. <code>tools/movies/scene_spin.py</code></figcaption></figure>
+
+    <div class="note">
+      <p><b>Making one is a conversation, not a tutorial.</b> The repository carries a
+        <a href="{{BLOB}}/CLAUDE.md">CLAUDE.md</a>
+        that tells Claude the constraints — the right grid for your panel, the level
+        budget, why thin bright details dither into noise on 1-bit glass, why large
+        areas must sit on a level centre. Describe the animation you want and which
+        display you have; it picks the format.</p>
+    </div>
+  </div>
+
+</section>

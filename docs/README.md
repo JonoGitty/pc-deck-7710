@@ -23,10 +23,45 @@ The documentation, and the project's web page.
 
 ## The site
 
-`index.html` is the project page. It is a single hand-written file with no
-build step, no framework and no external requests — every image it uses is in
-`media/`, which is why it renders the same whether it is served by GitHub Pages
-or opened off a disk.
+**The site is generated. Do not edit `docs/*.html`.**
+
+```sh
+python3 tools/site/build.py
+```
+
+Sources live in `tools/site/`: `style.css` is the one stylesheet, and
+`content/*.html` are body fragments — no `<html>`, no navigation, no footer.
+`build.py` wraps each one in the shared shell and writes `docs/`.
+
+It used to be a single hand-written `index.html`: one 800-line scroll holding
+the hero, the screens, the whole build, the donor tree and the diagnostics.
+Every section was fine and the *shape* was wrong — somebody at a bench had to
+scroll past dolphins to find step 6, with no way to tell how much was left.
+
+So the build is a **sequence** now. Thirteen chapters, each with a next and a
+previous, and **the eleven mechanical steps are a page each** — the drawing for
+that step and nothing else on it. Two things are generated rather than written:
+
+| | |
+|---|---|
+| **Chapter numbers** | `{{CHAPTER}}` in a fragment. Inserting a chapter must not mean renumbering a dozen headings by hand |
+| **The step pages** | built from the same `STEPS` table `tools/diagrams/steps.py` draws from, so a step's title, parts and caption cannot drift from its picture |
+
+The single-step drawings are deliberately **bare** — no title bar, no parts box,
+no caption. The page carries those as real HTML, which is selectable and legible
+at any zoom; burning them into the picture as well means every sentence twice
+and half the drawing area. The printable sheets still carry them, because a
+sheet is the whole instruction.
+
+`tools/verify/test_site.py` rebuilds into a temporary directory and
+byte-compares, exactly as the pictures are checked — and then resolves **every
+relative link on every page**. That second check earns its keep: a broken media
+path 404s for the reader and not for the author, and the page you looked at was
+by definition one that worked.
+
+No framework, no build step beyond that script, and no external requests — every
+image is in `media/` and the stylesheet is same-origin, which is why it renders
+the same whether it is served by GitHub Pages or opened off a disk.
 
 **To publish it:** repository *Settings → Pages → Build and deployment*, source
 *Deploy from a branch*, then **all three** of these:

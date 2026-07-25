@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When it does not work</title>
+<meta name="description" content="A blank panel has six causes and one symptom, so the deck reports on itself.">
+<meta property="og:title" content="When it does not work">
+<meta property="og:description" content="A blank panel has six causes and one symptom, so the deck reports on itself.">
+<meta property="og:image" content="../media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="../deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="../index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="../index.html">Home</a><a class="" href="../screens.html">Screens</a><a class="" href="../calls.html">Calls &amp; radio</a><a class="" href="../movies.html">Animations</a><a class="" href="../run.html">Try it</a><a class="" href="../architecture.html">Architecture</a><a class="" href="../status.html">Status</a><a class="guide on" href="../guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<div class="rail"><div class="wrap"><span class="of">Build guide · 24 of 24</span><div class="dots"><a class="done" href="../guide/plan.html" title="Plan the build"></a><a class="done" href="../guide/car.html" title="Your car"></a><a class="done" href="../guide/donor.html" title="Choose a donor"></a><a class="done" href="../guide/strip.html" title="Strip it down"></a><a class="done" href="../guide/reuse.html" title="Keep what you can"></a><a class="done" href="../guide/parts.html" title="Buy the parts"></a><a class="done" href="../guide/wire.html" title="Wire the boards"></a><a class="done" href="../guide/flash.html" title="Flash it, and first light"></a><a class="done" href="../guide/transplant.html" title="Move the screen and the buttons"></a><a class="done" href="../guide/assemble.html" title="Assemble it — eleven steps"></a><a class="done" href="../guide/step-01.html" title="Step 1 — The chassis, empty"></a><a class="done" href="../guide/step-02.html" title="Step 2 — Four nylon standoffs"></a><a class="done" href="../guide/step-03.html" title="Step 3 — The main board, components up"></a><a class="done" href="../guide/step-04.html" title="Step 4 — Four nuts, finger tight plus a quarter"></a><a class="done" href="../guide/step-05.html" title="Step 5 — The panel, glass forward"></a><a class="done" href="../guide/step-06.html" title="Step 6 — The ribbon, with a service loop"></a><a class="done" href="../guide/step-07.html" title="Step 7 — The window, smoked side out"></a><a class="done" href="../guide/step-08.html" title="Step 8 — The encoder, through the fascia"></a><a class="done" href="../guide/step-09.html" title="Step 9 — The fascia"></a><a class="done" href="../guide/step-10.html" title="Step 10 — The cage, in the car"></a><a class="done" href="../guide/step-11.html" title="Step 11 — Slide it home"></a><a class="done" href="../guide/install.html" title="Into the car"></a><a class="done" href="../guide/tune.html" title="Pair it, tune it, load it"></a><a class="now" href="../guide/fix.html" title="When it does not work"></a></div><span class="pct">100%</span></div></div><section>
+  <div class="wrap">
+    <h2>When it does not work</h2>
+    <p class="lede">A blank panel has six causes and one symptom. So the deck reports on itself.</p>
+    <p class="muted">This is the part hobby firmware usually skips, and skipping
+      it is why people give up. There are three layers, each usable when the one
+      above it is not.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>1 — the panel</h3>
+        <p>A four-stage boot self-test. Stage 1 is a pattern straight from the
+          driver, before <code>core/</code> is involved at all; stage 2 adds the
+          output stage; stage 3 the font; stage 4 the subsystem table.
+          <b>Blank at stage 1 is hardware. Blank after stage 1 is software.</b>
+          That distinction is the whole reason it is staged.</p>
+      </div>
+      <div class="card">
+        <h3>2 — the serial line</h3>
+        <p>One structured line per event, so a tool can parse it rather than
+          needing a regexp per message. Health is four states, not a boolean:
+          <code>unknown</code> means not tried yet, which is <em>not</em>
+          <code>failed</code> — conflating them sends people hunting a Bluetooth
+          bug on a deck nobody paired.</p>
+      </div>
+      <div class="card">
+        <h3>3 — the crash</h3>
+        <p>A core dump written to flash survives the reboot, because the crash
+          you care about happens in a car and not on the bench. <code>deckctl
+          coredump</code> gives you the faulting task and a backtrace. A brownout
+          reset says so plainly — in a vehicle that is cranking, not software.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem">Symptom-by-symptom table in
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">DIAGNOSTICS.md</a>,
+      along with what to include in a bug report. On a dot-matrix display a
+      photograph of the fault is worth more than any description of it.</p>
+  </div>
+
+</section>
+<nav class="prevnext"><div class="wrap"><a class="prev" href="../guide/tune.html"><span>← Previous</span><b>Pair it, tune it, load it</b></a><a class="next" href="https://github.com/JonoGitty/pc-deck-7710"><span>That is the guide →</span><b>The source</b></a></div></nav>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../index.html">Home</a>
+      <a href="../guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

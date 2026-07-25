@@ -21,8 +21,13 @@ several now, and its own badge is correct.
 - `tools/sim/` — the firmware's own UI layer, running on a host.
 - `tools/movies/` — the animation maker.
 - `tools/media/` — regenerates every picture in the README and on the site.
-- `docs/` — hardware, architecture, UI spec, handbook, and `index.html`, the
-  project page served by GitHub Pages.
+- `tools/site/` — the **source** of the GitHub Pages site: one stylesheet, one
+  shell, and a body fragment per page.
+- `docs/` — hardware, architecture, UI spec, handbook — and the built site.
+  **`docs/*.html` is generated; edit `tools/site/` and rerun
+  `python3 tools/site/build.py`.** The build guide is a sequence of chapters
+  with a next and a previous, and the eleven assembly steps are a page each,
+  generated from the same `STEPS` table that draws them.
 
 ## The one rule
 

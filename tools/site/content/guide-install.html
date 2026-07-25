@@ -1,0 +1,64 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Into the car. This is the chapter where the consequences change.</p>
+
+    <div class="note danger">
+      <p><b>⚠️ Read <a href="{{BLOB}}/SAFETY.md">SAFETY.md</a> before this chapter,
+        not after it.</b> Everything up to now happened on a desk from USB. From here
+        you are wiring a device you built into a vehicle's electrical system, next to
+        circuits that are not yours — airbags, immobiliser, alternator. If you build
+        one you are the manufacturer, and every consequence is yours.</p>
+    </div>
+
+    <h3>The order</h3>
+    <ol>
+      <li><b>Battery negative off first.</b> Then wait — some cars want a few minutes
+        before anything is disturbed, and the airbag module is the reason.</li>
+      <li><b>The cage goes in and stays in.</b> Bend the tabs outward from inside the
+        dash, and <em>only</em> the tabs that reach metal. The rest bend back and
+        rattle for the life of the car.</li>
+      <li><b>Meter the harness.</b> ISO 10487 standardises the connector, not the
+        pinout: A4 (permanent) and A7 (ignition) get swapped by manufacturers. Two
+        minutes with a meter against a known-good earth.</li>
+      <li><b>Connect ISO A and ISO B</b>, then the aerial, then the amplifier's own
+        fused feed — taken from the battery side, not from the deck's supply.</li>
+      <li><b>One ground point.</b> The amplifier and the deck share it. Two grounds is
+        what alternator whine is.</li>
+      <li><b>Slide it home</b> until both spring tabs click, and fit the rear support
+        strap if the car has a bracket for one. A head unit held only by its face
+        works its solder joints loose over a few thousand miles.</li>
+    </ol>
+
+    <h3 style="margin-top:2rem">The three wires that are not power</h3>
+    <div class="grid">
+      <div class="card">
+        <h3>A7 — switched live</h3>
+        <p>Tells the deck the ignition is on. It goes through an
+          <b>opto-isolator</b>, not straight to a GPIO: the car's 12 V rail is a
+          hostile place and a load dump does not respect a 3.3 V input.</p>
+      </div>
+      <div class="card">
+        <h3>A6 — illumination</h3>
+        <p>The dash dimmer. The deck reads it to drop panel brightness at night,
+          which is the difference between a period-correct head unit and a torch
+          in your peripheral vision.</p>
+      </div>
+      <div class="card">
+        <h3>A4 — permanent live</h3>
+        <p>Keeps presets, pairings and the radio region across ignition cycles.
+          Its current draw is why <code>deckctl logs</code> reports the deep-sleep
+          state — a deck that flattens a battery over a fortnight is a deck nobody
+          keeps.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2rem">Where the amplifier physically goes</h3>
+    <p class="muted">This is car-specific and, in a small roadster, genuinely hard —
+      chapter 2 answers it per car. <b>A 2-DIN aperture is the way out</b>: deck in the
+      top half, amplifier board in the bottom, front end and amp in one box, which is
+      exactly what a factory head unit is. If you reused the donor's amplifier
+      (chapter 5) the question does not arise: it is already inside the deck, bolted
+      to the chassis that is its heatsink.</p>
+  </div>
+</section>

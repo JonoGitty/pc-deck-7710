@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status, honestly</title>
+<meta name="description" content="What is finished, what is written but unproven, and what has never run on hardware.">
+<meta property="og:title" content="Status, honestly">
+<meta property="og:description" content="What is finished, what is written but unproven, and what has never run on hardware.">
+<meta property="og:image" content="media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="index.html">Home</a><a class="" href="screens.html">Screens</a><a class="" href="calls.html">Calls &amp; radio</a><a class="" href="movies.html">Animations</a><a class="" href="run.html">Try it</a><a class="" href="architecture.html">Architecture</a><a class="on" href="status.html">Status</a><a class="guide" href="guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<section>
+  <div class="wrap">
+    <h2>Status, honestly</h2>
+    <p class="lede">The firmware has never run on hardware. It says so everywhere it should.</p>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Part</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td>PC deck</td><td class="ok">Working, in daily use</td></tr>
+        <tr><td><code>core/</code> renderer</td><td class="ok">Complete — all ten screens, verified against the JS</td></tr>
+        <tr><td>Browser preview</td><td class="ok">Working</td></tr>
+        <tr><td>Movie tooling</td><td class="ok">Working — 3D scenes, GIF import, flash packing</td></tr>
+        <tr><td>ESP32 firmware</td><td class="warn">Written and <b>compiles</b> — A2DP, AVRCP, hands-free calling, Si4735 radio, source switching, FFT, two panel drivers, movies, diagnostics. 1.75 MB image, 8 MB and 16 MB flash. <b>Never run on hardware</b></td></tr>
+        <tr><td>Flash tooling</td><td class="ok">deckctl: doctor, build, flash, movies, pictures, logs, coredump</td></tr>
+        <tr><td>Calling</td><td class="ok">Screens rendered, HFP client written — <span class="warn">never met a phone</span></td></tr>
+        <tr><td>Radio</td><td class="ok">Screen rendered, Si4735 driver written with RDS and presets — <span class="warn">never met a tuner</span></td></tr>
+        <tr><td>Sources</td><td class="ok">Bluetooth / radio / aux through a 74HC4052, written — <span class="warn">never wired</span></td></tr>
+        <tr><td>Colour panel</td><td class="warn">Researched, part identified, nothing bought or wired</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

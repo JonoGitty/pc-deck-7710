@@ -408,6 +408,25 @@ def sheet(out, index, items, first):
     return s.save(os.path.join(out, f"assembly-sheet{index}.svg"))
 
 
+def single(out, n):
+    """One step's drawing, alone and large, for its own page on the site.
+
+    Deliberately BARE — no title bar, no parts box, no caption. The sheets
+    carry those because a sheet is the whole instruction; the site page carries
+    them as real HTML, which is selectable, translatable and legible on a phone
+    at any zoom. Burning them into the picture as well means the reader sees
+    every sentence twice and the drawing is half the size it could be.
+
+    The geometry still comes from the same `draw` function the sheets use, so
+    the two cannot disagree about what the step looks like."""
+    title, _cap, _parts, draw = STEPS[n - 1]
+    W, H = 900, 520
+    s = Svg(W, H, f"Step {n}: {title}", chrome=False)
+    scale, ox, oy = fit(WORLD, (24, 20, W - 48, H - 40))
+    draw(Scene(s, scale, ox, oy))
+    return s.save(os.path.join(out, f"assembly-step-{n:02d}.svg"))
+
+
 def main():
     out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "docs",
                                                              "media")
@@ -417,6 +436,9 @@ def main():
     for k in range(0, len(STEPS), per):
         idx = k // per + 1
         paths.append(sheet(out, idx, STEPS[k:k + per], k + 1))
+    for n in range(1, len(STEPS) + 1):
+        single(out, n)
+    print(f"  {len(STEPS)} single-step drawings for the site")
     for p in paths:
         print(f"  {os.path.relpath(p, ROOT):<34} "
               f"{os.path.getsize(p) / 1024:6.1f} KB")

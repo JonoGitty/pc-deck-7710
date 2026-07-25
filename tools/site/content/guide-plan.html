@@ -1,0 +1,70 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Plan the build. Pick a display first — it fixes the grid everything else is laid out on.</p>
+
+    <p>There are two decisions here and everything downstream follows from them:
+      <b>which panel</b>, and <b>whether this deck is going in a car</b>. Take the
+      first one seriously: the panel decides the logical grid, the number of
+      brightness levels, and whether thin bright detail survives at all.</p>
+
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Tier</th><th>Display</th><th>Brain</th><th>Rough cost</th></tr></thead>
+      <tbody>
+        <tr><td>Bench</td><td>SSD1322 OLED, 256×64, 16 grey</td><td>ESP32-WROVER-E</td><td>~£32</td></tr>
+        <tr><td>Car — greyscale</td><td>SSD1322</td><td>ESP32-WROVER-E</td><td>~£82</td></tr>
+        <tr><td>Car — authentic VFD</td><td>Futaba GP1294AI, 1-bit</td><td>ESP32-WROVER-E</td><td>~£92</td></tr>
+        <tr><td>Car — colour <span class="warn">⚠</span></td><td>4.58″ bar IPS, 960×320</td><td>ESP32 <b>+ ESP32-S3</b></td><td>~£90</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="note">
+      <p><b>Two corrections already made the hard way.</b></p>
+      <p>It must be the <b>original ESP32, not the S3</b> — the S3 has no Bluetooth
+        Classic, so no A2DP, so no audio from a phone. Espressif closed that request
+        “Won't Do”.</p>
+      <p>The <b>8.8″ bar LCD does not fit a 1-DIN slot</b>: about 217 mm wide against
+        a 180 mm fascia. There <em>is</em> a colour panel that fits — a 4.58″ bar IPS
+        at 118.8 × 41.57 mm, which maps onto the grid exactly at 192 × 64 logical dots
+        times five — but it needs a parallel RGB bus the original ESP32 does not have,
+        so colour is a two-chip build.</p>
+    </div>
+
+    <h3 style="margin-top:2.5rem">Build the bench tier first, whatever you are aiming at</h3>
+    <p class="muted">A panel, an ESP32 and a USB cable on a desk is about £32 and it
+      plays music from your phone. Every chapter up to <b>Flash it</b> applies to it
+      unchanged, and it turns the car build from one long project with a single
+      moment of truth into two short ones. If something is wrong with your soldering
+      or your wiring you would much rather find out on a desk than upside down under
+      a dashboard.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Which grid you get</h3>
+        <p>SSD1322 → 256×64 with four usable levels. GP1294AI → 256×48, 1-bit.
+          The legacy PC deck → 192×48. The renderer lays out for each of them; you
+          do not have to.</p>
+      </div>
+      <div class="card">
+        <h3>The level-centre rule</h3>
+        <p>Level <i>n</i> renders at shade (<i>n</i>+0.5)/4, so 0.375, 0.625 and
+          0.875 are solid fields and 0.25 or 0.5 are 50/50 checkerboards. A
+          checkerboard over a third of the panel beats everything else for
+          attention.</p>
+      </div>
+      <div class="card">
+        <h3>Level 4 is spoken for</h3>
+        <p>It is the clipping indicator and renders red. Movies and animations use
+          0–3 only, which is why the deck has five levels and four of them are
+          yours.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem">The full component survey is
+      <a href="{{BLOB}}/docs/HARDWARE.md">HARDWARE.md</a>, where every claim is
+      marked ✅ verified against a datasheet or a listing, or ⚠️ not — and the
+      unverified ones are unverified for a reason.</p>
+  </div>
+</section>

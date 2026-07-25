@@ -32,6 +32,10 @@ sys.path.insert(0, os.path.join(ROOT, "tools", "diagrams"))
 DIAGRAMS = ["pinmap.svg", "wiring.svg", "assembly.svg", "dimensions.svg",
             "finished.svg"]
 SHEETS = ["assembly-sheet1.svg", "assembly-sheet2.svg", "assembly-sheet3.svg"]
+# The site shows one drawing per step, on its own page. Same generator, same
+# camera — and the same way of going stale, so it is checked with the sheets
+# rather than trusted because the sheets passed.
+SHEETS += [f"assembly-step-{n:02d}.svg" for n in range(1, 12)]
 
 _fails = []
 

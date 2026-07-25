@@ -1,0 +1,24 @@
+<section>
+  <div class="wrap">
+    <h2>Status, honestly</h2>
+    <p class="lede">The firmware has never run on hardware. It says so everywhere it should.</p>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Part</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td>PC deck</td><td class="ok">Working, in daily use</td></tr>
+        <tr><td><code>core/</code> renderer</td><td class="ok">Complete — all ten screens, verified against the JS</td></tr>
+        <tr><td>Browser preview</td><td class="ok">Working</td></tr>
+        <tr><td>Movie tooling</td><td class="ok">Working — 3D scenes, GIF import, flash packing</td></tr>
+        <tr><td>ESP32 firmware</td><td class="warn">Written and <b>compiles</b> — A2DP, AVRCP, hands-free calling, Si4735 radio, source switching, FFT, two panel drivers, movies, diagnostics. 1.75 MB image, 8 MB and 16 MB flash. <b>Never run on hardware</b></td></tr>
+        <tr><td>Flash tooling</td><td class="ok">deckctl: doctor, build, flash, movies, pictures, logs, coredump</td></tr>
+        <tr><td>Calling</td><td class="ok">Screens rendered, HFP client written — <span class="warn">never met a phone</span></td></tr>
+        <tr><td>Radio</td><td class="ok">Screen rendered, Si4735 driver written with RDS and presets — <span class="warn">never met a tuner</span></td></tr>
+        <tr><td>Sources</td><td class="ok">Bluetooth / radio / aux through a 74HC4052, written — <span class="warn">never wired</span></td></tr>
+        <tr><td>Colour panel</td><td class="warn">Researched, part identified, nothing bought or wired</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</section>

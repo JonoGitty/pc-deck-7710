@@ -1,0 +1,40 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Keep what you can. The donor already contains the amplifier the shopping list is about to tell you to buy.</p>
+
+<h3 style="margin-top:2rem">Or keep as much of it as you can — including its amplifier</h3>
+    <p class="muted">The strip-down above is the <em>default</em>, and it is the right
+      default. But it bins a part the shopping list then tells you to go and buy.
+      <b>Every CD-era head unit contains a 4-channel amplifier</b> — a TDA7388, a
+      TDA7850 or something from the same family — already bolted to the chassis as its
+      heatsink, already wired to the ISO speaker connector, already fused. That is
+      exactly the board <a href="{{BLOB}}/docs/BUILD.md">BUILD.md</a>
+      costs at £12–20.</p>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/reuse-amp.svg" alt="Where to cut into the donor's signal chain, and the mute and standby pins">
+      <figcaption><b>The amplifier is the last two boxes of a chain you are deleting.</b>
+        Cut on the preamp side of the coupling capacitors, inject the deck's line out
+        there, and leave the speaker outputs alone — they already go where they should.
+        ⚠️ <b>The step everybody misses</b> is the one drawn in the inset: the old
+        microcontroller drove <code>ST-BY</code> and <code>MUTE</code>, and with it gone
+        they float, so the amplifier stays muted and you conclude the chip is dead.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/reuse-rear.svg" alt="The donor's back panel: ISO A, ISO B, aerial socket, fuse">
+      <figcaption><b>The back panel is free, and keeping it is not a job</b> — nothing to
+        unbolt. It removes £8–15 of ISO tails, and on an <b>OEM donor from your own
+        car</b> it removes the harness adapter entirely, because the car's exact
+        connector is already on it. Reuse the amplifier and the connectors and the “to
+        make a sound” list drops to <b>£0</b>, which makes a <b>cassette-era donor</b>
+        the cheapest complete route in this project.
+        <a href="{{BLOB}}/docs/REUSE.md">REUSE.md</a></figcaption></figure>
+
+    <p class="muted small">The display is the one everybody asks about and usually the
+      answer is no: most head-unit panels are segment or character devices with no
+      pixels to address, and a genuine dot-matrix one is usually 128×32 behind an
+      undocumented controller. <b>✅ The exception is a Futaba GP1294AI</b> — the
+      firmware already drives it, and those panels are commonly sold as car-radio pulls.
+      Check the part number on the glass before assuming either way.</p>
+
+  </div>
+</section>

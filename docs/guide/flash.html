@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flash it, and first light</title>
+<meta name="description" content="Build the firmware, flash it, and read the four-stage self-test.">
+<meta property="og:title" content="Flash it, and first light">
+<meta property="og:description" content="Build the firmware, flash it, and read the four-stage self-test.">
+<meta property="og:image" content="../media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="../deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="../index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="../index.html">Home</a><a class="" href="../screens.html">Screens</a><a class="" href="../calls.html">Calls &amp; radio</a><a class="" href="../movies.html">Animations</a><a class="" href="../run.html">Try it</a><a class="" href="../architecture.html">Architecture</a><a class="" href="../status.html">Status</a><a class="guide on" href="../guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<div class="rail"><div class="wrap"><span class="of">Build guide · 8 of 24</span><div class="dots"><a class="done" href="../guide/plan.html" title="Plan the build"></a><a class="done" href="../guide/car.html" title="Your car"></a><a class="done" href="../guide/donor.html" title="Choose a donor"></a><a class="done" href="../guide/strip.html" title="Strip it down"></a><a class="done" href="../guide/reuse.html" title="Keep what you can"></a><a class="done" href="../guide/parts.html" title="Buy the parts"></a><a class="done" href="../guide/wire.html" title="Wire the boards"></a><a class="now" href="../guide/flash.html" title="Flash it, and first light"></a><a class="" href="../guide/transplant.html" title="Move the screen and the buttons"></a><a class="" href="../guide/assemble.html" title="Assemble it — eleven steps"></a><a class="" href="../guide/step-01.html" title="Step 1 — The chassis, empty"></a><a class="" href="../guide/step-02.html" title="Step 2 — Four nylon standoffs"></a><a class="" href="../guide/step-03.html" title="Step 3 — The main board, components up"></a><a class="" href="../guide/step-04.html" title="Step 4 — Four nuts, finger tight plus a quarter"></a><a class="" href="../guide/step-05.html" title="Step 5 — The panel, glass forward"></a><a class="" href="../guide/step-06.html" title="Step 6 — The ribbon, with a service loop"></a><a class="" href="../guide/step-07.html" title="Step 7 — The window, smoked side out"></a><a class="" href="../guide/step-08.html" title="Step 8 — The encoder, through the fascia"></a><a class="" href="../guide/step-09.html" title="Step 9 — The fascia"></a><a class="" href="../guide/step-10.html" title="Step 10 — The cage, in the car"></a><a class="" href="../guide/step-11.html" title="Step 11 — Slide it home"></a><a class="" href="../guide/install.html" title="Into the car"></a><a class="" href="../guide/tune.html" title="Pair it, tune it, load it"></a><a class="" href="../guide/fix.html" title="When it does not work"></a></div><span class="pct">33%</span></div></div><section>
+  <div class="wrap">
+    <h2>Chapter 8</h2>
+    <p class="lede">Flash it, and read the four-stage self-test. Everything here happens on a desk, from USB, and risks nothing but your time.</p>
+
+    <pre><code># the whole thing, guided
+python3 tools/deckctl.py
+
+# or step by step
+python3 tools/deckctl.py doctor
+python3 tools/deckctl.py build   --display ssd1322
+python3 tools/deckctl.py flash
+python3 tools/deckctl.py logs</code></pre>
+
+    <p><code>doctor</code> first, always: it says what is missing from your toolchain
+      and how to get it, and it reads the chip ID over USB — which is where an
+      ESP32-S3 bought by mistake gets caught, before any of it is your fault.</p>
+
+    <h3 style="margin-top:2rem">First light: the self-test is staged for a reason</h3>
+    <p class="muted">A blank panel has six causes and one symptom, so the boot
+      self-test walks up the stack and each stage tells you something the previous
+      one could not.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Stage 1 — the driver</h3>
+        <p>A pattern written straight from the panel driver, before
+          <code>core/</code> is involved at all. <b>Blank here is hardware</b>:
+          wiring, power, or the wrong controller.</p>
+      </div>
+      <div class="card">
+        <h3>Stage 2 — the output stage</h3>
+        <p>The intensity levels through the quantiser. If stage 1 drew and this does
+          not, the panel is fine and the level mapping is not.</p>
+      </div>
+      <div class="card">
+        <h3>Stage 3 — the font</h3>
+        <p>Text from the ROM. Proves the generated font header made it into the
+          image and reads correctly.</p>
+      </div>
+      <div class="card">
+        <h3>Stage 4 — the subsystems</h3>
+        <p>The table of what came up: Bluetooth, tuner, mux, buttons. Health is four
+          states — <code>unknown</code> means <em>not tried yet</em>, which is not
+          <code>failed</code>.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem"><b>Blank at stage 1 is hardware. Blank after stage 1
+      is software.</b> That single distinction is the whole reason it is staged, and
+      it is the difference between an evening with a multimeter and an evening with a
+      debugger.</p>
+
+    <div class="note">
+      <p><b>Then pair it.</b> Your phone's own Bluetooth menu — no app, no pairing
+        code, nothing to install. Play something and the analyser moves. If the deck
+        does not appear, <code>deckctl logs</code> says whether Bluetooth came up at
+        all, which is a different problem from it coming up and not being found.</p>
+    </div>
+
+    <p class="muted small">⚠️ The firmware compiles and has never run on hardware. The
+      self-test is written and its stages are simulated on the host by
+      <code>tools/sim/</code>, which is not the same as having lit a panel with it.</p>
+  </div>
+</section>
+<nav class="prevnext"><div class="wrap"><a class="prev" href="../guide/wire.html"><span>← Previous</span><b>Wire the boards</b></a><a class="next" href="../guide/transplant.html"><span>Next →</span><b>Move the screen and the buttons</b></a></div></nav>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../index.html">Home</a>
+      <a href="../guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

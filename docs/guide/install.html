@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Into the car</title>
+<meta name="description" content="The cage, the harness, the aerial, and the part where consequences change.">
+<meta property="og:title" content="Into the car">
+<meta property="og:description" content="The cage, the harness, the aerial, and the part where consequences change.">
+<meta property="og:image" content="../media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="../deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="../index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="../index.html">Home</a><a class="" href="../screens.html">Screens</a><a class="" href="../calls.html">Calls &amp; radio</a><a class="" href="../movies.html">Animations</a><a class="" href="../run.html">Try it</a><a class="" href="../architecture.html">Architecture</a><a class="" href="../status.html">Status</a><a class="guide on" href="../guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<div class="rail"><div class="wrap"><span class="of">Build guide · 22 of 24</span><div class="dots"><a class="done" href="../guide/plan.html" title="Plan the build"></a><a class="done" href="../guide/car.html" title="Your car"></a><a class="done" href="../guide/donor.html" title="Choose a donor"></a><a class="done" href="../guide/strip.html" title="Strip it down"></a><a class="done" href="../guide/reuse.html" title="Keep what you can"></a><a class="done" href="../guide/parts.html" title="Buy the parts"></a><a class="done" href="../guide/wire.html" title="Wire the boards"></a><a class="done" href="../guide/flash.html" title="Flash it, and first light"></a><a class="done" href="../guide/transplant.html" title="Move the screen and the buttons"></a><a class="done" href="../guide/assemble.html" title="Assemble it — eleven steps"></a><a class="done" href="../guide/step-01.html" title="Step 1 — The chassis, empty"></a><a class="done" href="../guide/step-02.html" title="Step 2 — Four nylon standoffs"></a><a class="done" href="../guide/step-03.html" title="Step 3 — The main board, components up"></a><a class="done" href="../guide/step-04.html" title="Step 4 — Four nuts, finger tight plus a quarter"></a><a class="done" href="../guide/step-05.html" title="Step 5 — The panel, glass forward"></a><a class="done" href="../guide/step-06.html" title="Step 6 — The ribbon, with a service loop"></a><a class="done" href="../guide/step-07.html" title="Step 7 — The window, smoked side out"></a><a class="done" href="../guide/step-08.html" title="Step 8 — The encoder, through the fascia"></a><a class="done" href="../guide/step-09.html" title="Step 9 — The fascia"></a><a class="done" href="../guide/step-10.html" title="Step 10 — The cage, in the car"></a><a class="done" href="../guide/step-11.html" title="Step 11 — Slide it home"></a><a class="now" href="../guide/install.html" title="Into the car"></a><a class="" href="../guide/tune.html" title="Pair it, tune it, load it"></a><a class="" href="../guide/fix.html" title="When it does not work"></a></div><span class="pct">92%</span></div></div><section>
+  <div class="wrap">
+    <h2>Chapter 11</h2>
+    <p class="lede">Into the car. This is the chapter where the consequences change.</p>
+
+    <div class="note danger">
+      <p><b>⚠️ Read <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">SAFETY.md</a> before this chapter,
+        not after it.</b> Everything up to now happened on a desk from USB. From here
+        you are wiring a device you built into a vehicle's electrical system, next to
+        circuits that are not yours — airbags, immobiliser, alternator. If you build
+        one you are the manufacturer, and every consequence is yours.</p>
+    </div>
+
+    <h3>The order</h3>
+    <ol>
+      <li><b>Battery negative off first.</b> Then wait — some cars want a few minutes
+        before anything is disturbed, and the airbag module is the reason.</li>
+      <li><b>The cage goes in and stays in.</b> Bend the tabs outward from inside the
+        dash, and <em>only</em> the tabs that reach metal. The rest bend back and
+        rattle for the life of the car.</li>
+      <li><b>Meter the harness.</b> ISO 10487 standardises the connector, not the
+        pinout: A4 (permanent) and A7 (ignition) get swapped by manufacturers. Two
+        minutes with a meter against a known-good earth.</li>
+      <li><b>Connect ISO A and ISO B</b>, then the aerial, then the amplifier's own
+        fused feed — taken from the battery side, not from the deck's supply.</li>
+      <li><b>One ground point.</b> The amplifier and the deck share it. Two grounds is
+        what alternator whine is.</li>
+      <li><b>Slide it home</b> until both spring tabs click, and fit the rear support
+        strap if the car has a bracket for one. A head unit held only by its face
+        works its solder joints loose over a few thousand miles.</li>
+    </ol>
+
+    <h3 style="margin-top:2rem">The three wires that are not power</h3>
+    <div class="grid">
+      <div class="card">
+        <h3>A7 — switched live</h3>
+        <p>Tells the deck the ignition is on. It goes through an
+          <b>opto-isolator</b>, not straight to a GPIO: the car's 12 V rail is a
+          hostile place and a load dump does not respect a 3.3 V input.</p>
+      </div>
+      <div class="card">
+        <h3>A6 — illumination</h3>
+        <p>The dash dimmer. The deck reads it to drop panel brightness at night,
+          which is the difference between a period-correct head unit and a torch
+          in your peripheral vision.</p>
+      </div>
+      <div class="card">
+        <h3>A4 — permanent live</h3>
+        <p>Keeps presets, pairings and the radio region across ignition cycles.
+          Its current draw is why <code>deckctl logs</code> reports the deep-sleep
+          state — a deck that flattens a battery over a fortnight is a deck nobody
+          keeps.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2rem">Where the amplifier physically goes</h3>
+    <p class="muted">This is car-specific and, in a small roadster, genuinely hard —
+      chapter 2 answers it per car. <b>A 2-DIN aperture is the way out</b>: deck in the
+      top half, amplifier board in the bottom, front end and amp in one box, which is
+      exactly what a factory head unit is. If you reused the donor's amplifier
+      (chapter 5) the question does not arise: it is already inside the deck, bolted
+      to the chassis that is its heatsink.</p>
+  </div>
+</section>
+<nav class="prevnext"><div class="wrap"><a class="prev" href="../guide/step-11.html"><span>← Previous</span><b>Step 11 — Slide it home</b></a><a class="next" href="../guide/tune.html"><span>Next →</span><b>Pair it, tune it, load it</b></a></div></nav>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../index.html">Home</a>
+      <a href="../guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

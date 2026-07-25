@@ -1,0 +1,60 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Buy the parts. About £35 gets a working deck on a desk; the car tier roughly doubles it.</p>
+
+    <p>The authoritative list, with quantities and search terms, is
+      <a href="{{BLOB}}/docs/BUILD.md">BUILD.md</a>. What follows is what the money
+      goes on and which items people get wrong.</p>
+
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>What</th><th>Which one</th><th>Why this one</th></tr></thead>
+      <tbody>
+        <tr><td><b>The brain</b></td><td>ESP32-<b>WROVER-E</b>, 16 MB flash</td>
+          <td>WROVER for the PSRAM, original ESP32 for Bluetooth Classic. <span class="warn">Not the S3</span></td></tr>
+        <tr><td><b>The panel</b></td><td>SSD1322 256×64, or Futaba GP1294AI</td>
+          <td>Both have drivers. The VFD is the authentic look; the OLED is the easier build</td></tr>
+        <tr><td><b>The DAC</b></td><td>PCM5102A board</td>
+          <td>I²S in, line level out, no configuration pins to get wrong</td></tr>
+        <tr><td><b>Source switching</b></td><td>PT2313 / TDA7313 <span class="ok">(preferred)</span> or 74HC4052</td>
+          <td>The mux only selects. The PT2313 <b>also gives you volume</b>, bass, treble, balance and fader over I²C — and hands back two GPIOs</td></tr>
+        <tr><td><b>The tuner</b></td><td>Si4735 module</td>
+          <td>FM/AM with RDS over I²C, analogue audio straight out — it never enters the ESP32</td></tr>
+        <tr><td><b>The amplifier</b></td><td>TDA7850 / TDA7388 board — <b>or the donor's</b></td>
+          <td>The deck's output is line level. <b>Reusing the donor's is £0</b> — chapter 5</td></tr>
+        <tr><td><b>Buttons</b></td><td>Tactile switches and a rotary encoder</td>
+          <td>The buttons go on one analogue pin as a resistor ladder, not one pin each</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="note">
+      <p><b>Check the chip before you solder to it.</b> <code>deckctl doctor</code>
+        reads the chip ID over USB and tells you what is missing from your toolchain
+        — and it catches an ESP32-S3 bought by mistake, which is the single most
+        expensive error available at this stage, because everything about it looks
+        right until Bluetooth audio does not exist.</p>
+    </div>
+
+    <h3 style="margin-top:2rem">What each tier costs, honestly</h3>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Tier</th><th>Rough total</th><th>What it does not include</th></tr></thead>
+      <tbody>
+        <tr><td>Bench — panel, ESP32, DAC, buttons</td><td>~£32</td><td>Nothing. It plays music from a phone on a desk</td></tr>
+        <tr><td>Car — greyscale</td><td>~£82</td><td>The donor chassis, and the car's adapters</td></tr>
+        <tr><td>Car — VFD</td><td>~£92</td><td>As above. The VFD also wants its own supply board</td></tr>
+        <tr><td>Donor chassis</td><td>£5–15</td><td>Buy a broken one — chapter 3</td></tr>
+        <tr><td>Adapters — fascia, harness, aerial</td><td>£8–25</td><td>Car-specific. £0 on an OEM donor from your own car</td></tr>
+        <tr><td>Amplifier</td><td>£12–20, or <b>£0</b></td><td>£0 if you reuse the donor's — chapter 5</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p class="muted small"><b>There are no retailer part numbers anywhere in this
+      project, on purpose.</b> They change, they are regional, they go out of stock,
+      and a stale one looks authoritative. What you get is the thing to search for,
+      which does not go stale.</p>
+  </div>
+</section>

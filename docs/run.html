@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Try it now</title>
+<meta name="description" content="Run the PC deck, or preview a panel you have not bought yet.">
+<meta property="og:title" content="Try it now">
+<meta property="og:description" content="Run the PC deck, or preview a panel you have not bought yet.">
+<meta property="og:image" content="media/faceplate.png">
+<meta name="theme-color" content="#0a0a0c">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="wrap">
+  <a class="mark" href="index.html">DECK<b>·</b>7710</a>
+  <div class="links"><a class="" href="index.html">Home</a><a class="" href="screens.html">Screens</a><a class="" href="calls.html">Calls &amp; radio</a><a class="" href="movies.html">Animations</a><a class="on" href="run.html">Try it</a><a class="" href="architecture.html">Architecture</a><a class="" href="status.html">Status</a><a class="guide" href="guide/plan.html">Build guide</a></div>
+</div></nav>
+
+<section>
+  <div class="wrap">
+    <h2>Try it now</h2>
+    <p class="lede">Two ways in, neither needs hardware.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>The PC deck</h3>
+        <pre><code>python legacy/server.py</code></pre>
+        <p>Opens <code>127.0.0.1:7710</code>. Play music anywhere — Spotify, YouTube, a
+          game — and it lights up on its own. Windows, because it captures WASAPI
+          loopback and Windows media metadata.</p>
+      </div>
+      <div class="card">
+        <h3>Preview a panel you have not bought</h3>
+        <pre><code>sh tools/serve.sh</code></pre>
+        <p>Compiles <code>core/</code> to WASM and emulates any panel: grid size, level
+          count, dot shape, illumination colour. Same C the firmware runs, so it is
+          what the glass does rather than an impression of it.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="guide/plan.html">Build guide</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710">GitHub</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/HARDWARE.md">Hardware</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DONORS.md">Donors</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/VEHICLES.md">Vehicles</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">Reuse</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/DIAGNOSTICS.md">Diagnostics</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Safety</a>
+    </div>
+    <p><b>This is an unfinished hobby project published as source, not a
+      product.</b> Nothing here has been tested in a vehicle or certified by
+      anybody, and the firmware has never run on hardware. If you build one you
+      are the manufacturer, and every consequence is yours — including fire,
+      battery drain, airbag circuits, driver distraction, insurance and type
+      approval. <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/SAFETY.md">Read SAFETY.md</a> before wiring
+      anything to a car.</p>
+    <p>Co-designed with GPT 5.6 (Sol) — the visual spec, the meter ballistics
+      and the album-art dither idea came out of that consult.
+      MIT licensed. Build one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

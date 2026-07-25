@@ -1,0 +1,111 @@
+<header>
+  <div class="wrap">
+    <h1 class="brand">DECK<b>·</b>7710</h1>
+    <p class="tag">Build your own 1-DIN car head unit.</p>
+    <p class="sub">One portable C renderer drives real glass, a browser preview and a PC
+      music visualiser — the same code, the same dots, on all three.</p>
+    <div class="cta">
+      <a class="btn primary" href="guide/plan.html">Start the build guide</a>
+      <a class="btn" href="{{GH}}">Source on GitHub</a>
+      <a class="btn" href="screens.html">The screens</a>
+      <a class="btn" href="run.html">Try it without hardware</a>
+    </div>
+    <div class="shot"><img src="{{ROOT}}media/faceplate.png" alt="The deck playing, showing a 13-band spectrum analyser on an amber dot-matrix panel"></div>
+
+    <p class="reel-lede">Animations made with the tools in this repository, playing on the panel.</p>
+    <div class="reel">
+      <figure><img loading="lazy" src="{{ROOT}}media/touge.gif" alt="A car drifting down a night mountain road lit only by its headlights"><figcaption>TOUGE</figcaption></figure>
+      <figure><img loading="lazy" src="{{ROOT}}media/dolphins.gif" alt="Dolphins arcing out of a shimmering sea"><figcaption>DOLPHINS</figcaption></figure>
+      <figure><img loading="lazy" src="{{ROOT}}media/solar.gif" alt="A camera flying past the planets in turn, each labelled"><figcaption>SOLAR</figcaption></figure>
+    </div>
+  </div>
+</header>
+
+<section id="what">
+  <div class="wrap">
+    <h2>What this is</h2>
+    <p class="lede">A deck is what a head unit is called. This one started on a PC and grew into the real thing.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>The PC deck <span class="ok">— working</span></h3>
+        <p>A Pioneer-style faceplate in a browser, fed by whatever your PC is playing.
+          Spectrum analyser, VU needles, album art, synced lyrics, dolphins when the
+          music stops. This is what most people run.</p>
+      </div>
+      <div class="card">
+        <h3>The car deck <span class="warn">— renderer done, firmware not</span></h3>
+        <p>ESP32 and an OLED or VFD panel, Bluetooth audio from your phone, into a
+          standard DIN cage. The renderer is finished and verified, and the firmware
+          is written and compiles — A2DP, metadata, the analyser, both panels,
+          movies and diagnostics. It has never run on hardware, and this site will
+          say so until it has.</p>
+      </div>
+    </div>
+    <div class="note">
+      <p><b>Everything on this site was rendered by the code in the repository.</b>
+        The screen animations come out of the same C the firmware links; the
+        faceplate photographs are the real page in a real browser with the
+        WebSocket stubbed; the drawings are generated from the firmware's own pin
+        definitions and from measurements in JSON. There are no mockups here, and
+        one command regenerates the lot — which is the only way a site like this
+        stays true a year from now.</p>
+    </div>
+  </div>
+</section>
+
+<section id="guide">
+  <div class="wrap">
+    <h2>The build guide</h2>
+    <p class="lede">Thirteen chapters, in the order you do them. Each one has a next.</p>
+    <p class="muted">This used to be one long page and it was the wrong shape: somebody
+      standing at a bench had to scroll past dolphins to find step 6, with no way to
+      tell how much was left. So it is a sequence now — <b>the eleven mechanical steps
+      are a page each</b>, with the drawing for that step and nothing else on it, and
+      every page says where you are in the whole.</p>
+    {{CHAPTERS}}
+    <p class="muted small" style="margin-top:1.2rem">⚠️ <b>Nothing here has been
+      built.</b> The drawings are derived from ISO 7736, the part datasheets and
+      measured windows — they are an <em>intended</em> assembly, not a photograph of
+      a working deck. Read <a href="{{BLOB}}/SAFETY.md">SAFETY.md</a> before the
+      chapter with a car in it.</p>
+  </div>
+</section>
+
+<section id="more">
+  <div class="wrap">
+    <h2>And the rest of it</h2>
+    <p class="lede">The parts of the project that are not a build.</p>
+    <div class="grid">
+      <div class="card">
+        <h3><a href="screens.html">The screens</a></h3>
+        <p>Ten display modes — analyser, VU, scope, waterfall, album art, synced
+          lyrics, and the dolphins — every dot drawn by the same C.</p>
+      </div>
+      <div class="card">
+        <h3><a href="calls.html">Calls, and the radio</a></h3>
+        <p>Hands-free over HFP with the call state derived rather than tracked, and
+          an FM/AM tuner whose audio never enters the microcontroller.</p>
+      </div>
+      <div class="card">
+        <h3><a href="movies.html">The animations</a></h3>
+        <p>Baked movies at 10 fps, made from a Python scene, a GIF or a video — and
+          why importing footage of another head unit never works.</p>
+      </div>
+      <div class="card">
+        <h3><a href="run.html">Try it now</a></h3>
+        <p>Run the PC deck, or compile the renderer to WASM and preview a panel you
+          have not bought yet.</p>
+      </div>
+      <div class="card">
+        <h3><a href="architecture.html">How it holds together</a></h3>
+        <p>One renderer compiled twice, and the differential test that keeps the C
+          honest against the JavaScript it was ported from.</p>
+      </div>
+      <div class="card">
+        <h3><a href="status.html">Status, honestly</a></h3>
+        <p>What works, what is written but unproven, and what has never met the
+          hardware it is written for.</p>
+      </div>
+    </div>
+  </div>
+</section>

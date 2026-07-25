@@ -1,0 +1,23 @@
+<section>
+  <div class="wrap">
+    <h2>{{CHAPTER}}</h2>
+    <p class="lede">Move the screen and the buttons across. Two jobs where “fit the panel” hides a day of work — and one mistake that is a hole in a fascia.</p>
+
+<h3 style="margin-top:2rem">Moving the parts across</h3>
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/transplant-panel.svg" alt="The display module, its lit area, and where the fascia window goes">
+      <figcaption><b>The module is bigger than the hole and its lit area is not centred
+        on it.</b> A 3.12" SSD1322 board is 100.5 × 33.5 mm and only 76.8 × 19.2 mm
+        glows. Mark the window from the glass and the deck looks bought; mark it from
+        the PCB and it is permanently a few millimetres out. Also: the panel sits
+        <em>at</em> the fascia plane, not behind it, or you are looking down a tunnel.
+        <a href="{{BLOB}}/docs/TRANSPLANT.md">TRANSPLANT.md</a></figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="{{ROOT}}media/transplant-buttons.svg" alt="Converting a donor's scanned button matrix into the deck's one-wire resistor ladder">
+      <figcaption><b>The button rewire is a subtraction.</b> A donor's panel is a scanned
+        matrix into a decoder you are binning; the deck reads one analogue pin. Break the
+        matrix, common one side of every switch, other leg to ground through its own
+        resistor — and you never have to work out the original scanning order, which is
+        the part everybody assumes will be hard.</figcaption></figure>
+
+  </div>
+</section>
