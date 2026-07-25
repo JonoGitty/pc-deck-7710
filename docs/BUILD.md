@@ -34,6 +34,7 @@ moves here or `sh tools/verify/run.sh` fails.
 are drawings from the datasheets and the standard, not photographs of a
 working unit.
 
+<<<<<<< HEAD
 ---
 
 ## Before the shopping list: your car
@@ -47,6 +48,8 @@ If your car is not listed, the deck still fits: it is an ISO 7736 aperture and
 an ISO 10487 harness like every other head unit. Adding your car to
 `vehicles/` is one JSON file.
 
+=======
+>>>>>>> origin/claude/lyrics-cover-art-screens-vhksa7
 ---
 
 ## 0. What you are building
