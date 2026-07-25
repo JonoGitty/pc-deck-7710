@@ -22,6 +22,9 @@ typedef struct {
   char    wifi_pass[65];
   uint8_t lyrics_enabled;
   uint8_t art_enabled;
+  uint8_t source;        /* deck_source_t at power-on: a car radio comes back
+                          * on the source it was left on, and being dropped
+                          * onto Bluetooth every morning is not that */
 } deck_cfg_t;
 
 void deck_cfg_load(deck_cfg_t *c);

@@ -45,7 +45,10 @@
 #include "deck_movies.h"
 #include "deck_net.h"
 #include "deck_selftest.h"
+#include "deck_hfp.h"
+#include "deck_source.h"
 #include "deck_swc.h"
+#include "deck_tuner.h"
 #include "deck_ui.h"
 #include "out.h"
 
@@ -59,6 +62,13 @@
 #define PIN_I2S_BCLK 26
 #define PIN_I2S_LRCK 25
 #define PIN_I2S_DOUT 22
+/* Microphone data in. Shares BCLK and LRCK with the DAC — full duplex on one
+ * I2S controller, which is what makes hands-free calling fit on a chip with
+ * six spare pins. GPIO 15 is a strapping pin and is safe here for a specific
+ * reason: an I2S mic's data line is high-impedance until the clock starts, so
+ * the internal pull-up wins at boot. A button on the same pin would be a
+ * short to ground and would break the boot. See docs/CALLING.md. */
+#define PIN_I2S_MIC  15
 
 /* The three big buffers go to PSRAM. Together they are 48 KB against 320 KB of
  * internal DRAM that Bluetooth, WiFi and lwIP have first claim on — left
@@ -149,10 +159,37 @@ void app_main(void) {
 
   /* --- 6. the radio ----------------------------------------------------- */
   deck_audio_init();
+  /* The microphone rides the DAC's clocks, so it is declared before the
+   * channel is built and costs nothing until a call actually arrives. */
+  deck_i2s_set_mic_pin(PIN_I2S_MIC);
   if (deck_i2s_start(PIN_I2S_BCLK, PIN_I2S_LRCK, PIN_I2S_DOUT, 44100) != 0)
     deck_diag_set(DECK_SUB_AUDIO, DECK_HEALTH_DEGRADED,
                   "no I2S DAC — display only");
   deck_bt_start(&s_meta, "DECK 7710");
+  /* Hands-free, alongside A2DP rather than instead of it. Both are Bluetooth
+   * Classic and both live on the one radio; see docs/CALLING.md. */
+  deck_hfp_start();
+
+  /* Sources. The mux wakes selecting Bluetooth on its own pull-downs, so a
+   * deck whose switch was never wired still passes the DAC through. */
+  deck_source_start((deck_source_t)s_cfg.source);
+  /* A tuner is optional. Absent, this returns non-zero, logs "no tuner" and
+   * the deck carries on with two sources instead of three.
+   *
+   * It is only *started* when a button ladder was found, because the Si4735's
+   * I2C pins and its reset line are the same three GPIOs the discrete buttons
+   * use — there is no fourth option on this module. Probing the bus anyway
+   * would drive a pin deck_input.c has already claimed as an input, so the
+   * check is a precondition rather than a preference. */
+  if (deck_input_has_ladder()) {
+    deck_tuner_start();
+  } else {
+    /* An event, not a health state: DECK_SUB_AUDIO already carries whether the
+     * DAC came up, and overwriting that with a note about the radio would lose
+     * the more important fact. */
+    deck_diag_event(DECK_SUB_AUDIO, "tuner",
+                    "skipped=1 why=discrete-buttons-hold-13/32/33");
+  }
 
   /* --- 7. optional network ---------------------------------------------- */
   deck_net_start(s_cfg.wifi_ssid, s_cfg.wifi_pass);
@@ -212,9 +249,31 @@ void app_main(void) {
         panel->sleep(0);
         panel->brightness(s_ui.brightness);
         break;
-      case DECK_ACT_PLAY_PAUSE:  deck_bt_send_key(0x44); break;  /* PLAY */
-      case DECK_ACT_NEXT_TRACK:  deck_bt_send_key(0x4b); break;  /* FORWARD */
-      case DECK_ACT_PREV_TRACK:  deck_bt_send_key(0x4c); break;  /* BACKWARD */
+      /* While the phone is doing anything, the transport keys are the call
+       * keys. Answering is the single most time-critical thing this deck
+       * does and it must not need a different button from the one already
+       * under your thumb. */
+      case DECK_ACT_PLAY_PAUSE:
+        if (deck_hfp_busy()) deck_hfp_answer();
+        else deck_bt_send_key(0x44);                            /* PLAY */
+        break;
+      case DECK_ACT_NEXT_TRACK:
+        if (deck_hfp_busy()) deck_hfp_reject();
+        else deck_bt_send_key(0x4b);                            /* FORWARD */
+        break;
+      case DECK_ACT_PREV_TRACK:  deck_bt_send_key(0x4c); break; /* BACKWARD */
+
+      case DECK_ACT_SRC: {
+        if (deck_hfp_busy()) { deck_hfp_reject(); break; }
+        /* Skip the tuner in the cycle when none is fitted, rather than
+         * offering a silent source and letting the driver work out why. */
+        deck_source_t s = deck_source_next();
+        if (s == DECK_SRC_RADIO && !deck_tuner_present()) s = deck_source_next();
+        s_cfg.source = (uint8_t)s;
+        s_ui.source = (int)s;
+        deck_cfg_mark_dirty();
+        break;
+      }
       default:
         deck_ui_action(&s_ui, ev.action, now);
         if (ev.action == DECK_ACT_MOVIE_NEXT) load_movie(++s_ui.movie);
@@ -237,6 +296,24 @@ void app_main(void) {
         deck_ui_track_changed(&s_ui, now);
         if (s_cfg.lyrics_enabled)
           deck_net_want_lyrics(&s_meta, deck_lyric_rows(&geom) ? (panel->w - 8) / 6 : 30);
+      }
+    }
+
+    /* the telephone, the tuner, and which of them the panel belongs to */
+    deck_hfp_poll(&s_ui.call);
+    s_ui.source = (int)deck_source_get();
+    if (s_ui.source == DECK_SRC_RADIO) deck_tuner_poll(&s_ui.radio);
+
+    /* A call takes the audio path off the music and gives it to the far end,
+     * at the call's sample rate, and hands it back afterwards. Idempotent, so
+     * this is safe to call every frame. */
+    {
+      static int was_call;
+      const int in_call = s_ui.call.state == DECK_CALL_ACTIVE;
+      if (in_call != was_call) {
+        was_call = in_call;
+        deck_i2s_mode(in_call, in_call ? 16000 : 44100);
+        if (in_call) deck_bt_send_key(0x46);      /* PAUSE the music */
       }
     }
 

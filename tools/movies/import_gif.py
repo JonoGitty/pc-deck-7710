@@ -9,6 +9,7 @@ play.
     python3 tools/movies/import_gif.py cat.gif --legacy         # 192x48 + install
     python3 tools/movies/import_gif.py cat.gif 256 64 --cover   # crop, don't letterbox
     python3 tools/movies/import_gif.py reef.gif --keep=20       # subject only, bg to black
+    python3 tools/movies/import_gif.py ae86.gif --trim=0:62     # drop the weak tail
 
 The interesting work is not the decoding — it is that a GIF assumes things this
 display does not have:
@@ -29,6 +30,12 @@ display does not have:
     fills the panel and crops. Neither is right for every GIF.
   * **Transparency.** Composited onto black, since the deck has no alpha —
     "transparent" and "off" are the same dot.
+  * **Shots that are not all equally good.** A clip that ends by pulling back
+    to a wide is fine on a screen with a tonal range and a disaster here: the
+    subject shrinks to a few dots and the ground it is standing on becomes the
+    brightest thing in the frame. `--trim=A:B` keeps source frames A up to B
+    and throws the rest away. Look at the source before assuming the whole of
+    it belongs on a 4:1 panel — usually it does not.
 """
 import os
 import sys
@@ -124,11 +131,29 @@ def pick_levels(imgs, keep):
 
 
 def convert(path, w, h, fps, cover=False, black=20, stretch=True,
-            keep=None, gamma=1.0):
+            keep=None, gamma=1.0, trim=None):
     im = Image.open(path)
     timeline, total_ms = gif_timeline(im)
     if not timeline:
         raise SystemExit("no frames in " + path)
+
+    if trim:
+        # Keep source frames [a, b) and re-base the clock to zero. Cutting the
+        # timeline rather than the output means the surviving frames keep the
+        # delays the GIF gave them, so a trimmed import plays at the same speed
+        # as an untrimmed one.
+        a, b = trim
+        n_src = len(timeline)
+        b = min(b, n_src)
+        if a >= b:
+            raise SystemExit(f"--trim={a}:{b} keeps nothing — the source has "
+                             f"{n_src} frames")
+        end = timeline[b][1] if b < n_src else total_ms
+        base = timeline[a][1]
+        timeline = [(i, t - base) for (i, t) in timeline[a:b]]
+        total_ms = end - base
+        print(f"  trim: source frames {a}..{b - 1} of {n_src} "
+              f"({total_ms / 1000:.1f}s)")
 
     step = 1000.0 / fps
     n_out = max(1, int(round(total_ms / step)))
@@ -142,8 +167,10 @@ def convert(path, w, h, fps, cover=False, black=20, stretch=True,
     fitted = []
     for k in range(n_out):
         want = k * step
-        # last GIF frame whose start time has passed
-        idx = 0
+        # last GIF frame whose start time has passed. Seeded with the first
+        # surviving frame rather than 0, which after a --trim is a frame we
+        # deliberately threw away.
+        idx = timeline[0][0]
         for (i, t) in timeline:
             if t <= want:
                 idx = i
@@ -186,7 +213,7 @@ def main():
     h = int(args[2]) if len(args) > 2 else 64
     if legacy:
         w, h = 192, 48
-    fps, keep, gamma, name = 10, None, 1.0, None
+    fps, keep, gamma, name, trim = 10, None, 1.0, None, None
     for f in flags:
         if f.startswith("--fps="):
             fps = int(f.split("=")[1])
@@ -196,11 +223,14 @@ def main():
             gamma = float(f.split("=")[1])
         elif f.startswith("--name="):
             name = f.split("=", 1)[1]
+        elif f.startswith("--trim="):
+            a, _, b = f.split("=", 1)[1].partition(":")
+            trim = (int(a or 0), int(b) if b else 1 << 30)
 
     name = (name or os.path.splitext(os.path.basename(src))[0]).upper()[:24]
     frames, n, total = convert(src, w, h, fps, cover="--cover" in flags,
                                stretch="--no-stretch" not in flags,
-                               keep=keep, gamma=gamma)
+                               keep=keep, gamma=gamma, trim=trim)
 
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(here, "..", "..", "movies",

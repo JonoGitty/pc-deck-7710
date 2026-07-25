@@ -1,0 +1,7 @@
+# The telephone and the tuner, which are otherwise testable only on hardware.
+2.0  call incoming "MUM"
+6.0  call answer
+14.0 call end
+17.0 call idle
+19.0 source 1
+26.0 source 0

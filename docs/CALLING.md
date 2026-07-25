@@ -2,8 +2,9 @@
 
 **Short answer: yes, on the chip this build already specifies, and it needs
 one £4 microphone and one extra wire.** The screens are written and you can
-look at them today. The firmware side is designed, not written — this page is
-explicit about which is which.
+look at them today. The HFP client is written too — `firmware/esp32/main/
+deck_hfp.c` — and it compiles into every target. ⚠️ **It has never spoken to a
+phone.** This page is explicit about which is which.
 
 ---
 
@@ -173,24 +174,55 @@ another resistance on the ladder, so no new mechanism is needed. See
 |---|---|
 | The four call screens, in portable C | ✅ **Written**, rendered, in the media pipeline |
 | `deck_call_t`, the state the screens read | ✅ Written |
-| Microphone part selection and wiring | ✅ Researched, pin assigned, ⚠️ nothing bought |
-| HFP client in the firmware | ⚠️ **Designed, not written.** `esp_hf_client` init, the event mapping below, and the A2DP↔HFP audio switch |
+| Microphone part selection and wiring | ✅ Researched, pin assigned (GPIO 15), ⚠️ nothing bought |
+| HFP client in the firmware | ✅ **Written** — `main/deck_hfp.c`. `esp_hf_client` init, the event mapping below, answer/reject/redial, and the call-duration timer |
+| Voice audio over HCI | ✅ Written — `BT_HFP_AUDIO_DATA_PATH_HCI`, mic in through the shared I²S RX, far end out through the same DAC |
+| Full-duplex I²S for the microphone | ✅ Written — `main/deck_i2s.c`, `deck_i2s_mode()` rebuilds the channel pair at the call rate |
+| Pausing the music for a call | ✅ Written — the call screen outranks everything in `deck_ui_draw` |
 | Anything on hardware | ❌ Never |
 
-### The event mapping, for whoever writes it
+⚠️ **"Written" here means written and compiling, not working.** Nothing in this
+column has met a phone. The two data callbacks in `deck_hfp.c` are the least
+tested code in the repository: the structure is right — signatures, lengths,
+the peak-hold for the meter — and whether the timing survives a real SCO link
+is genuinely unknown. Expect to debug it, and read `docs/TESTING.md` §3 before
+you assume a fault is in your wiring.
+
+### The event mapping, as implemented
 
 | ESP-IDF event | Becomes |
 |---|---|
-| `ESP_HF_CLIENT_CIND_CALL_SETUP_EVT` = incoming | `DECK_CALL_INCOMING` |
+| `ESP_HF_CLIENT_CIND_CALL_EVT` | the `call` indicator |
+| `ESP_HF_CLIENT_CIND_CALL_SETUP_EVT` | the `call_setup` indicator |
 | `ESP_HF_CLIENT_CLIP_EVT` | `name` / `number` |
-| `ESP_HF_CLIENT_RING_IND_EVT` | keeps the ring alive |
-| `ESP_HF_CLIENT_CIND_CALL_SETUP_EVT` = outgoing | `DECK_CALL_OUTGOING` |
-| `ESP_HF_CLIENT_CIND_CALL_EVT` = active | `DECK_CALL_ACTIVE`, start the timer |
-| `ESP_HF_CLIENT_AUDIO_STATE_EVT` | which codec got negotiated; log it |
-| call cleared | `DECK_CALL_ENDED` for two seconds, then idle |
+| `ESP_HF_CLIENT_RING_IND_EVT` | nothing — the indicators already said INCOMING |
+| `ESP_HF_CLIENT_AUDIO_STATE_EVT` | which codec got negotiated; logged, not shown |
+| `ESP_HF_CLIENT_CONNECTION_STATE_EVT` = disconnected | both indicators cleared |
 
-And out: `esp_hf_client_answer_call()`, `esp_hf_client_reject_call()`,
-`esp_hf_client_dial()`.
+**The screen state is not set by any one of those.** It is *derived* from the
+two indicators together, every time either changes:
+
+| `call` | `call_setup` | State |
+|---|---|---|
+| 0 | 0 | idle — or `ENDED` for 2.5 s, if we were mid-call |
+| 0 | 1 | `DECK_CALL_INCOMING` |
+| 0 | 2 or 3 | `DECK_CALL_OUTGOING` |
+| 1 | anything | `DECK_CALL_ACTIVE`, timer running |
+
+This is the one design decision in the file worth defending. Reacting to each
+event in turn means assuming an order they arrive in, and that order varies by
+phone — the version that tracks transitions works on one handset and puts the
+deck in a state that does not exist on somebody's Android. The table above is
+total: no ordering of events can reach an invalid state, because there are no
+transitions to get wrong.
+
+A phone that walks out of range mid-call never sends a "call ended" at all, so
+the disconnect event clears both indicators rather than waiting for an update
+that is not coming.
+
+And out: `esp_hf_client_answer_call()`, `esp_hf_client_reject_call()` — which
+serves both *reject* and *hang up*, because "make this stop" is one intention
+— and `esp_hf_client_dial(NULL)` for redial.
 
 `mic` on the screen comes from the outgoing HCI voice frames — peak-hold over
 the last frame, scaled to 0..255. Since those frames pass through software

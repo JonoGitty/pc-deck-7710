@@ -39,8 +39,10 @@ printf '\n== movie previews ==\n'
 # VTEC starts from 40 so the excerpt opens with the bar already climbing
 # through the crossover, which is the whole point of the animation. From zero
 # it opens on a car idling.
+# AE86 opens on headlights in the dark — correct for the animation, useless as
+# a thumbnail, which is a still. From 8 it opens on the tofu-shop door.
 set -- "spin 0 0" "solar 0 190" "dolphins 24 170" "touge 60 190" "reef 0 0" \
-       "vtec 40 190"
+       "vtec 40 190" "ae86 8 0"
 for spec in "$@"; do
   set -- $spec
   m=$1; from=$2; max=$3

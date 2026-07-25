@@ -22,5 +22,9 @@
  {
   "name": "VTEC",
   "url": "/web/movies/vtec_192x48.dmv"
+ },
+ {
+  "name": "AE86",
+  "url": "/web/movies/ae86_192x48.dmv"
  }
 ]

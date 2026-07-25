@@ -1,0 +1,423 @@
+/* Si4735 tuner. See deck_tuner.h. NEVER RUN ON HARDWARE.
+ *
+ * Structure, because AN332 is 300 pages and this is not:
+ *
+ *   cmd()          write a command, wait for CTS
+ *   getresp()      read status bytes back
+ *   power_up()     into FM or AM, analogue output
+ *   tune/seek      set frequency, or let the chip hunt
+ *   poll()         cheap status read on a slow cadence, plus RDS
+ *
+ * TWO THINGS THAT ARE EASY TO GET WRONG AND EXPENSIVE TO DEBUG
+ *
+ * The chip is not ready when you think it is. Every command must wait for CTS
+ * (clear-to-send) in the status byte before the next one, and POWER_UP takes
+ * far longer than the rest — 110 ms against a few hundred microseconds. Firing
+ * commands at a chip that has not finished booting produces a tuner that
+ * mostly works, which is the worst kind.
+ *
+ * Frequency units differ per band, which is exactly the sort of detail that
+ * produces a receiver stuck at the bottom of the dial. FM is in **10 kHz**
+ * units (9810 = 98.1 MHz); AM is in **1 kHz** units (1053 = 1053 kHz). This
+ * driver speaks kHz at its own interface and converts at the chip boundary,
+ * once, in one place.
+ */
+#include "deck_tuner.h"
+
+#include <string.h>
+
+#include "driver/gpio.h"
+#include "driver/i2c_master.h"
+#include "esp_timer.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "nvs.h"
+
+#include "deck_diag.h"
+
+#define PIN_SDA 32
+#define PIN_SCL 33
+#define PIN_RST 13
+#define I2C_HZ  100000
+/* 0x11 with the chip's SEN pin low, 0x63 with it high. Modules differ and
+ * both are tried at start-up rather than made a build option, because the
+ * failure is silent and the probe costs two milliseconds once. */
+#define ADDR_A  0x11
+#define ADDR_B  0x63
+
+/* AN332 command bytes. */
+#define CMD_POWER_UP        0x01
+#define CMD_GET_REV         0x10
+#define CMD_POWER_DOWN      0x11
+#define CMD_FM_TUNE_FREQ    0x20
+#define CMD_FM_SEEK_START   0x21
+#define CMD_FM_TUNE_STATUS  0x22
+#define CMD_FM_RSQ_STATUS   0x23
+#define CMD_FM_RDS_STATUS   0x24
+#define CMD_AM_TUNE_FREQ    0x40
+#define CMD_AM_SEEK_START   0x41
+#define CMD_AM_TUNE_STATUS  0x42
+#define CMD_AM_RSQ_STATUS   0x43
+#define CMD_SET_PROPERTY    0x12
+
+#define PROP_FM_DEEMPHASIS  0x1100
+#define PROP_RDS_INT_SOURCE 0x1500
+#define PROP_RDS_CONFIG     0x1502
+#define PROP_RX_VOLUME      0x4000
+
+#define NVS_NS  "deck"
+#define NVS_KEY "tuner"
+
+/* Band limits in kHz, and the channel step. Europe: FM 87.5-108 on 100 kHz,
+ * MW 522-1710 on 9 kHz. The 9 kHz step is not a detail — on the 10 kHz plan
+ * used in the Americas every station lands between channels. */
+typedef struct { int lo, hi, step; } band_t;
+static const band_t BANDS[2] = {
+    {87500, 108000, 100},      /* DECK_BAND_FM */
+    {  522,   1710,   9},      /* DECK_BAND_AM */
+};
+
+typedef struct {
+  uint8_t band;
+  int     freq_khz[2];              /* last frequency per band */
+  int     preset[DECK_PRESETS];
+  uint8_t n_presets;
+} tuner_nv_t;
+
+static i2c_master_bus_handle_t s_bus;
+static i2c_master_dev_handle_t s_dev;
+static int       s_present;
+static tuner_nv_t s_nv;
+static int64_t   s_next_poll_us;
+static uint8_t   s_rssi, s_stereo;
+static char      s_ps[9];              /* RDS programme service, 8 + NUL */
+static char      s_rt[65];             /* RDS radio text, 64 + NUL */
+static char      s_ps_build[9];
+
+static const band_t *band(void) { return &BANDS[s_nv.band & 1]; }
+
+/* --- the bus ------------------------------------------------------------ */
+static int wait_cts(int ms) {
+  const int64_t end = esp_timer_get_time() + (int64_t)ms * 1000;
+  uint8_t st = 0;
+  do {
+    if (i2c_master_receive(s_dev, &st, 1, 50) == ESP_OK && (st & 0x80)) return 0;
+    vTaskDelay(1);
+  } while (esp_timer_get_time() < end);
+  return -1;
+}
+
+static int cmd(const uint8_t *buf, size_t n, int cts_ms) {
+  if (!s_dev) return -1;
+  if (i2c_master_transmit(s_dev, buf, n, 100) != ESP_OK) return -1;
+  return wait_cts(cts_ms);
+}
+
+static int getresp(uint8_t *out, size_t n) {
+  if (!s_dev) return -1;
+  return i2c_master_receive(s_dev, out, n, 100) == ESP_OK ? 0 : -1;
+}
+
+static void set_prop(uint16_t prop, uint16_t val) {
+  const uint8_t b[6] = {CMD_SET_PROPERTY, 0,
+                        (uint8_t)(prop >> 8), (uint8_t)prop,
+                        (uint8_t)(val >> 8), (uint8_t)val};
+  cmd(b, sizeof b, 20);
+}
+
+/* --- bring-up ----------------------------------------------------------- */
+static int power_up(deck_band_t b) {
+  /* ARG1: bit6 XOSCEN (external 32 kHz crystal, which the modules all have),
+   * bits 3:0 function — 0 = FM receive, 1 = AM receive.
+   * ARG2: 0x05 = analogue audio out. Digital out exists and this build does
+   * not use it; the audio goes to the analogue source switch, see
+   * deck_source.h for why. */
+  const uint8_t arg1 = (uint8_t)(0x10 | (b == DECK_BAND_FM ? 0x00 : 0x01));
+  const uint8_t p[3] = {CMD_POWER_UP, arg1, 0x05};
+  if (cmd(p, sizeof p, 200) != 0) return -1;
+  /* AN332: POWER_UP needs 110 ms before the chip will accept anything else,
+   * and CTS goes high before that is true. Waiting on CTS alone gets you a
+   * tuner that works on the bench and fails one boot in five. */
+  vTaskDelay(pdMS_TO_TICKS(120));
+
+  if (b == DECK_BAND_FM) {
+    set_prop(PROP_FM_DEEMPHASIS, 1);      /* 50 us — Europe. 2 is 75 us, US */
+    set_prop(PROP_RDS_CONFIG, 0xFF01);    /* RDS on, all error levels */
+    set_prop(PROP_RDS_INT_SOURCE, 0x0001);
+  }
+  set_prop(PROP_RX_VOLUME, 63);
+  return 0;
+}
+
+static void apply_tune(int khz) {
+  const band_t *bd = band();
+  if (khz < bd->lo) khz = bd->lo;
+  if (khz > bd->hi) khz = bd->hi;
+  s_nv.freq_khz[s_nv.band & 1] = khz;
+
+  if (s_nv.band == DECK_BAND_FM) {
+    const uint16_t u = (uint16_t)(khz / 10);     /* 10 kHz units */
+    const uint8_t b[5] = {CMD_FM_TUNE_FREQ, 0,
+                          (uint8_t)(u >> 8), (uint8_t)u, 0};
+    cmd(b, sizeof b, 100);
+  } else {
+    const uint16_t u = (uint16_t)khz;            /* 1 kHz units */
+    const uint8_t b[6] = {CMD_AM_TUNE_FREQ, 0,
+                          (uint8_t)(u >> 8), (uint8_t)u, 0, 0};
+    cmd(b, sizeof b, 100);
+  }
+  s_ps[0] = s_rt[0] = s_ps_build[0] = 0;   /* new station, old RDS is a lie */
+}
+
+/* --- persistence -------------------------------------------------------- */
+static void nv_load(void) {
+  memset(&s_nv, 0, sizeof s_nv);
+  s_nv.band = DECK_BAND_FM;
+  s_nv.freq_khz[0] = BANDS[0].lo;
+  s_nv.freq_khz[1] = BANDS[1].lo;
+  nvs_handle_t h;
+  if (nvs_open(NVS_NS, NVS_READONLY, &h) != ESP_OK) return;
+  size_t n = sizeof s_nv;
+  nvs_get_blob(h, NVS_KEY, &s_nv, &n);
+  nvs_close(h);
+  if (s_nv.n_presets > DECK_PRESETS) s_nv.n_presets = DECK_PRESETS;
+}
+
+static void nv_save(void) {
+  nvs_handle_t h;
+  if (nvs_open(NVS_NS, NVS_READWRITE, &h) != ESP_OK) return;
+  nvs_set_blob(h, NVS_KEY, &s_nv, sizeof s_nv);
+  nvs_commit(h);
+  nvs_close(h);
+}
+
+/* --- RDS ---------------------------------------------------------------- */
+/* Group 0A/0B carry the programme service name two characters at a time,
+ * indexed by the bottom two bits of block B. Group 2A carries radio text four
+ * characters at a time. Anything else is traffic and clock data this deck has
+ * no use for.
+ *
+ * The name is assembled into a shadow buffer and only published when all four
+ * pairs have arrived, because a half-decoded name flickering between "RA" and
+ * "RADIO 1" on a dashboard is worse than a blank. */
+static void rds_feed(const uint8_t *r) {
+  const uint16_t b = (uint16_t)((r[6] << 8) | r[7]);
+  const uint16_t c = (uint16_t)((r[8] << 8) | r[9]);
+  const uint16_t d = (uint16_t)((r[10] << 8) | r[11]);
+  const int group = (b >> 12) & 0xF;
+  const int ver_b = (b >> 11) & 1;
+  static uint8_t ps_seen;
+
+  if (group == 0) {
+    const int idx = (b & 0x3) * 2;
+    s_ps_build[idx] = (char)(d >> 8);
+    s_ps_build[idx + 1] = (char)(d & 0xFF);
+    ps_seen |= (uint8_t)(1 << (b & 0x3));
+    if (ps_seen == 0x0F) {
+      s_ps_build[8] = 0;
+      memcpy(s_ps, s_ps_build, sizeof s_ps);
+      ps_seen = 0;
+    }
+  } else if (group == 2 && !ver_b) {
+    const int idx = (b & 0xF) * 4;
+    if (idx + 3 < (int)sizeof s_rt - 1) {
+      s_rt[idx]     = (char)(c >> 8);
+      s_rt[idx + 1] = (char)(c & 0xFF);
+      s_rt[idx + 2] = (char)(d >> 8);
+      s_rt[idx + 3] = (char)(d & 0xFF);
+      /* 0x0D terminates radio text early; without honouring it the tail of
+       * the previous, longer message stays on screen forever. */
+      for (int i = 0; i < (int)sizeof s_rt - 1; i++) {
+        if (s_rt[i] == 0x0D) { s_rt[i] = 0; break; }
+        if (i == (int)sizeof s_rt - 2) s_rt[i + 1] = 0;
+      }
+    }
+  }
+}
+
+/* --- public ------------------------------------------------------------- */
+int deck_tuner_start(void) {
+  nv_load();
+
+  gpio_config_t rst = {.pin_bit_mask = 1ULL << PIN_RST, .mode = GPIO_MODE_OUTPUT};
+  gpio_config(&rst);
+  gpio_set_level(PIN_RST, 0);
+
+  const i2c_master_bus_config_t bc = {
+      .i2c_port = I2C_NUM_0,
+      .sda_io_num = PIN_SDA,
+      .scl_io_num = PIN_SCL,
+      .clk_source = I2C_CLK_SRC_DEFAULT,
+      .glitch_ignore_cnt = 7,
+      .flags = {.enable_internal_pullup = true},
+  };
+  if (i2c_new_master_bus(&bc, &s_bus) != ESP_OK) {
+    deck_diag_set(DECK_SUB_AUDIO, DECK_HEALTH_DEGRADED, "no I2C for tuner");
+    return -1;
+  }
+
+  /* Release reset. The chip latches its I2C address from SEN at this edge, so
+   * nothing may talk to it for a moment afterwards. */
+  vTaskDelay(pdMS_TO_TICKS(10));
+  gpio_set_level(PIN_RST, 1);
+  vTaskDelay(pdMS_TO_TICKS(10));
+
+  const uint8_t addrs[2] = {ADDR_A, ADDR_B};
+  for (int i = 0; i < 2 && !s_present; i++) {
+    i2c_device_config_t dc = {.dev_addr_length = I2C_ADDR_BIT_LEN_7,
+                              .device_address = addrs[i],
+                              .scl_speed_hz = I2C_HZ};
+    if (i2c_master_bus_add_device(s_bus, &dc, &s_dev) != ESP_OK) continue;
+    if (power_up((deck_band_t)s_nv.band) == 0) {
+      uint8_t rev[9] = {0};
+      const uint8_t g[1] = {CMD_GET_REV};
+      if (cmd(g, 1, 50) == 0 && getresp(rev, sizeof rev) == 0) {
+        s_present = 1;
+        deck_diag_event(DECK_SUB_AUDIO, "tuner", "addr=0x%02x part=Si47%02d",
+                        addrs[i], rev[1]);
+        break;
+      }
+    }
+    i2c_master_bus_rm_device(s_dev);
+    s_dev = NULL;
+  }
+
+  if (!s_present) {
+    /* No tuner fitted is a perfectly normal build. Degraded, not failed —
+     * the deck has three other sources and refusing to boot over an absent
+     * optional part would be absurd. */
+    deck_diag_set(DECK_SUB_AUDIO, DECK_HEALTH_DEGRADED, "no tuner");
+    return -1;
+  }
+  apply_tune(s_nv.freq_khz[s_nv.band & 1]);
+  deck_diag_set(DECK_SUB_AUDIO, DECK_HEALTH_OK, "tuner ready");
+  return 0;
+}
+
+int deck_tuner_present(void) { return s_present; }
+
+void deck_tuner_band(deck_band_t b) {
+  if (!s_present || (s_nv.band & 1) == (b & 1)) return;
+  s_nv.band = (uint8_t)(b & 1);
+  power_up(b);
+  apply_tune(s_nv.freq_khz[s_nv.band & 1]);
+  nv_save();
+}
+
+void deck_tuner_tune(int khz) {
+  if (!s_present) return;
+  apply_tune(khz);
+  nv_save();
+}
+
+void deck_tuner_step(int up) {
+  if (!s_present) return;
+  const band_t *bd = band();
+  int f = s_nv.freq_khz[s_nv.band & 1] + (up ? bd->step : -bd->step);
+  /* Wrap rather than stop. A tuner that sticks at the end of the band feels
+   * broken; every real one rolls round. */
+  if (f > bd->hi) f = bd->lo;
+  if (f < bd->lo) f = bd->hi;
+  apply_tune(f);
+  nv_save();
+}
+
+void deck_tuner_seek(int up) {
+  if (!s_present) return;
+  /* ARG1 bit3 SEEKUP, bit2 WRAP. The chip hunts on its own and the next
+   * status poll picks up wherever it stopped, which is why this does not
+   * block: a seek across a quiet band takes a second or more and freezing the
+   * panel for it would look like a crash. */
+  const uint8_t arg = (uint8_t)((up ? 0x08 : 0x00) | 0x04);
+  if (s_nv.band == DECK_BAND_FM) {
+    const uint8_t b[2] = {CMD_FM_SEEK_START, arg};
+    cmd(b, sizeof b, 50);
+  } else {
+    const uint8_t b[6] = {CMD_AM_SEEK_START, arg, 0, 0, 0, 0};
+    cmd(b, sizeof b, 50);
+  }
+  s_ps[0] = s_rt[0] = 0;
+}
+
+void deck_tuner_poll(deck_radio_t *r) {
+  const band_t *bd = band();
+
+  /* The screen gets an answer every frame whether or not the bus was touched;
+   * everything below only refreshes what that answer is made of. */
+  memset(r, 0, sizeof *r);
+  r->band = (deck_band_t)(s_nv.band & 1);
+  r->freq_khz = s_nv.freq_khz[s_nv.band & 1];
+  r->band_lo_khz = bd->lo;
+  r->band_hi_khz = bd->hi;
+  r->rssi = s_rssi;
+  r->stereo = s_stereo;
+  r->n_presets = s_nv.n_presets;
+  for (int i = 0; i < DECK_PRESETS; i++) r->preset_khz[i] = s_nv.preset[i];
+  snprintf(r->name, sizeof r->name, "%s", s_ps);
+  snprintf(r->text, sizeof r->text, "%s", s_rt);
+  if (!s_present) return;
+
+  /* 100 ms. A status read is about a millisecond of I2C and the numbers it
+   * returns do not change faster than a person can read them; doing it every
+   * frame would spend more of the deck on the bus than on the picture. */
+  const int64_t now = esp_timer_get_time();
+  if (now < s_next_poll_us) return;
+  s_next_poll_us = now + 100000;
+
+  uint8_t st[8] = {0};
+  const uint8_t tq[2] = {s_nv.band == DECK_BAND_FM ? CMD_FM_TUNE_STATUS
+                                                   : CMD_AM_TUNE_STATUS, 0x00};
+  if (cmd(tq, sizeof tq, 30) == 0 && getresp(st, sizeof st) == 0) {
+    const int u = (st[2] << 8) | st[3];
+    const int khz = s_nv.band == DECK_BAND_FM ? u * 10 : u;
+    if (khz >= bd->lo && khz <= bd->hi) {
+      /* A hardware seek moves the chip without telling us, so the frequency
+       * is read back rather than assumed. This is the line that makes seek
+       * work at all. */
+      if (khz != s_nv.freq_khz[s_nv.band & 1]) {
+        s_nv.freq_khz[s_nv.band & 1] = khz;
+        s_ps[0] = s_rt[0] = 0;
+      }
+      r->freq_khz = khz;
+    }
+    s_rssi = (uint8_t)(st[4] > 64 ? 255 : st[4] * 4);   /* dBuV -> 0..255 */
+    s_stereo = (uint8_t)((st[3 + 0] & 0x80) ? 1 : 0);
+    r->rssi = s_rssi;
+  }
+
+  if (s_nv.band == DECK_BAND_FM) {
+    uint8_t rds[13] = {0};
+    const uint8_t rq[2] = {CMD_FM_RDS_STATUS, 0x01};
+    if (cmd(rq, sizeof rq, 30) == 0 && getresp(rds, sizeof rds) == 0) {
+      if (rds[1] & 0x01) {            /* RDSRECV: a group is waiting */
+        rds_feed(rds);
+        snprintf(r->name, sizeof r->name, "%s", s_ps);
+        snprintf(r->text, sizeof r->text, "%s", s_rt);
+      }
+      s_stereo = (uint8_t)((rds[3] & 0x80) ? 1 : 0);
+    }
+  }
+  r->stereo = s_stereo;
+
+  /* Which preset, if any, matches where we are. Recomputed rather than
+   * remembered so that tuning away from a preset clears the indicator without
+   * anything having to notice that it should. */
+  r->preset = 0;
+  for (int i = 0; i < s_nv.n_presets; i++)
+    if (s_nv.preset[i] == r->freq_khz) { r->preset = i + 1; break; }
+}
+
+void deck_tuner_preset_recall(int n) {
+  if (!s_present || n < 1 || n > DECK_PRESETS || n > s_nv.n_presets) return;
+  apply_tune(s_nv.preset[n - 1]);
+  nv_save();
+}
+
+void deck_tuner_preset_store(int n) {
+  if (!s_present || n < 1 || n > DECK_PRESETS) return;
+  s_nv.preset[n - 1] = s_nv.freq_khz[s_nv.band & 1];
+  if (n > s_nv.n_presets) s_nv.n_presets = (uint8_t)n;
+  nv_save();
+  deck_diag_event(DECK_SUB_AUDIO, "preset", "n=%d khz=%d", n,
+                  s_nv.preset[n - 1]);
+}

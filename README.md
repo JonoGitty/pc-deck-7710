@@ -116,6 +116,14 @@ background does not read as background — it becomes a checkerboard louder than
 the subject. Lighting only the brightest quarter drops the water out and hands
 all four levels to the fish.*
 
+![AE86 — a white coupé on a mountain pass at night](docs/media/ae86.gif)
+
+*`import_gif.py ae86.gif --cover --keep=30 --gamma=1.4 --trim=0:62`. A white
+car on a dark road is the ideal subject — same reason `TOUGE` works — but the
+clip ends by pulling back to a wide, where the car shrinks to a few dots and
+the road it is on becomes the brightest thing in frame. `--trim` throws that
+away. Look at the source before assuming all of it belongs on a 4:1 panel.*
+
 `import_video.py` takes anything ffmpeg opens, with `--probe` to find the crop,
 `--from`/`--dur` to cut a section, and — for the commonest hard case, filming
 another display — `--blur` and `--invert`. What that case cannot survive is in
@@ -312,10 +320,11 @@ dithering into mush on 1-bit panels.
 | `core/` renderer | Complete, all ten screens, verified against the JS |
 | Browser preview | Working |
 | Movie tooling | Working — 3D scenes, GIF import, flash packing |
-| ESP32 firmware | **Written and compiles.** A2DP + AVRCP, FFT analyser, SSD1322 and VFD drivers, movies from flash, self-test and diagnostics. 1.74 MB image, ESP-IDF v5.3. **Never run on hardware** |
+| ESP32 firmware | **Written and compiles.** A2DP + AVRCP, hands-free calling, Si4735 radio, three-way source switching, FFT analyser, SSD1322 and VFD drivers, movies from flash, self-test and diagnostics. 1.75 MB image, ESP-IDF v5.3, both 8 MB and 16 MB flash. **Never run on hardware** |
 | Flash tooling | Working — `deckctl` does build, flash, content and logs |
-| Call screens | **Written and rendered** from `core/`. ⚠️ HFP driver not written; microphone specified, not bought |
-| Radio screen | **Written and rendered** from `core/`. ⚠️ Si4735 driver not written; tuner specified, not bought |
+| Calling | Screens **written and rendered** from `core/`; HFP client **written** (`deck_hfp.c`), microphone on the I²S clocks. ⚠️ Never met a phone; mic specified, not bought |
+| Radio | Screen **written and rendered** from `core/`; Si4735 driver **written** (`deck_tuner.c`) with tune, seek, RDS and presets. ⚠️ Never met a tuner; part specified, not bought |
+| Sources | Bluetooth / radio / aux through a 74HC4052 — **written** (`deck_source.c`). Audio never enters the ESP32. ⚠️ Never wired |
 | Colour panel | Researched, part identified, ⚠️ nothing bought or wired |
 
 ## Docs

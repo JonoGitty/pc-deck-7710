@@ -138,6 +138,7 @@ static void load_script(const char *path) {
 }
 
 static int audio_live = 1;
+static double call_t0;
 
 static void run_events(double now) {
   while (evi < nev && now >= ev[evi].t) {
@@ -161,6 +162,41 @@ static void run_events(double now) {
       audio_live = 0;
     } else if (!strcmp(c, "audio")) {
       audio_live = 1;
+    } else if (!strcmp(c, "call")) {
+      /* The telephone, driven from a script. Without this the call screens
+       * would be testable only on hardware, which is the situation the
+       * simulator exists to fix. */
+      if (!strcmp(ev[evi].a, "incoming")) {
+        ui.call.state = DECK_CALL_INCOMING;
+        snprintf(ui.call.name, DECK_STR_MAX, "%s",
+                 ev[evi].b[0] ? ev[evi].b : "MUM");
+        snprintf(ui.call.number, DECK_STR_MAX, "07700900123");
+      } else if (!strcmp(ev[evi].a, "answer")) {
+        ui.call.state = DECK_CALL_ACTIVE;
+        call_t0 = now;
+        ui.call.mic = 140;
+      } else if (!strcmp(ev[evi].a, "end")) {
+        ui.call.state = DECK_CALL_ENDED;
+      } else {
+        ui.call.state = DECK_CALL_IDLE;
+        ui.call.name[0] = ui.call.number[0] = 0;
+      }
+    } else if (!strcmp(c, "source")) {
+      ui.source = atoi(ev[evi].a);
+      if (ui.source == 1) {
+        ui.radio.band = DECK_BAND_FM;
+        ui.radio.freq_khz = 98500;
+        ui.radio.band_lo_khz = 87500;
+        ui.radio.band_hi_khz = 108000;
+        ui.radio.rssi = 200;
+        ui.radio.stereo = 1;
+        ui.radio.preset = 3;
+        ui.radio.n_presets = 3;
+        for (int k = 0; k < 3; k++) ui.radio.preset_khz[k] = 90000 + k * 5000;
+        snprintf(ui.radio.name, DECK_STR_MAX, "RADIO 1");
+        snprintf(ui.radio.text, DECK_STR_MAX,
+                 "NOW PLAYING - SOMETHING WITH A LONG ENOUGH TITLE TO SCROLL");
+      }
     }
     printf("# %6.1fs  %s %s %s\n", ev[evi].t, c, ev[evi].a, ev[evi].b);
     evi++;
@@ -252,6 +288,7 @@ int main(int argc, char **argv) {
     }
 
     meta.position += dt;
+    if (ui.call.state == DECK_CALL_ACTIVE) ui.call.secs = (int)(now - call_t0);
     deck_ui_step(&ui, audio_live, now, dt);
     deck_ui_draw(&ui, &fb, &state, &meta, now, dt);
     deck_out_frame(&fb, dev, (uint8_t)LEVELS);
@@ -260,7 +297,10 @@ int main(int argc, char **argv) {
     if (trace) {
       int lit = 0;
       for (int i = 0; i < W * H; i++) if (fbpx[i]) lit++;
-      printf("T %.3f %d %d %d %d\n", now, ui.mode, (int)ui.state, lit, ui.wipe);
+      /* call state and source are on the end rather than in the middle so an
+       * older test that splits the first six fields still parses. */
+      printf("T %.3f %d %d %d %d %d %d\n", now, ui.mode, (int)ui.state, lit,
+             ui.wipe, (int)ui.call.state, ui.source);
     }
     if (ascii_every && f % ascii_every == 0) {
       printf("\n--- t=%.1fs  mode=%d state=%d ---\n", now, ui.mode, (int)ui.state);

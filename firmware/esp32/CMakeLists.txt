@@ -32,5 +32,14 @@ elseif(NOT DECK_FLASH STREQUAL "16")
   message(FATAL_ERROR "DECK_FLASH must be 16 or 8, not '${DECK_FLASH}'")
 endif()
 
+# One sdkconfig per build directory.
+#
+# ESP-IDF puts the generated sdkconfig at the PROJECT root by default, shared
+# by every -B directory. So building 8 MB and then 16 MB reuses the 8 MB
+# config: the second build silently produces an image with the wrong flash
+# size and the wrong partition table, which flashes cleanly and then does not
+# boot. Found by building 16 MB and watching esptool print "8MB".
+set(SDKCONFIG "${CMAKE_BINARY_DIR}/sdkconfig")
+
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(deck7710)

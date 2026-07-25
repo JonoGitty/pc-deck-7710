@@ -4,8 +4,10 @@
 added to radios later, so the tuner gets a proper screen rather than an
 afterthought.
 
-The screen is written and you can look at it today. The tuner hardware is
-researched and specified. Neither has been bought or wired.
+The screen is written and you can look at it today, and so is the Si4735
+driver — `firmware/esp32/main/deck_tuner.c`. The tuner hardware is researched
+and specified. ⚠️ **Nothing here has been bought, wired, or tuned to a real
+station.**
 
 ---
 
@@ -160,11 +162,31 @@ invented.
 | The radio screen, in portable C | ✅ **Written**, rendered, in the media pipeline |
 | `deck_radio_t`, the state it reads | ✅ Written |
 | Chip choice, wiring, aerial | ✅ Researched with part numbers, ⚠️ nothing bought |
-| Si4735 driver in the firmware | ⚠️ **Not written.** I²C init, band/tune/seek, RSSI, RDS decode |
-| Source switching | ⚠️ Not written |
+| Si4735 driver in the firmware | ✅ **Written** — `main/deck_tuner.c`. I²C init, address probe, band/tune/seek, RSSI, RDS decode |
+| Presets, kept across a power cycle | ✅ Written — six per band, in NVS |
+| Source switching | ✅ Written — `main/deck_source.c`, a 74HC4052 on GPIO 2 and 12 |
 | Anything on hardware | ❌ Never |
 
-The driver is the smallest piece of work here. The PU2CLR library is Arduino
-C++ and the deck is C99 freestanding, so it is a reference rather than a
-dependency — but the command sequences in it are exactly what a port needs,
-and they are the part that takes a week to derive from the datasheet.
+⚠️ **"Written" means written and compiling.** No Si4735 has been on the end of
+it. The pieces most likely to need work on a bench are the 120 ms settling
+wait after `POWER_UP` and the RDS group filtering — both are from AN332 rather
+than from a scope.
+
+The command sequences came from the datasheet and AN332. The PU2CLR library is
+Arduino C++ and the deck is C99 freestanding, so it was a reference for
+sanity-checking sequences rather than a dependency — nothing is vendored from
+it and the deck does not link against it.
+
+Three implementation notes that will save someone an afternoon:
+
+- **Both addresses are probed.** The Si4735 answers on 0x11 or 0x63 depending
+  on how its `SEN` pin was strapped, and breakout boards disagree about which.
+  The driver tries 0x11, then 0x63, and logs which one answered along with the
+  part number it read back.
+- **Frequency units differ per band.** FM is in 10 kHz units and AM in 1 kHz
+  units, which is a datasheet fact and not a typo; `apply_tune()` converts from
+  the kHz the UI works in. Getting this wrong tunes you to a tenth of the band.
+- **The driver reads the frequency back** on its 100 ms poll rather than
+  assuming the chip is where it was put. Hardware seek moves it on its own, and
+  a display that shows the requested frequency instead of the actual one is
+  wrong exactly when it matters.

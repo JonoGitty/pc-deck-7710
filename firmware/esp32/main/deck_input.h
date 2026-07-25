@@ -30,4 +30,12 @@ int  deck_input_start(void);
 void deck_input_post(deck_action_t a, int repeat);
 int  deck_input_get(deck_event_t *out);
 
+/* True when a resistor ladder was found on the button pin at boot.
+ *
+ * It is not a curiosity: with a ladder the three discrete-button GPIOs are
+ * left unconfigured and the Si4735 can have them, and without one they are
+ * buttons and it cannot. deck_main.c uses this to decide whether to start the
+ * tuner at all. See the pin-budget note at the top of deck_input.c. */
+int  deck_input_has_ladder(void);
+
 #endif /* DECK_INPUT_H */

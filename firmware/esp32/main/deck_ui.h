@@ -34,6 +34,15 @@ typedef struct {
   deck_movie_play_t play;
   deck_ocean_t      ocean;
   deck_scroll_t     scroll;
+  deck_scroll_t     rds_scroll;
+
+  /* Filled in by the caller from the drivers, drawn from here. deck_ui.c
+   * deliberately does not include a single hardware header: it is compiled
+   * unchanged by tools/sim/ against stub drivers, which is only possible
+   * while everything it needs arrives as plain state. */
+  int          source;          /* deck_source_t, without the dependency */
+  deck_call_t  call;
+  deck_radio_t radio;
 } deck_ui_t;
 
 void deck_ui_init(deck_ui_t *u, int mode);

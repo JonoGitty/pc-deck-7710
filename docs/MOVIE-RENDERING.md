@@ -83,6 +83,30 @@ and the panel flashes.
 `--gamma=` shapes the curve between the two points if the midtones need pushing
 either way.
 
+### `--trim`, because not every shot in a clip belongs here
+
+`--keep` fixes the tones. It cannot fix the framing, and the commonest framing
+problem in found footage is a shot that pulls back.
+
+```sh
+python3 tools/movies/import_gif.py ae86.gif --cover --keep=30 --trim=0:62
+```
+
+`--trim=A:B` keeps source frames A up to B and discards the rest. The delays
+the GIF gave the surviving frames are preserved, so a trimmed import plays at
+the same speed as an untrimmed one — it is a cut, not a time-stretch.
+
+The reason it earns a flag: on a panel with four levels and a 4:1 aspect, a
+subject that shrinks does not merely get smaller, it *inverts*. In a wide shot
+the car occupies a dozen dots and the road it is driving on occupies half the
+frame — so the brightest, largest, most attention-grabbing object on the panel
+becomes the tarmac, and the thing the clip is about disappears. The same
+footage cut before the camera pulls back is excellent.
+
+Look at the source before assuming all of it belongs on a head unit. A four
+second clip that reads is worth more than a ten second one that stops reading
+halfway.
+
 ## Or import a video
 
 Anything ffmpeg can open — a phone clip, a screen recording, an MP4:
@@ -130,8 +154,10 @@ draw it — which is what `core/screens/ocean.c` is.
 
 ## The bundled animations
 
-Five, and they are worth reading before writing your own — each one solves a
-different version of the same problem, which is that four levels is not many.
+Five procedural scenes, and they are worth reading before writing your own —
+each one solves a different version of the same problem, which is that four
+levels is not many. (Two more, `REEF` and `AE86`, are imports rather than
+scenes; there is no source to read, only the flags above.)
 
 | | What it is | The thing it works out |
 |---|---|---|

@@ -346,6 +346,24 @@ options cost:
 because six discrete buttons did not fit; it turns out to be the thing that
 pays for the tuner as well.
 
+⚠️ **Read that fourth row as an exclusion, not an addition.** GPIO 13, 32 and
+33 are the three discrete buttons *or* the tuner's I²C and reset. There is no
+fourth option on this module, so a build with three buttons wired cannot have a
+radio, and a build with a radio must use the ladder.
+
+The firmware enforces this rather than trusting you to remember it. At boot
+`deck_input.c` probes GPIO 35 for a ladder **before configuring any pin**, and:
+
+| Found | GPIO 13 / 32 / 33 | Radio |
+|---|---|---|
+| Ladder | left alone for the tuner | started, probed, and used if it answers |
+| No ladder | configured as SRC / DISP / ART | not started; logged as `tuner skipped=1` |
+
+If you fit a tuner and the deck says no radio is present, check that your
+ladder is actually being detected — `deckctl logs` prints `ladder fitted=`
+at boot. A tuner on a deck that thinks it has discrete buttons never gets its
+reset pulse, because that pin is an input with a pull-up on it.
+
 ---
 
 ## 6. Fitting the car — cage and connector

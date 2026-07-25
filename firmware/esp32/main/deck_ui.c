@@ -178,6 +178,25 @@ void deck_ui_draw(deck_ui_t *u, deck_fb_t *fb, deck_state_t *v,
                   deck_meta_t *m, double now, double dt) {
   deck_clear(fb);
 
+  /* A telephone outranks everything. Not a mode you can select and not
+   * something the idle machine can interrupt — while a call is doing anything
+   * at all, that is what the panel is for. It returns to whatever was
+   * showing the moment the call state goes idle, because the mode underneath
+   * was never changed. */
+  if (u->call.state != DECK_CALL_IDLE) {
+    deck_screen_call(fb, &u->call, now * 1000.0);
+    return;
+  }
+
+  /* Radio is a source, not a mode, so it also overrides rather than joining
+   * the mode cycle: pressing DISP on the radio should change how the radio
+   * looks one day, not silently switch you to the analyser of a stream that
+   * is not playing. */
+  if (u->source == 1) {
+    deck_screen_radio(fb, &u->radio, &u->rds_scroll, dt * 1000.0);
+    return;
+  }
+
   /* Idle overrides the selected mode without changing it, so when the music
    * comes back the deck returns to the screen you chose rather than to
    * whatever the idle machine last showed. */

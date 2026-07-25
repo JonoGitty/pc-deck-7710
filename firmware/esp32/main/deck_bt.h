@@ -27,4 +27,17 @@ void deck_bt_set_discoverable(int on);
 int  deck_i2s_start(int bclk, int lrck, int dout, int rate);
 void deck_i2s_write(const uint8_t *pcm, uint32_t len);
 
+/* The microphone shares the DAC's clocks — full duplex on one controller — so
+ * it needs only a data-in pin. Set it before a call is ever taken; -1, the
+ * default, means no microphone is fitted and the call path stays mute rather
+ * than failing. See docs/CALLING.md. */
+void     deck_i2s_set_mic_pin(int din);
+
+/* Reshape the channel: `call` adds the receive half, `rate` is 8000 or 16000
+ * for a call and 44100 for music. Cheap and idempotent when already correct. */
+int      deck_i2s_mode(int call, int rate);
+
+uint32_t deck_i2s_mic_read(uint8_t *pcm, uint32_t len);
+void     deck_i2s_call_write(const uint8_t *pcm, uint32_t len);
+
 #endif /* DECK_BT_H */
