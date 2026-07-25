@@ -156,6 +156,21 @@
       }
     },
     {
+      "name": "Sony XR-CA370X",
+      "years": "≈2001–2003",
+      "display": "small LCD behind a WIDE smoked panel — ~138 × 20 mm of dark window across the centre of the face",
+      "face": "detachable facia, silver/grey",
+      "note": "✅ **The best donor measured so far, and the first with a real number.** Scaled off a square-on listing photograph with `tools/donors/fit.py` (fascia 1160 px = 182 mm): the smoked centre panel is **137.8 × 20.4 mm**. The deck needs 83.8 × 26.2 mm, so it is **54 mm WIDER than required** and 5.8 mm short in height — and the SSD1322's *lit* area is only 19.2 mm tall, so **the glass already fits**; the filing is for a comfortable border, not for clearance. A GP1294AI is 1.0 mm short, which is nothing. ✅ Listed at £30 **with the ISO cage, the trim ring and a full ISO harness** — call it £15 of parts, so the donor itself is fair value. ⚠️ Establish whether that dark panel is an APERTURE or smoked moulding before planning to file it: you can only tell from the back of the fascia. ⚠️ Detachable facia, so it needs pinning shut. ⚠️ Silver fascia, which may or may not suit the car.",
+      "flag": "good",
+      "c": "unverified",
+      "window": {
+        "w_mm": 137.8,
+        "h_mm": 20.4,
+        "c": "unverified",
+        "why": "Measured off a square-on listing photograph, scaling from the 182 mm ISO 7736 fascia width (1160 px). ±1–2 mm. Put calipers on it before filing anything."
+      }
+    },
+    {
       "name": "Becker Mexico / Grand Prix",
       "years": "≈1985–1998",
       "display": "small dial",
