@@ -316,6 +316,8 @@ dithering into mush on 1-bit panels.
 | Movie tooling | Working — 3D scenes, GIF import, flash packing |
 | ESP32 firmware | **Written and compiles.** A2DP + AVRCP, FFT analyser, SSD1322 and VFD drivers, movies from flash, self-test and diagnostics. 1.74 MB image, ESP-IDF v5.3. **Never run on hardware** |
 | Flash tooling | Working — `deckctl` does build, flash, content and logs |
+| Call screens | **Written and rendered** from `core/`. ⚠️ HFP driver not written; microphone specified, not bought |
+| Radio screen | **Written and rendered** from `core/`. ⚠️ Si4735 driver not written; tuner specified, not bought |
 | Colour panel | Researched, part identified, ⚠️ nothing bought or wired |
 
 ## Docs

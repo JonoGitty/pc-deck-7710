@@ -144,6 +144,7 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
       music visualiser — the same code, the same dots, on all three.</p>
     <div class="cta">
       <a class="btn primary" href="https://github.com/JonoGitty/pc-deck-7710">Source on GitHub</a>
+      <a class="btn" href="#phone">Calls &amp; radio</a>
       <a class="btn" href="#movies">The animations</a>
       <a class="btn" href="#build">Build one</a>
       <a class="btn" href="#diagnose">When it breaks</a>
@@ -225,6 +226,39 @@ footer .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-botto
       <figcaption>Idle behaviour, faithful to the era: music stops, three seconds
         to the clock, twelve to the dolphins, and a hard horizontal wipe back to
         the analyser when it returns.</figcaption></figure>
+  </div>
+</section>
+
+<section id="phone">
+  <div class="wrap">
+    <h2>Calls, and the radio</h2>
+    <p class="lede">A head unit is a radio and a telephone. Both get proper screens.</p>
+
+    <figure class="film"><img loading="lazy" src="media/call-incoming.gif" alt="An incoming call: the caller's name filling the panel, a pulsing red border, ANSWER and REJECT in the corners">
+      <figcaption>The ESP32 does hands-free calling alongside music — it is Bluetooth
+        Classic, the same side of the chip question as A2DP, so adding calls does not
+        change the hardware. One £4 I²S microphone and one spare pin. The border is the
+        indicator: a phone ringing has to be caught in peripheral vision by somebody
+        watching a road, and the biggest thing a panel has is its own edge.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/call-active.gif" alt="In a call: duration on the left, caller name above, a live microphone level meter on the right">
+      <figcaption>In a call: duration, who, and a <b>live microphone level</b>. That meter
+        is the only feedback anywhere in the system that the mic is plugged in and being
+        heard — without it, a working call and a dead microphone look identical.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/radio-fm.gif" alt="FM radio: station name from RDS, frequency below, a band scale with preset marks, signal bars and a stereo indicator">
+      <figcaption>And a tuner worth having. RDS station name first, frequency under it, and
+        a band scale with your presets marked — because a radio without one feels broken
+        when you seek: the number jumps and nothing says whether you moved a little or
+        crossed the band. Signal is a <em>count</em> of segments and stereo is a glyph that
+        is there or is not, never a brightness, which vanishes on a 1-bit panel.</figcaption></figure>
+
+    <p class="muted small">Both screens are written and rendered from the real
+      <code>core/</code>. <b>Neither driver is.</b>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/CALLING.md">CALLING.md</a>
+      and
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/RADIO.md">RADIO.md</a>
+      say exactly what exists, what is designed, and what each costs to build.</p>
   </div>
 </section>
 
@@ -515,6 +549,8 @@ python3 tools/sim/test_behaviour.py</code></pre>
         <tr><td>Movie tooling</td><td class="ok">Working — 3D scenes, GIF import, flash packing</td></tr>
         <tr><td>ESP32 firmware</td><td class="warn">Written and <b>compiles</b> — A2DP, AVRCP, FFT, two panel drivers, movies, diagnostics, 1.74 MB image. <b>Never run on hardware</b></td></tr>
         <tr><td>Flash tooling</td><td class="ok">deckctl: doctor, build, flash, movies, pictures, logs, coredump</td></tr>
+        <tr><td>Call screens</td><td class="ok">Written and rendered — <span class="warn">HFP driver not written</span></td></tr>
+        <tr><td>Radio screen</td><td class="ok">Written and rendered — <span class="warn">Si4735 driver not written</span></td></tr>
         <tr><td>Colour panel</td><td class="warn">Researched, part identified, nothing bought or wired</td></tr>
       </tbody>
     </table>
@@ -535,6 +571,8 @@ python3 tools/sim/test_behaviour.py</code></pre>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/UI-SPEC.md">UI spec</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/MOVIE-RENDERING.md">Making animations</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/CONTROL.md">Control</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/CALLING.md">Calling</a>
+      <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/RADIO.md">Radio</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/TESTING.md">Testing</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/docs/VERSIONING.md">Versioning</a>
       <a href="https://github.com/JonoGitty/pc-deck-7710/blob/main/CLAUDE.md">For Claude</a>
