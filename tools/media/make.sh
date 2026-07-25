@@ -63,6 +63,9 @@ python3 tools/diagrams/make.py "$OUT"
 # ...and the step-by-step build manual, drawn isometrically from the same
 # millimetre dimensions the overview drawings use.
 python3 tools/diagrams/steps.py "$OUT"
+# ...and one window-fit drawing per donor family, scaled from the measured
+# window in donors/*.json.
+python3 tools/diagrams/donors.py "$OUT"
 
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"

@@ -664,6 +664,12 @@ you cut anything.**
 
 ### 7.1 Gut the donor
 
+**Which donor?** [DONORS.md](DONORS.md) grades five routes and draws, to
+scale, whether the deck's panel fits behind each one's window — which is the
+only thing that really decides it. Short version: **buy a broken one**. You
+are keeping the box, the face, the cage and the buttons, and binning
+everything that makes a working unit cost four times as much.
+
 1. **Take the fascia off first**, gently. Clips, not screws, and they are
    thirty years old. It is the part you cannot replace.
 2. Unscrew the top and bottom covers. Keep every screw — they are the right

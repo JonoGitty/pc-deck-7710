@@ -1,0 +1,73 @@
+{
+  "family": "Aftermarket 1-DIN with a large dot-matrix display",
+  "examples": [
+    "Pioneer DEH-P series",
+    "Sony CDX with the wide display",
+    "Kenwood KDC / eXcelon",
+    "JVC KD- with the full-width display",
+    "Alpine CDE / CDA"
+  ],
+  "category": "aftermarket",
+  "era": "≈1998–2008",
+  "grade": "A",
+  "one_liner": "The best donor there is, and the cheapest way to a deck that does not look home-made.",
+  "price": {
+    "v": "£8–20 spares-or-repair; £30–60 working, which you do not need",
+    "c": "unverified",
+    "why": "Search “spares or repair”, “no CD”, “display dead”, “untested”. You are buying the box and the face."
+  },
+  "window_w_mm": {
+    "v": 86,
+    "c": "unverified",
+    "why": "Varies by model. Measure with calipers."
+  },
+  "window_h_mm": {
+    "v": 26,
+    "c": "unverified",
+    "why": "Varies by model."
+  },
+  "chassis": {
+    "v": "steel, full-depth ISO 7736",
+    "c": "unverified",
+    "why": "Gives you the box, and usually the cage and trim ring too."
+  },
+  "cage_included": {
+    "v": "often — pay a little more for one that has it",
+    "c": "unverified",
+    "why": "A new cage is £8–15, so a £15 unit with one beats a £8 without."
+  },
+  "buttons": {
+    "v": "typically 8–14 on a flexi matrix, plus a rotary knob",
+    "c": "unverified",
+    "why": "More than enough for the six-button ladder, with spares."
+  },
+  "knob": {
+    "v": "rotary volume, usually an encoder or a pot with a detent feel",
+    "c": "unverified",
+    "why": "Reuse the KNOB and fit your own EC11 behind it — the original's electrical type does not matter, only its shaft and cap do."
+  },
+  "display_tech": {
+    "v": "LCD or VFD depending on model",
+    "c": "unverified",
+    "why": "⚠️ If it is a VFD, its power board makes tens of volts and holds them after power-off. See the hazards."
+  },
+  "why": [
+    "The window is already a wide letterbox of roughly the right size, in roughly the right place, and usually already amber on black — which is exactly what the deck draws.",
+    "They were made in enormous numbers and are worthless to everybody else once the CD mechanism jams, which is what makes them cheap.",
+    "The fascia has enough buttons to fill the ladder without drilling."
+  ],
+  "watch_out": [
+    "Motorised or flip-out fascias. The mechanism eats depth, it is fragile, and it is one more thing to defeat. Buy a fixed face.",
+    "Models where the CD slot dominates the front — the window is small and high, and the deck's panel wants the middle.",
+    "⚠️ VFD models: the inverter board. Discharge it and bin it."
+  ],
+  "steps": [
+    "Take the fascia off FIRST, before any screws. Clips, not fasteners, and thirty years old. It is the part you cannot replace.",
+    "Unscrew the top and bottom covers and keep every screw — they are the right length for this chassis and nothing in your box will be.",
+    "Lift the whole internal assembly out before cutting anything, so you can see what holds what.",
+    "Bin the CD mechanism, the amplifier board and the main PCB. Discharge the large electrolytics first.",
+    "Keep the flexi from the button panel attached to the fascia and cut it free of the main board — you want the switches, not the matrix.",
+    "Lift the switch commons and wire each switch to its ladder resistor. Six buttons, six resistors, one wire to the deck.",
+    "Dry-fit the deck's panel behind the window before bonding anything, and check the lit area is centred in the aperture rather than in the fascia."
+  ]
+}

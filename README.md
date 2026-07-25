@@ -246,6 +246,28 @@ the same thing as [one exploded stack](docs/media/assembly.svg).*
 what has to clear behind it. ⚠️ Drawings of an intended build, from the
 standard and the datasheets. Nothing here has been assembled.*
 
+### Where the chassis comes from
+
+You do not fabricate a 1-DIN box — you gut a scrap head unit, and **you buy a
+broken one on purpose**. The CD mechanism, the amplifier and the tuner all go
+in the bin on the first evening, so a jammed unit at £8 is worth exactly as
+much to you as a working one at £40.
+
+**[docs/DONORS.md](docs/DONORS.md)** grades five routes and draws, to scale,
+whether the deck's panel fits behind each one's window:
+
+![Which donor: does the panel fit behind its window](docs/media/donor-dot-matrix.svg)
+
+*The best donors are 1998–2008 units with a big amber dot-matrix display —
+their window is already a wide letterbox of about the right size, in about the
+right place, in the right colour. ⚠️ And a VFD donor's power board makes tens
+of volts and holds them after power-off; that hazard is real and it is in the
+page.*
+
+```sh
+python3 tools/deckctl.py donor        # grade them at the bench
+```
+
 ### What YOUR car needs
 
 The deck is the same object in every car. What changes is a bag of adapters —

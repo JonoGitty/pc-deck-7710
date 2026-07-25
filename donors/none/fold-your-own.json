@@ -1,0 +1,70 @@
+{
+  "family": "No donor — build the chassis yourself",
+  "examples": [
+    "1 mm aluminium sheet",
+    "3 mm acrylic for the face",
+    "A new ISO 7736 cage"
+  ],
+  "category": "none",
+  "era": "n/a",
+  "grade": "B",
+  "one_liner": "Cheapest in money, most expensive in evenings, and the only route that gives you exactly the window you want.",
+  "price": {
+    "v": "£12–20 in materials plus £8–15 for a cage",
+    "c": "unverified",
+    "why": "Cheaper than a good donor, if you do not count your time."
+  },
+  "window_w_mm": {
+    "v": 84,
+    "c": "verified",
+    "why": "You are cutting it, so it is whatever you choose. 84 × 27 gives the 256×64 panel a 4 mm border on every side."
+  },
+  "window_h_mm": {
+    "v": 27,
+    "c": "verified",
+    "why": "As above."
+  },
+  "chassis": {
+    "v": "1 mm aluminium, folded",
+    "c": "verified",
+    "why": "Fold to 178 mm wide so the cage's own thickness brings it to 182. Depth is yours to choose, which is the advantage."
+  },
+  "cage_included": {
+    "v": "no — buy one",
+    "c": "verified",
+    "why": "A new ISO 7736 cage is £8–15 and is the one part not worth fabricating."
+  },
+  "buttons": {
+    "v": "new tactile switches, exactly where you want them",
+    "c": "verified",
+    "why": "Six on a ladder, laid out by you rather than by Pioneer in 1999."
+  },
+  "knob": {
+    "v": "a new EC11 encoder and any knob you like",
+    "c": "verified",
+    "why": ""
+  },
+  "display_tech": {
+    "v": "n/a",
+    "c": "verified",
+    "why": "Nothing to gut and nothing to discharge."
+  },
+  "why": [
+    "The window is exactly right, because you cut it to the panel.",
+    "The depth is exactly right for your car, because you fold it to fit — which is the one thing no donor can offer.",
+    "Nothing to strip, nothing charged, no laser, no thirty-year-old clips to break."
+  ],
+  "watch_out": [
+    "It is real metalwork. A bench vice, a folding bar or a sheet of steel and a mallet, and a straight edge you trust.",
+    "A hand-cut window in aluminium looks hand-cut. Acrylic is far more forgiving and is what the face should be.",
+    "⚠️ Deburr everything. A folded 1 mm edge inside a dashboard is sharp, and you will be reaching past it with a loom in one hand."
+  ],
+  "steps": [
+    "Fold the chassis 178 mm wide — the cage takes the remaining 2 mm a side.",
+    "Choose the depth from YOUR car's measurement, not from this project's ~160 mm. This is the whole advantage of the route.",
+    "Cut the face from 3 mm acrylic, window 84 × 27 for a 256×64 panel.",
+    "Back the window with 1 mm smoked acrylic bonded from behind.",
+    "Fit new tactile switches and an EC11 to the ladder values in BUILD.md.",
+    "Buy the cage. Do not fabricate it — its spring tabs are the one part that has to be right and is cheap to buy."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "family": "Cassette-era 1-DIN",
+  "examples": [
+    "1980s–90s Pioneer / Sony / Blaupunkt / Clarion cassette decks",
+    "OEM cassette units from the same era"
+  ],
+  "category": "aftermarket",
+  "era": "≈1985–1998",
+  "grade": "B",
+  "one_liner": "A wide flat face where the cassette door was, and nothing inside that can hurt you.",
+  "price": {
+    "v": "£5–15, often free from a scrapyard",
+    "c": "unverified",
+    "why": "Nobody wants these at all, which is the point."
+  },
+  "window_w_mm": {
+    "v": 0,
+    "c": "measure",
+    "why": "There is usually no display window worth using — the space is the cassette door. That is an OPPORTUNITY: a flat rectangular hole you can cut cleanly, rather than a small one you must enlarge."
+  },
+  "window_h_mm": {
+    "v": 0,
+    "c": "measure",
+    "why": "As above."
+  },
+  "chassis": {
+    "v": "steel, deep, heavy",
+    "c": "unverified",
+    "why": "Built like furniture. Also the deepest chassis here, which is the wrong direction if your car is tight."
+  },
+  "cage_included": {
+    "v": "sometimes; older units were often screwed in directly",
+    "c": "unverified",
+    "why": "⚠️ Pre-ISO mounting is common on this era. Budget for a new cage."
+  },
+  "buttons": {
+    "v": "mechanical, large, satisfying, and often not on a flexi",
+    "c": "unverified",
+    "why": "Discrete switches are EASIER to convert to a ladder than a matrix, not harder."
+  },
+  "knob": {
+    "v": "often twin concentric knobs — volume and tone",
+    "c": "unverified",
+    "why": "The best-feeling knobs of any donor here, by a wide margin."
+  },
+  "display_tech": {
+    "v": "none, or a small backlit dial",
+    "c": "unverified",
+    "why": "Nothing to discharge. The safest possible teardown."
+  },
+  "why": [
+    "The cassette aperture is a big, clean, rectangular hole in the middle of the face — which is exactly the shape the deck's panel wants, and you are cutting an existing opening rather than making one.",
+    "No laser, no inverter, nothing charged. The safest category.",
+    "The knobs and buttons are the nicest to use, and period-correct for the aesthetic this whole project is chasing."
+  ],
+  "watch_out": [
+    "Depth. These are the deepest chassis in this document.",
+    "⚠️ Pre-ISO mounting on the older ones — the cage may not be a cage. Check before assuming it drops into a modern aperture.",
+    "The fascia is often painted rather than moulded, and paint from 1988 does not survive being worked on."
+  ],
+  "steps": [
+    "Fascia first, as always.",
+    "Remove the cassette mechanism — it is usually one sub-assembly on four screws and comes out whole.",
+    "The cassette aperture becomes the window. Back it with 1 mm smoked acrylic bonded from behind and it looks like it was always a display.",
+    "Convert the discrete switches to the ladder directly — no flexi to lift, just a wire per switch and a common return.",
+    "⚠️ Check the mounting before you build the chassis: if it is pre-ISO you need a modern cage and the donor's own brackets are no use."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "family": "Aftermarket 1-DIN with a small segment LCD",
+  "examples": [
+    "Budget CD receivers",
+    "most 2008-onward 1-DIN units",
+    "mechless USB/Bluetooth receivers"
+  ],
+  "category": "aftermarket",
+  "era": "≈2005–present",
+  "grade": "C",
+  "one_liner": "A perfectly good box and cage behind a window that is the wrong shape and too small.",
+  "price": {
+    "v": "£5–15 spares-or-repair",
+    "c": "unverified",
+    "why": "The cheapest and most plentiful category by a distance."
+  },
+  "window_w_mm": {
+    "v": 52,
+    "c": "unverified",
+    "why": "Typically around a third of the fascia. Measure."
+  },
+  "window_h_mm": {
+    "v": 18,
+    "c": "unverified",
+    "why": "Usually too short for a 256×64 panel."
+  },
+  "chassis": {
+    "v": "steel, ISO 7736, often shallower than the CD-era units",
+    "c": "unverified",
+    "why": "Mechless units are shallow, which can help in a tight dash and hurts nowhere."
+  },
+  "cage_included": {
+    "v": "usually",
+    "c": "unverified",
+    "why": ""
+  },
+  "buttons": {
+    "v": "typically 5–8, plus a knob",
+    "c": "unverified",
+    "why": "Enough for the ladder."
+  },
+  "knob": {
+    "v": "rotary, usually an encoder",
+    "c": "unverified",
+    "why": ""
+  },
+  "display_tech": {
+    "v": "segment or small dot LCD, backlit",
+    "c": "unverified",
+    "why": "No inverter, so this is the SAFEST category to gut."
+  },
+  "why": [
+    "Cheapest way to a chassis, a cage and a trim ring.",
+    "No CD laser and no VFD inverter on a mechless unit — nothing in it is dangerous.",
+    "Often shallower, which matters in a car with no room behind the dash."
+  ],
+  "watch_out": [
+    "⚠️ The window will need enlarging, and a cut fascia is why home-built decks look home-built. Be honest about your ability to file a straight line before choosing this.",
+    "Some very cheap units have a plastic chassis. Check for steel.",
+    "Glued rather than clipped fascias appear at the bottom of the market and do not come off intact."
+  ],
+  "steps": [
+    "Same teardown as any 1-DIN unit — fascia first, keep the screws.",
+    "Decide honestly whether you are enlarging the window or replacing the face with acrylic. Both are fine; doing half of each is not.",
+    "If enlarging: mark from the PANEL, not from a measurement, and cut undersize then file to the line. Acrylic behind it hides a multitude.",
+    "If replacing: use the fascia only as a template for the clip positions and cut a new face from 3 mm acrylic."
+  ]
+}

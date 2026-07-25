@@ -1,0 +1,69 @@
+{
+  "family": "Your own car's factory unit — the sleeper build",
+  "examples": [
+    "The head unit currently in your dashboard",
+    "A second-hand one for your exact model, so you keep the original"
+  ],
+  "category": "oem",
+  "era": "whatever your car is",
+  "grade": "B",
+  "one_liner": "The only route to a deck that looks like it left the factory.",
+  "price": {
+    "v": "£15–60 for a used unit for your model",
+    "c": "unverified",
+    "why": "⚠️ Buy a SECOND one rather than gutting the one in your car. If the build stalls you still have a working radio, and if you sell the car you can put it back."
+  },
+  "window_w_mm": {
+    "v": 0,
+    "c": "measure",
+    "why": "OEM windows are usually SMALL — a segment display for frequency and track number. Measure before committing to this route."
+  },
+  "window_h_mm": {
+    "v": 0,
+    "c": "measure",
+    "why": "As above."
+  },
+  "chassis": {
+    "v": "varies entirely by manufacturer",
+    "c": "measure",
+    "why": "Some are a standard 1-DIN box in a car-specific surround; some are car-specific throughout. Yours decides how much of this project applies."
+  },
+  "cage_included": {
+    "v": "usually not — OEM units bolt to car-specific brackets",
+    "c": "unverified",
+    "why": "This is the big structural difference from an aftermarket donor and it is easy to overlook."
+  },
+  "buttons": {
+    "v": "varies; often fewer than an aftermarket unit",
+    "c": "measure",
+    "why": "Count them before choosing this route — you want six."
+  },
+  "knob": {
+    "v": "usually one, car-styled",
+    "c": "unverified",
+    "why": "The reason to do this at all: it matches the rest of the interior."
+  },
+  "display_tech": {
+    "v": "varies",
+    "c": "measure",
+    "why": "⚠️ Many OEM units of the right era use a VFD. Treat the power board as live."
+  },
+  "why": [
+    "The fascia already fits your dashboard exactly, because it was made for it. No adapter, no gap, no aftermarket look.",
+    "The knobs, the button shapes and the texture match the rest of the interior, which nothing bought will.",
+    "It is the only route where somebody looking at the dash does not immediately see that something has been changed."
+  ],
+  "watch_out": [
+    "⚠️ The window is usually far too small, and enlarging an OEM fascia destroys the exact thing you chose it for. Measure FIRST — this route is only worth it if the window is usable or the fascia can take a clean new aperture.",
+    "OEM units often have no cage, bolting to car-specific brackets instead. You may keep the brackets and lose the cage.",
+    "Car-specific means single-source: if you break the fascia, there is no generic replacement.",
+    "⚠️ Do not gut the unit currently in your car. Buy a second."
+  ],
+  "steps": [
+    "Check your car's entry in docs/VEHICLES.md first — it tells you what the aperture and harness are before you buy anything.",
+    "Buy a second-hand unit for your exact model rather than removing yours.",
+    "Measure the window before any disassembly. If it will not take 76 × 19 mm, decide now whether you are cutting it or choosing a different route.",
+    "Note how it mounts — brackets or cage — because that decides the chassis you build.",
+    "Then the standard teardown: fascia first, keep every screw."
+  ]
+}

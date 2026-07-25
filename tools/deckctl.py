@@ -495,6 +495,68 @@ def cmd_fit(args):
     return 0
 
 
+# ------------------------------------------------------------------ donor
+def cmd_donor(args):
+    """Which scrap head unit to buy, graded, from donors/*.json.
+
+    The same data docs/DONORS.md is generated from. Printed here because the
+    moment you want it is standing in front of a table of scrap at a car boot
+    sale with a phone and no signal.
+    """
+    import glob
+    import json
+
+    files = sorted(glob.glob(os.path.join(ROOT, "donors", "**", "*.json"),
+                             recursive=True))
+    donors = []
+    for p_ in files:
+        with open(p_, encoding="utf-8") as f:
+            d = json.load(f)
+        d["_slug"] = os.path.splitext(os.path.basename(p_))[0]
+        donors.append(d)
+    donors.sort(key=lambda d: (d["grade"], d["_slug"]))
+
+    q = " ".join(args.donor).lower().strip()
+    if q:
+        donors = [d for d in donors
+                  if q in (d["family"] + " " + d["_slug"] + " " +
+                           " ".join(d.get("examples") or [])).lower()]
+        if not donors:
+            say(f"no donor family matches {q!r}", "bad")
+            return 1
+
+    print(f"\n{C.bold}Buy a broken one.{C.off} You are keeping the box, the "
+          f"face, the cage and the buttons.")
+    print(f"{C.dim}The CD mechanism, the amplifier and the tuner go in the "
+          f"bin on the first evening,{C.off}")
+    print(f"{C.dim}so a jammed unit at £8 is worth as much to you as a "
+          f"working one at £40.{C.off}")
+
+    for d in donors:
+        col = {"A": C.ok, "B": C.ok, "C": C.warn, "D": C.bad}[d["grade"]]
+        print(f"\n{col}  {d['grade']}  {C.off} {C.bold}{d['family']}{C.off}"
+              f"   {C.dim}{d['era']}{C.off}")
+        print(f"       {d['one_liner']}")
+        ww, hh = d["window_w_mm"]["v"], d["window_h_mm"]["v"]
+        win = (f"{ww:g} × {hh:g} mm" if ww and hh
+               else "none — you cut one")
+        print(f"       {C.dim}window{C.off} {win}"
+              f"    {C.dim}price{C.off} {d['price']['v'].split(';')[0]}")
+        if args.full:
+            for it in d.get("watch_out") or []:
+                print(f"       {C.warn}!{C.off} {it}")
+            for i, it in enumerate(d.get("steps") or [], 1):
+                print(f"       {i}. {it}")
+
+    print(f"\n{C.dim}       The panel needs 76 × 19 mm lit (SSD1322) or "
+          f"76 × 14 (VFD).{C.off}")
+    print(f"{C.dim}       Full detail and a to-scale window drawing per "
+          f"family: docs/DONORS.md{C.off}")
+    print(f"{C.warn}       A VFD donor's power board makes tens of volts and "
+          f"holds them after power-off.{C.off}")
+    return 0
+
+
 def cmd_setup(args):
     """The whole thing, in order, for someone who has just cloned this."""
     print(f"""
@@ -567,16 +629,21 @@ def main():
     ft.add_argument("--all", action="store_true",
                     help="print every match instead of asking you to narrow")
 
+    dn = sub.add_parser("donor", help="which scrap head unit to buy and gut")
+    dn.add_argument("donor", nargs="*", help="filter, e.g. pioneer, cassette")
+    dn.add_argument("--full", action="store_true",
+                    help="include the warnings and the teardown steps")
+
     sub.add_parser("coredump", help="decode the crash stored in flash")
     sub.add_parser("setup", help="guided end-to-end setup")
 
     args = ap.parse_args()
     fn = {"doctor": cmd_doctor, "build": cmd_build, "flash": cmd_flash,
           "movies": cmd_movies, "pictures": cmd_pictures, "logs": cmd_logs,
-          "fit": cmd_fit,
+          "fit": cmd_fit, "donor": cmd_donor,
           "coredump": cmd_coredump, "setup": cmd_setup}.get(args.cmd, cmd_setup)
     for k, v in (("movie", []), ("all", False), ("no_write", False),
-                 ("car", [])):
+                 ("car", []), ("donor", []), ("full", False)):
         if not hasattr(args, k):
             setattr(args, k, v)
     return fn(args)
