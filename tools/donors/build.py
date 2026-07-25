@@ -97,6 +97,13 @@ def render(donors):
       "display** — you are fitting your own |")
     w("")
 
+    w("> **⚠️ Before you bin the amplifier board.** Every CD-era head unit "
+      "contains a 4-channel amplifier — usually a TDA7388 or TDA7850, already "
+      "bolted to the chassis as its heatsink and already wired to the ISO "
+      "speaker connector. That is the same part [BUILD.md](BUILD.md) tells "
+      "you to go and buy. The default strip-down bins it; "
+      "[REUSE.md](REUSE.md) explains how to keep it instead, and what the "
+      "mute pin will do to you if you forget it.\n")
     w("> **Already got one?** [TRANSPLANT.md](TRANSPLANT.md) covers the "
       "fiddly half — aligning the panel to its lit area rather than to its "
       "PCB, and turning the donor's scanned button matrix into the deck's "
@@ -173,6 +180,19 @@ def render(donors):
             w("<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this "
               "build. Model names are ⚠️ researched, not handled — and no "
               "window here has been measured.</sub>\n")
+
+        if d.get("reuse"):
+            w("### Keeping more of it\n")
+            w("The strip-down above is the *simple* build. If you would rather "
+              "keep as much as possible — and one of these is a part "
+              "[BUILD.md](BUILD.md) otherwise tells you to buy — see "
+              "[REUSE.md](REUSE.md).\n")
+            w("| Part | Worth keeping for | Difficulty | |")
+            w("|---|---|---|---|")
+            for r in d["reuse"]:
+                w(f"| **{r['part']}** | {r['value']} | {r['difficulty']} "
+                  f"| {r['note']} |")
+            w("")
 
         if d.get("teardown"):
             w("### Stripping it down\n")

@@ -118,6 +118,17 @@ def main():
                   "a teardown that starts elsewhere is either wrong or is a "
                   "family that needs explaining")
 
+        # Salvage advice without a difficulty is a suggestion to attempt
+        # something with no idea what it costs, which is how an evening turns
+        # into a weekend.
+        bad_r = []
+        for r in d.get("reuse") or []:
+            for k in ("part", "value", "difficulty", "note"):
+                if not r.get(k):
+                    bad_r.append(f"{r.get('part', '?')}: no {k}")
+        check(f"{rel} every salvageable part says what it saves and costs",
+              not bad_r, "; ".join(bad_r[:3]))
+
         # Window dimensions are numbers, because the drawing scales them.
         for key in ("window_w_mm", "window_h_mm"):
             v = d.get(key, {}).get("v")
@@ -170,6 +181,26 @@ def main():
                   open(os.path.join(tmp, name), encoding="utf-8").read() ==
                   open(b, encoding="utf-8").read(),
                   "run: python3 tools/diagrams/teardown.py")
+
+    # The reuse pair carries the same claims as docs/REUSE.md — which IC, which
+    # pins, what it saves — so it goes stale the same way and for the same
+    # reason as everything else generated here.
+    r4 = subprocess.run([sys.executable,
+                         os.path.join(ROOT, "tools", "diagrams", "reuse.py"),
+                         tmp], capture_output=True, text=True)
+    check("the reuse generator runs", r4.returncode == 0,
+          (r4.stderr or r4.stdout)[-400:])
+    if r4.returncode == 0:
+        for name in ("reuse-amp.svg", "reuse-rear.svg"):
+            b = os.path.join(ROOT, "docs", "media", name)
+            if not os.path.exists(b):
+                check(f"{name} is committed", False,
+                      "run: python3 tools/diagrams/reuse.py")
+                continue
+            check(f"{name} is up to date",
+                  open(os.path.join(tmp, name), encoding="utf-8").read() ==
+                  open(b, encoding="utf-8").read(),
+                  "run: python3 tools/diagrams/reuse.py")
 
     r2 = subprocess.run([sys.executable,
                          os.path.join(ROOT, "tools", "diagrams",

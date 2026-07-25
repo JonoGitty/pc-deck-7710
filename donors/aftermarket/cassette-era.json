@@ -161,5 +161,43 @@
       "action": "keep",
       "note": "⚠️ Pre-ISO on the older ones — check before assuming a modern cage fits."
     }
+  ],
+  "reuse": [
+    {
+      "part": "the donor's own amplifier",
+      "value": "£12–20, and it is the easiest amp to reuse of any donor here",
+      "difficulty": "easy",
+      "note": "✅ The best case in this document. Cassette-era amplifiers are discrete or single-IC, generously laid out, and their inputs are easy to find because there is no digital preamp in the way — the tape head fed them almost directly. If you want maximum reuse, this is the family to choose."
+    },
+    {
+      "part": "the rear ISO connectors and aerial socket",
+      "value": "£8–15 of adapters, and a tidier back panel",
+      "difficulty": "easy",
+      "note": "The donor's own ISO 10487 A and B blocks and its DIN aerial socket are already mounted in the back panel and already the standard shape. Keeping them means the deck plugs into the car's loom with no adapter and no flying leads out of a hole."
+    },
+    {
+      "part": "the heatsink",
+      "value": "hard to buy in the right shape",
+      "difficulty": "easy",
+      "note": "On most units the amplifier's heatsink IS part of the chassis casting. If you reuse the amp you get it for nothing; if you fit your own amp board, bolting it to the same casting is free cooling."
+    },
+    {
+      "part": "the 12 V input protection",
+      "value": "a pound, and some peace of mind",
+      "difficulty": "easy",
+      "note": "The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused."
+    },
+    {
+      "part": "the illumination bulbs and light pipes",
+      "value": "the period look",
+      "difficulty": "easy",
+      "note": "Filament bulbs behind the dial. Replace the bulbs with amber LEDs and keep the pipes — the diffusers are the hard part and you already have them."
+    },
+    {
+      "part": "its own display",
+      "value": "none",
+      "difficulty": "not worth it",
+      "note": "❌ A backlit dial, not a display. Nothing to drive."
+    }
   ]
 }

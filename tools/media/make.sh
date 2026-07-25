@@ -72,6 +72,9 @@ python3 tools/diagrams/transplant.py "$OUT"
 # ...and a colour-coded strip-down per donor: green keep, red bin, amber
 # discharge it first.
 python3 tools/diagrams/teardown.py "$OUT"
+# ...and the maximum-reuse pair: where to cut into the donor's own amplifier,
+# and what the back panel saves you buying.
+python3 tools/diagrams/reuse.py "$OUT"
 
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"

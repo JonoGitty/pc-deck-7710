@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 660" width="1060" height="660" role="img" aria-label="KEEP THE BACK PANEL">
+<title>KEEP THE BACK PANEL</title>
+<rect width="1060" height="660" fill="#08080a"/>
+<text x="28" y="38" font-size="15" fill="#ffd978" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.14em">KEEP THE BACK PANEL</text>
+<text x="28" y="58" font-size="11" fill="#8a8578" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Every connector the car plugs into is already on it, already wired, already fused.</text>
+<rect x="116.0" y="104.0" width="828.0" height="230.0" rx="3" fill="#101018" stroke="#3a3844" stroke-width="1.6"/>
+<text x="116.0" y="92.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the donor's rear pressing — 180 × 50 mm, ISO 7736</text>
+<rect x="152.8" y="127.0" width="184.0" height="82.8" rx="3" fill="#151520" stroke="#7fb4e8" stroke-width="1.6"/>
+<circle cx="176.8" cy="153.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<circle cx="176.8" cy="189.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<circle cx="216.8" cy="153.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<circle cx="216.8" cy="189.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<circle cx="256.8" cy="153.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<circle cx="256.8" cy="189.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<circle cx="296.8" cy="153.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<circle cx="296.8" cy="189.0" r="6.5" fill="#0a0a0e" stroke="#7fb4e8" stroke-width="1.2"/>
+<text x="244.8" y="222.8" font-size="9" fill="#7fb4e8" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.1em">ISO  A</text>
+<rect x="152.8" y="228.2" width="184.0" height="82.8" rx="3" fill="#151520" stroke="#7fcf8f" stroke-width="1.6"/>
+<circle cx="176.8" cy="254.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<circle cx="176.8" cy="290.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<circle cx="216.8" cy="254.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<circle cx="216.8" cy="290.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<circle cx="256.8" cy="254.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<circle cx="256.8" cy="290.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<circle cx="296.8" cy="254.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<circle cx="296.8" cy="290.2" r="6.5" fill="#0a0a0e" stroke="#7fcf8f" stroke-width="1.2"/>
+<text x="244.8" y="324.0" font-size="9" fill="#7fcf8f" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.1em">ISO  B</text>
+<circle cx="520.8" cy="219.0" r="29.9" fill="#151520" stroke="#7fcf8f" stroke-width="1.6"/>
+<circle cx="520.8" cy="219.0" r="3.4" fill="#7fcf8f"/>
+<text x="520.8" y="263.9" font-size="9" fill="#7fcf8f" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.1em">AERIAL</text>
+<rect x="631.2" y="136.2" width="92.0" height="59.8" rx="3" fill="#151520" stroke="#7fcf8f" stroke-width="1.4"/>
+<text x="677.2" y="173.0" font-size="9.5" fill="#7fcf8f" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="600">FUSE</text>
+<rect x="769.2" y="237.4" width="138.0" height="64.4" rx="3" fill="#0e0e12" stroke="#ff4938" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="838.2" y="276.5" font-size="8.5" fill="#ff4938" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">OLD LINE OUT</text>
+<rect x="28.0" y="374.0" width="189.6" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="28.0" y="374.0" width="3.0" height="92.0" rx="1.5" fill="#7fb4e8"/>
+<text x="40.0" y="394.0" font-size="9" fill="#7fb4e8" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">ISO  A — power</text>
+<text x="40.0" y="412.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">permanent, ignition,</text>
+<text x="40.0" y="425.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">dimmer, earth. Four wires</text>
+<text x="40.0" y="438.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">you would otherwise crimp.</text>
+<rect x="231.6" y="374.0" width="189.6" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="231.6" y="374.0" width="3.0" height="92.0" rx="1.5" fill="#7fcf8f"/>
+<text x="243.6" y="394.0" font-size="9" fill="#7fcf8f" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">ISO  B — speakers</text>
+<text x="243.6" y="412.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">all four pairs, already</text>
+<text x="243.6" y="425.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">run to the corners of the</text>
+<text x="243.6" y="438.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">car.</text>
+<rect x="435.2" y="374.0" width="189.6" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="435.2" y="374.0" width="3.0" height="92.0" rx="1.5" fill="#7fcf8f"/>
+<text x="447.2" y="394.0" font-size="9" fill="#7fcf8f" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">AERIAL</text>
+<text x="447.2" y="412.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">DIN 41585. Your car's</text>
+<text x="447.2" y="425.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">adapter plugs straight</text>
+<text x="447.2" y="438.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">into it.</text>
+<rect x="638.8" y="374.0" width="189.6" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="638.8" y="374.0" width="3.0" height="92.0" rx="1.5" fill="#7fcf8f"/>
+<text x="650.8" y="394.0" font-size="9" fill="#7fcf8f" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">FUSE and protection</text>
+<text x="650.8" y="412.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">already rated for a car,</text>
+<text x="650.8" y="425.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">already reverse-polarity</text>
+<text x="650.8" y="438.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">protected.</text>
+<rect x="842.4" y="374.0" width="189.6" height="92.0" rx="4" fill="#101014" stroke="#23232b" stroke-width="1"/>
+<rect x="842.4" y="374.0" width="3.0" height="92.0" rx="1.5" fill="#ff4938"/>
+<text x="854.4" y="394.0" font-size="9" fill="#ff4938" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700">⚠️ OLD LINE OUT, if fitted</text>
+<text x="854.4" y="412.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">these come off the preamp</text>
+<text x="854.4" y="425.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">you are deleting. Dead</text>
+<text x="854.4" y="438.0" font-size="8.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">until rewired.</text>
+<rect x="28.0" y="490.0" width="1004.0" height="122.0" rx="5" fill="#0f0f14" stroke="#23232b" stroke-width="1"/>
+<rect x="28.0" y="490.0" width="3.0" height="122.0" rx="1.5" fill="#7fcf8f"/>
+<text x="44.0" y="514.0" font-size="9.5" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" letter-spacing="0.12em">WHY THIS IS THE CHEAPEST PART OF THE REUSE ROUTE</text>
+<text x="44.0" y="538.0" font-size="9" fill="#7fcf8f" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">It is free, and it is not a job.</text>
+<text x="404.0" y="538.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the connectors stay on the pressing, and the pressing stays on the chassis. Nothing to unbolt.</text>
+<text x="44.0" y="558.0" font-size="9" fill="#7fcf8f" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">It removes £8–15 of adapters</text>
+<text x="404.0" y="558.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">— an ISO power tail and an ISO speaker tail, otherwise bought and crimped one pin at a time.</text>
+<text x="44.0" y="578.0" font-size="9" fill="#f3a52b" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">On an OEM donor, the harness adapter goes too:</text>
+<text x="404.0" y="578.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">the back panel already carries your car's exact connector.</text>
+<text x="44.0" y="598.0" font-size="9" fill="#ff4938" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">⚠️ Meter it before you trust it.</text>
+<text x="404.0" y="598.0" font-size="9" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">ISO 10487 standardises the connector, not the pinout — A4 and A7 get swapped. True of a bought adapter too.</text>
+<text x="28.0" y="646.0" font-size="9.5" fill="#ff4938" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">⚠️  Layout is indicative — every manufacturer arranges the back panel differently. The connector standards are not.</text>
+</svg>

@@ -112,5 +112,37 @@
       "action": "keep",
       "note": "Varies entirely by manufacturer — some are a standard box in a car-specific surround, some are not."
     }
+  ],
+  "reuse": [
+    {
+      "part": "the donor's own amplifier",
+      "value": "£12–20 and a part you would otherwise buy",
+      "difficulty": "medium",
+      "note": "⚠️ THE BIG ONE. Every CD-era head unit contains a 4-channel amplifier — usually a TDA7388, TDA7850 or similar — already bolted to the chassis as its heatsink and already wired to the ISO speaker connector. That is exactly the part BUILD.md tells you to go and buy. Cut the amp IC's four inputs free of the dead preamp and inject the deck's line out there instead. The IC datasheet gives the pinout; the mute/standby pin usually needs tying to its enable level, and that is the step people miss."
+    },
+    {
+      "part": "the heatsink",
+      "value": "hard to buy in the right shape",
+      "difficulty": "easy",
+      "note": "On most units the amplifier's heatsink IS part of the chassis casting. If you reuse the amp you get it for nothing; if you fit your own amp board, bolting it to the same casting is free cooling."
+    },
+    {
+      "part": "the 12 V input protection",
+      "value": "a pound, and some peace of mind",
+      "difficulty": "easy",
+      "note": "The reverse-polarity diode, the input fuse holder and the filter capacitors on the donor's power input are already rated for a car's supply. Cheap to buy, but they are already there and already fused."
+    },
+    {
+      "part": "the car-specific connector",
+      "value": "an adapter you would otherwise buy",
+      "difficulty": "easy",
+      "note": "✅ Better than an ISO block: the donor already has YOUR car's exact connector on it, so keeping the back panel means no harness adapter at all. This is a real advantage of the OEM route that the fascia usually gets all the credit for."
+    },
+    {
+      "part": "its own display",
+      "value": "the factory look, completely",
+      "difficulty": "hard",
+      "note": "⚠️ Same problem as any donor and usually worse — OEM displays are small, segment-based and custom. Measure and identify before hoping."
+    }
   ]
 }

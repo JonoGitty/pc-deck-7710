@@ -466,6 +466,9 @@ python3 tools/deckctl.py logs</code></pre>
         4-channel board is £12–20 and is the same IC a real head unit contains.
         It needs its <b>own fused 12 V feed</b>, not the deck's 5 V buck, and it must
         share <b>one ground point</b> with the ESP32 or you get alternator whine.</p>
+      <p><b>Or don't buy one at all:</b> the donor you gutted already contains that
+        amplifier, bolted to its own heatsink and wired to the ISO connector —
+        <a href="#fit">the reuse route</a>, and it is £0.</p>
       <p><b>And a bare mux has no volume control.</b> Fit a <b>PT2313 / TDA7313</b>
         audio processor (£2–4) instead and you get source selection <em>plus</em>
         volume, bass, treble, balance and fader over the I²C bus the tuner already
@@ -558,6 +561,39 @@ python3 tools/deckctl.py logs</code></pre>
         matrix, common one side of every switch, other leg to ground through its own
         resistor — and you never have to work out the original scanning order, which is
         the part everybody assumes will be hard.</figcaption></figure>
+
+    <h3 style="margin-top:2rem">Or keep as much of it as you can — including its amplifier</h3>
+    <p class="muted">The strip-down above is the <em>default</em>, and it is the right
+      default. But it bins a part the shopping list then tells you to go and buy.
+      <b>Every CD-era head unit contains a 4-channel amplifier</b> — a TDA7388, a
+      TDA7850 or something from the same family — already bolted to the chassis as its
+      heatsink, already wired to the ISO speaker connector, already fused. That is
+      exactly the board <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/BUILD.md">BUILD.md</a>
+      costs at £12–20.</p>
+
+    <figure class="film"><img loading="lazy" src="media/reuse-amp.svg" alt="Where to cut into the donor's signal chain, and the mute and standby pins">
+      <figcaption><b>The amplifier is the last two boxes of a chain you are deleting.</b>
+        Cut on the preamp side of the coupling capacitors, inject the deck's line out
+        there, and leave the speaker outputs alone — they already go where they should.
+        ⚠️ <b>The step everybody misses</b> is the one drawn in the inset: the old
+        microcontroller drove <code>ST-BY</code> and <code>MUTE</code>, and with it gone
+        they float, so the amplifier stays muted and you conclude the chip is dead.</figcaption></figure>
+
+    <figure class="film"><img loading="lazy" src="media/reuse-rear.svg" alt="The donor's back panel: ISO A, ISO B, aerial socket, fuse">
+      <figcaption><b>The back panel is free, and keeping it is not a job</b> — nothing to
+        unbolt. It removes £8–15 of ISO tails, and on an <b>OEM donor from your own
+        car</b> it removes the harness adapter entirely, because the car's exact
+        connector is already on it. Reuse the amplifier and the connectors and the “to
+        make a sound” list drops to <b>£0</b>, which makes a <b>cassette-era donor</b>
+        the cheapest complete route in this project.
+        <a href="https://github.com/JonoGitty/pc-deck-7710/blob/master/docs/REUSE.md">REUSE.md</a></figcaption></figure>
+
+    <p class="muted small">The display is the one everybody asks about and usually the
+      answer is no: most head-unit panels are segment or character devices with no
+      pixels to address, and a genuine dot-matrix one is usually 128×32 behind an
+      undocumented controller. <b>✅ The exception is a Futaba GP1294AI</b> — the
+      firmware already drives it, and those panels are commonly sold as car-radio pulls.
+      Check the part number on the glass before assuming either way.</p>
 
     <h3 style="margin-top:2rem">Eleven steps, drawn</h3>
     <figure class="film"><img loading="lazy" src="media/assembly-sheet1.svg" alt="Build manual sheet 1: chassis, standoffs, main board, nuts">
