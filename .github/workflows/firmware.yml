@@ -1,0 +1,69 @@
+# The firmware compiles, and stays compiling.
+#
+# Kept out of verify.yml because it is a different kind of check and a very
+# different cost: ESP-IDF is a 2 GB toolchain, so this runs in a container that
+# already has it rather than installing it every time. verify.yml stays fast
+# enough to run on every push without anyone resenting it.
+#
+# Both panel targets are built. They differ by one -D and a driver, which is
+# exactly the sort of thing that quietly stops compiling because nobody builds
+# the one they do not own.
+name: firmware
+
+on:
+  push:
+    paths:
+      - "firmware/**"
+      - "core/**"
+      - ".github/workflows/firmware.yml"
+  pull_request:
+    paths:
+      - "firmware/**"
+      - "core/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: espressif/idf:release-v5.3
+    strategy:
+      fail-fast: false
+      matrix:
+        display: [ssd1322, gp1294ai]
+        # Both flash layouts, because the 8 MB one exists for a sourcing
+        # reason — a 16 MB WROVER is hard to buy assembled — and a build
+        # nobody compiles is a build that stops compiling.
+        flash: ["16", "8"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: build ${{ matrix.display }}, ${{ matrix.flash }} MB
+        shell: bash
+        run: |
+          . $IDF_PATH/export.sh
+          cd firmware/esp32
+          B=build-${{ matrix.display }}-${{ matrix.flash }}
+          idf.py -DDECK_DISPLAY=${{ matrix.display }} \
+                 -DDECK_FLASH=${{ matrix.flash }} -B $B set-target esp32
+          idf.py -DDECK_DISPLAY=${{ matrix.display }} \
+                 -DDECK_FLASH=${{ matrix.flash }} -B $B build
+
+      # The image has to fit the app slot in partitions.csv, and the margin is
+      # worth printing: the OTA path is not written yet and will need some of
+      # it. A build that fits today and not in three commits is a build that
+      # fails at the least convenient moment.
+      - name: report size
+        shell: bash
+        run: |
+          . $IDF_PATH/export.sh
+          cd firmware/esp32
+          idf.py -B build-${{ matrix.display }}-${{ matrix.flash }} size | tail -20
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deck7710-${{ matrix.display }}-${{ matrix.flash }}mb
+          path: |
+            firmware/esp32/build-${{ matrix.display }}-${{ matrix.flash }}/deck7710.bin
+            firmware/esp32/build-${{ matrix.display }}-${{ matrix.flash }}/bootloader/bootloader.bin
+            firmware/esp32/build-${{ matrix.display }}-${{ matrix.flash }}/partition_table/partition-table.bin
+          if-no-files-found: error

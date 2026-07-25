@@ -7,7 +7,7 @@ try {
   $up = $true
 } catch {}
 if (-not $up) {
-  Start-Process -FilePath 'C:\Python310\python.exe' -ArgumentList 'server.py' -WorkingDirectory 'C:\AI\Pioneer'
+  Start-Process -FilePath 'C:\Python310\python.exe' -ArgumentList 'legacy\server.py' -WorkingDirectory 'C:\AI\Pioneer'
   Start-Sleep -Milliseconds 800
 }
 Start-Process 'http://127.0.0.1:7710/'

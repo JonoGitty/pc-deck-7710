@@ -1,0 +1,45 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+  background: radial-gradient(120% 90% at 50% 10%, #101319, #07080c 55%, #030305);
+  color: #8d9199;
+  min-height: 100vh;
+  padding: 28px 20px 40px;
+  display: flex; flex-direction: column; align-items: center; gap: 22px;
+}
+
+header { text-align: center; max-width: 640px; }
+h1 { font-size: 15px; letter-spacing: 4px; text-transform: uppercase; color: #b9bdc4; }
+h1 b { color: #F3A52B; text-shadow: 0 0 10px rgba(243,165,43,0.45); }
+header p { font-size: 11px; line-height: 1.6; color: #565a63; margin-top: 8px; }
+code { color: #8d9199; }
+
+#stage { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+#panel {
+  padding: 10px;
+  background: #000;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px #202126, inset 0 4px 14px rgba(0,0,0,0.9),
+              0 20px 50px rgba(0,0,0,0.7);
+  max-width: 96vw; overflow: auto;
+}
+#screen { display: block; image-rendering: pixelated; }
+
+#readout { font-size: 10px; letter-spacing: 1.5px; color: #3c4048; }
+
+#controls {
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+  max-width: 900px;
+}
+label {
+  display: flex; flex-direction: column; gap: 4px;
+  font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: #565a63;
+}
+select {
+  font-family: inherit; font-size: 11px;
+  color: #c6cad1; background: linear-gradient(180deg, #1b1e24, #0b0c10);
+  border: 1px solid #04050a; border-radius: 3px;
+  padding: 5px 7px; cursor: pointer; min-width: 150px;
+}

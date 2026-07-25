@@ -1,0 +1,57 @@
+# The one rule, on every push: core/ renders identically to the JavaScript it
+# was ported from. Not a lint job — a differential test of two implementations
+# against the same input, which is the only reason it is safe to trust the
+# browser preview about what the hardware will do.
+#
+# The ocean check needs Chromium (its reference draws dolphin silhouettes on a
+# canvas) and skips itself when that is absent, so this runs without it.
+name: verify
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Installed before the suite rather than with the animation tools below,
+      # because run.sh skips its GIF-importer check without Pillow — and a
+      # check that quietly skips in CI is a check that does not exist.
+      - name: Pillow, which the importer check needs
+        run: python3 -m pip install --quiet Pillow
+
+      - name: core/ vs the legacy JS
+        run: sh tools/verify/run.sh
+
+      - name: the preview builds from the same source
+        run: |
+          sudo apt-get update -qq
+          # wasm-ld ships in `lld`, not in `clang`. Printed explicitly so that a
+          # packaging change fails here, with an obvious reason, rather than
+          # inside a link step with a confusing one.
+          sudo apt-get install -y -qq clang lld
+          wasm-ld --version
+          sh tools/build_wasm.sh
+
+      - name: the deck's own behaviour, simulated
+        run: |
+          sh tools/sim/run.sh --secs 1 > /dev/null
+          python3 tools/sim/test_behaviour.py
+
+      - name: the animation tools still run
+        run: |
+          python3 tools/movies/scene_spin.py 192 48
+          python3 tools/movies/pack.py build/movies.bin movies/*_256x64.dmv

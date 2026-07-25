@@ -1,0 +1,22 @@
+/* name	kind	a	b	text  — a/b are cells and step count */
+fold-plain	fold	0	0	Hallelujah
+fold-accents	fold	0	0	Café Déjà Vu Beyoncé naïve Motörhead
+fold-quotes	fold	0	0	I don’t know — it’s “fine”… really
+fold-nodecomp	fold	0	0	Æ Ø Ð Þ ß œ
+fold-ws	fold	0	0	   lots    of        space   
+fold-cyrillic	fold	0	0	Пример текста
+fold-mixed	fold	0	0	Sigur Rós — Ágætis byrjun (2/3)
+fold-empty	fold	0	0	
+fold-symbols	fold	0	0	100% ok! @ $ ^ ~ | [] {}
+wrap-short	wrap	30	0	Hallelujah
+wrap-two	wrap	30	0	Well I heard there was a secret chord
+wrap-long	wrap	30	0	But you dont really care for music do you and this line keeps going
+wrap-narrow	wrap	10	0	The baffled king composing hallelujah
+wrap-monster	wrap	12	0	Supercalifragilisticexpialidocious song
+wrap-exact	wrap	10	0	abcde fghij
+wrap-empty	wrap	20	0	
+wrap-one	wrap	5	0	x
+scroll-fits	scroll	20	6	SHORT
+scroll-runs	scroll	12	40	Hallelujah Live At The Beacon Theatre
+scroll-wrap	scroll	8	80	Jeff Buckley
+scroll-tiny	scroll	3	30	ABCDEFGH

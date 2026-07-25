@@ -1,0 +1,170 @@
+# Radio
+
+**A head unit is a radio.** Everything else this deck does is something people
+added to radios later, so the tuner gets a proper screen rather than an
+afterthought.
+
+The screen is written and you can look at it today. The tuner hardware is
+researched and specified. Neither has been bought or wired.
+
+---
+
+## 1. The screen
+
+![FM with RDS](media/radio-fm.gif)
+
+Ranked by what a driver actually needs, and given space in that order:
+
+1. **The station.** RDS gives a name — `RADIO 1`, `CAPITAL` — and a name is
+   what you tuned for. First and biggest.
+2. **The frequency.** What you fall back on with no RDS, and what you say out
+   loud. Big, but under the name.
+3. **Where you are in the band.** A scale with a cursor, preset positions
+   marked as stubs beneath it.
+4. **Band, preset, signal, stereo.** Small, in the margins.
+5. **RDS radio text.** The scrolling line. Last, because it is never urgent.
+
+![FM with no RDS](media/radio-noRds.gif)
+
+**With no RDS the frequency takes the big slot** rather than leaving a gap
+where a name would have been. A weak station and a strong one should not have
+layouts of different sizes.
+
+### Two decisions worth naming
+
+**The band scale is drawn, not implied.** A tuner without one feels broken
+when you seek: the number jumps and nothing tells you whether you moved a
+little or crossed the band. Six rows turns seeking from an event into a
+movement, which is most of what a radio *feels* like.
+
+**Signal and stereo are not drawn in brightness.** The obvious way to show a
+weak signal is to dim something; that works on the OLED and vanishes on a
+1-bit VFD where every level collapses to lit. So signal is a *count of
+segments* and stereo is a *glyph that is present or absent*. Both survive.
+See [UI-SPEC.md](UI-SPEC.md).
+
+---
+
+## 2. The tuner chip
+
+| Part | Bands | RDS | ~Cost ⚠️ | Verdict |
+|---|---|---|---|---|
+| **Si4735** ✅ | FM, MW/AM, LW, SW | ✅ | £8–14 | **Buy this.** A DSP receiver, not an analogue front end with a PLL bolted on. FM *and* AM in one part, RDS, digital audio out, and the [PU2CLR library](https://github.com/pu2clr/SI4735) has 120+ functions and years of use behind it |
+| Si4703 ✅ | FM only | ✅ | £5–8 | Fine, and cheaper, and FM only. Buy it if you will never want medium wave |
+| RDA5807M | FM only | ✅ | £2–3 | Very cheap, widely cloned, noticeably worse sensitivity. For a bench toy, not a car |
+| TEA5767 | FM only | ❌ | £2–3 | **No RDS.** Half this screen would be empty. Skip |
+
+The Si4735 costs a few pounds more than the FM-only parts and gets you the
+whole band structure, better sensitivity, and a station name on the screen.
+On a build where the display is the point, that is not a close call.
+
+⚠️ Nothing here has been bought or bench-tested.
+
+### Wiring it
+
+I²C for control, and the audio comes out either as analogue line level or as
+I²S. Take the analogue output and feed it to the same amplifier the DAC feeds,
+switched — see §4.
+
+| Si4735 | ESP32 | Note |
+|---|---|---|
+| SDA | **GPIO 32** | I²C data |
+| SCL | **GPIO 33** | I²C clock |
+| RST | **GPIO 13** | the chip needs a hard reset to enter a mode |
+| 3V3, GND | 3V3, GND | |
+| LOUT / ROUT | the source switch, §4 | |
+
+**Those three pins are the ones the button ladder frees.** A build with
+discrete panel buttons has no room for a tuner; a build with the resistor
+ladder has exactly enough. See [BUILD.md §3](BUILD.md#first-why-the-pins-are-where-they-are)
+— this is the second time that ladder has paid for itself.
+
+---
+
+## 3. The aerial, which is where people get stuck
+
+The chip is the easy half.
+
+**The connector is a DIN plug** — the standard aftermarket "Motorola" aerial
+connector, and every ISO-fitted car either has one or has an adapter for one.
+✅ A car-specific adapter is £6–12.
+
+**Many modern cars have an amplified aerial**, and it needs feeding. The
+amplifier is in the aerial base, and it is powered by **12 V sent up the
+centre core of the same coax** that carries the signal — "phantom power". A
+factory aerial on an unpowered aftermarket head unit is deaf, and it looks
+exactly like a broken tuner.
+
+Two things to establish about *your* car before ordering:
+
+| Question | If yes |
+|---|---|
+| Is the aerial amplified? | You need phantom power, or an adapter that injects it |
+| Is the connector Fakra rather than DIN? | You need a **Fakra → DIN adapter with 12 V phantom power** — [InCarTec 21-123](https://incartec.co.uk/product/Fakra-to-Male-DIN-aerial-antenna-adapter-cable-With-12v-phantom-power-21-123) or equivalent, ~£12 ✅. These have a loose wire for the head unit's aerial-power output |
+
+**On this deck, the aerial power feed is the switched 12 V rail** — the same
+one the buck converter runs from, fused, switched by the ignition sense. A
+real head unit has a separate "antenna/amp remote" output; here it is simpler
+to take it off the switched rail, because the deck has nothing else that needs
+a remote-turn-on line.
+
+⚠️ **Do not connect 12 V to a bare tuner module's aerial input.** The Si4735's
+RF pin expects a signal, not a supply. If you are injecting phantom power, do
+it through an adapter designed for it, which has the DC-blocking capacitor and
+the choke on the right sides.
+
+**An S2000's aerial is a fixed mast on the rear wing** and is not amplified —
+so on this specific car the phantom power question does not arise, and a plain
+DIN adapter is enough. Verify on your own car before ordering.
+
+---
+
+## 4. Getting the audio out
+
+The tuner produces analogue line level. The DAC produces analogue line level.
+Only one should reach the amplifier at a time.
+
+| Approach | Cost | Trade |
+|---|---|---|
+| **Analogue source switch** ✅ | £1 | A CD4053 or TS3A24159 analogue switch on a GPIO. The radio never touches the ESP32's audio path, so nothing is resampled and nothing is degraded. **Recommended** |
+| Digitise it | £5 | Si4735's I²S output into the ESP32, so the tuner drives the spectrum analyser like everything else. Costs an I²S data pin and CPU |
+
+The second is genuinely tempting — an analyser that goes flat the moment you
+switch to radio is a strange thing on a deck built around an analyser. But it
+needs a pin this build does not have spare, and the honest first version is
+the switch. **If you want the analyser on radio, that is the reason to plan
+for it early**, not something to retrofit.
+
+---
+
+## 5. Controls
+
+Everything a tuner needs is already on the deck; nothing new has to be
+invented.
+
+| Action | Control |
+|---|---|
+| Tune | the encoder |
+| Seek up / down | encoder held, or wheel next/prev |
+| Band | **BAND** |
+| Recall preset | **1**–**6** on the ladder, or the encoder push cycles |
+| Store preset | hold a preset button |
+| Source (BT ↔ radio ↔ aux) | **SRC** |
+
+---
+
+## 6. What is actually built
+
+| Piece | State |
+|---|---|
+| The radio screen, in portable C | ✅ **Written**, rendered, in the media pipeline |
+| `deck_radio_t`, the state it reads | ✅ Written |
+| Chip choice, wiring, aerial | ✅ Researched with part numbers, ⚠️ nothing bought |
+| Si4735 driver in the firmware | ⚠️ **Not written.** I²C init, band/tune/seek, RSSI, RDS decode |
+| Source switching | ⚠️ Not written |
+| Anything on hardware | ❌ Never |
+
+The driver is the smallest piece of work here. The PU2CLR library is Arduino
+C++ and the deck is C99 freestanding, so it is a reference rather than a
+dependency — but the command sequences in it are exactly what a port needs,
+and they are the part that takes a week to derive from the datasheet.

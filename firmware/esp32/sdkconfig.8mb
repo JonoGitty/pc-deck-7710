@@ -1,0 +1,6 @@
+# Overlay for an 8 MB part. Applied on top of sdkconfig.defaults by
+# CMakeLists.txt when built with -DDECK_FLASH=8. See partitions-8mb.csv for
+# what the smaller layout gives up and why.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=n
+CONFIG_ESPTOOLPY_FLASHSIZE_8MB=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions-8mb.csv"

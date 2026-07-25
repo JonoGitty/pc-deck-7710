@@ -1,0 +1,45 @@
+# Partition table — 8 MB flash.
+#
+# This exists because of a sourcing problem, not a technical one. The 16 MB
+# layout in partitions.csv is the better arrangement and it is what this
+# project recommends — but ESP32-WROVER-E-N16R8 is easy to buy as a bare
+# surface-mount module and hard to buy as a board with pins on it. The
+# assembled dev boards you can order in an evening are mostly 8 MB.
+#
+# Given the choice between "the recommended build needs a part you have to
+# solder a carrier for" and "give up one OTA slot and four megabytes of
+# animations", the second is obviously right for most people.
+#
+# WHAT YOU LOSE, EXACTLY
+#
+#   * One app slot. The 16 MB table has factory + ota_0 + ota_1, so an update
+#     can roll back to the *previous* update. Here there is factory + ota_0:
+#     an update rolls back to the factory image, which always boots and is
+#     never written. You keep the property that matters — a car with a working
+#     stereo — and lose the ability to step back one version rather than to
+#     the beginning.
+#
+#   * 4.5 MB of movie space. 0x330000 is about 3.2 MB, which at roughly
+#     800 KB for a 256x64 scene is four of them, or six shorter ones. The
+#     bundled set packs to 1.9 MB today, so this is not tight yet.
+#
+#   * 1.7 MB of SPIFFS. Photos, not firmware.
+#
+# The app slots are NOT reduced. 1.875 MB is measured against a 1.67 MB image
+# and shrinking it to claw back movie space would be trading a hard failure
+# (an update that does not fit) for a soft one (fewer animations).
+#
+# Build with:  idf.py -DDECK_FLASH=8 build
+# or:          python3 tools/deckctl.py build --flash 8
+#
+# Offsets are exact: the table ends on 0x800000 with no gap and no overlap.
+#
+# Name,     Type, SubType,  Offset,   Size,     Flags
+nvs,        data, nvs,      0x9000,   0x4000,
+otadata,    data, ota,      0xd000,   0x2000,
+phy_init,   data, phy,      0xf000,   0x1000,
+factory,    app,  factory,  0x10000,  0x1E0000,
+ota_0,      app,  ota_0,    0x1F0000, 0x1E0000,
+# Everything below is content, not code, and survives an OTA untouched.
+movies,     data, 0x40,     0x3D0000, 0x330000,
+storage,    data, spiffs,   0x700000, 0x100000,

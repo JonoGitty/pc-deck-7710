@@ -1,0 +1,14 @@
+# The idle machine, which is the behaviour most likely to be subtly wrong and
+# the least practical to test on hardware: it takes fifteen seconds of silence
+# to see it, and you cannot single-step a car stereo.
+#
+# Expected, per legacy/web/app.js:
+#   music stops -> 3 s  -> the clock
+#               -> 12 s -> the dolphins
+#   music back  -> a hard horizontal wipe back to the analyser
+2.0   key mode
+4.0   silence
+20.0  audio
+24.0  track "Second Song" "Another Artist"
+28.0  key art
+32.0  key lyrics

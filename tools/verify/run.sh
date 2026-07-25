@@ -1,0 +1,172 @@
+#!/usr/bin/env sh
+# Prove the C core renders identically to the legacy JS it was ported from.
+# Run from the repo root:  sh tools/verify/run.sh
+set -e
+cd "$(dirname "$0")/../.."
+
+mkdir -p build
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/trigtest tools/verify/trigtest.c core/trig.c -lm
+build/trigtest
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/verify_c core/fb.c core/font.c tools/verify/render.c
+
+build/verify_c tools/verify/cases.tsv > build/out_c.txt
+node tools/verify/render.js tools/verify/cases.tsv > build/out_js.txt
+
+if diff -u build/out_js.txt build/out_c.txt > build/out_diff.txt; then
+  printf 'core matches legacy JS on %s cases\n' "$(wc -l < build/out_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — C core differs from legacy JS:\n\n'
+  cat build/out_diff.txt
+  exit 1
+fi
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/verify_screens_c core/fb.c core/font.c core/trig.c core/text.c core/art.c core/screens/*.c tools/verify/render_screens.c
+
+build/verify_screens_c tools/verify/screens.tsv > build/scr_c.txt
+node tools/verify/render_screens.js tools/verify/screens.tsv > build/scr_js.txt
+
+if diff -u build/scr_js.txt build/scr_c.txt > build/scr_diff.txt; then
+  printf 'screens match legacy JS on %s cases\n' "$(wc -l < build/scr_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — ported screens differ from legacy JS:\n\n'
+  cat build/scr_diff.txt
+  exit 1
+fi
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 \
+    -o build/verify_text_c core/text.c tools/verify/render_text.c
+
+build/verify_text_c tools/verify/text.tsv > build/txt_c.txt
+node tools/verify/render_text.js tools/verify/text.tsv > build/txt_js.txt
+
+if diff -u build/txt_js.txt build/txt_c.txt > build/txt_diff.txt; then
+  printf 'text helpers match legacy JS on %s cases\n' "$(wc -l < build/txt_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — text helpers differ from legacy JS:\n\n'
+  cat build/txt_diff.txt
+  exit 1
+fi
+
+gcc -std=c99 -Wall -Wextra -Werror -O2 -o build/verify_meta_c \
+    core/fb.c core/font.c core/text.c core/art.c core/trig.c \
+    core/screens/cover.c core/screens/lyrics.c tools/verify/render_meta.c
+
+build/verify_meta_c tools/verify/meta.tsv > build/meta_c.txt
+node tools/verify/render_meta.js tools/verify/meta.tsv > build/meta_js.txt
+
+if diff -u build/meta_js.txt build/meta_c.txt > build/meta_diff.txt; then
+  printf 'metadata screens match legacy JS on %s cases\n' "$(wc -l < build/meta_c.txt | tr -d ' ')"
+else
+  printf 'MISMATCH — cover/lyrics differ from legacy JS:\n\n'
+  cat build/meta_diff.txt
+  exit 1
+fi
+
+# The ocean reference needs Canvas for the dolphin silhouettes, so its JS side
+# runs in Chromium rather than bare node. Skipped when that isn't available,
+# so the rest of the suite still works without Playwright installed.
+CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"
+if [ -x "$CHROMIUM" ] && node -e "require('playwright-core')" 2>/dev/null; then
+  gcc -std=c99 -Wall -Wextra -Werror -O2 \
+      -o build/verify_ocean_c core/fb.c core/trig.c core/screens/ocean.c \
+      tools/verify/render_ocean.c
+
+  build/verify_ocean_c tools/verify/ocean.tsv > build/oc_c.txt
+  CHROMIUM="$CHROMIUM" node tools/verify/render_ocean.js tools/verify/ocean.tsv > build/oc_js.txt
+
+  if diff -u build/oc_js.txt build/oc_c.txt > build/oc_diff.txt; then
+    printf 'ocean matches legacy JS on %s scenarios\n' "$(wc -l < build/oc_c.txt | tr -d ' ')"
+  else
+    printf 'MISMATCH — ocean differs from legacy JS\n'
+    exit 1
+  fi
+else
+  printf 'ocean check SKIPPED (needs playwright-core + Chromium)\n'
+fi
+
+# Every bundled movie, not just the small one. The C side additionally decodes
+# each twice — once from a buffer, once through a streaming source that never
+# holds the file — and fails if the two disagree, which is what keeps the path
+# the firmware actually uses honest.
+mv_total=0
+for dmv in movies/*.dmv; do
+  [ -f "$dmv" ] || continue
+  gcc -std=c99 -Wall -Wextra -Werror -O2 \
+      -o build/verify_movie_c core/fb.c core/movie.c tools/verify/render_movie.c
+  build/verify_movie_c "$dmv" > build/mv_c.txt
+  python3 tools/verify/render_movie.py "$dmv" > build/mv_py.txt
+  if diff -u build/mv_py.txt build/mv_c.txt > build/mv_diff.txt; then
+    mv_total=$(( mv_total + $(wc -l < build/mv_c.txt) - 1 ))
+  else
+    printf 'MISMATCH — .dmv decoders disagree on %s:\n\n' "$dmv"
+    cat build/mv_diff.txt; exit 1
+  fi
+done
+if [ "$mv_total" -gt 0 ]; then
+  printf '.dmv round-trips: buffered C, streaming C and python agree on %s frames\n' \
+    "$mv_total"
+
+  # The flash container the firmware reads at boot. Packed here, unpacked by an
+  # independent reader, every blob replayed — because the C that parses it on
+  # the deck runs on a chip this suite cannot execute.
+  set -- movies/*_256x64.dmv
+  if [ -f "$1" ]; then
+    python3 tools/movies/pack.py build/movies.bin "$@" > /dev/null
+    python3 tools/verify/pack_roundtrip.py build/movies.bin
+  fi
+fi
+
+# The GIF importer, which is the one tool here whose output nothing else
+# checks: every other test in this file asks "is the movie faithful?", and an
+# import that silently lost its animation answered yes to all of them. This
+# asks whether anything moves. Skipped without Pillow, like the tools it tests.
+if python3 -c "import PIL" 2>/dev/null; then
+  if python3 tools/verify/test_import.py > build/import_test.txt 2>&1; then
+    grep -E 'importer checks' build/import_test.txt
+  else
+    printf 'MISMATCH — the GIF importer is not producing a moving picture:\n\n'
+    cat build/import_test.txt
+    exit 1
+  fi
+else
+  printf 'importer check SKIPPED (needs Pillow)\n'
+fi
+
+# The pictures in the README and on the site, checked as CONTAINERS rather than
+# as images. Every one of them once rendered as a motionless still outside a
+# browser — the frames were all there and all different, and one flag three
+# layers down made them display as one. Nothing else here would notice.
+if python3 -c "import PIL" 2>/dev/null; then
+  if python3 tools/verify/test_gifs.py > build/gif_test.txt 2>&1; then
+    grep -E 'animations animate' build/gif_test.txt
+  else
+    printf 'MISMATCH — an animation in docs/media does not animate:\n\n'
+    cat build/gif_test.txt
+    exit 1
+  fi
+else
+  printf 'GIF container check SKIPPED (needs Pillow)\n'
+fi
+
+# The firmware's UI layer, run on this machine. core/ is verified against the
+# JavaScript; this covers the layer above it — which screen is on, when the
+# dolphins take over, how a track change interrupts — which no amount of
+# framebuffer diffing reaches and which is impractical to test on hardware,
+# because seeing the idle machine takes fifteen seconds of silence per attempt.
+# Piping to tail would swallow the exit status and turn a failing suite into a
+# passing one, which is the worst possible outcome for a test runner.
+if command -v gcc > /dev/null; then
+  sh tools/sim/run.sh --secs 1 > /dev/null 2>&1
+  if python3 tools/sim/test_behaviour.py > build/sim_test.txt 2>&1; then
+    grep -E 'behaviour checks' build/sim_test.txt
+  else
+    printf 'MISMATCH — the deck behaves differently than expected:\n\n'
+    cat build/sim_test.txt
+    exit 1
+  fi
+fi
