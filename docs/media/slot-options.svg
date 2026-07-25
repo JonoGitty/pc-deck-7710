@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 860" width="1080" height="860" role="img" aria-label="THE HOLE THE CD CAME OUT OF">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1010" width="1080" height="1010" role="img" aria-label="THE HOLE THE CD CAME OUT OF">
 <title>THE HOLE THE CD CAME OUT OF</title>
-<rect width="1080" height="860" fill="#08080a"/>
+<rect width="1080" height="1010" fill="#08080a"/>
 <text x="28" y="38" font-size="15" fill="#ffd978" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" font-weight="700" letter-spacing="0.14em">THE HOLE THE CD CAME OUT OF</text>
 <text x="28" y="58" font-size="11" fill="#8a8578" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">A CD slot is 125 mm wide because a CD is 120 mm. The deck's window needs 84. That is the whole idea.</text>
 <rect x="40.0" y="100.0" width="618.8" height="180.2" rx="4" fill="#15151c" stroke="#3a3844" stroke-width="1.6"/>
@@ -63,5 +63,10 @@
 <text x="692.8" y="714.0" font-size="9.5" fill="#d8d4cc" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"></text>
 <text x="692.8" y="728.0" font-size="9.5" fill="#7fcf8f" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">Either way there is no hole saw anywhere</text>
 <text x="692.8" y="742.0" font-size="9.5" fill="#7fcf8f" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">near the one part you cannot replace.</text>
-<text x="28.0" y="838.0" font-size="9.5" fill="#ff4938" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">⚠️  Slot sizes are typical, not measured — a CD is 120 mm so the width is near enough fixed, but the height varies 10–14 mm by model. Measure yours before filing anything.</text>
+<rect x="40.0" y="850.0" width="1000.0" height="96.0" rx="5" fill="#0f0f14" stroke="#7fcf8f" stroke-width="1.2"/>
+<text x="56.0" y="874.0" font-size="9.5" fill="#ffd978" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace" letter-spacing="0.12em">AND ONE DONOR WHOSE DISPLAY SIZE IS PUBLISHED</text>
+<text x="56.0" y="896.0" font-size="9.5" fill="#8a8578" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">The Pioneer MEH-P9000R's own screen is 256 × 52 pixels — a figure Pioneer printed. At the usual 0.3 mm pitch that is a 76.8 × 15.6 mm</text>
+<text x="56.0" y="910.0" font-size="9.5" fill="#7fcf8f" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">lit area. The deck's SSD1322 is 256 × 64, which is 76.8 × 19.2 — THE SAME WIDTH, and 3.6 mm taller.</text>
+<text x="56.0" y="928.0" font-size="9" fill="#f3a52b" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">So that one window is already the right width and wants opening by about 4 mm. Every other donor: measure it — tools/donors/fit.py.</text>
+<text x="28.0" y="988.0" font-size="9.5" fill="#ff4938" text-anchor="start" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">⚠️  Slot sizes are typical, not measured — a CD is 120 mm so the width is near enough fixed, but the height varies 10–14 mm by model. Measure yours before filing anything.</text>
 </svg>

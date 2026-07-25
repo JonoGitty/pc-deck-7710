@@ -39,7 +39,7 @@ LIT_W, LIT_H = 76.8, 19.2           # what actually glows
 
 
 def draw(out):
-    W, H = 1080, 860
+    W, H = 1080, 1010
     s = Svg(W, H, "THE HOLE THE CD CAME OUT OF",
             "A CD slot is 125 mm wide because a CD is 120 mm. The deck's window "
             "needs 84. That is the whole idea.")
@@ -159,6 +159,24 @@ def draw(out):
         "Either way there is no hole saw anywhere",
         "near the one part you cannot replace.",
     ], fill=[INK, INK, INK, INK, INK, INK, INK, GREEN, GREEN])
+
+    # ---------------------------------------------------------------- 4. the one
+    # donor whose display size is actually published, and what it means.
+    y4 = y3 + PITCH
+    s.rect(fx, y4, W - 2 * fx, 96, fill="#0f0f14", stroke=GREEN, sw=1.2, rx=5)
+    s.text(fx + 16, y4 + 24, "AND ONE DONOR WHOSE DISPLAY SIZE IS PUBLISHED",
+           size=9.5, fill=HOT, spacing="0.12em")
+    s.caption(fx + 16, y4 + 46,
+              "The Pioneer MEH-P9000R's own screen is 256 × 52 pixels — a "
+              "figure Pioneer printed. At the usual 0.3 mm pitch that is a "
+              "76.8 × 15.6 mm", size=9.5)
+    s.caption(fx + 16, y4 + 60,
+              "lit area. The deck's SSD1322 is 256 × 64, which is 76.8 × 19.2 — "
+              "THE SAME WIDTH, and 3.6 mm taller.", size=9.5, fill=GREEN)
+    s.caption(fx + 16, y4 + 78,
+              "So that one window is already the right width and wants opening "
+              "by about 4 mm. Every other donor: measure it — "
+              "tools/donors/fit.py.", size=9, fill=AMBER)
 
     s.caption(28, H - 22,
               "⚠️  Slot sizes are typical, not measured — a CD is 120 mm so the "

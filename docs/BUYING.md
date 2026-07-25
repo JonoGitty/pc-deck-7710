@@ -273,17 +273,61 @@ Free to £15, and with [REUSE.md](REUSE.md) the amplifier comes with it:
 | Anything described as **smashed**, **cracked fascia**, **water damaged** | The fascia is the one part you are buying |
 | Anything **2-DIN** unless you have a 2-DIN aperture | See [VEHICLES.md](VEHICLES.md) for which cars do |
 
+### Measure the window off the listing photo, before you bid
+
+**Nobody publishes the window size of a 1998 head unit.** I went looking model
+by model: the service manuals do not have it, the spec sheets do not have it,
+and the listings certainly do not. What does exist is the display's *pixel
+count* for a handful of units and nothing at all for the rest.
+
+You do not need it, because **every 1-DIN fascia is 182 mm wide** — ISO 7736
+fixes it. So the listing photograph in front of you is a ruler with a known
+scale:
+
+```sh
+# fascia and window measured in PIXELS off the same photo
+python3 tools/donors/fit.py --fascia 1180 --window 476x104 --slot 810x78
+```
+
+```
+  window     73.4 ×  16.0 mm   (scaled from 1180 px = 182 mm)
+  CD slot   124.9 ×  12.0 mm
+
+  ⚠️ USE THE SLOT  SSD1322 OLED 256×64
+                   the window is 10×10 mm short — but the CD slot is 125 mm
+                   wide, which is 41 mm MORE than you need. Open the slot from
+                   12 to 26 mm tall and use it as the window instead
+  ✅ FILE IT       GP1294AI VFD 256×48
+                   open it 10.4 mm wider and 5.4 mm taller
+```
+
+Twenty seconds per listing in any image viewer that shows a selection size, and
+±1–2 mm — which is exactly the precision that decides whether you bid. Measure
+the fascia's **outer** edges, and use a **square-on** photo: a three-quarter
+view is a foreshortened ruler and will tell you the window is narrower than it
+is.
+
+**One donor does have a published figure**, and it is the best-documented in the
+project: the **Pioneer MEH-P9000R**'s own screen is **256 × 52 pixels**. At the
+usual 0.3 mm pitch that is 76.8 × 15.6 mm lit — *the same width* as the deck's
+256 × 64 panel and 3.6 mm shorter. Its window is already the right width and
+wants opening by about 4 mm.
+
 ### Before you bid, check these five things
 
 The window is the only part of a donor that cannot be fixed later — everything
 else is shims, rewiring and a different knob.
 
 1. **Is the fascia intact and unmarked?** That is what you are paying for.
-2. **How wide is the display window?** Compare against the drawing in
-   [DONORS.md](DONORS.md) for that family. The deck needs **84 × 27 mm** for an
-   SSD1322 module; "needs 3 mm" is a filing job, "needs 24 mm" is a different
-   donor.
-3. **Is the faceplate fixed, flip-down, or motorised?** Fixed is what you want.
+2. **Run `fit.py` on the photo.** The deck needs **84 × 27 mm** of window for an
+   SSD1322, or **84 × 21.4 mm** for the shorter GP1294AI. "Needs 3 mm" is a
+   filing job; "needs 24 mm" is a different donor — unless it has a CD slot, in
+   which case the slot is the answer and the window does not matter at all.
+3. **Is the faceplate fixed, fold-down, or motorised?** ⚠️ Fixed or fold-down is
+   what you want. **Motorised** means a motor and gearbox eating the depth this
+   build has least of — the **DEH-P9400MP** and **DEH-P9600MP** are both
+   motorised, which is why they are ⚠️ rather than ✅. Still fine if they are
+   cheap and you pull the mechanism, not worth the same money as a fixed face.
 4. **Does it come with the cage and the trim ring?** Often does, worth £8.
 5. **Is it a VFD?** ⚠️ Prettier, and its inverter holds tens of volts on a
    capacitor after power-off. The LCD ones are the safe ones to gut.
