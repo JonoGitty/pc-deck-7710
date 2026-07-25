@@ -16,7 +16,7 @@ Three routes, and the cheapest one needs no soldering at all.
 |---|---|---|---|
 | **Desk deck** | The legacy PC visualiser on a bar LCD as a second monitor | ~£70 | A PC. No firmware at all |
 | **Bench deck** | ESP32 WROVER-E + SSD1322 on a desk | ~£30 | Soldering iron, USB |
-| **Car deck** | The above, in a 1-DIN cage, on ignition power | ~£80 | The bench deck first |
+| **Car deck** | The above, in a 1-DIN cage, on ignition power | ~£80 electronics, **+£90–120 case, fasteners and tools** | The bench deck first |
 
 Start at the preview either way: `sh tools/serve.sh` renders every screen on
 every candidate panel, so you can choose glass by looking at it.
@@ -43,6 +43,13 @@ numbers, pin-by-pin wiring, flashing, pairing, then the car install. Component
 survey and alternatives in [HARDWARE.md](HARDWARE.md); the ISO 10487 pinout and
 the ISO 7736 cage are there, including which pins do the ignition sense and the
 dimmer.
+
+**The shopping list includes the mechanical half** — donor chassis, cage, rear
+strap, standoffs, nyloc nuts, panel-mount sockets, wire, crimps, neoprene,
+tools — with quantities, because that is the half that gets forgotten and it
+is where a build stalls on a Sunday afternoon. Gutting the donor, reusing its
+own front-panel switches, cutting the display window and mounting it all is
+[BUILD.md §7](BUILD.md#7-build-it-into-the-case).
 
 ## 5. Flash it — ⚠️ compiles, never run
 

@@ -4,7 +4,7 @@ From nothing to a head unit playing music off your phone.
 
 > **Read [SAFETY.md](../SAFETY.md) before any of this goes in a vehicle.** The
 > firmware has never run on hardware. Steps 1–6 happen on a desk from USB and
-> risk nothing but your own time; step 7 is where a car is involved and where
+> risk nothing but your own time; step 8 is where a car is involved and where
 > the consequences change.
 
 Work through it in order. Each stage can only fail for reasons the previous
@@ -76,6 +76,16 @@ That is a complete, working deck on a desk. Everything below adds a car.
 | 9 | 3.5 mm TRS socket + 10 kΩ resistor | Steering wheel control input. See below | £2 |
 | 10 | **Steering wheel interface box** ⚠️ | Only if you want the wheel buttons. Universal (PAC SWI-RC-1, Metra ASWC-1) or S2000-specific (InCarTec 29-629) | £30–45 |
 
+### To take calls and listen to radio (~£20, both optional)
+
+| # | Part | Why | ~Cost |
+|---|---|---|---|
+| 10a | **INMP441** I²S MEMS microphone ✅ | Hands-free calls. Shares the DAC's clocks, so it costs one wire. See [CALLING.md](CALLING.md) | £4 |
+| 10b | Thin 4-core cable, 1.5 m | The mic wants to be at the A-pillar pointing at your face, not behind the fascia pointing at the dashboard | £3 |
+| 10c | **Si4735** tuner module ✅ | FM **and** AM, with RDS. Uses the three pins the button ladder freed. See [RADIO.md](RADIO.md) | £8–14 |
+| 10d | **74HC4052** analogue mux + socket | Selects Bluetooth / radio / aux into the amplifier, so the radio never enters the ESP32's audio path | £1 |
+| 10e | **TSOP38238** IR receiver ⚠️ | Only if you want a remote, and only fits with the ignition/dimmer resistor network — [HARDWARE.md §5c](HARDWARE.md#5c-the-remote-control-aux-and-usb) | £1 |
+
 ### To put it in a car (~£30)
 
 | # | Part | Why | ~Cost |
@@ -83,9 +93,80 @@ That is a complete, working deck on a desk. Everything below adds a car.
 | 11 | **Buck converter**, 9–18 V → 5 V, ≥3 A, automotive-rated ⚠️ | A car's 12 V rail is neither 12 V nor clean | £6 |
 | 12 | **PC817** opto-isolator + 4.7 kΩ ⚠️ | Ignition sense. **Never** feed car 12 V to a GPIO through a divider | £1 |
 | 13 | **ISO 10487 harness adapter** for your car ✅ | Turns the whole install into plug-in work | £6 |
-| 14 | **DIN cage** (ISO 7736) + removal keys ✅ | Commodity parts. Buy, do not design | £6 |
-| 15 | Inline fuse holder + fuses | See SAFETY.md. Not optional | £3 |
-| 16 | Donor 1-DIN head unit, dead ⚠️ | Gutted for its chassis, fascia and cage. Keeps the OEM look and the fiddly mounting hardware | £10–25 |
+| 14 | Inline fuse holder + fuses | See SAFETY.md. Not optional | £3 |
+| 15 | **DIN aerial adapter** for your car ✅ | Only with the tuner fitted. If your car's aerial is amplified you need one **with 12 V phantom power** or the tuner is deaf. An S2000's mast is not amplified, so a plain adapter does | £6–12 |
+
+The case, the cage, the fasteners and the wire are all below — and they are the
+half of a build that gets forgotten.
+
+
+### The mechanical bits — the ones everybody forgets
+
+This is the section that does not exist in most build guides and is the reason
+a project stalls on a Sunday afternoon. **Buy all of it at the start.** None of
+it is expensive and every single item will stop you dead if it is missing.
+
+#### The case and getting it into the dash
+
+| # | Part | Qty | Why | ~Cost |
+|---|---|---|---|---|
+| M1 | **Donor 1-DIN head unit, dead** ⚠️ | 1 | Chassis, fascia, trim ring, cage, and all the fiddly mounting hardware — none of which is sold separately. See [HARDWARE.md §7](HARDWARE.md#7-enclosure--and-the-answer-is-a-donor-deck) | £10–25 |
+| M2 | **DIN cage**, ISO 7736 ✅ | 1 | Usually comes with the donor. Buy separately only if it does not | £5 |
+| M3 | **Removal keys** ✅ | 1 pr | You need these to get the *old* radio out of the car as well as yours back out later | £3 |
+| M4 | **Fascia/trim adapter for your car** ✅ | 1 | Car-specific. An S2000 takes a single-DIN plate with a pocket below | £8–15 |
+| M5 | Rear support strap | 1 | Most cars have a threaded stud at the back of the aperture. The donor's own strap fits it. **Use it** — a deck held only at the front works on the cage tabs until they let go | £2 |
+
+#### Fasteners
+
+Buy assortment boxes rather than counting screws. The whole lot is under £20
+and you will use it on the next project too.
+
+| # | Part | Qty | Why | ~Cost |
+|---|---|---|---|---|
+| M6 | **M3 × 6/8/10 mm machine screws + nuts**, assortment | ~20 | Mounting boards to the chassis | £5 |
+| M7 | **M3 nylon standoffs**, male-female, 6 and 10 mm | ~12 | Boards must not touch a steel chassis. Nylon, not brass — one shorted trace against a grounded chassis is the whole build | £5 |
+| M8 | **M2.5 × 6 mm screws + nuts** | ~8 | Display modules use M2.5, not M3. Ordering only M3 costs you a second order and a week | £3 |
+| M9 | **M3 nyloc nuts** | ~10 | For anything structural. A car vibrates continuously for years and a plain nut will walk off | £3 |
+| M10 | **M3 shakeproof + plain washers** | ~20 | Same reason | £2 |
+| M11 | **Medium-strength threadlock** (blue) | 1 | For screws you cannot fit a nyloc to. Blue, not red — red means you are never taking it apart again | £4 |
+
+#### Fascia and panel
+
+| # | Part | Qty | Why | ~Cost |
+|---|---|---|---|---|
+| M12 | **Knob for the encoder**, 6 mm D-shaft | 1 | An EC11 ships with a nut and washer and **no knob**. The donor's own volume knob usually fits, which is worth checking before buying | £2 |
+| M13 | **Tactile switches, 6 × 6 mm, tall stem** (9–13 mm) | 6 | The stem has to reach the fascia. Standard 4.3 mm ones sit 5 mm short and nothing you do afterwards fixes that | £3 |
+| M14 | **Panel-mount 3.5 mm stereo sockets** + nuts | 2–3 | Steering wheel input, aux in, mic. Panel-mount, not PCB — they take the strain of a plug being pulled | £4 |
+| M15 | **Panel-mount USB-C breakout** | 1 | Flashing and logs from the front, without pulling the deck out | £4 |
+| M16 | **Clear polycarbonate sheet, 1 mm** | A5 | The display window. Polycarbonate, not acrylic — acrylic cracks when you drill it | £4 |
+| M17 | **Smoked/ND film or dark tint** ⚠️ | 1 | Optional and transformative. Ambient light crosses the filter twice — in, and again on the way back out after reflecting — while the panel's own light crosses it once. So it kills reflections far harder than it kills the picture. Every OEM deck's window is dark for this reason | £5 |
+
+#### Wiring and joining
+
+| # | Part | Qty | Why | ~Cost |
+|---|---|---|---|---|
+| M18 | **22 AWG stranded hookup wire**, several colours | 10 m | Signal. Stranded, never solid — solid core work-hardens and snaps where it vibrates | £8 |
+| M19 | **18 AWG stranded**, red and black | 3 m | Power in and ground | £5 |
+| M20 | **JST-XH or Dupont crimp kit** + crimp tool | 1 | So the fascia unplugs from the chassis. You will take it apart more times than you expect | £12 |
+| M21 | **Heat-shrink assortment** | 1 | Every joint | £5 |
+| M22 | **Spade + bullet terminals** | ~20 | Only if you are wiring an ISO plug yourself rather than using an adapter | £4 |
+| M23 | **Cable ties + adhesive tie mounts** | 1 pk | A loose loom inside a chassis will chafe through in a year | £3 |
+| M24 | **Self-adhesive neoprene foam strip, 3 mm** | 1 m | Anti-rattle, between the fascia and the chassis. This is the difference between a deck that feels OEM and one that buzzes over every expansion joint | £4 |
+| M25 | **VHB double-sided foam tape** | 1 | Mounting the display without drilling its PCB | £5 |
+| M26 | Solder, flux, Kapton tape | | | £8 |
+
+#### Tools, if you do not have them
+
+| Tool | Note |
+|---|---|
+| Soldering iron | Temperature-controlled if possible. You are soldering to a steel chassis ground at one point and it will suck heat |
+| **Multimeter** | **Not optional.** You will meter the ISO harness before connecting it, and that step is the one that prevents an expensive mistake |
+| Wire strippers, side cutters, crimp tool | |
+| Small files and a step drill | For the display aperture and the panel-mount sockets. A step drill makes a clean round hole in thin steel; a twist drill grabs and tears |
+| Deburring tool or a round file | Every hole you cut in steel gets a sharp edge, and every wire that passes through it will find that edge eventually |
+
+**Rough total for the mechanical side: £90–120**, most of it reusable, and
+about half of it tools you keep.
 
 ### Instead of the OLED, if you want real VFD glass
 
@@ -367,7 +448,123 @@ screen works with the radio off, which is the point.
 
 ---
 
-## 7. Put it in the car
+## 7. Build it into the case
+
+Only after §5 and §6 work on the bench. Putting a deck that does not yet boot
+into a chassis means taking it out again.
+
+### 7.1 Gut the donor
+
+1. **Take the fascia off first**, gently. Clips, not screws, and they are
+   thirty years old. It is the part you cannot replace.
+2. Unscrew the top and bottom covers. Keep every screw — they are the right
+   length for this chassis and nothing in your box will be.
+3. Remove the CD mechanism, the tuner board, the amplifier board and the main
+   PCB. **Cut nothing until the whole assembly is out**, so you can see what
+   holds what.
+4. ⚠️ **Discharge and bin the large electrolytics** on the amplifier board.
+   They are the only stored energy in there and they do not need to stay.
+5. ⚠️ If it has a CD mechanism, its **laser diode is class 1 with the lid
+   shut and not with it off**. Do not power the old board up to "see if it
+   still works".
+
+**Keep:** the chassis, both covers, the fascia, the trim ring, the cage, the
+rear support strap, the volume knob, and — this is the useful part — **the
+front panel PCB with its switches still on it**.
+
+**Bin:** everything else, and the mains-free conscience that comes with having
+rescued a dead radio.
+
+### 7.2 Reuse the donor's own buttons
+
+The front panel's switches are already the right height, already aligned with
+the fascia holes, and already have caps that fit. What you do not want is the
+matrix they are wired into.
+
+1. Trace which two pads each switch sits on.
+2. **Cut the tracks** to the old MCU — a scalpel across each trace, checked
+   with a meter for continuity to ground.
+3. Bridge every switch's one side to a common ground rail (a length of bare
+   wire tacked along the row is fine).
+4. Wire each switch's other side through its ladder resistor to the single
+   signal line. Values and the diagram are in §3.
+
+That is an hour's work and gives you an OEM fascia with your firmware behind
+it. Reverse-engineering the original scan matrix is the alternative and it is
+a weekend.
+
+### 7.3 The display window
+
+The donor's window is almost never the right size. It is usually close.
+
+1. Offer the panel up to the fascia from behind and mark the aperture.
+2. **Enlarge with files, not a Dremel.** Fascia plastic is brittle and a
+   rotary tool skates. Ten minutes with a flat file is neater and unrecoverable
+   mistakes are harder to make.
+3. Cut the 1 mm polycarbonate to sit *behind* the fascia, not in front —
+   it hides the cut edge.
+4. If you are fitting the smoked filter, it goes between the polycarbonate and
+   the panel. **Try it before deciding you do not need it**: it dims unlit dots
+   twice and lit ones once, and the contrast difference is not subtle. This is
+   why every OEM deck's window is dark.
+5. Mount the panel with VHB foam tape, not screws. The module's mounting holes
+   are M2.5 and its PCB is thin; tape spreads the load and takes the vibration
+   out.
+
+**The panel must sit flush against the window.** An air gap of two or three
+millimetres gives every dot a shadow at an angle, and the driving position is
+always at an angle.
+
+### 7.4 Mounting the boards
+
+| Rule | Why |
+|---|---|
+| **Nylon standoffs, never brass** | A steel chassis is a ground plane. One brass standoff under a board with a trace near a mounting hole is the whole build |
+| **Nothing protrudes past the chassis sides** | The cage's spring tabs run down the outside. A screw head there jams the deck halfway in, which you discover in a dashboard |
+| **Boards flat on the floor, connectors facing back** | Everything unplugs from behind without lifting anything |
+| **Nyloc or threadlock on every fastener** | A car vibrates continuously for years |
+
+Rough layout that works in a standard 1-DIN chassis: ESP32 board on the left
+floor, DAC top-right (short run to the rear sockets), buck converter rear-left
+next to where the power comes in, tuner front-right away from the buck's
+switching noise.
+
+⚠️ **Keep the buck converter away from the tuner and from the aerial lead.** A
+switching regulator two inches from an FM front end is a very effective way to
+receive your own power supply.
+
+### 7.5 The loom
+
+1. **Everything crossing to the fascia goes through one plug.** JST-XH or
+   Dupont. You will take the fascia off more times than you expect, and a
+   soldered fascia means unsoldering it every time.
+2. **Leave a service loop** so the fascia can hinge away and sit on the bench
+   while still connected.
+3. **Strain-relieve at both ends.** A cable tie to a tie mount, not the solder
+   joint taking the load. Solder joints fail in tension; that is what they do.
+4. **Heat-shrink every joint**, including the ones you are sure about.
+5. **Ground the chassis.** One wire from chassis to the deck's ground. A metal
+   box floating at nothing in a car is an aerial, and what it picks up is
+   alternator whine — which you will chase in the audio path for a week
+   before checking the box.
+6. Cable-tie the loom away from anything with an edge. Steel you have drilled
+   has an edge whether you deburred it or not.
+
+### 7.6 Anti-rattle and closing up
+
+Run the 3 mm neoprene strip around the inside of the fascia where it meets the
+chassis, and anywhere a board's edge can touch metal. This is the difference
+between a deck that feels factory-fitted and one that buzzes over every
+expansion joint — and it is thirty seconds of work you cannot do once it is in
+the dash.
+
+Then: covers on, fascia on, knob on. **Power it up on the bench one more time
+and run the self-test before it goes anywhere near the car.** Assembly is the
+step most likely to have trapped a wire.
+
+---
+
+## 8. Put it in the car
 
 Only after all of the above works on a desk.
 
@@ -376,15 +573,18 @@ Only after all of the above works on a desk.
 3. Wire the ISO adapter to your loom: A4 fused to the buck input, A8 to
    ground, A7 through the opto to GPIO 39, A6 likewise to GPIO 36.
 4. **Meter it before connecting.** A4 and A7 get swapped by manufacturers.
-5. Slide the deck in, reconnect, and check standby current before you leave it
-   for a week.
+5. Plug the aerial in, if you fitted the tuner.
+6. Slide the deck in until the cage tabs click, then **bolt the rear support
+   strap to the stud at the back of the aperture.** A deck held only by the
+   cage tabs works loose, and the first sign of it is the fascia sitting proud.
+7. Reconnect, and check standby current before you leave it for a week.
 
 Read [SAFETY.md](../SAFETY.md). Fire, airbags, battery drain and driver
 distraction are all real and all avoidable.
 
 ---
 
-## 8. Put your own animations on it
+## 9. Put your own animations on it
 
 Movies are content, not firmware. They live in their own flash partition, so
 changing them does not touch the image and an update does not touch them.

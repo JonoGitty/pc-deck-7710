@@ -212,7 +212,13 @@ fail on hardware and only on hardware.
 ## Build the hardware
 
 **[docs/BUILD.md](docs/BUILD.md) is the end-to-end guide** — shopping list with
-part numbers, pin-by-pin wiring, flashing, pairing, and the car install last.
+part numbers, pin-by-pin wiring, flashing, pairing, building it into a case,
+and the car install last.
+
+The shopping list covers **the mechanical half too** — donor chassis, cage,
+rear support strap, nylon standoffs, nyloc nuts, panel-mount sockets, wire,
+crimps, anti-rattle foam and the tools — with quantities. That is the half
+nobody lists and the half a build stalls on.
 One tool does the whole loop:
 
 ```sh

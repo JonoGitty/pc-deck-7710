@@ -492,7 +492,14 @@ PC deck.
 | Tier | Display | Brain | Rough cost ⚠️ | For |
 |---|---|---|---|---|
 | **Bench** | SSD1322 | ESP32-WROVER-E | ~£32 | Developing firmware on a desk |
-| **Car — greyscale** | SSD1322 | ESP32-WROVER-E | ~£82 | The recommended build |
+| **Car — greyscale** | SSD1322 | ESP32-WROVER-E | ~£82 electronics **+ £90–120 mechanical** | The recommended build |
 | **Car — authentic VFD** | GP1294AI | ESP32-WROVER-E | ~£92 | Real glass, 1-bit |
 | **Car — colour** ⚠️ | 4.58" bar IPS | ESP32-WROVER-E **+ ESP32-S3** | ~£90 | Fits 1-DIN, 960×320, but two chips and no firmware yet — see §1b |
 | **Desk — full colour** | 8.8" bar LCD | none, PC drives it | ~£90 | No firmware at all; the legacy PC deck on a second monitor |
+
+⚠️ **The electronics are the cheap half.** A car build also needs a donor
+chassis, a cage, fasteners, wire, connectors and the tools to work steel and
+plastic — £90–120, about half of it reusable tools. That is not a hidden cost
+so much as an unglamorous one, and it is where builds stall. The full list with
+quantities is [BUILD.md §1](BUILD.md#the-mechanical-bits--the-ones-everybody-forgets),
+and the assembly it feeds into is [BUILD.md §7](BUILD.md#7-build-it-into-the-case).
