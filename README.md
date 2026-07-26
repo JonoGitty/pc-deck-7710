@@ -110,6 +110,15 @@ hesitation at the top of a gear is what makes it look like driving.
 *`DOLPHINS` — the classic screensaver, rebuilt with a real mesh and a real sea.
 `tools/movies/scene_dolphins.py`.*
 
+![DUCKS — rubber ducks rising through black water](docs/media/ducks.gif)
+
+*`DUCKS` — thirty seconds, eighteen ducks, and a loop that is exact rather than
+nearly: every rise, sway and bob completes a whole number of cycles in the 300
+frames, so frame 300 *is* frame 0 and the join is invisible. It arrived as a
+five-second GIF and was drawn instead — you cannot add a duck to a bitmap, and
+the source's teal water is mid-luminance, which is the one thing four levels
+cannot hold. `tools/movies/scene_ducks.py`.*
+
 ![SPIN — the minimal template scene](docs/media/spin.gif)
 
 *`SPIN` — the minimal template. Copy `tools/movies/scene_spin.py` and change
