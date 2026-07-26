@@ -4,7 +4,7 @@
     python3 tools/movies/restage.py ducks.gif --name=DUCKS
     python3 tools/movies/restage.py ducks.gif --name=DUCKS --legacy
     python3 tools/movies/restage.py ducks.gif --tiles=4 --band=0.06,0.88 \
-            --layers=8 --water=1 --secs=30
+            --layers=8 --water=1 --secs=30 --no-complete
 
 WHAT THIS IS FOR
 
@@ -53,6 +53,13 @@ The moving parts are found the same way a locked-off camera always finds them:
 **the per-pixel median of the clip is the background**, because anything that
 moves is not at the same pixel in most frames. No colour key to tune, and it
 does not care whether the subject is lighter or darker than what it is over.
+
+**Subjects the clip cut in half are put back together first**, by `complete.py`,
+using the same subjects from frames where they were whole. Played back, a
+half-out-of-frame duck is invisible — the missing half is past the edge of the
+picture. Here a layer sits in the middle of a wider canvas, so its frame edge is
+nowhere in particular, and a duck bisected by an invisible vertical line reads
+as a rendering fault. `--no-complete` turns it off.
 """
 import os
 import sys
@@ -64,6 +71,8 @@ try:
     from PIL import Image, ImageChops, ImageFilter, ImageSequence
 except ImportError:
     sys.exit("needs Pillow:  pip install Pillow")
+
+import complete as C
 
 # THE BAND, AND WHY THERE IS ONE.
 #
@@ -160,6 +169,16 @@ def background(frames, samples=24):
     return Image.frombytes("RGB", (w, h), bytes(out))
 
 
+def border(w, h):
+    """How many columns of mask get blanked at the frame edge.
+
+    Shared, because two different things need the same number: the masking,
+    which blanks them, and the completion pass, which has to know that a
+    subject stopping this far short of the edge was still cut by it.
+    """
+    return max(2, round(min(w, h) * 0.02))
+
+
 def subject_mask(frame, bg, thresh, feather=1.0):
     """Where this frame differs from the background: the moving parts.
 
@@ -176,7 +195,7 @@ def subject_mask(frame, bg, thresh, feather=1.0):
     # the eye goes straight to it because it is the only straight line on the
     # panel.
     w, h = m.size
-    e = max(2, round(min(w, h) * 0.02))
+    e = border(w, h)
     m.paste(0, (0, 0, w, e))
     m.paste(0, (0, h - e, w, h))
     m.paste(0, (0, 0, e, h))
@@ -199,33 +218,32 @@ def water(bg, tiles):
     return out
 
 
-def prepare(frames, bg, thresh, scale):
-    """One layer's clip: every frame's subjects, cut out and scaled."""
-    w, h = frames[0].size
+def prepare(pairs, scale):
+    """One layer's clip: every frame's subjects, scaled to this layer's size."""
+    w, h = pairs[0][0].size
     sw, sh = max(1, round(w * scale)), max(1, round(h * scale))
-    out = []
-    for f in frames:
-        m = subject_mask(f, bg, thresh)
-        if scale != 1.0:
-            f, m = f.resize((sw, sh), Image.LANCZOS), m.resize((sw, sh), Image.LANCZOS)
-        out.append((f, m))
-    return out, sw, sh
+    if scale == 1.0:
+        return pairs, sw, sh
+    return ([(f.resize((sw, sh), Image.LANCZOS),
+              m.resize((sw, sh), Image.LANCZOS)) for f, m in pairs], sw, sh)
 
 
 def compose(k, nf, base, layers, cw, ch):
     """One canvas frame: the water, with every layer's subjects over it."""
     out = base.copy()
     for lay in layers:
-        clip, sw, sh = lay["clip"], lay["sw"], lay["sh"]
+        clip, lw = lay["clip"], lay["lw"]
         # The layer plays its whole clip once per `period` frames. Because every
         # period divides nf, frame nf puts every layer back at its own frame 0.
         src = clip[round(((k % lay["period"]) / lay["period"] + lay["phase"])
                          * len(clip)) % len(clip)]
-        x = round(lay["x"] + lay["drift"] * cw * k / nf) % cw
-        y = lay["y"]
-        out.paste(src[0], (x, y), src[1])
-        if x + sw > cw:                        # wrap: the canvas is a cylinder
-            out.paste(src[0], (x - cw, y), src[1])
+        x = lay["x"] + round(lay["drift"] * cw * k / nf)
+        x = x % cw if x >= 0 else -((-x) % cw)
+        # The canvas is a cylinder, and a completed layer can start left of
+        # zero, so try it either side as well as in place.
+        for dx in (0, -cw, cw):
+            if x + dx + lw > 0 and x + dx < cw:
+                out.paste(src[0], (x + dx, lay["y"]), src[1])
     return out
 
 
@@ -312,15 +330,35 @@ def main():
     base = water(bg, tiles)
     cw, ch = base.size
 
+    # The subjects, with the ones the clip's own frame edge cut in half filled
+    # in from frames where they were whole. Without this a layer sitting in the
+    # middle of a wider canvas shows half a duck bisected by an invisible line,
+    # which reads as a rendering fault rather than as a duck leaving.
+    pairs = [(f, subject_mask(f, bg, thresh)) for f in frames]
+    margin = 0
+    if "--no-complete" not in flags:
+        margin = round(sh * 0.30)
+        cf, cm = C.complete_clip([p[0] for p in pairs], [p[1] for p in pairs],
+                                 margin=margin, tol=border(sw, sh) + 2,
+                                 report=print)
+        pairs = list(zip(cf, cm))
+
     clips = {}
     layers = []
     for (xf, yf, scale, period, phase, drift) in LAYERS[:nlayers]:
         if scale not in clips:
-            clips[scale] = prepare(frames, bg, thresh, scale)
+            clips[scale] = prepare(pairs, scale)
         clip, lw, lh = clips[scale]
-        layers.append(dict(clip=clip, sw=lw, sh=lh, period=period, phase=phase,
-                           drift=drift, x=round(xf * cw) % cw,
-                           y=round((ch - lh) * yf)))
+        # A completed layer is bigger than the clip it came from — the grafted
+        # halves live in the margin — so it is positioned by the size of its
+        # ORIGINAL content and then pasted back by the margin. Position the
+        # padded image directly and every layer drifts up and left by however
+        # much completion happened to add.
+        pad = round(margin * scale)
+        core_w, core_h = round(sw * scale), round(sh * scale)
+        layers.append(dict(clip=clip, lw=lw, lh=lh, period=period, phase=phase,
+                           drift=drift, x=round(xf * cw) % cw - pad,
+                           y=round((ch - core_h) * yf) - pad, core=core_w))
     print(f"  canvas {cw}x{ch} ({tiles} tiles, mirrored), "
           f"{len(layers)} layers at {sorted({l['period'] for l in layers})}-frame periods")
 

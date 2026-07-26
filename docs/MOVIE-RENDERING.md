@@ -210,6 +210,56 @@ loop guarantee is untouched.
 loop check: frame 300 matches frame 0 on 100.00% of dots
 ```
 
+### Putting back the subjects the clip cut in half
+
+A short loop always has some of its subjects half-out of frame. **Played back
+that is invisible** — the missing half is past the edge of the picture, where a
+picture is expected to stop. **Re-staged it is not:** a layer sits in the middle
+of a wider canvas, so its frame edge is nowhere in particular, and a duck
+bisected by an invisible vertical line reads as a rendering fault.
+
+`tools/movies/complete.py` fills those in, and the pixels come **out of the clip
+itself, from a frame where that subject was whole**. A duck clipped by the right
+edge at second four drifted in from the middle at second one, and there it is
+complete — same duck, same lighting, same lens, same compression. Nothing is
+invented; it is recovered.
+
+It works because a frame edge is a straight line:
+
+1. **Harvest.** Every connected subject touching no edge, in every frame, is a
+   complete exemplar. 71 frames of five ducks gave 19 usable ones.
+2. **Classify.** A subject touching an edge is partial. One touching opposite
+   edges, or edges on *both axes*, is refused outright.
+3. **Align without searching.** The axis that was not cut is intact — a duck
+   clipped on the left still shows its true top, bottom and right edge. That
+   gives the exemplar's scale and its position in one step, rather than sweeping
+   offsets and scales across every exemplar.
+4. **Score, then decide.** Intersection-over-union against the visible part
+   only, best over every exemplar and both reflections. Below the threshold the
+   subject is left clipped. **A wrong completion is worse than a clipped one** —
+   a clipped duck looks cut, which a viewer forgives; a wrong one looks broken.
+5. **Graft.** Only pixels outside the original frame are taken, brightness
+   matched over the overlap first so the join does not step.
+
+On `DUCKS`: *38 of 58 clipped subjects filled in, 20 refused.* `--no-complete`
+turns the pass off.
+
+**Why not a generative model.** It is the obvious reach and it is wrong three
+times over. Every generated file here is byte-compared against its generator, so
+a sampler that returns something different each run would force the staleness
+rule to be dropped for this one tool. The build must run from a clone with
+Pillow and no network. And a model has no idea what *your* ducks look like — it
+would invent a plausible one, where the clip contains these, photographed under
+this light. Matching beats generating whenever the missing content is already in
+the dataset, and here the dataset is the clip. The seam to cut, if someone wants
+one anyway, is the match-and-graft pair; keep the refusal path, which is most of
+the value.
+
+`tools/verify/test_complete.py` asserts mostly *refusals* — an empty clip stays
+empty, a clip whose subjects are never whole is left alone, a subject cut at a
+corner is not guessed at — because the failure mode here is a plausible picture,
+and nothing else in the suite would catch that.
+
 ### `--water`, and the level-centre rule again
 
 The background gets pinned to **one flat level** rather than being dithered.

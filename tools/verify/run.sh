@@ -137,6 +137,23 @@ else
   printf 'importer check SKIPPED (needs Pillow)\n'
 fi
 
+# The completion pass, which fills in subjects a clip cut at its own frame edge.
+# It gets its own test for one reason: its failure mode is a plausible picture.
+# A pass that invents produces something that looks fine in a thumbnail and
+# wrong on the panel, and nothing else in this file would catch it — so most of
+# what is asserted there is REFUSAL, not completion.
+if python3 -c "import PIL" 2>/dev/null; then
+  if python3 tools/verify/test_complete.py > build/complete_test.txt 2>&1; then
+    grep -E 'completion checks' build/complete_test.txt
+  else
+    printf 'MISMATCH — the completion pass is filling in the wrong things:\n\n'
+    cat build/complete_test.txt
+    exit 1
+  fi
+else
+  printf 'completion check SKIPPED (needs Pillow)\n'
+fi
+
 # The pictures in the README and on the site, checked as CONTAINERS rather than
 # as images. Every one of them once rendered as a motionless still outside a
 # browser — the frames were all there and all different, and one flag three
