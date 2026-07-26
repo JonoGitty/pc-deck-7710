@@ -49,14 +49,16 @@
         and the animals own the bright end. <code>tools/movies/scene_dolphins.py</code></figcaption></figure>
 
     <figure class="film"><img loading="lazy" src="media/ducks.gif" alt="A flock of rubber ducks rising through the water across the panel">
-      <figcaption><b>DUCKS</b> — and when you want <em>more</em> of what is in a clip,
-        for longer, looping, <code>restage.py</code> re-stages it rather than playing
-        it. Seventy-one frames of four or five ducks became thirty seconds of about
-        twenty-five. Every duck is the source's own pixels moving the way the source
-        moved them: the clip is mirror-tiled to fill a 4:1 panel — a mirrored edge
-        matches its neighbour exactly, so the seams are continuous by construction —
-        and then composited over itself at eight positions, scales, speeds and phases.
-        The loop is exact, because every layer's period divides the movie.
+      <figcaption><b>DUCKS</b> — when you want <em>more</em> of what is in a clip, for
+        longer, looping, <code>restage.py</code> re-stages it rather than playing it.
+        Seventy-one frames of four or five ducks became thirty seconds of about twenty,
+        and every duck is the source's own pixels moving the way the source moved them.
+        The clip is mirror-tiled to fill a 4:1 panel — a mirrored edge matches its
+        neighbour exactly, so the seams are continuous by construction — then
+        composited over itself ten times at different positions, scales, speeds and
+        phases, with the ducks the frame cut in half put back together from frames
+        where they were whole. Two checks, not one: the loop is exact to the dot, and
+        it does not secretly repeat before it gets there.
         <code>restage.py ducks.gif --name=DUCKS</code></figcaption></figure>
 
     <figure class="film"><img loading="lazy" src="media/reef.gif" alt="Fish and a starfish picked out in bright dots against black">

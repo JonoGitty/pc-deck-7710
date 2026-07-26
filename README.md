@@ -139,11 +139,13 @@ you can do to a bitmap — `restage.py` re-stages it instead of playing it:
 ![DUCKS — a flock of rubber ducks rising through the water](docs/media/ducks.gif)
 
 *`restage.py ducks.gif --name=DUCKS`. Seventy-one frames of four or five ducks,
-turned into thirty seconds of about twenty-five. Every duck is the source's own
+turned into thirty seconds of about twenty. Every duck is the source's own
 pixels moving the way the source moved them — the clip is mirror-tiled to fill a
-4:1 panel and composited over itself at eight positions, scales, speeds and
-phases. The loop is exact: every layer's period divides the movie, so frame 300
-is frame 0 to the dot.*
+4:1 panel and composited over itself ten times, each copy at its own position,
+scale, speed and phase. Where the frame cut a duck in half, it is put back
+together from a frame where it was whole. Two checks rather than one: the loop
+is exact (frame 300 is frame 0 to the dot), and it does not secretly repeat
+before then either.*
 
 `import_video.py` takes anything ffmpeg opens, with `--probe` to find the crop,
 `--from`/`--dur` to cut a section, and — for the commonest hard case, filming

@@ -220,7 +220,7 @@ def match(part, lib, w, h):
 
 
 # -------------------------------------------------------------- the graft
-def graft(canvas, cmask, part, best, margin, fw, fh):
+def graft(canvas, cmask, part, best, margin, fw, fh, tol=0):
     """Paste the missing half in, and only the missing half.
 
     Everything the clip filmed is kept. The exemplar contributes exactly the
@@ -253,9 +253,18 @@ def graft(canvas, cmask, part, best, margin, fw, fh):
     # Only outside the original frame: inside it, the clip wins. Exemplar-local
     # (u, v) is frame (x + u, y + v), so the frame rectangle lands at
     # u in [-x, fw - x), v in [-y, fh - y) — clamped to the exemplar.
+    #
+    # The rectangle is shrunk by `tol`, and that is a bug fix rather than a
+    # tolerance. The caller blanks `tol` pixels of mask at the frame border, so
+    # a clipped subject's own mask stops short of the edge; grafting strictly
+    # outside the frame then left a `tol`-wide gap between the subject and its
+    # completion, and the completed half arrived on the panel as a DETACHED
+    # bright sliver a few dots from its duck — which reads as a bar, and is
+    # exactly the sort of straight-edged object this panel renders worst.
+    # Letting the graft fill the blanked band closes it.
     outside = Image.new("L", (sw, sh), 255)
-    ix0, iy0 = max(0, -x), max(0, -y)
-    ix1, iy1 = min(sw, fw - x), min(sh, fh - y)
+    ix0, iy0 = max(0, -x + tol), max(0, -y + tol)
+    ix1, iy1 = min(sw, fw - x - tol), min(sh, fh - y - tol)
     if ix1 > ix0 and iy1 > iy0:
         outside.paste(0, (ix0, iy0, ix1, iy1))
     m = ImageChops.multiply(m, outside)
@@ -315,7 +324,7 @@ def complete_clip(frames, masks, margin, min_score=MIN_SCORE,
                 if best is None or best["score"] < min_score:
                     refused += 1
                     continue
-                graft(canvas, cmask, part, best, margin, fw, fh)
+                graft(canvas, cmask, part, best, margin, fw, fh, tol)
                 done += 1
 
         out_f.append(canvas)

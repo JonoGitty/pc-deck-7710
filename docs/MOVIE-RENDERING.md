@@ -164,51 +164,96 @@ end.
 ```sh
 python3 tools/movies/restage.py ducks.gif --name=DUCKS
 python3 tools/movies/restage.py ducks.gif --name=DUCKS --legacy
-python3 tools/movies/restage.py ducks.gif --tiles=4 --band=0.06,0.88 \
-        --layers=8 --water=1 --secs=30
+python3 tools/movies/restage.py ducks.gif --dots=22 --layers=10 --water=1 \
+        --tiles=4 --band=0.06,0.88 --secs=30 --no-complete
 ```
 
 **This keeps the footage.** Every duck on the panel is the source's own pixels
 moving the way the source moved them; what gets rebuilt is the staging around
 them. `DUCKS` is 71 frames of four or five ducks turned into thirty seconds of
-about twenty-five.
+about twenty.
 
 **The frame is widened by mirror-tiling.** A square clip letterboxed onto a 4:1
-panel occupies a third of the glass. So the canvas is several tiles wide and
-the background is mirrored between them — a mirrored edge matches its neighbour
+panel occupies a third of it. So the canvas is several tiles wide and the
+background is mirrored between them — a mirrored edge matches its neighbour
 *exactly*, so the seams are continuous by construction rather than nearly.
 
-**The clip is composited over itself.** Each layer carries only its moving parts
-and has its own position, scale, speed and starting phase. Layers are what turn
-four ducks into twenty-five, and every one of them is real photographed motion.
+**The clip is composited over itself**, each layer carrying only its moving
+parts at its own position, scale, speed and starting phase.
 
 **The moving parts are found by median.** Anything that moves is not at the same
-pixel in most frames, so a per-pixel median of the clip is the scene with the
+pixel in most frames, so the per-pixel median of the clip is the scene with the
 subjects removed. Nothing to key, and it does not care whether the subject is
 lighter or darker than what it is over.
 
-### The two things that were wrong first
+### Everything that follows is a defect it shipped first
 
-**`--band`, because a square clip and a 4:1 panel cannot both be satisfied.**
-Fit the full 200-pixel height into 64 dots and a duck filmed 55 pixels tall
-arrives 17 dots tall — a blob. Cropping to the horizontal band the action
-happens in puts a duck at twenty dots, where it reads as a duck. The cost is
-vertical travel: subjects enter and leave the band instead of crossing the whole
-frame. On a strip four times wider than it is tall, that is the right trade.
+Each of these looked like a taste problem and turned out to be arithmetic or a
+measurement. They are written down because the next clip will hit them too.
 
-**The phase column, because periods that all divide 300 also all agree.** The
-first version gave every layer a period dividing the movie and no phase offset,
-which is a correct loop and a bad movie: at frame 150 the layers at 60, 75, 100,
-150 and 300 sit at phases 0.5, 0.0, 0.5, 0.0 and 0.5 — *two* distinct phases
-between fourteen layers. Every layer showed one of two clip frames, and since a
-clip like this is a burst rather than a steady stream, those two frames were
-mostly empty water. A constant phase offset per layer fixes it for nothing:
-adding a constant to a periodic function leaves it exactly as periodic, so the
-loop guarantee is untouched.
+**The crop and the tile count are measured, not set.** A duck filmed 55px tall,
+squeezed with the whole 200px frame into 64 dots, arrives 17 dots tall and reads
+as a blob. So the clip is cropped to the *band* the action is in, deep enough
+that a subject lands at `--dots` dots, and tiled enough times that the canvas is
+the panel's shape — any other count stretches the picture on the way down.
+Constants worked at 256×64 and put 15-dot blobs on the 192×48 panel, because a
+smaller panel needs a **tighter crop, not the same crop drawn smaller**.
+`measure()` finds the subject height first; the rest follows. It ignores small
+components: including the clip's specks put the median at 32px in a clip whose
+ducks are 68.
+
+**Phases are solved, not chosen.** Periods that divide the movie also *agree* at
+its common factors, so with no phase offsets fourteen layers showed two
+pictures. Hand-spread offsets fixed that and assumed a steady stream — but this
+clip has ducks for 38 frames and empty water for 33, so the panel swung between
+packed and deserted. `solve_timing` measures how much subject each source frame
+holds and picks each layer's offset to flatten the total. Adding a constant to a
+periodic function leaves it periodic, so the loop guarantee is untouched.
+
+**Periods are dealt round-robin, and letting the solver choose them was the
+worst bug this tool has had.** Free to optimise, it put eight layers on 50, 100
+and 150 — which flattens the occupancy beautifully and makes the movie *repeat
+every 100 frames*, because 50 and 100 both divide 100. Thirty seconds delivering
+ten. The lowest-variance answer and the right answer were not the same answer.
+
+**So there is a repeat check as well as a loop check**, and it measures
+agreement over the *lit* dots rather than the whole panel — most of this movie
+is black, and black matching black is not evidence of anything. Measured that
+way, a badly repeating movie still scored 88%.
 
 ```
-loop check: frame 300 matches frame 0 on 100.00% of dots
+loop check:   frame 300 matches frame 0 on 100.00% of dots
+repeat check: the closest it comes to repeating early is 150 frames apart,
+              25% of the lit dots
 ```
+
+For calibration: a frame against itself is 100%, against its neighbour 32%,
+against an unrelated frame 2%.
+
+**Wide flat components are dropped.** The water surface ripples, and a ripple
+survives the median as a long thin bright horizontal component — the worst
+possible object here, a bright rule the eye finds before it finds any duck. The
+filter runs twice: once before completion, with a low ceiling, because a wide
+flat thing might still be a duck the frame cut to a sliver; and once after, with
+a higher one, because anything still that shape by then is not a duck.
+
+### `--water`, and the level-centre rule again
+
+The background is pinned to **one flat level**, never dithered: the clip's water
+is teal, mid-luminance, so shaded across four levels it lands on a boundary and
+becomes a 50/50 checkerboard the size of the panel.
+
+**The default is level 0 — black — and that is a legibility decision, not a
+tidiness one.** Flat at level 1 the clip still reads as water, and it looks
+right, but it leaves the subjects only levels 2 and 3, and two levels is not
+enough for a duck: it arrives as a flat blob. Black hands them 1, 2 and 3, and
+that third level is the shading that makes a duck a duck rather than a shape.
+`--water=1` if you want the lit field back.
+
+The floor — how far above the water a dot must be to count as subject — wants to
+be **low**, which is also not obvious. A duck seen through water sits only just
+above the water in luminance, so raising the floor to strip the dim formless
+fringe strips the duck's body with it and leaves a bright rim around a hole.
 
 ### Putting back the subjects the clip cut in half
 
