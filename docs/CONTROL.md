@@ -32,11 +32,29 @@ sends commands *back* to the phone.
 
 Minimum that feels like a real deck:
 
-- **Rotary encoder with push.** Rotate = volume; push = mode; push-and-hold =
-  enter the menu. Long-press for a second function is how every OEM deck
-  handles a small panel, and it means one part covers three jobs.
-- **Six buttons**: `SRC`, `DISP`, `BAND`, `ART`, `LYRICS`, `DEMO`. Skip/back
-  double as long-press, which is how every OEM deck handles a small panel.
+- **Rotary encoder with push.** Rotate = **volume**; push = **play/pause**,
+  which also answers a call — answering must not need a different button from
+  the one already under your thumb.
+- **Six buttons**: `SRC`, `DISP`, `|◀◀`, `▶‖`, `▶▶|`, `DEMO`.
+
+⚠️ **Three of those six used to be screen shortcuts, and that was a bug.** The
+ladder was `SRC`, `DISP`, `OCEAN`, `ART`, `LYRICS`, `DEMO` — four buttons
+choosing a screen, three of them shortcuts to screens `DISP` already cycles to,
+and **not one that changed the music**. The transport actions existed and
+`deck_main.c` sent the right AVRCP codes; the only thing that raised them was
+`deck_swc.c`, the steering wheel. So in a car without wheel controls — and the
+**Honda S2000 has none in any market** — you could not skip a track from the
+deck at all. Nothing was broken; the join was simply missing, which is why
+`tools/verify/test_diagrams.py` now asserts that all three transport actions
+appear in a table a hand can reach.
+
+The resistor values did not change. It is which action each voltage means, so a
+fascia already wired to the old table needs no rework.
+
+**Long-press** is deliberately only two things, and neither is skip: hold `SRC`
+for the steering-wheel learning wizard, hold `DISP` for the self-test. A head
+unit whose every button does something else when held is one nobody can use
+without the manual.
 
 How many of those you can actually wire is decided by the chip, not the UI: an
 ESP32-WROVER-E has **six** pins left for a human to press once the panel, the

@@ -62,7 +62,7 @@
 <text x="832.0" y="244.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">300 mV</text>
 <line x1="620.0" y1="280.0" x2="660.0" y2="280.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
 <rect x="660.0" y="271.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
-<text x="687.0" y="284.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">BAND</text>
+<text x="687.0" y="284.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">|&lt;&lt;</text>
 <text x="720.0" y="284.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
 <rect x="738.0" y="273.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
 <text x="759.0" y="283.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">2k2</text>
@@ -71,7 +71,7 @@
 <text x="832.0" y="284.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">595 mV</text>
 <line x1="620.0" y1="320.0" x2="660.0" y2="320.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
 <rect x="660.0" y="311.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
-<text x="687.0" y="324.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">ART</text>
+<text x="687.0" y="324.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">&gt;||</text>
 <text x="720.0" y="324.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
 <rect x="738.0" y="313.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
 <text x="759.0" y="323.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">4k7</text>
@@ -80,7 +80,7 @@
 <text x="832.0" y="324.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">1055 mV</text>
 <line x1="620.0" y1="360.0" x2="660.0" y2="360.0" stroke="#d8d4cc" stroke-width="1.2" stroke-linecap="round"/>
 <rect x="660.0" y="351.0" width="54.0" height="18.0" rx="2" fill="#191920" stroke="#23232b" stroke-width="1"/>
-<text x="687.0" y="364.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">LYRICS</text>
+<text x="687.0" y="364.0" font-size="8" fill="#d8d4cc" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">&gt;&gt;|</text>
 <text x="720.0" y="364.0" font-size="8" fill="#8a8578" text-anchor="start" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">⏻</text>
 <rect x="738.0" y="353.0" width="42.0" height="14.0" rx="2" fill="#191920" stroke="#f3a52b" stroke-width="1"/>
 <text x="759.0" y="363.5" font-size="8" fill="#ffd978" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace">10 k</text>
