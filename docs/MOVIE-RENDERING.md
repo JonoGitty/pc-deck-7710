@@ -152,12 +152,77 @@ and came out as noise every time.
 **So film a display for reference, not for import.** If you want what it shows,
 draw it — which is what `core/screens/ocean.c` is.
 
+## Or take the clip apart and re-stage it
+
+`import_gif.py` *plays* a clip. That is right when the clip already is the
+animation you want. It is wrong when the clip is only the **source material** —
+a few seconds of some things drifting, when what you wanted was more of them,
+for longer, looping cleanly.
+
+None of those three can be done to a played-back clip. You cannot add a duck to
+a bitmap; five seconds stretched to thirty is the same five seconds six times,
+and a viewer spots the repeat inside two cycles; and a clip loops where it
+happens to end, which on footage is a jump at a fixed interval you learn to
+expect.
+
+```sh
+python3 tools/movies/flock.py ducks.gif --name=DUCKS --secs=30 --count=18
+python3 tools/movies/flock.py ducks.gif --name=DUCKS --legacy --sprites
+```
+
+It cuts the moving subjects **out** of the clip and re-stages them: the actual
+pixels, with the shading the source had, as many as you ask for, over as long
+as you ask for. `DUCKS` is 71 source frames of four or five ducks turned into
+thirty seconds of eighteen.
+
+**The background is the median of the clip.** Anything that moves is not at the
+same pixel in most frames, so a per-pixel median is the scene with the subjects
+removed. That beats a colour key, which needs telling what colour to key, and a
+brightness threshold, which fails the moment the subject is darker than part of
+the background. A subject is then any pixel far from that background in plain
+RGB distance, flood-filled into components; a component is a candidate if it is
+big enough and **does not touch the frame edge**, because one that does is cut
+in half, and half a duck re-staged in open water reads as a rendering fault.
+Candidates come from frames spread across the clip, so you get the subject at
+several attitudes rather than fifteen copies of one pose.
+
+**The loop is exact, not nearly.** Every rise, sway and bob completes a whole
+number of cycles in the movie, so frame *N* is frame 0 to the dot:
+
+```
+  loop check: frame 300 matches frame 0 on 100.00% of dots
+```
+
+Two things it does differently from `import_gif.py`, both of which showed up as
+visible defects first:
+
+- **Sprites snap to the nearest level; they are not dithered.** This is the
+  level-centre rule below, applied to a sprite instead of to a sky. A rubber
+  duck is a broad even-toned object, its body lands between two levels, and an
+  ordered dither renders the whole body as a 50/50 checkerboard — so the duck
+  reads as texture, its outline dissolves into it, and because the pattern
+  moves with the sprite, every frame differs everywhere. Dithering buys tonal
+  resolution on a photograph; on a fourteen-dot subject there is no room for it
+  to average out. Turning it off cut the encoded movie from 1276 KB to 755 KB.
+- **Blur, then area-average down — not Lanczos.** A photograph carries grain and
+  specular highlights that mean nothing at fourteen dots but survive a sharp
+  downscale as single bright pixels, and Lanczos rings at a 12:1 reduction:
+  it puts a dark pixel beside every light one, which after quantising is
+  indistinguishable from the dither just removed.
+
+**What it cannot do:** the sprite is a still, so subjects that rotate, flap or
+deform in a way the eye tracks will look stiff. It suits things that hold their
+shape and move through a field — ducks, balloons, fish, debris, snow. And it is
+only as good as the separation: a subject the same colour as its background
+does not come out, and the tool says so rather than emitting mush.
+
 ## The bundled animations
 
 Five procedural scenes, and they are worth reading before writing your own —
 each one solves a different version of the same problem, which is that four
 levels is not many. (Two more, `REEF` and `AE86`, are imports rather than
-scenes; there is no source to read, only the flags above.)
+scenes; there is no source to read, only the flags above. `DUCKS` is a third
+thing again — a clip taken apart and re-staged by `flock.py`.)
 
 | | What it is | The thing it works out |
 |---|---|---|

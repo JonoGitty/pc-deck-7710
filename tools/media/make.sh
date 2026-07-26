@@ -42,11 +42,11 @@ printf '\n== movie previews ==\n'
 # AE86 opens on headlights in the dark — correct for the animation, useless as
 # a thumbnail, which is a still. From 8 it opens on the tofu-shop door.
 # DUCKS has no establishing shot to miss, so it starts at zero — but it is 30 s
-# of constantly-moving detail, and the whole thing came to 1 MB as a preview.
-# 100 frames is ten seconds, enough to see it is a flock rising, and in line
-# with the other large previews.
+# of eighteen photographic sprites all moving at once, which is close to the
+# worst case for an animated GIF: nearly every dot changes every frame. Eight
+# seconds is enough to see it is a flock rising.
 set -- "spin 0 0" "solar 0 190" "dolphins 24 170" "touge 60 190" "reef 0 0" \
-       "vtec 40 190" "ae86 8 0" "ducks 0 100"
+       "vtec 40 190" "ae86 8 0" "ducks 0 80"
 for spec in "$@"; do
   set -- $spec
   m=$1; from=$2; max=$3
