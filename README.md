@@ -133,17 +133,17 @@ clip ends by pulling back to a wide, where the car shrinks to a few dots and
 the road it is on becomes the brightest thing in frame. `--trim` throws that
 away. Look at the source before assuming all of it belongs on a 4:1 panel.*
 
-And if the clip is only the *source material* — you want more of the thing in
-it, for longer, looping — `flock.py` cuts the subjects out and re-stages them:
+And if you want *more* of what is in a clip, for longer, looping — none of which
+you can do to a bitmap — `restage.py` re-stages it instead of playing it:
 
-![DUCKS — a flock of rubber ducks rising through black water](docs/media/ducks.gif)
+![DUCKS — a flock of rubber ducks rising through the water](docs/media/ducks.gif)
 
-*`DUCKS` — `flock.py ducks.gif --name=DUCKS --secs=30 --count=18`. Seventy-one
-source frames of four or five ducks, turned into thirty seconds of eighteen.
-The ducks are the source's own pixels, cut out of it: the background is the
-per-pixel median of the clip, so anything that moves is what's left. The loop
-is exact rather than nearly — every rise, sway and bob completes a whole number
-of cycles, so frame 300 is frame 0 to the dot.*
+*`restage.py ducks.gif --name=DUCKS`. Seventy-one frames of four or five ducks,
+turned into thirty seconds of about twenty-five. Every duck is the source's own
+pixels moving the way the source moved them — the clip is mirror-tiled to fill a
+4:1 panel and composited over itself at eight positions, scales, speeds and
+phases. The loop is exact: every layer's period divides the movie, so frame 300
+is frame 0 to the dot.*
 
 `import_video.py` takes anything ffmpeg opens, with `--probe` to find the crop,
 `--from`/`--dur` to cut a section, and — for the commonest hard case, filming

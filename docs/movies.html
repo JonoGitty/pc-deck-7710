@@ -48,15 +48,16 @@
         a real sea surface. The sea is shaded on a steep curve so only crests glint
         and the animals own the bright end. <code>tools/movies/scene_dolphins.py</code></figcaption></figure>
 
-    <figure class="film"><img loading="lazy" src="media/ducks.gif" alt="Eighteen rubber ducks rising in a flock through black water">
-      <figcaption><b>DUCKS</b> — and if the clip is only the <em>source material</em>,
-        <code>flock.py</code> takes it apart instead of playing it. Seventy-one frames
-        of four or five ducks became thirty seconds of eighteen. The ducks are the
-        source's own pixels: the background is the per-pixel median of the clip, so
-        whatever moves is what is left over. The loop is exact rather than nearly —
-        every rise, sway and bob completes a whole number of cycles, so frame 300
-        <em>is</em> frame 0 to the dot.
-        <code>flock.py ducks.gif --name=DUCKS --secs=30 --count=18</code></figcaption></figure>
+    <figure class="film"><img loading="lazy" src="media/ducks.gif" alt="A flock of rubber ducks rising through the water across the panel">
+      <figcaption><b>DUCKS</b> — and when you want <em>more</em> of what is in a clip,
+        for longer, looping, <code>restage.py</code> re-stages it rather than playing
+        it. Seventy-one frames of four or five ducks became thirty seconds of about
+        twenty-five. Every duck is the source's own pixels moving the way the source
+        moved them: the clip is mirror-tiled to fill a 4:1 panel — a mirrored edge
+        matches its neighbour exactly, so the seams are continuous by construction —
+        and then composited over itself at eight positions, scales, speeds and phases.
+        The loop is exact, because every layer's period divides the movie.
+        <code>restage.py ducks.gif --name=DUCKS</code></figcaption></figure>
 
     <figure class="film"><img loading="lazy" src="media/reef.gif" alt="Fish and a starfish picked out in bright dots against black">
       <figcaption><b>Already have a GIF?</b> <code>import_gif.py</code> converts it.
