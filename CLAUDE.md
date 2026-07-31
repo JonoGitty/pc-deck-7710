@@ -145,6 +145,25 @@ Before recommending a part, check [docs/HARDWARE.md](docs/HARDWARE.md) — claim
 there are marked ✅ verified or ⚠️ unverified, and the unverified ones are
 unverified for a reason.
 
+## `core/` is a Swift package too
+
+`Package.swift` at the root exposes `core/` as a C target called **DeckCore**,
+so an iOS/iPadOS/macOS app can link the same translation units the firmware does
+— no port, no vendored copy. That is the whole point: the differential test here
+guards the code the app ships.
+
+Two things not to "tidy up":
+
+- **No `cSettings`.** `unsafeFlags` make a package unusable as a versioned
+  dependency, which is the only way it is meant to be consumed. The code needs
+  none — it is clean under `-Wall -Wextra` at C99 and at the toolchain default.
+- **`publicHeadersPath` is `core/` itself.** That exposes the generated ROMs
+  next to the three headers anybody wants, which is untidy and beats keeping a
+  parallel include tree that can drift from what the firmware compiles.
+
+If you add a `.c` to `core/`, SPM picks it up automatically. If you add one that
+needs a flag or a define, you have broken the package — find another way.
+
 ## Conventions
 
 - Screens write intensities `0..4`; the output stage decides what a panel shows.

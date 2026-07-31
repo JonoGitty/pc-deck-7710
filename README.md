@@ -152,6 +152,12 @@ before then either.*
 another display — `--blur` and `--invert`. What that case cannot survive is in
 [docs/MOVIE-RENDERING.md](docs/MOVIE-RENDERING.md).
 
+**The renderer is also a Swift package.** `core/` builds unchanged for iOS,
+iPadOS and macOS — `.package(url: "https://github.com/JonoGitty/pc-deck-7710")`,
+then `import DeckCore` and call the same functions the firmware calls. No port
+and no vendored copy, so the differential test here guards the code an app
+ships too.
+
 **Making one is a conversation, not a tutorial.** [CLAUDE.md](CLAUDE.md) tells
 Claude the constraints — the grid for your panel, the level budget, why thin
 bright things dither into noise — so you can describe what you want and get
