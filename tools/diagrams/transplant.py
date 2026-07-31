@@ -19,6 +19,7 @@ break the matrix, common one side of every switch, and put each switch's other
 leg to ground through its own resistor.
 """
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -33,8 +34,29 @@ PCB_W, PCB_H = 100.5, 33.5
 LIT_W, LIT_H = 76.8, 19.2
 WIN_W, WIN_H = 84.0, 27.0
 
-LADDER = [("SRC", "0 R", 0), ("DISP", "1 k", 300), ("BAND", "2k2", 595),
-          ("ART", "4k7", 1055), ("LYRICS", "10 k", 1650), ("DEMO", "18 k", 2121)]
+# The rungs are PARSED OUT OF THE FIRMWARE, not typed here. The hand-written
+# version said BAND for a rung deck_input.c read as OCEAN, and drifted again
+# the moment the ladder was remapped to put the transport keys on it. Same
+# argument as the pin map: a drawing of the firmware should be derived from it.
+RESISTORS = ["0 R", "1 k", "2k2", "4k7", "10 k", "18 k"]
+
+
+def read_ladder():
+    src = open(os.path.join(ROOT, "firmware", "esp32", "main", "deck_input.c"),
+               encoding="utf-8").read()
+    body = re.search(r"\} LADDER\[\] = \{(.*?)\};", src, re.S)
+    if not body:
+        sys.exit("transplant: cannot find the LADDER table in deck_input.c")
+    rungs = re.findall(r"\{\s*(\d+)\s*,\s*DECK_ACT_\w+\s*,\s*\"([^\"]+)\"",
+                       body.group(1))
+    if len(rungs) != len(RESISTORS):
+        sys.exit(f"transplant: {len(rungs)} rungs but {len(RESISTORS)} "
+                 "resistors — update RESISTORS to match deck_input.c")
+    return [(label, RESISTORS[i], int(mv))
+            for i, (mv, label) in enumerate(rungs)]
+
+
+LADDER = read_ladder()
 
 
 def panel_alignment(out):

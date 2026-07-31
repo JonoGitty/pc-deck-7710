@@ -44,6 +44,33 @@
     "c": "measure",
     "why": "Touchscreen-era units frequently have no knob at all, which is a poor start for a deck built around one."
   },
+  "face": {
+    "loading": {
+      "v": "varies — but on this route you may not be removing it at all",
+      "c": "unverified",
+      "why": "See `keep_the_mechanism`. This is the one family where the question 'can I keep the CD?' has a yes in it."
+    },
+    "hole_left": {
+      "v": "none — you are building the 1-DIN face yourself",
+      "c": "verified",
+      "why": "The donor supplies the cage and the surround, not the face."
+    },
+    "best_use": {
+      "v": "the bottom half is the answer: amplifier, or the whole original unit left working",
+      "c": "unverified",
+      "why": "A 2-DIN aperture is two problems solved at once — where the amplifier goes, and what to do about the CD."
+    },
+    "keep_the_mechanism": {
+      "v": "✅ YES — the only route in this project where you can. Do not split it: leave the donor whole in the bottom half and put the deck above it",
+      "c": "unverified",
+      "why": "The old unit keeps doing what it is good at — CD, radio, volume, tone, and 4 × 45 W of amplifier — and the deck feeds its AUX input and does Bluetooth and the display. Nothing is gutted, nothing is soldered, and you keep a working CD player. ⚠️ It needs a 2-DIN aperture and a donor WITH an aux input: front 3.5 mm on most units after ~2005, rear RCA on better ones. Pre-2005 units mostly have neither. See REUSE.md."
+    },
+    "buttons": {
+      "v": "whatever the donor had — often a touchscreen instead, which is no use to you",
+      "c": "unverified",
+      "why": "Buy the buttons separately, or take them from a second, cheaper donor. A dead 2-DIN and a dead cassette unit together are still under £30."
+    }
+  },
   "display_tech": {
     "v": "TFT or touchscreen",
     "c": "unverified",

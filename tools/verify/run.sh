@@ -137,6 +137,23 @@ else
   printf 'importer check SKIPPED (needs Pillow)\n'
 fi
 
+# The completion pass, which fills in subjects a clip cut at its own frame edge.
+# It gets its own test for one reason: its failure mode is a plausible picture.
+# A pass that invents produces something that looks fine in a thumbnail and
+# wrong on the panel, and nothing else in this file would catch it — so most of
+# what is asserted there is REFUSAL, not completion.
+if python3 -c "import PIL" 2>/dev/null; then
+  if python3 tools/verify/test_complete.py > build/complete_test.txt 2>&1; then
+    grep -E 'completion checks' build/complete_test.txt
+  else
+    printf 'MISMATCH — the completion pass is filling in the wrong things:\n\n'
+    cat build/complete_test.txt
+    exit 1
+  fi
+else
+  printf 'completion check SKIPPED (needs Pillow)\n'
+fi
+
 # The pictures in the README and on the site, checked as CONTAINERS rather than
 # as images. Every one of them once rendered as a motionless still outside a
 # browser — the frames were all there and all different, and one flag three
@@ -176,6 +193,20 @@ if python3 tools/verify/test_vehicles.py > build/vehicle_test.txt 2>&1; then
 else
   printf 'MISMATCH — a vehicle file is incomplete:\n\n'
   cat build/vehicle_test.txt
+  exit 1
+fi
+
+# The buying page, against the parts list and the cars. It is maintained by
+# hand and it drifted twice: it recommended a £59.99 steering-wheel interface
+# for a car that has no steering-wheel controls, and it omitted the amplifier
+# entirely — so you could order everything on it and end up with a deck that
+# could not drive a speaker. Both are one failure: a second copy of something
+# that already exists in vehicles/ or in the BOM, going stale quietly.
+if python3 tools/verify/test_buying.py > build/buying_test.txt 2>&1; then
+  grep -E 'buying checks passed' build/buying_test.txt
+else
+  printf 'MISMATCH — the buying page has drifted from the parts or the cars:\n\n'
+  cat build/buying_test.txt
   exit 1
 fi
 

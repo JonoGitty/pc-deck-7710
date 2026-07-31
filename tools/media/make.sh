@@ -41,8 +41,12 @@ printf '\n== movie previews ==\n'
 # it opens on a car idling.
 # AE86 opens on headlights in the dark — correct for the animation, useless as
 # a thumbnail, which is a still. From 8 it opens on the tofu-shop door.
+# DUCKS has no establishing shot to miss, so it starts at zero — but it is 30 s
+# of eighteen photographic sprites all moving at once, which is close to the
+# worst case for an animated GIF: nearly every dot changes every frame. Eight
+# seconds is enough to see it is a flock rising.
 set -- "spin 0 0" "solar 0 190" "dolphins 24 170" "touge 60 190" "reef 0 0" \
-       "vtec 40 190" "ae86 8 0"
+       "vtec 40 190" "ae86 8 0" "ducks 0 80"
 for spec in "$@"; do
   set -- $spec
   m=$1; from=$2; max=$3
@@ -75,6 +79,9 @@ python3 tools/diagrams/teardown.py "$OUT"
 # ...and the maximum-reuse pair: where to cut into the donor's own amplifier,
 # and what the back panel saves you buying.
 python3 tools/diagrams/reuse.py "$OUT"
+# ...and what to do with the hole the CD mechanism came out of, which turns on
+# a coincidence of dimensions you can only see when both are drawn to scale.
+python3 tools/diagrams/slot.py "$OUT"
 
 printf '\n== faceplate stills (real page, real browser) ==\n'
 CHROMIUM="${CHROMIUM:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"

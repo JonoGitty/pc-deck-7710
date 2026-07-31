@@ -76,32 +76,54 @@ That last one is why the safest donors to gut are the ones with an LCD, even tho
 | **Knob** | ⚠️ rotary volume, usually an encoder or a pot with a detent feel | Reuse the KNOB and fit your own EC11 behind it — the original's electrical type does not matter, only its shaft and cap do. |
 | **Its own display** | ⚠️ LCD or VFD depending on model | ⚠️ If it is a VFD, its power board makes tens of volts and holds them after power-off. See the hazards. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ ⚠️ usually BEHIND a fold-down front panel, not through a slot in it | The late-1990s and 2000s flagships hide the disc behind the face: press a button, the panel drops, the slot is behind it. Confirmed in the general case for the Pioneer DEH-P9000R generation; confirm yours from the listing photographs. |
+| **What it leaves behind** | ⚠️ ✅ often NONE on the face itself — which is why this family has the best fascias | If the disc loads behind the panel, the front is solid apart from its display window and its buttons. Nothing to fill. |
+| **What to do with it** | ⚠️ pin the panel shut and use the window it already has | The window is 84–90 mm wide on these, which is what the deck wants. ⚠️ If the panel is MOTORISED, take the motor and gearbox out — it is depth you need and a mechanism you are not using. Then fix the panel closed rather than leaving it sprung. |
+| **Can you keep the CD?** | ✅ ❌ no | See REUSE.md. The mechanism is dumb hardware that needs its servo, its DSP and its microcontroller, and those are the boards you are removing. |
+| **Its buttons** | ⚠️ 8–14 on a carbon-pad flexi, plus the knob | More than the six the ladder needs, so you can pick the ones that feel best and blank the rest. ⚠️ Carbon-on-flexi is the fiddly kind — fine pitch, and it melts. Practise on a spare corner. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
-| | Model | Years | Its own display | Notes |
-|---|---|---|---|---|
-| ✅ | **Pioneer DEH-P9000R** | 1998–1999 | monochrome OEL dot matrix | The first car-audio OEL display Pioneer ever shipped, and the start of the whole look this project is chasing. Sought after, so not the cheapest — but the fascia is exactly right. |
-| ✅ | **Pioneer MEH-P9000R** | 1998–1999 | monochrome OEL dot matrix | The MiniDisc sibling of the DEH-P9000R with the same face. MiniDisc is worthless to everybody, which makes this the cheap way to that fascia. |
-| ✅ | **Pioneer DEH-P9100R** | 2001–2002 | OEL dot matrix | Second-generation OEL. Same idea, easier to find than the 9000R. |
-| ✅ | **Pioneer MEH-P9100R** | 2001–2002 | OEL dot matrix | Again the MiniDisc twin — same fascia, a fraction of the price. |
-| ✅ | **Pioneer DEH-P6600** | ≈2002 | OEL dot matrix, 128×32 + 24×32, blue and white | ⚠️ The most useful model here because its display resolution is published. 128×32 is HALF the deck's 256×64 across — the window is sized for a coarser display, so measure before assuming the panel drops in. See the note under the drawing. |
-| ✅ | **Pioneer DEH-P6800MP** | ≈2003 | dot matrix | Common, cheap, and the right shape. A good default if you see one. |
-| ✅ | **Pioneer DEH-P6300** | ≈2001 | OEL with screensavers | Screensavers on the original, which tells you the window is generous — nobody animates a two-line display. |
-| ✅ | **Pioneer DEH-P9400MP** | ≈2003 | OEL, user-loadable animation via PC Link | Pioneer let owners upload their own animations to this one. That means the window was made to be looked at, which is exactly what you want. |
-| ✅ | **Pioneer DEH-P7800MP** | ≈2004 | full-colour 65,000-colour OEL | A colour OEL. The deck's panel is monochrome, so you are buying the window and the face, not the technology — but both are excellent. |
-| ✅ | **Pioneer DEH-P9600MP** | ≈2004 | colour OEL, dual faceplate | ⚠️ Dual-faceplate design. More mechanism than you need and more to defeat. Buy one only if it is cheap. |
-| ❌ | **Pioneer DEH-P85BT** | ≈2007 | blue OEL dot matrix | ⚠️ AVOID for this build. Motorised faceplate: the mechanism eats depth, it is fragile, and it is one more thing to work around. |
-| ✅ | **Alpine CDA-9855 / CDA-9855R** | ≈2005 | BioLite | Alpine's BioLite is bright and wide-angle, and the fold-down face is well made. A very good donor. |
-| ✅ | **Alpine CDA-9887 / CDA-9887R** | ≈2007 | BioLite | Top of Alpine's CD line at the time — the best-built fascia in this list. Priced accordingly even broken. |
-| ⚠️ | **Sony CDX-GT700D** | ≈2006 | fluorescent (VFD) dot matrix | ⚠️ VFD. Nice window, and its power board makes tens of volts and holds them after power-off. Treat it as live. See the hazards. |
-| ✅ | **Sony CDX-M9905X** | ≈2003 | large display | Sony's flagship of the era. Big face, big window. |
-| ⚠️ | **Clarion DXZ935** | ≈2003 | large display, two-piece front panel | ⚠️ The two-piece panel is more mechanism than you need. |
-| ❌ | **Clarion DXZ925** | ≈2002 | large display behind a motorised face | ⚠️ AVOID. Dual-action motorised face that slides down to reveal a second faceplate. Impressive, and completely wrong for this. |
-| ⚠️ | **Kenwood KDC-716S** | ≈2000 | dot matrix, adjustable viewing angle | ⚠️ Motorised D-MASK+ faceplate that rotates 180°. The display itself is good; the mechanism is not what you want. |
-| ✅ | **Blaupunkt Bremen MP76** | ≈2004 | DMS dot matrix | European, common in the UK, and the Bremen fascia is a genuinely handsome thing to build into. |
-| ✅ | **Blaupunkt Woodstock DAB53** | ≈2005 | dot matrix | Same family, often cheaper than the Bremen because the name carries less weight. |
+| | Model | Years | Face | Its own display | Notes |
+|---|---|---|---|---|---|
+| ✅ | **Pioneer DEH-P9000R** | 1998–1999 | fold-down | dot-matrix, ⚠️ driven through an external display transformer — which means high voltage, so it is a VFD | ⚠️ The display transformer is the hazard here, not the laser. Discharge it and bin it with the panel. The first car-audio OEL display Pioneer ever shipped, and the start of the whole look this project is chasing. Sought after, so not the cheapest — but the fascia is exactly right. |
+| ✅ | **Pioneer MEH-P9000R** | 1998–1999 | fold-down | ✅ 256 × 52 Organic EL, 60 cd/m², 170° — a PUBLISHED figure, and the most useful number in this whole file | The 256 × 52 pixel count is the giveaway: at the usual 0.3 mm pitch that is a 76.8 × 15.6 mm lit area — the SAME WIDTH as the deck's 256 × 64 panel and 3.6 mm shorter. So its window is already the right width and wants opening by about 4 mm. This is the best-documented donor in the project. Cassette rather than CD, so the face has a tape door instead of a slot. The MiniDisc sibling of the DEH-P9000R with the same face. MiniDisc is worthless to everybody, which makes this the cheap way to that fascia. |
+| ✅ | **Pioneer DEH-P9100R** | 2001–2002 | fold-down | OEL dot matrix | Second-generation OEL. Same idea, easier to find than the 9000R. |
+| ✅ | **Pioneer MEH-P9100R** | 2001–2002 | fold-down | OEL dot matrix | Again the MiniDisc twin — same fascia, a fraction of the price. |
+| ✅ | **Pioneer DEH-P6600** | ≈2002 | fold-down | OEL dot matrix, 128×32 + 24×32, blue and white | ⚠️ The most useful model here because its display resolution is published. 128×32 is HALF the deck's 256×64 across — the window is sized for a coarser display, so measure before assuming the panel drops in. See the note under the drawing. |
+| ✅ | **Pioneer DEH-P6800MP** | ≈2003 | fold-down | dot matrix | Common, cheap, and the right shape. A good default if you see one. |
+| ✅ | **Pioneer DEH-P6300** | ≈2001 | fold-down | OEL with screensavers | Screensavers on the original, which tells you the window is generous — nobody animates a two-line display. |
+| ⚠️ | **Pioneer DEH-P9400MP** | ≈2003 | motorised | Organic EL, full-motion and 3D graphics | ⚠️ MOTORISED faceplate — confirmed. This family's own warning says to avoid those, and it is right: the motor and gearbox eat the depth this build has least of. It is still a good donor IF you take the mechanism out and pin the face shut, which is half an hour. Buy it if it is cheap, not if a fixed-face unit is the same money. Pioneer let owners upload their own animations to this one. That means the window was made to be looked at, which is exactly what you want. |
+| ✅ | **Pioneer DEH-P7800MP** | ≈2004 | ⚠️ believed fold-down | full-colour 65,000-colour OEL | A colour OEL. The deck's panel is monochrome, so you are buying the window and the face, not the technology — but both are excellent. |
+| ⚠️ | **Pioneer DEH-P9600MP** | ≈2004 | motorised | Organic EL | ⚠️ MOTORISED faceplate — confirmed, same as the P9400MP. Take the motor and gearbox out and pin the face shut. ⚠️ Dual-faceplate design. More mechanism than you need and more to defeat. Buy one only if it is cheap. |
+| ❌ | **Pioneer DEH-P85BT** | ≈2007 | — | blue OEL dot matrix | ⚠️ AVOID for this build. Motorised faceplate: the mechanism eats depth, it is fragile, and it is one more thing to work around. |
+| ✅ | **Alpine CDA-9855 / CDA-9855R** | ≈2005 | ⚠️ believed fixed | BioLite | Alpine's BioLite is bright and wide-angle, and the fold-down face is well made. A very good donor. |
+| ✅ | **Alpine CDA-9887 / CDA-9887R** | ≈2007 | ⚠️ believed fixed | BioLite | Top of Alpine's CD line at the time — the best-built fascia in this list. Priced accordingly even broken. |
+| ⚠️ | **Sony CDX-GT700D** | ≈2006 | — | fluorescent (VFD) dot matrix | ⚠️ VFD. Nice window, and its power board makes tens of volts and holds them after power-off. Treat it as live. See the hazards. |
+| ✅ | **Sony CDX-M9905X** | ≈2003 | ⚠️ unknown — check the photo | large display | Sony's flagship of the era. Big face, big window. |
+| ⚠️ | **Clarion DXZ935** | ≈2003 | — | large display, two-piece front panel | ⚠️ The two-piece panel is more mechanism than you need. |
+| ❌ | **Clarion DXZ925** | ≈2002 | — | large display behind a motorised face | ⚠️ AVOID. Dual-action motorised face that slides down to reveal a second faceplate. Impressive, and completely wrong for this. |
+| ⚠️ | **Kenwood KDC-716S** | ≈2000 | — | dot matrix, adjustable viewing angle | ⚠️ Motorised D-MASK+ faceplate that rotates 180°. The display itself is good; the mechanism is not what you want. |
+| ✅ | **Blaupunkt Bremen MP76** | ≈2004 | ⚠️ unknown — check the photo | DMS dot matrix | European, common in the UK, and the Bremen fascia is a genuinely handsome thing to build into. |
+| ✅ | **Blaupunkt Woodstock DAB53** | ≈2005 | ⚠️ unknown — check the photo | dot matrix | Same family, often cheaper than the Bremen because the name carries less weight. |
 
-<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled.</sub>
+
+> **📏 No window in this table has been measured, and that is deliberate.** Nobody publishes the window size of a 1998 head unit — not the service manual, not the spec sheet, not the listing. Forty guessed numbers would look authoritative and somebody would buy a fascia on one.
+>
+> You do not need them. **Every 1-DIN fascia is 182 mm wide**, fixed by ISO 7736 — so any straight-on photograph is a ruler with a known scale, including the listing you are looking at now:
+>
+> ```sh
+> python3 tools/donors/fit.py --fascia 1180 --window 476x104 --slot 810x78
+> ```
+>
+> It answers in millimetres: fits, file it by *this much*, use the CD slot instead, or buy a different donor. Twenty seconds per listing, ±1–2 mm, which is exactly the precision that decides whether you bid.
 
 ### Keeping more of it
 
@@ -180,6 +202,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ✅ none — fit a new EC11 and any knob you like |  |
 | **Its own display** | ✅ none | ✅ Nothing to gut, nothing charged, no laser, no inverter. The only genuinely hazard-free entry in this document. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ✅ none — there was never a mechanism | Its intended job is to fill the hole a removed radio left. |
+| **What it leaves behind** | ✅ none. You cut exactly the aperture you want, once | Fresh ABS, no history, no laser, no inverter, nothing charged. |
+| **What to do with it** | ✅ cut 84 × 27 for the window and drill the buttons where your hand actually falls | The luxury of this route: the layout is yours rather than somebody else's from 1998. |
+| **Can you keep the CD?** | ✅ — not applicable | There is none. |
+| **Its buttons** | ✅ none — fit your own | Which means you can use proper tactile switches on a PCB and skip the flexi rewire entirely. For a first build this is the easiest front panel by a distance. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
 | | Model | Years | Its own display | Notes |
@@ -188,7 +222,7 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | ⚠️ | **1-DIN blanking plate / dash tray** | current | none | Shallower than a pocket. ⚠️ Check the depth before buying — some are trays a few centimetres deep and will not hold the boards. |
 | ✅ | **Connects2 and similar universal fascia plates** | current | none | Sold for filling gaps around aftermarket radios; some are full pockets. Better made than the generic ones and priced accordingly. |
 
-<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled.</sub>
 
 ### Keeping more of it
 
@@ -255,18 +289,43 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ⚠️ often twin concentric knobs — volume and tone | The best-feeling knobs of any donor here, by a wide margin. |
 | **Its own display** | ⚠️ none, or a small backlit dial | Nothing to discharge. The safest possible teardown. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ a hinged, spring-loaded cassette door across most of the face | The door IS the front. It is a flat rectangle roughly 100 × 15 mm with a proper hinge and a return spring. |
+| **What it leaves behind** | ⚠️ none, if you keep the door — it closes flush and looks factory | This is the only family where the aperture problem solves itself. Every other donor leaves you a hole to fill. |
+| **What to do with it** | ⚠️ ✅ EITHER keep the door shut and cut your window elsewhere, OR remove the door and use its aperture as the window | The cassette aperture is the best window in the project: wide, flat, square-cornered, and already the full width of the face. You are enlarging nothing — you are filing a hole DOWN to size, which is far easier than opening one up. |
+| **Can you keep the CD?** | ✅ ❌ no, and you would not want to | A tape deck needs its own head amplifier, motor control and logic — all on the board you are removing. And it is a cassette deck. |
+| **Its buttons** | ⚠️ ✅ THE BEST BUTTONS OF ANY FAMILY — large, mechanical, and often on a proper PCB rather than a carbon flexi | Period buttons have travel and a click that nothing you can buy for 20p reproduces. On a PCB they are also the easy case to rewire: cut the traces, common one side, resistor on the other. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
-| | Model | Years | Its own display | Notes |
-|---|---|---|---|---|
-| ✅ | **Blaupunkt Bremen SQR 46** | 1986 onward | small dial; the cassette door is the space you want | The cult classic, reissued in 2019 as the Bremen SQR 46 DAB. The original is period-correct and the fascia is beautiful. ⚠️ Price reflects the cult status — you may pay more than for a grade-A donor. |
-| ✅ | **Blaupunkt Woodstock / London / Toronto (1990s)** | ≈1990–1998 | small backlit dial | The city-named Blaupunkts are everywhere in the UK and EU and nobody wants them. Steel, deep, and the cassette aperture is a clean rectangle. |
-| ✅ | **Pioneer KEH- series** | ≈1988–1997 | small dial | Pioneer's cassette line. Plentiful, cheap, and built well. |
-| ✅ | **Sony XR- series** | ≈1990–1998 | small dial | The same story as the Pioneer. Often free with a scrapyard dash. |
-| ⚠️ | **Becker Mexico / Grand Prix** | ≈1985–1998 | small dial | ⚠️ The nicest cassette fascias made, and priced like it — these are sought after for period-correct restorations. Buy one only if you want that specific look and can justify the cost. |
-| ✅ | **Any OEM cassette head unit from a scrapyard** | ≈1985–1998 | varies | ✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with. |
+| | Model | Years | Face | Its own display | Notes |
+|---|---|---|---|---|---|
+| ✅ | **Blaupunkt Bremen SQR 46** | 1986 onward | — | small dial; the cassette door is the space you want | The cult classic, reissued in 2019 as the Bremen SQR 46 DAB. The original is period-correct and the fascia is beautiful. ⚠️ Price reflects the cult status — you may pay more than for a grade-A donor. |
+| ✅ | **Blaupunkt Woodstock / London / Toronto (1990s)** | ≈1990–1998 | — | small backlit dial | The city-named Blaupunkts are everywhere in the UK and EU and nobody wants them. Steel, deep, and the cassette aperture is a clean rectangle. |
+| ✅ | **Pioneer KEH- series** | ≈1988–1997 | — | small dial | Pioneer's cassette line. Plentiful, cheap, and built well. |
+| ⚠️ | **Pioneer KEH-P6020R** | ≈1999–2001 | drop-down + detachable | small backlit LCD on a detachable, drop-down front panel | ✅ **4 × 50 W amplifier confirmed on the spec for this exact model**, so the free-amplifier claim is not a family generalisation here. ✅ It also has an **AUX input**, which is unusual for a cassette unit and may matter more than it looks: an aux socket is a line-level input ALREADY wired into the amplifier chain, which is exactly what the scalpel job in REUSE.md is trying to create. ⚠️ But the front panel both drops down and detaches, and detachable-face units generally refuse to operate with the face off — that is what the feature is for. So the aux shortcut needs the original face PCB left connected and hidden inside, which is untested reasoning, not a plan. ⚠️ The cassette loads behind the face, so the face is solid and roomy — but you are cutting a new aperture into a part that also hinges and unclips. Pin it shut and it is a good fixed fascia; leave it moving and the panel ribbon flexes every time. |
+| ✅ | **Sony XR- series** | ≈1990–1998 | — | small dial | The same story as the Pioneer. Often free with a scrapyard dash. |
+| ⚠️ | **Sony XR-C5120R** | ≈1999–2001 | detachable (RELEASE catch), cassette aperture ON the face | small segment LCD, low and centre-right — too small for the deck's panel | Seen on a real listing at **£45, which is three times what this family should cost** — the seller is pricing a working retro stereo, and a working mechanism is the first thing you remove. ✅ 40 W × 4 on the face (the seller's description says 4 × 45; the face is authoritative), and **15+ buttons** — SOURCE rotary, MODE, SOUND, SEEK/AMS, SHIFT, SET UP, PLAY MODE, DSPL, PTY, AF/TA, PRESET ±, DISC ±, six presets — against the six the ladder needs. ⚠️ Unlike most of this family the **cassette aperture is on the face**, not behind a door that closes flush, so the hole does not solve itself: it is ~105 mm wide, which makes it the window. ⚠️ Detachable face, so it needs pinning shut. ⚠️ The face in that listing is visibly scuffed, and it is the one part you are keeping on show. |
+| ✅ | **Sony XR-CA370X** | ≈2001–2003 | detachable facia, silver/grey | small LCD behind a WIDE smoked panel — ~138 × 20 mm of dark window across the centre of the face | ✅ **The best donor measured so far, and the first with a real number.** Scaled off a square-on listing photograph with `tools/donors/fit.py` (fascia 1160 px = 182 mm): the smoked centre panel is **137.8 × 20.4 mm**. The deck needs 83.8 × 26.2 mm, so it is **54 mm WIDER than required** and 5.8 mm short in height — and the SSD1322's *lit* area is only 19.2 mm tall, so **the glass already fits**; the filing is for a comfortable border, not for clearance. A GP1294AI is 1.0 mm short, which is nothing. ✅ Listed at £30 **with the ISO cage, the trim ring and a full ISO harness** — call it £15 of parts, so the donor itself is fair value. ⚠️ Establish whether that dark panel is an APERTURE or smoked moulding before planning to file it: you can only tell from the back of the fascia. ⚠️ Detachable facia, so it needs pinning shut. ⚠️ Silver fascia, which may or may not suit the car. |
+| ⚠️ | **Becker Mexico / Grand Prix** | ≈1985–1998 | — | small dial | ⚠️ The nicest cassette fascias made, and priced like it — these are sought after for period-correct restorations. Buy one only if you want that specific look and can justify the cost. |
+| ✅ | **Any OEM cassette head unit from a scrapyard** | ≈1985–1998 | — | varies | ✅ Free or near enough. Nothing inside can hurt you, and the cassette door leaves a clean rectangular hole to work with. |
 
-<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled.</sub>
+
+> **📏 No window in this table has been measured, and that is deliberate.** Nobody publishes the window size of a 1998 head unit — not the service manual, not the spec sheet, not the listing. Forty guessed numbers would look authoritative and somebody would buy a fascia on one.
+>
+> You do not need them. **Every 1-DIN fascia is 182 mm wide**, fixed by ISO 7736 — so any straight-on photograph is a ruler with a known scale, including the listing you are looking at now:
+>
+> ```sh
+> python3 tools/donors/fit.py --fascia 1180 --window 476x104 --slot 810x78
+> ```
+>
+> It answers in millimetres: fits, file it by *this much*, use the CD slot instead, or buy a different donor. Twenty seconds per listing, ±1–2 mm, which is exactly the precision that decides whether you bid.
 
 ### Keeping more of it
 
@@ -341,6 +400,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ✅ a new EC11 encoder and any knob you like |  |
 | **Its own display** | ✅ n/a | Nothing to gut and nothing to discharge. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ✅ — not applicable | There is no donor. |
+| **What it leaves behind** | ✅ — not applicable | You are bending the box, so every aperture is deliberate. |
+| **What to do with it** | ✅ mark the window from the lit glass, not from the module outline | The one rule that survives from every other route. See TRANSPLANT.md. |
+| **Can you keep the CD?** | ✅ — not applicable | There is none. |
+| **Its buttons** | ✅ new tactile switches, exactly where you want them | See the empty-pocket route: this is the easy case. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 **Why this one**
 
 - The window is exactly right, because you cut it to the panel.
@@ -386,6 +457,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | 📏 often a single encoder, sometimes none | Touchscreen-era units frequently have no knob at all, which is a poor start for a deck built around one. |
 | **Its own display** | ⚠️ TFT or touchscreen | ⚠️ A backlit TFT has an inverter on the older ones. LED backlights do not. Check before probing. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ varies — but on this route you may not be removing it at all | See `keep_the_mechanism`. This is the one family where the question 'can I keep the CD?' has a yes in it. |
+| **What it leaves behind** | ✅ none — you are building the 1-DIN face yourself | The donor supplies the cage and the surround, not the face. |
+| **What to do with it** | ⚠️ the bottom half is the answer: amplifier, or the whole original unit left working | A 2-DIN aperture is two problems solved at once — where the amplifier goes, and what to do about the CD. |
+| **Can you keep the CD?** | ⚠️ ✅ YES — the only route in this project where you can. Do not split it: leave the donor whole in the bottom half and put the deck above it | The old unit keeps doing what it is good at — CD, radio, volume, tone, and 4 × 45 W of amplifier — and the deck feeds its AUX input and does Bluetooth and the display. Nothing is gutted, nothing is soldered, and you keep a working CD player. ⚠️ It needs a 2-DIN aperture and a donor WITH an aux input: front 3.5 mm on most units after ~2005, rear RCA on better ones. Pre-2005 units mostly have neither. See REUSE.md. |
+| **Its buttons** | ⚠️ whatever the donor had — often a touchscreen instead, which is no use to you | Buy the buttons separately, or take them from a second, cheaper donor. A dead 2-DIN and a dead cassette unit together are still under £30. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
 | | Model | Years | Its own display | Notes |
@@ -396,7 +479,7 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | ✅ | **Sony XAV- series** | ≈2008–present | TFT touchscreen | Widely available broken. |
 | ✅ | **A 2-DIN cage and 1-DIN+pocket fascia, bought new** | current | none | ✅ Skip the donor entirely. Under £20 for both, no teardown, no hazards — the same logic as the empty-pocket route one size up. |
 
-<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled.</sub>
 
 ### Keeping more of it
 
@@ -469,6 +552,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Buttons** | 📏 varies; often fewer than an aftermarket unit | Count them before choosing this route — you want six. |
 | **Knob** | ⚠️ usually one, car-styled | The reason to do this at all: it matches the rest of the interior. |
 | **Its own display** | 📏 varies | ⚠️ Many OEM units of the right era use a VFD. Treat the power board as live. |
+
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | 📏 varies — a slot on the face, or a flip-down, or a cassette door | OEM units are all over the place. Photograph yours before you start. |
+| **What it leaves behind** | 📏 ⚠️ usually yes, and usually a slot | Factory units tend to be fixed-face with the slot on show. |
+| **What to do with it** | ⚠️ the same trick as the segment-LCD family: file the slot down to 27 mm and make it the window | OEM display windows are usually tiny — a frequency and a track number — so the slot is very often the only aperture big enough to be worth having. |
+| **Can you keep the CD?** | ⚠️ ❌ no, with one exception | The exception is the two-box route: if your car has a 2-DIN aperture, leave the factory unit whole in the bottom half and put the deck above it. You keep the CD, the factory amplifier and the factory connector, and you gut nothing. See REUSE.md. |
+| **Its buttons** | 📏 varies, and often fewer than an aftermarket unit | Count them before committing. ⚠️ Some OEM units put half their controls on the steering wheel or a stalk, and those do not come with the head unit. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
 
 ### Keeping more of it
 
@@ -543,6 +638,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ⚠️ period-styled, often twin concentric | Genuinely lovely, and the best-matched knobs to the aesthetic this project is chasing. |
 | **Its own display** | ⚠️ modern LCD or OLED | No inverter, nothing charged. Safe to open. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | ⚠️ ⚠️ usually none — most reissues are 'mechless', Bluetooth and USB only | The period look without the period mechanism. Check the listing: some carry a cassette door as pure decoration, which is ideal. |
+| **What it leaves behind** | ⚠️ usually none, and where there is a fake door it closes | A decorative door is the best of both — nothing to fill, and it looks like the deck plays tapes. |
+| **What to do with it** | ⚠️ keep the face exactly as it is and cut the window behind the existing display aperture | You are paying for the styling, so do not cut through it. |
+| **Can you keep the CD?** | ⚠️ — usually nothing to keep | Mechless by design. |
+| **Its buttons** | ⚠️ period-styled and good quality — worth keeping for the look alone | New, so the flexi is not thirty years old and brittle. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
 | | Model | Years | Its own display | Notes |
@@ -551,7 +658,7 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | ⚠️ | **RetroSound Model One / Two and similar** | current | small modern display | American, aimed at classic-car restorations, with swappable knobs and faces. ⚠️ Small window in a large face. |
 | ⚠️ | **Other 'retro' 1-DIN Bluetooth receivers** | current | varies | A crowded and inconsistent market. Measure the window from the listing photographs before ordering. |
 
-<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled.</sub>
 
 ### Keeping more of it
 
@@ -621,6 +728,18 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | **Knob** | ⚠️ rotary, usually an encoder |  |
 | **Its own display** | ⚠️ segment or small dot LCD, backlit | No inverter, so this is the SAFEST category to gut. |
 
+### The front of it — the slot, the buttons, and the CD
+
+| | | |
+|---|---|---|
+| **How the disc went in** | 📏 a visible slot across the face, typically ~125 × 12 mm | A CD is 120 mm across, so the slot cannot be narrower than about 122 mm. Height is whatever the dust lip needs — usually 10–14 mm. |
+| **What it leaves behind** | 📏 yes — a full-width letterbox, and it is the best thing about this family | Everybody sees the slot as the problem. It is the solution. |
+| **What to do with it** | ⚠️ ✅ MAKE THE SLOT THE WINDOW. File it DOWN from ~12 mm to 27 mm tall and blank the excess width behind the bezel | This is the insight that rescues the cheapest family in the project. Its own display window is ~52 × 18 mm — too small for a 256×64 panel, so you need a new aperture anyway. The slot is ALREADY 125 mm wide and dead straight; the deck needs 84 × 27. You are opening a hole downward by 15 mm in one axis instead of cutting a new rectangle in a fascia you cannot replace. Alternative if you would rather not: a row of buttons, or the aux and USB sockets, straight through the slot with no drilling. |
+| **Can you keep the CD?** | ✅ ❌ no | As every other family. |
+| **Its buttons** | ⚠️ 5–8, plus a knob — the fewest of any family, and just enough | The ladder wants six. Count them in the photograph before you buy, because this is the family where you might be one short. |
+
+<sub>Why the CD cannot be driven by the deck, what the hole is worth, and the one route that keeps a working CD player: [REUSE.md](REUSE.md).</sub>
+
 ### Specific units to search for
 
 | | Model | Years | Its own display | Notes |
@@ -631,7 +750,7 @@ The strip-down above is the *simple* build. If you would rather keep as much as 
 | ✅ | **JVC KD-R series** | ≈2009–2016 | segment LCD | Common and cheap. Check the fascia is clipped rather than glued. |
 | ✅ | **Any 'mechless' Bluetooth/USB 1-DIN receiver** | ≈2012–present | small segment LCD | ✅ The SAFEST donor of all — no CD laser, no VFD inverter, nothing charged. Shallow too. You are just going to cut the window. |
 
-<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled — and no window here has been measured.</sub>
+<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this build. Model names are ⚠️ researched, not handled.</sub>
 
 ### Keeping more of it
 

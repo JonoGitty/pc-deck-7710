@@ -43,6 +43,33 @@
     "c": "unverified",
     "why": "The reason to do this at all: it matches the rest of the interior."
   },
+  "face": {
+    "loading": {
+      "v": "varies — a slot on the face, or a flip-down, or a cassette door",
+      "c": "measure",
+      "why": "OEM units are all over the place. Photograph yours before you start."
+    },
+    "hole_left": {
+      "v": "⚠️ usually yes, and usually a slot",
+      "c": "measure",
+      "why": "Factory units tend to be fixed-face with the slot on show."
+    },
+    "best_use": {
+      "v": "the same trick as the segment-LCD family: file the slot down to 27 mm and make it the window",
+      "c": "unverified",
+      "why": "OEM display windows are usually tiny — a frequency and a track number — so the slot is very often the only aperture big enough to be worth having."
+    },
+    "keep_the_mechanism": {
+      "v": "❌ no, with one exception",
+      "c": "unverified",
+      "why": "The exception is the two-box route: if your car has a 2-DIN aperture, leave the factory unit whole in the bottom half and put the deck above it. You keep the CD, the factory amplifier and the factory connector, and you gut nothing. See REUSE.md."
+    },
+    "buttons": {
+      "v": "varies, and often fewer than an aftermarket unit",
+      "c": "measure",
+      "why": "Count them before committing. ⚠️ Some OEM units put half their controls on the steering wheel or a stalk, and those do not come with the head unit."
+    }
+  },
   "display_tech": {
     "v": "varies",
     "c": "measure",

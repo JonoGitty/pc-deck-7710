@@ -43,6 +43,33 @@
     "c": "unverified",
     "why": "The best-feeling knobs of any donor here, by a wide margin."
   },
+  "face": {
+    "loading": {
+      "v": "a hinged, spring-loaded cassette door across most of the face",
+      "c": "unverified",
+      "why": "The door IS the front. It is a flat rectangle roughly 100 × 15 mm with a proper hinge and a return spring."
+    },
+    "hole_left": {
+      "v": "none, if you keep the door — it closes flush and looks factory",
+      "c": "unverified",
+      "why": "This is the only family where the aperture problem solves itself. Every other donor leaves you a hole to fill."
+    },
+    "best_use": {
+      "v": "✅ EITHER keep the door shut and cut your window elsewhere, OR remove the door and use its aperture as the window",
+      "c": "unverified",
+      "why": "The cassette aperture is the best window in the project: wide, flat, square-cornered, and already the full width of the face. You are enlarging nothing — you are filing a hole DOWN to size, which is far easier than opening one up."
+    },
+    "keep_the_mechanism": {
+      "v": "❌ no, and you would not want to",
+      "c": "verified",
+      "why": "A tape deck needs its own head amplifier, motor control and logic — all on the board you are removing. And it is a cassette deck."
+    },
+    "buttons": {
+      "v": "✅ THE BEST BUTTONS OF ANY FAMILY — large, mechanical, and often on a proper PCB rather than a carbon flexi",
+      "c": "unverified",
+      "why": "Period buttons have travel and a click that nothing you can buy for 20p reproduces. On a PCB they are also the easy case to rewire: cut the traces, common one side, resistor on the other."
+    }
+  },
   "display_tech": {
     "v": "none, or a small backlit dial",
     "c": "unverified",
@@ -91,12 +118,57 @@
       "c": "unverified"
     },
     {
+      "name": "Pioneer KEH-P6020R",
+      "years": "≈1999–2001",
+      "display": "small backlit LCD on a detachable, drop-down front panel",
+      "face": "drop-down + detachable",
+      "note": "✅ **4 × 50 W amplifier confirmed on the spec for this exact model**, so the free-amplifier claim is not a family generalisation here. ✅ It also has an **AUX input**, which is unusual for a cassette unit and may matter more than it looks: an aux socket is a line-level input ALREADY wired into the amplifier chain, which is exactly what the scalpel job in REUSE.md is trying to create. ⚠️ But the front panel both drops down and detaches, and detachable-face units generally refuse to operate with the face off — that is what the feature is for. So the aux shortcut needs the original face PCB left connected and hidden inside, which is untested reasoning, not a plan. ⚠️ The cassette loads behind the face, so the face is solid and roomy — but you are cutting a new aperture into a part that also hinges and unclips. Pin it shut and it is a good fixed fascia; leave it moving and the panel ribbon flexes every time.",
+      "flag": "caution",
+      "c": "unverified",
+      "window": {
+        "w_mm": 0,
+        "h_mm": 0,
+        "c": "measure",
+        "why": "Measure it off the listing photograph with tools/donors/fit.py — the fascia is 182 mm wide."
+      }
+    },
+    {
       "name": "Sony XR- series",
       "years": "≈1990–1998",
       "display": "small dial",
       "note": "The same story as the Pioneer. Often free with a scrapyard dash.",
       "flag": "good",
       "c": "unverified"
+    },
+    {
+      "name": "Sony XR-C5120R",
+      "years": "≈1999–2001",
+      "display": "small segment LCD, low and centre-right — too small for the deck's panel",
+      "face": "detachable (RELEASE catch), cassette aperture ON the face",
+      "note": "Seen on a real listing at **£45, which is three times what this family should cost** — the seller is pricing a working retro stereo, and a working mechanism is the first thing you remove. ✅ 40 W × 4 on the face (the seller's description says 4 × 45; the face is authoritative), and **15+ buttons** — SOURCE rotary, MODE, SOUND, SEEK/AMS, SHIFT, SET UP, PLAY MODE, DSPL, PTY, AF/TA, PRESET ±, DISC ±, six presets — against the six the ladder needs. ⚠️ Unlike most of this family the **cassette aperture is on the face**, not behind a door that closes flush, so the hole does not solve itself: it is ~105 mm wide, which makes it the window. ⚠️ Detachable face, so it needs pinning shut. ⚠️ The face in that listing is visibly scuffed, and it is the one part you are keeping on show.",
+      "flag": "caution",
+      "c": "unverified",
+      "window": {
+        "w_mm": 0,
+        "h_mm": 0,
+        "c": "measure",
+        "why": "Neither listing photograph was square-on — one angled, one cut off at the edge — so no measurement was taken. That is the foreshortening tools/donors/fit.py warns about, not a shortcut worth taking."
+      }
+    },
+    {
+      "name": "Sony XR-CA370X",
+      "years": "≈2001–2003",
+      "display": "small LCD behind a WIDE smoked panel — ~138 × 20 mm of dark window across the centre of the face",
+      "face": "detachable facia, silver/grey",
+      "note": "✅ **The best donor measured so far, and the first with a real number.** Scaled off a square-on listing photograph with `tools/donors/fit.py` (fascia 1160 px = 182 mm): the smoked centre panel is **137.8 × 20.4 mm**. The deck needs 83.8 × 26.2 mm, so it is **54 mm WIDER than required** and 5.8 mm short in height — and the SSD1322's *lit* area is only 19.2 mm tall, so **the glass already fits**; the filing is for a comfortable border, not for clearance. A GP1294AI is 1.0 mm short, which is nothing. ✅ Listed at £30 **with the ISO cage, the trim ring and a full ISO harness** — call it £15 of parts, so the donor itself is fair value. ⚠️ Establish whether that dark panel is an APERTURE or smoked moulding before planning to file it: you can only tell from the back of the fascia. ⚠️ Detachable facia, so it needs pinning shut. ⚠️ Silver fascia, which may or may not suit the car.",
+      "flag": "good",
+      "c": "unverified",
+      "window": {
+        "w_mm": 137.8,
+        "h_mm": 20.4,
+        "c": "unverified",
+        "why": "Measured off a square-on listing photograph, scaling from the 182 mm ISO 7736 fascia width (1160 px). ±1–2 mm. Put calipers on it before filing anything."
+      }
     },
     {
       "name": "Becker Mexico / Grand Prix",

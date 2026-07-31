@@ -44,6 +44,33 @@
     "c": "unverified",
     "why": ""
   },
+  "face": {
+    "loading": {
+      "v": "a visible slot across the face, typically ~125 × 12 mm",
+      "c": "measure",
+      "why": "A CD is 120 mm across, so the slot cannot be narrower than about 122 mm. Height is whatever the dust lip needs — usually 10–14 mm."
+    },
+    "hole_left": {
+      "v": "yes — a full-width letterbox, and it is the best thing about this family",
+      "c": "measure",
+      "why": "Everybody sees the slot as the problem. It is the solution."
+    },
+    "best_use": {
+      "v": "✅ MAKE THE SLOT THE WINDOW. File it DOWN from ~12 mm to 27 mm tall and blank the excess width behind the bezel",
+      "c": "unverified",
+      "why": "This is the insight that rescues the cheapest family in the project. Its own display window is ~52 × 18 mm — too small for a 256×64 panel, so you need a new aperture anyway. The slot is ALREADY 125 mm wide and dead straight; the deck needs 84 × 27. You are opening a hole downward by 15 mm in one axis instead of cutting a new rectangle in a fascia you cannot replace. Alternative if you would rather not: a row of buttons, or the aux and USB sockets, straight through the slot with no drilling."
+    },
+    "keep_the_mechanism": {
+      "v": "❌ no",
+      "c": "verified",
+      "why": "As every other family."
+    },
+    "buttons": {
+      "v": "5–8, plus a knob — the fewest of any family, and just enough",
+      "c": "unverified",
+      "why": "The ladder wants six. Count them in the photograph before you buy, because this is the family where you might be one short."
+    }
+  },
   "display_tech": {
     "v": "segment or small dot LCD, backlit",
     "c": "unverified",

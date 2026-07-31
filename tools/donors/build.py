@@ -33,6 +33,21 @@ FIELDS = [
     ("display_tech", "Its own display"),
 ]
 
+# The front of it, in the order somebody looks at it while holding the thing:
+# how did the disc go in, what is left when the mechanism comes out, what to do
+# with that, and the two parts worth keeping. Separate from FIELDS because the
+# answers differ more between families than anything else here does — the
+# cassette door closes and looks factory, the grade-A flagships have no slot on
+# the face at all, and the cheap segment-LCD units turn out to have the best
+# aperture in the project once you see what it is for.
+FACE_FIELDS = [
+    ("loading", "How the disc went in"),
+    ("hole_left", "What it leaves behind"),
+    ("best_use", "What to do with it"),
+    ("keep_the_mechanism", "Can you keep the CD?"),
+    ("buttons", "Its buttons"),
+]
+
 GRADE_NOTE = {
     "A": "Buy this if you see one.",
     "B": "Good, with one thing to think about first.",
@@ -168,18 +183,63 @@ def render(donors):
             w(f"| **{label}** | {mark(f)} | {f.get('why') or ''} |")
         w("")
 
+        if d.get("face"):
+            # The front of it gets its own section rather than more rows in the
+            # table above, because these are the questions somebody asks while
+            # holding the thing and looking at it — and because the answer
+            # differs more between families than anything else here does.
+            w("### The front of it — the slot, the buttons, and the CD\n")
+            w("| | | |")
+            w("|---|---|---|")
+            for key, label in FACE_FIELDS:
+                f = d["face"].get(key)
+                if not f:
+                    continue
+                w(f"| **{label}** | {mark(f)} | {f.get('why') or ''} |")
+            w("")
+            w("<sub>Why the CD cannot be driven by the deck, what the hole is "
+              "worth, and the one route that keeps a working CD player: "
+              "[REUSE.md](REUSE.md).</sub>\n")
+
         if d.get("models"):
             w("### Specific units to search for\n")
-            w("| | Model | Years | Its own display | Notes |")
-            w("|---|---|---|---|---|")
+            has_face = any(m.get("face") for m in d["models"])
+            if has_face:
+                w("| | Model | Years | Face | Its own display | Notes |")
+                w("|---|---|---|---|---|---|")
+            else:
+                w("| | Model | Years | Its own display | Notes |")
+                w("|---|---|---|---|---|")
             for m in d["models"]:
                 icon = {"good": "✅", "caution": "⚠️", "avoid": "❌"}[m["flag"]]
-                w(f"| {icon} | **{m['name']}** | {m['years']} "
-                  f"| {m['display']} | {m['note']} |")
+                disp = m.get("own_display") or m["display"]
+                if has_face:
+                    w(f"| {icon} | **{m['name']}** | {m['years']} "
+                      f"| {m.get('face', '—')} | {disp} | {m['note']} |")
+                else:
+                    w(f"| {icon} | **{m['name']}** | {m['years']} "
+                      f"| {disp} | {m['note']} |")
             w("")
             w("<sub>✅ buy it · ⚠️ workable, read the note · ❌ avoid for this "
-              "build. Model names are ⚠️ researched, not handled — and no "
-              "window here has been measured.</sub>\n")
+              "build. Model names are ⚠️ researched, not handled.</sub>\n")
+            if has_face:
+                w("> **📏 No window in this table has been measured, and that "
+                  "is deliberate.** Nobody publishes the window size of a 1998 "
+                  "head unit — not the service manual, not the spec sheet, not "
+                  "the listing. Forty guessed numbers would look authoritative "
+                  "and somebody would buy a fascia on one.\n>\n"
+                  "> You do not need them. **Every 1-DIN fascia is 182 mm "
+                  "wide**, fixed by ISO 7736 — so any straight-on photograph is "
+                  "a ruler with a known scale, including the listing you are "
+                  "looking at now:\n>\n"
+                  "> ```sh\n"
+                  "> python3 tools/donors/fit.py --fascia 1180 --window 476x104 "
+                  "--slot 810x78\n"
+                  "> ```\n>\n"
+                  "> It answers in millimetres: fits, file it by *this much*, "
+                  "use the CD slot instead, or buy a different donor. Twenty "
+                  "seconds per listing, ±1–2 mm, which is exactly the precision "
+                  "that decides whether you bid.\n")
 
         if d.get("reuse"):
             w("### Keeping more of it\n")

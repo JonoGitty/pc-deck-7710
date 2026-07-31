@@ -44,6 +44,33 @@
     "c": "verified",
     "why": ""
   },
+  "face": {
+    "loading": {
+      "v": "none — there was never a mechanism",
+      "c": "verified",
+      "why": "Its intended job is to fill the hole a removed radio left."
+    },
+    "hole_left": {
+      "v": "none. You cut exactly the aperture you want, once",
+      "c": "verified",
+      "why": "Fresh ABS, no history, no laser, no inverter, nothing charged."
+    },
+    "best_use": {
+      "v": "cut 84 × 27 for the window and drill the buttons where your hand actually falls",
+      "c": "verified",
+      "why": "The luxury of this route: the layout is yours rather than somebody else's from 1998."
+    },
+    "keep_the_mechanism": {
+      "v": "— not applicable",
+      "c": "verified",
+      "why": "There is none."
+    },
+    "buttons": {
+      "v": "none — fit your own",
+      "c": "verified",
+      "why": "Which means you can use proper tactile switches on a PCB and skip the flexi rewire entirely. For a first build this is the easiest front panel by a distance."
+    }
+  },
   "display_tech": {
     "v": "none",
     "c": "verified",

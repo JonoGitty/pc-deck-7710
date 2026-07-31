@@ -133,10 +133,30 @@ clip ends by pulling back to a wide, where the car shrinks to a few dots and
 the road it is on becomes the brightest thing in frame. `--trim` throws that
 away. Look at the source before assuming all of it belongs on a 4:1 panel.*
 
+And if you want *more* of what is in a clip, for longer, looping — none of which
+you can do to a bitmap — `restage.py` re-stages it instead of playing it:
+
+![DUCKS — a flock of rubber ducks rising through the water](docs/media/ducks.gif)
+
+*`restage.py ducks.gif --name=DUCKS`. Seventy-one frames of four or five ducks,
+turned into thirty seconds of about twenty. Every duck is the source's own
+pixels moving the way the source moved them — the clip is mirror-tiled to fill a
+4:1 panel and composited over itself ten times, each copy at its own position,
+scale, speed and phase. Where the frame cut a duck in half, it is put back
+together from a frame where it was whole. Two checks rather than one: the loop
+is exact (frame 300 is frame 0 to the dot), and it does not secretly repeat
+before then either.*
+
 `import_video.py` takes anything ffmpeg opens, with `--probe` to find the crop,
 `--from`/`--dur` to cut a section, and — for the commonest hard case, filming
 another display — `--blur` and `--invert`. What that case cannot survive is in
 [docs/MOVIE-RENDERING.md](docs/MOVIE-RENDERING.md).
+
+**The renderer is also a Swift package.** `core/` builds unchanged for iOS,
+iPadOS and macOS — `.package(url: "https://github.com/JonoGitty/pc-deck-7710")`,
+then `import DeckCore` and call the same functions the firmware calls. No port
+and no vendored copy, so the differential test here guards the code an app
+ships too.
 
 **Making one is a conversation, not a tutorial.** [CLAUDE.md](CLAUDE.md) tells
 Claude the constraints — the grid for your panel, the level budget, why thin

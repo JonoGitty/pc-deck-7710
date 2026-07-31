@@ -31,8 +31,21 @@ int main(int argc, char **argv) {
   if (argc < 2) { fprintf(stderr, "usage: %s file.dmv\n", argv[0]); return 2; }
   FILE *f = fopen(argv[1], "rb");
   if (!f) { perror(argv[1]); return 1; }
-  static uint8_t blob[1 << 20];
+  /* 4 MB, and it MUST refuse rather than truncate. This buffer was 1 MB and
+   * fread() simply stopped there: a 1.16 MB movie decoded its first 267 frames,
+   * the streaming twin read the whole file, and the harness reported the two
+   * decoders disagreeing from frame 267 onward. That is a true statement about
+   * a false situation, and it sends you looking for a decoder bug that does not
+   * exist. A test that silently sees less than it was given is worse than no
+   * test. */
+  static uint8_t blob[4 << 20];
   const uint32_t n = (uint32_t)fread(blob, 1, sizeof blob, f);
+  if (n == sizeof blob && fgetc(f) != EOF) {
+    fprintf(stderr, "%s is larger than this harness's %zu-byte buffer — "
+            "raise it rather than comparing a truncated file\n",
+            argv[1], sizeof blob);
+    return 1;
+  }
   fclose(f);
 
   deck_movie_t m;

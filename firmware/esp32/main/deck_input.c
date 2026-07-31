@@ -107,10 +107,18 @@ typedef struct {
  * tuner, and s_nbtn drops to 1 when a ladder is fitted so they are never
  * configured, never polled, and never fire on I2C traffic. */
 static btn_t s_btn[] = {
-    {PIN_ENC_SW,   DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
-    {PIN_BTN_SRC,  DECK_ACT_SRC,       1, 0, 1, 0},
-    {PIN_BTN_DISP, DECK_ACT_MODE_NEXT, 1, 0, 1, 0},
-    {PIN_BTN_ART,  DECK_ACT_ART,       1, 0, 1, 0},
+    /* Push the volume knob to play or pause, which is what a car deck does
+     * and what deck_main.c already assumes: it routes PLAY_PAUSE to answering
+     * a call, on the argument that answering "must not need a different button
+     * from the one already under your thumb". The knob IS that button. It used
+     * to cycle display modes, duplicating the DISP button two rows down. */
+    {PIN_ENC_SW,   DECK_ACT_PLAY_PAUSE, 1, 0, 1, 0},
+    {PIN_BTN_SRC,  DECK_ACT_SRC,        1, 0, 1, 0},
+    {PIN_BTN_DISP, DECK_ACT_MODE_NEXT,  1, 0, 1, 0},
+    /* Was ART — a shortcut to a screen DISP already cycles to. On a three
+     * button bench build, skipping a track matters more than reaching the
+     * album art one press sooner. */
+    {PIN_BTN_ART,  DECK_ACT_NEXT_TRACK, 1, 0, 1, 0},
 };
 #define NBTN_ALL  (sizeof s_btn / sizeof *s_btn)
 #define NBTN_ENC  1                  /* just the encoder push, when shared */
@@ -123,10 +131,27 @@ static size_t s_nbtn = NBTN_ALL;
  *                │
  *                ├── [SRC]    ── 0R    ── GND
  *                ├── [DISP]   ── 1k    ── GND
- *                ├── [BAND]   ── 2k2   ── GND
- *                ├── [ART]    ── 4k7   ── GND
- *                ├── [LYRICS] ── 10k   ── GND
+ *                ├── [|◀◀]    ── 2k2   ── GND
+ *                ├── [▶‖]     ── 4k7   ── GND
+ *                ├── [▶▶|]    ── 10k   ── GND
  *                └── [DEMO]   ── 18k   ── GND
+ *
+ * THREE OF THESE USED TO BE SCREEN SHORTCUTS, AND THAT WAS THE BUG
+ *
+ * The ladder was SRC, DISP, OCEAN, ART, LYRICS, DEMO — four of six buttons
+ * choosing a screen, three of them shortcuts to screens DISP already cycles
+ * to, and NOT ONE that changed the music. The transport actions existed,
+ * deck_main.c handled them and sent the AVRCP passthrough codes, and the only
+ * thing that raised them was deck_swc.c — the steering wheel. So on any car
+ * without wheel controls, and the Honda S2000 has none in any market, you
+ * could not skip a track from the deck at all. You reached for your phone.
+ *
+ * After volume, skip is the most-used control on a head unit. It now has
+ * three rungs, and nothing is lost: DISP cycles to every screen the removed
+ * shortcuts jumped to.
+ *
+ * The RESISTORS ARE UNCHANGED. This is which action each voltage means, not
+ * what you solder — a fascia wired to the old table needs no rework.
  *
  * The values are not arbitrary. Each is far enough from its neighbours that
  * the gap survives resistor tolerance, and all of them sit below about
@@ -142,13 +167,17 @@ static size_t s_nbtn = NBTN_ALL;
 #define LADDER_MATCH_MV 110                /* smallest gap is 295 mV */
 #define LADDER_IDLE_MV  2700               /* above this, nothing is pressed */
 
-static const struct { int mv; deck_action_t act; } LADDER[] = {
-    {   0, DECK_ACT_SRC},
-    { 300, DECK_ACT_MODE_NEXT},
-    { 595, DECK_ACT_OCEAN},
-    {1055, DECK_ACT_ART},
-    {1650, DECK_ACT_LYRICS},
-    {2121, DECK_ACT_DEMO},
+/* The label is what the button is CALLED on the fascia, and it is here rather
+ * than in the drawing code because the drawing used to say BAND for a rung the
+ * firmware read as OCEAN. tools/diagrams/transplant.py now parses this table,
+ * so a remap moves the picture with it. */
+static const struct { int mv; deck_action_t act; const char *label; } LADDER[] = {
+    {   0, DECK_ACT_SRC,        "SRC"},
+    { 300, DECK_ACT_MODE_NEXT,  "DISP"},
+    { 595, DECK_ACT_PREV_TRACK, "|<<"},
+    {1055, DECK_ACT_PLAY_PAUSE, ">||"},
+    {1650, DECK_ACT_NEXT_TRACK, ">>|"},
+    {2121, DECK_ACT_DEMO,       "DEMO"},
 };
 #define NLADDER ((int)(sizeof LADDER / sizeof *LADDER))
 

@@ -51,6 +51,42 @@ def main():
             sys.exit(f"{name}: does not replay out of the container\n{r.stderr}")
         seen += 1
 
+    # AND IT HAS TO FIT THE FLASH IT IS FOR.
+    #
+    # Nothing checked this until a movie grew by half a megabyte and the image
+    # went from 2.7 MB to 3.2 MB — past the 8 MB build's movies partition, with
+    # every check in this suite still saying green. The failure would have
+    # arrived at `deckctl flash`, on somebody else's bench, as "the write ran
+    # off the end of the partition", which reads as a broken tool rather than as
+    # a movie one animation too big.
+    #
+    # Both layouts are checked and the SMALLER one is what matters: the 8 MB
+    # board is the one most people can actually buy assembled, which is the
+    # whole reason partitions-8mb.csv exists.
+    for csv in ("partitions-8mb.csv", "partitions.csv"):
+        path = os.path.join("firmware", "esp32", csv)
+        if not os.path.exists(path):
+            continue
+        for line in open(path, encoding="utf-8"):
+            if line.lstrip().startswith("#") or "," not in line:
+                continue
+            cols = [c.strip() for c in line.split(",")]
+            if cols[0] != "movies" or len(cols) < 5:
+                continue
+            cap = int(cols[4], 0)
+            if len(img) > cap:
+                sys.exit(
+                    f"the movie image is {len(img) / 1024:.0f} KB and the "
+                    f"movies partition in {csv} is {cap / 1024:.0f} KB — "
+                    f"{(len(img) - cap) / 1024:.0f} KB over.\n"
+                    "  Shorten a movie, drop one, or re-render a dense one "
+                    "with fewer moving dots. This is a hard limit: the deck "
+                    "cannot flash what will not fit.")
+            print(f"  fits {csv}: {len(img) / 1024:.0f} of "
+                  f"{cap / 1024:.0f} KB "
+                  f"({100 * len(img) / cap:.0f}%, "
+                  f"{(cap - len(img)) / 1024:.0f} KB spare)")
+
     print(f"movie container round-trips: {seen} movies, "
           f"{len(img) / 1024:.0f} KB image")
 

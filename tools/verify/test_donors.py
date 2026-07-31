@@ -126,6 +126,21 @@ def main():
             for k in ("part", "value", "difficulty", "note"):
                 if not r.get(k):
                     bad_r.append(f"{r.get('part', '?')}: no {k}")
+        # The front of it. Added when "can I keep the CD?" turned out to have
+        # a different answer per family — and one family where the answer is
+        # yes. A family that skips a question here is a family somebody has to
+        # guess about while holding a screwdriver.
+        face = d.get("face") or {}
+        want = ("loading", "hole_left", "best_use", "keep_the_mechanism",
+                "buttons")
+        check(f"{rel} answers all five questions about its front",
+              all(k in face and "v" in face[k] and "c" in face[k]
+                  for k in want),
+              "missing: " + ", ".join(k for k in want if k not in face))
+        check(f"{rel} says whether the CD can be kept",
+              bool(face.get("keep_the_mechanism", {}).get("why")),
+              "an unexplained no is the answer people argue with")
+
         check(f"{rel} every salvageable part says what it saves and costs",
               not bad_r, "; ".join(bad_r[:3]))
 
@@ -201,6 +216,22 @@ def main():
                   open(os.path.join(tmp, name), encoding="utf-8").read() ==
                   open(b, encoding="utf-8").read(),
                   "run: python3 tools/diagrams/reuse.py")
+
+    # The slot drawing carries the CD-slot and window dimensions, so it goes
+    # stale the same way the rest do.
+    r5 = subprocess.run([sys.executable,
+                         os.path.join(ROOT, "tools", "diagrams", "slot.py"),
+                         tmp], capture_output=True, text=True)
+    check("the slot generator runs", r5.returncode == 0,
+          (r5.stderr or r5.stdout)[-400:])
+    if r5.returncode == 0:
+        b = os.path.join(ROOT, "docs", "media", "slot-options.svg")
+        check("slot-options.svg is up to date",
+              os.path.exists(b)
+              and open(os.path.join(tmp, "slot-options.svg"),
+                       encoding="utf-8").read() ==
+                  open(b, encoding="utf-8").read(),
+              "run: python3 tools/diagrams/slot.py")
 
     r2 = subprocess.run([sys.executable,
                          os.path.join(ROOT, "tools", "diagrams",

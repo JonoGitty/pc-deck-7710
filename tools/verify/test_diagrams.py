@@ -22,6 +22,7 @@ The check is a byte comparison against what is committed, so it also catches
 the ordinary case of somebody editing a diagram and forgetting to rerun.
 """
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -62,6 +63,37 @@ def main():
         return 1
 
     check("the pin table is not empty", len(table) > 15, f"{len(table)} pins")
+
+    # THE CHECK THAT WOULD HAVE CAUGHT IT.
+    #
+    # The transport actions were fully implemented — deck_main.c handled
+    # PLAY_PAUSE, NEXT_TRACK and PREV_TRACK and sent the right AVRCP
+    # passthrough codes — and the ONLY thing that raised them was deck_swc.c,
+    # the steering wheel. Four of the six front-panel buttons chose a screen,
+    # three of those were shortcuts to screens the DISP button already cycles
+    # to, and not one of them changed the track. On a car with no wheel
+    # controls — the Honda S2000 has none in any market — you could not skip a
+    # song from the deck at all.
+    #
+    # Nothing failed, because every piece worked. Only the join was missing.
+    print("\nthe music can be controlled from the deck itself")
+    src = open(os.path.join(ROOT, "firmware", "esp32", "main", "deck_input.c"),
+               encoding="utf-8").read()
+    # The two tables a human can physically reach: discrete buttons, and the
+    # resistor ladder. The steering wheel deliberately does not count.
+    panel = ""
+    for pat in (r"static btn_t s_btn\[\] = \{(.*?)\};",
+                r"\} LADDER\[\] = \{(.*?)\};"):
+        m = re.search(pat, src, re.S)
+        if m:
+            panel += m.group(1)
+    for act in ("DECK_ACT_PLAY_PAUSE", "DECK_ACT_NEXT_TRACK",
+                "DECK_ACT_PREV_TRACK"):
+        check(f"{act[9:].lower().replace('_', ' ')} is on the front panel",
+              act in panel,
+              "implemented in deck_main.c but reachable only from the "
+              "steering wheel — which most of the cars in vehicles/ do not "
+              "have")
 
     # The three deliberately-shared pins must still be shared. If somebody
     # "fixes" the clash by moving the tuner, that is a real design change and

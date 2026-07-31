@@ -152,12 +152,180 @@ and came out as noise every time.
 **So film a display for reference, not for import.** If you want what it shows,
 draw it — which is what `core/screens/ocean.c` is.
 
+## Or re-stage the clip instead of playing it
+
+`import_gif.py` plays a clip as it is. That is right when the clip already is
+the animation you want. It is wrong when you want **more of what is in it, for
+longer, looping** — and a played-back bitmap can give you none of the three.
+Five seconds stretched to thirty is the same five seconds six times; a bitmap
+has as many ducks as it was filmed with; and a clip loops where it happens to
+end.
+
+```sh
+python3 tools/movies/restage.py ducks.gif --name=DUCKS
+python3 tools/movies/restage.py ducks.gif --name=DUCKS --legacy
+python3 tools/movies/restage.py ducks.gif --dots=22 --layers=10 --water=1 \
+        --tiles=4 --band=0.06,0.88 --secs=30 --no-complete
+```
+
+**This keeps the footage.** Every duck on the panel is the source's own pixels
+moving the way the source moved them; what gets rebuilt is the staging around
+them. `DUCKS` is 71 frames of four or five ducks turned into thirty seconds of
+about twenty.
+
+**The frame is widened by mirror-tiling.** A square clip letterboxed onto a 4:1
+panel occupies a third of it. So the canvas is several tiles wide and the
+background is mirrored between them — a mirrored edge matches its neighbour
+*exactly*, so the seams are continuous by construction rather than nearly.
+
+**The clip is composited over itself**, each layer carrying only its moving
+parts at its own position, scale, speed and starting phase.
+
+**The moving parts are found by median.** Anything that moves is not at the same
+pixel in most frames, so the per-pixel median of the clip is the scene with the
+subjects removed. Nothing to key, and it does not care whether the subject is
+lighter or darker than what it is over.
+
+### Everything that follows is a defect it shipped first
+
+Each of these looked like a taste problem and turned out to be arithmetic or a
+measurement. They are written down because the next clip will hit them too.
+
+**The crop and the tile count are measured, not set.** A duck filmed 55px tall,
+squeezed with the whole 200px frame into 64 dots, arrives 17 dots tall and reads
+as a blob. So the clip is cropped to the *band* the action is in, deep enough
+that a subject lands at `--dots` dots, and tiled enough times that the canvas is
+the panel's shape — any other count stretches the picture on the way down.
+Constants worked at 256×64 and put 15-dot blobs on the 192×48 panel, because a
+smaller panel needs a **tighter crop, not the same crop drawn smaller**.
+`measure()` finds the subject height first; the rest follows. It ignores small
+components: including the clip's specks put the median at 32px in a clip whose
+ducks are 68.
+
+**Phases are solved, not chosen.** Periods that divide the movie also *agree* at
+its common factors, so with no phase offsets fourteen layers showed two
+pictures. Hand-spread offsets fixed that and assumed a steady stream — but this
+clip has ducks for 38 frames and empty water for 33, so the panel swung between
+packed and deserted. `solve_timing` measures how much subject each source frame
+holds and picks each layer's offset to flatten the total. Adding a constant to a
+periodic function leaves it periodic, so the loop guarantee is untouched.
+
+**Periods are dealt round-robin, and letting the solver choose them was the
+worst bug this tool has had.** Free to optimise, it put eight layers on 50, 100
+and 150 — which flattens the occupancy beautifully and makes the movie *repeat
+every 100 frames*, because 50 and 100 both divide 100. Thirty seconds delivering
+ten. The lowest-variance answer and the right answer were not the same answer.
+
+**So there is a repeat check as well as a loop check**, and it measures
+agreement over the *lit* dots rather than the whole panel — most of this movie
+is black, and black matching black is not evidence of anything. Measured that
+way, a badly repeating movie still scored 88%.
+
+```
+loop check:   frame 300 matches frame 0 on 100.00% of dots
+repeat check: the closest it comes to repeating early is 150 frames apart,
+              25% of the lit dots
+```
+
+For calibration: a frame against itself is 100%, against its neighbour 32%,
+against an unrelated frame 2%.
+
+**Wide flat components are dropped.** The water surface ripples, and a ripple
+survives the median as a long thin bright horizontal component — the worst
+possible object here, a bright rule the eye finds before it finds any duck. The
+filter runs twice: once before completion, with a low ceiling, because a wide
+flat thing might still be a duck the frame cut to a sliver; and once after, with
+a higher one, because anything still that shape by then is not a duck.
+
+### `--water`, and the level-centre rule again
+
+The background is pinned to **one flat level**, never dithered: the clip's water
+is teal, mid-luminance, so shaded across four levels it lands on a boundary and
+becomes a 50/50 checkerboard the size of the panel.
+
+**The default is level 0 — black — and that is a legibility decision, not a
+tidiness one.** Flat at level 1 the clip still reads as water, and it looks
+right, but it leaves the subjects only levels 2 and 3, and two levels is not
+enough for a duck: it arrives as a flat blob. Black hands them 1, 2 and 3, and
+that third level is the shading that makes a duck a duck rather than a shape.
+`--water=1` if you want the lit field back.
+
+The floor — how far above the water a dot must be to count as subject — wants to
+be **low**, which is also not obvious. A duck seen through water sits only just
+above the water in luminance, so raising the floor to strip the dim formless
+fringe strips the duck's body with it and leaves a bright rim around a hole.
+
+### Putting back the subjects the clip cut in half
+
+A short loop always has some of its subjects half-out of frame. **Played back
+that is invisible** — the missing half is past the edge of the picture, where a
+picture is expected to stop. **Re-staged it is not:** a layer sits in the middle
+of a wider canvas, so its frame edge is nowhere in particular, and a duck
+bisected by an invisible vertical line reads as a rendering fault.
+
+`tools/movies/complete.py` fills those in, and the pixels come **out of the clip
+itself, from a frame where that subject was whole**. A duck clipped by the right
+edge at second four drifted in from the middle at second one, and there it is
+complete — same duck, same lighting, same lens, same compression. Nothing is
+invented; it is recovered.
+
+It works because a frame edge is a straight line:
+
+1. **Harvest.** Every connected subject touching no edge, in every frame, is a
+   complete exemplar. 71 frames of five ducks gave 19 usable ones.
+2. **Classify.** A subject touching an edge is partial. One touching opposite
+   edges, or edges on *both axes*, is refused outright.
+3. **Align without searching.** The axis that was not cut is intact — a duck
+   clipped on the left still shows its true top, bottom and right edge. That
+   gives the exemplar's scale and its position in one step, rather than sweeping
+   offsets and scales across every exemplar.
+4. **Score, then decide.** Intersection-over-union against the visible part
+   only, best over every exemplar and both reflections. Below the threshold the
+   subject is left clipped. **A wrong completion is worse than a clipped one** —
+   a clipped duck looks cut, which a viewer forgives; a wrong one looks broken.
+5. **Graft.** Only pixels outside the original frame are taken, brightness
+   matched over the overlap first so the join does not step.
+
+On `DUCKS`: *38 of 58 clipped subjects filled in, 20 refused.* `--no-complete`
+turns the pass off.
+
+**Why not a generative model.** It is the obvious reach and it is wrong three
+times over. Every generated file here is byte-compared against its generator, so
+a sampler that returns something different each run would force the staleness
+rule to be dropped for this one tool. The build must run from a clone with
+Pillow and no network. And a model has no idea what *your* ducks look like — it
+would invent a plausible one, where the clip contains these, photographed under
+this light. Matching beats generating whenever the missing content is already in
+the dataset, and here the dataset is the clip. The seam to cut, if someone wants
+one anyway, is the match-and-graft pair; keep the refusal path, which is most of
+the value.
+
+`tools/verify/test_complete.py` asserts mostly *refusals* — an empty clip stays
+empty, a clip whose subjects are never whole is left alone, a subject cut at a
+corner is not guessed at — because the failure mode here is a plausible picture,
+and nothing else in the suite would catch that.
+
+### `--water`, and the level-centre rule again
+
+The background gets pinned to **one flat level** rather than being dithered.
+This is the same rule as everywhere else in this document: the clip's water is
+teal — mid-luminance — so shaded across four levels it lands on a boundary and
+renders as a 50/50 checkerboard the size of the panel, which beats every duck in
+it for attention. Pinned to level 1 it is a calm lit field with the ducks bright
+on top, which is what the clip looks like. `--water=0` for black instead.
+
+**What it cannot do:** it is only as good as the separation. A subject the same
+colour as its background does not come out, and a clip shot handheld has no
+stable median to subtract — this wants a locked-off camera, which is what most
+short loops of this kind are.
+
 ## The bundled animations
 
 Five procedural scenes, and they are worth reading before writing your own —
 each one solves a different version of the same problem, which is that four
 levels is not many. (Two more, `REEF` and `AE86`, are imports rather than
-scenes; there is no source to read, only the flags above.)
+scenes; there is no source to read, only the flags above. `DUCKS` is a third
+thing again — a clip re-staged rather than played, by `restage.py`.)
 
 | | What it is | The thing it works out |
 |---|---|---|
